@@ -1,0 +1,7 @@
+
+pragma LIST(OFF);
+pragma OPTIMIZE(TIME);
+pragma INLINE(SETMASK);
+pragma SUPPRESS(RANGE_CHECK, ON => INDEX);
+
+

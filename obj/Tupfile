@@ -1,0 +1,3 @@
+: foreach ../src/*.ll |> flex -t %f | gcc -I ../inc -c -o %o -x c++ - |> %b.o
+: foreach ../src/*.cc |> gcc -I ../inc -c -o %o -x c++ %f |> %b.o
+
