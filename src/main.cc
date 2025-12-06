@@ -23,7 +23,7 @@
 static int Scan(std::string filename)
 {
     extern char *yytext;
-    extern TokenType yylex(void);
+    extern TokenType_t yylex(void);
     extern FILE *yyin;
 
     yyin = fopen(filename.c_str(), "r");
@@ -32,7 +32,7 @@ static int Scan(std::string filename)
         return EXIT_FAILURE;
     }
 
-    TokenType tok = yylex();
+    TokenType_t tok = yylex();
 
     while (tok) {
         switch (tok) {
@@ -186,6 +186,20 @@ static int Scan(std::string filename)
 
 
 //
+// -- Tokenize the source into a token stream
+//    ---------------------------------------
+static int Tokenize(std::string filename)
+{
+    TokenStream tokens(filename.c_str());
+    tokens.Listing();
+    tokens.List();
+
+    return EXIT_SUCCESS;
+}
+
+
+
+//
 // -- Properly Compile the source
 //    ---------------------------
 static int Compile(std::string filename)
@@ -215,6 +229,7 @@ int main(int argc, char *argv[])
     enum {
         ACT_COMPILE,
         ACT_SCAN,
+        ACT_TOKENIZE,
     } action = ACT_COMPILE;
     std::string filename = "";
 
@@ -230,6 +245,11 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        if (arg == "tokenize") {
+            action = ACT_TOKENIZE;
+            continue;
+        }
+
         filename = arg;
     }
 
@@ -238,6 +258,9 @@ int main(int argc, char *argv[])
     switch (action) {
     case ACT_SCAN:
         return Scan(filename);
+
+    case ACT_TOKENIZE:
+        return Tokenize(filename);
 
     default:
         return Compile(filename);

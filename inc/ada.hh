@@ -13,10 +13,18 @@
 
 
 
+#pragma once
+
+
+
 //
 // -- These are the complete list of token types
 //    ------------------------------------------
 typedef enum {
+    YYEOF                       = 0,
+
+    DUMMY_FIRST_TOKEN           = 256,
+
     TOK_QUOTATION               = 257,
     TOK_SHARP                   = 258,
     TOK_AMPERSAND               = 259,
@@ -67,80 +75,80 @@ typedef enum {
     TOK_RIGHT_LABEL_BRACKET     = 298,
     TOK_BOX                     = 299,
 
-    TOK_ABORT                   = 350,
-    TOK_ABS                     = 351,
-    TOK_ACCEPT                  = 352,
-    TOK_ACCESS                  = 353,
-    TOK_ALL                     = 354,
-    TOK_AND                     = 355,
-    TOK_ARRAY                   = 356,
-    TOK_AT                      = 357,
-    TOK_BEGIN                   = 358,
-    TOK_BODY                    = 359,
-    TOK_CASE                    = 360,
-    TOK_CONSTANT                = 361,
-    TOK_DECLARE                 = 362,
-    TOK_DELAY                   = 363,
-    TOK_DELTA                   = 364,
-    TOK_DIGITS                  = 365,
-    TOK_DO                      = 366,
-    TOK_ELSE                    = 367,
-    TOK_ELSIF                   = 368,
-    TOK_END                     = 369,
-    TOK_ENTRY                   = 370,
-    TOK_EXCEPTION               = 371,
-    TOK_EXIT                    = 372,
-    TOK_FOR                     = 373,
-    TOK_FUNCTION                = 374,
-    TOK_GENERIC                 = 375,
-    TOK_GOTO                    = 376,
-    TOK_IF                      = 377,
-    TOK_IN                      = 378,
-    TOK_IS                      = 379,
-    TOK_LIMITED                 = 380,
-    TOK_LOOP                    = 381,
-    TOK_MOD                     = 382,
-    TOK_NEW                     = 383,
-    TOK_NOT                     = 384,
-    TOK_NULL                    = 385,
-    TOK_OF                      = 386,
-    TOK_OR                      = 387,
-    TOK_OTHERS                  = 388,
-    TOK_OUT                     = 389,
-    TOK_PACKAGE                 = 390,
-    TOK_PRAGMA                  = 391,
-    TOK_PRIVATE                 = 392,
-    TOK_PROCEDURE               = 393,
-    TOK_RAISE                   = 394,
-    TOK_RANGE                   = 395,
-    TOK_RECORD                  = 396,
-    TOK_REM                     = 397,
-    TOK_RENAMES                 = 398,
-    TOK_RETURN                  = 399,
-    TOK_REVERSE                 = 400,
-    TOK_SELECT                  = 401,
-    TOK_SEPARATE                = 402,
-    TOK_SUBTYPE                 = 403,
-    TOK_TASK                    = 404,
-    TOK_TERMINATE               = 405,
-    TOK_THEN                    = 406,
-    TOK_TYPE                    = 407,
-    TOK_USE                     = 408,
-    TOK_WHEN                    = 409,
-    TOK_WHILE                   = 410,
-    TOK_WITH                    = 411,
-    TOK_XOR                     = 412,
+    TOK_ABORT                   = 320,
+    TOK_ABS                     = 321,
+    TOK_ACCEPT                  = 322,
+    TOK_ACCESS                  = 323,
+    TOK_ALL                     = 324,
+    TOK_AND                     = 325,
+    TOK_ARRAY                   = 326,
+    TOK_AT                      = 327,
+    TOK_BEGIN                   = 328,
+    TOK_BODY                    = 329,
+    TOK_CASE                    = 330,
+    TOK_CONSTANT                = 331,
+    TOK_DECLARE                 = 332,
+    TOK_DELAY                   = 333,
+    TOK_DELTA                   = 334,
+    TOK_DIGITS                  = 335,
+    TOK_DO                      = 336,
+    TOK_ELSE                    = 337,
+    TOK_ELSIF                   = 338,
+    TOK_END                     = 339,
+    TOK_ENTRY                   = 340,
+    TOK_EXCEPTION               = 341,
+    TOK_EXIT                    = 342,
+    TOK_FOR                     = 343,
+    TOK_FUNCTION                = 344,
+    TOK_GENERIC                 = 345,
+    TOK_GOTO                    = 346,
+    TOK_IF                      = 347,
+    TOK_IN                      = 348,
+    TOK_IS                      = 349,
+    TOK_LIMITED                 = 350,
+    TOK_LOOP                    = 351,
+    TOK_MOD                     = 352,
+    TOK_NEW                     = 353,
+    TOK_NOT                     = 354,
+    TOK_NULL                    = 355,
+    TOK_OF                      = 356,
+    TOK_OR                      = 357,
+    TOK_OTHERS                  = 358,
+    TOK_OUT                     = 359,
+    TOK_PACKAGE                 = 360,
+    TOK_PRAGMA                  = 361,
+    TOK_PRIVATE                 = 362,
+    TOK_PROCEDURE               = 363,
+    TOK_RAISE                   = 364,
+    TOK_RANGE                   = 365,
+    TOK_RECORD                  = 366,
+    TOK_REM                     = 367,
+    TOK_RENAMES                 = 368,
+    TOK_RETURN                  = 369,
+    TOK_REVERSE                 = 370,
+    TOK_SELECT                  = 371,
+    TOK_SEPARATE                = 372,
+    TOK_SUBTYPE                 = 373,
+    TOK_TASK                    = 374,
+    TOK_TERMINATE               = 375,
+    TOK_THEN                    = 376,
+    TOK_TYPE                    = 377,
+    TOK_USE                     = 378,
+    TOK_WHEN                    = 379,
+    TOK_WHILE                   = 380,
+    TOK_WITH                    = 381,
+    TOK_XOR                     = 382,
 
-    TOK_IDENTIFIER              = 430,
-    TOK_UNIVERSAL_INT_LITERAL   = 431,
-    TOK_UNIVERSAL_REAL_LITERAL  = 432,
-    TOK_CHARACTER_LITERAL       = 433,
-    TOK_STRING_LITERAL          = 434,
+    TOK_IDENTIFIER              = 390,
+    TOK_UNIVERSAL_INT_LITERAL   = 391,
+    TOK_UNIVERSAL_REAL_LITERAL  = 392,
+    TOK_CHARACTER_LITERAL       = 393,
+    TOK_STRING_LITERAL          = 394,
 
     TOK_PRAGMA_NAME             = 450,
 
     TOK_ERROR                   = 500,
-} TokenType;
+} TokenType_t;
 
 
 
@@ -149,7 +157,12 @@ typedef enum {
 //    --------------------------
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <cstdio>
+#include <vector>
+
+
+#include "tstream.hh"
 
 
 
@@ -157,5 +170,6 @@ typedef enum {
 // -- some global variables
 //    ---------------------
 extern std::string strVal;
+extern int column;
 
 
