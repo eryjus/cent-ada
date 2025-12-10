@@ -20,7 +20,6 @@
 //
 // -- This is used by the scanner to save additional info for a token
 //    ---------------------------------------------------------------
-yystype_t yylval;
 int column = 1;
 
 
@@ -59,7 +58,7 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 
     int tok = yylex();
     while (tok) {
-        Token *t = new Token(filename, yylineno, column, (TokenType_t)tok, yylval);
+        Token *t = new Token(filename, yylineno, column, (TokenType_t)tok);
         tokStream.push_back(t);
 
         tok = yylex();
@@ -69,7 +68,7 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
     //
     // -- add an EOF marker so that we can query it
     //    -----------------------------------------
-    tokStream.push_back(new Token(filename, source.size(), 0, (TokenType_t)YYEOF, yylval));
+    tokStream.push_back(new Token(filename, source.size(), 0, (TokenType_t)EOF));
 
     fclose(yyin);
 }
@@ -82,158 +81,131 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 const char *TokenStream::tokenStr(int tok) const
 {
     const char *str[] = {
-        "",                                 // 256
-        "TOK_QUOTATION",                    // 257
-        "TOK_SHARP",                        // 258
-        "TOK_AMPERSAND",                    // 259
-        "TOK_APOSTROPHE",                   // 260
-        "TOK_LEFT_PARENTHESIS",             // 261
-        "TOK_RIGHT_PARENTHESIS",            // 262
-        "TOK_STAR",                         // 263
-        "TOK_PLUS",                         // 264
-        "TOK_COMMA",                        // 265
-        "TOK_HYPHEN",                       // 266
-        "TOK_DOT",                          // 267
-        "TOK_SLASH",                        // 268
-        "TOK_COLON",                        // 269
-        "TOK_SEMICOLON",                    // 270
-        "TOK_LESS_THAN",                    // 271
-        "TOK_EQUAL",                        // 272
-        "TOK_GREATER_THAN",                 // 273
-        "TOK_UNDERLINE",                    // 274
-        "TOK_VERTICAL_BAR",                 // 275
-        "TOK_EXCLAMATION_MARK",             // 276
-        "TOK_DOLLAR",                       // 277
-        "TOK_PERCENT",                      // 278
-        "TOK_QUESTION_MARK",                // 279
-        "TOK_COMMERCIAL_AT",                // 280
-        "TOK_LEFT_SQUARE_BRACKET",          // 281
-        "TOK_BACK_SLASH",                   // 282
-        "TOK_RIGHT_SQUARE_BRACKET",         // 283
-        "TOK_CIRCUMFLEX",                   // 284
-        "TOK_GRAVE_ACCENT",                 // 285
-        "TOK_LEFT_BRACE",                   // 286
-        "TOK_RIGHT_BRACE",                  // 287
-        "TOK_TILDE",                        // 288
-        "",                                 // 289
-        "TOK_ARROW",                        // 290
-        "TOK_DOUBLE_DOT",                   // 291
-        "TOK_DOUBLE_STAR",                  // 292
-        "TOK_ASSIGNMENT",                   // 293
-        "TOK_INEQUALITY",                   // 294
-        "TOK_GREATER_THAN_OR_EQUAL",        // 295
-        "TOK_LESS_THAN_OR_EQUAL",           // 296
-        "TOK_LEFT_LABEL_BRACKET",           // 297
-        "TOK_RIGHT_LABEL_BRACKET",          // 298
-        "TOK_BOX",                          // 299
-        "",                                 // 300
-        "",                                 // 301
-        "",                                 // 302
-        "",                                 // 303
-        "",                                 // 304
-        "",                                 // 305
-        "",                                 // 306
-        "",                                 // 307
-        "",                                 // 308
-        "",                                 // 309
-        "",                                 // 310
-        "",                                 // 311
-        "",                                 // 312
-        "",                                 // 313
-        "",                                 // 314
-        "",                                 // 315
-        "",                                 // 316
-        "",                                 // 317
-        "",                                 // 318
-        "",                                 // 319
-        "TOK_ABORT",                        // 320
-        "TOK_ABS",                          // 321
-        "TOK_ACCEPT",                       // 322
-        "TOK_ACCESS",                       // 323
-        "TOK_ALL",                          // 324
-        "TOK_AND",                          // 325
-        "TOK_ARRAY",                        // 326
-        "TOK_AT",                           // 327
-        "TOK_BEGIN",                        // 328
-        "TOK_BODY",                         // 329
-        "TOK_CASE",                         // 330
-        "TOK_CONSTANT",                     // 331
-        "TOK_DECLARE",                      // 332
-        "TOK_DELAY",                        // 333
-        "TOK_DELTA",                        // 334
-        "TOK_DIGITS",                       // 335
-        "TOK_DO",                           // 336
-        "TOK_ELSE",                         // 337
-        "TOK_ELSIF",                        // 338
-        "TOK_END",                          // 339
-        "TOK_ENTRY",                        // 340
-        "TOK_EXCEPTION",                    // 341
-        "TOK_EXIT",                         // 342
-        "TOK_FOR",                          // 343
-        "TOK_FUNCTION",                     // 344
-        "TOK_GENERIC",                      // 345
-        "TOK_GOTO",                         // 346
-        "TOK_IF",                           // 347
-        "TOK_IN",                           // 348
-        "TOK_IS",                           // 349
-        "TOK_LIMITED",                      // 350
-        "TOK_LOOP",                         // 351
-        "TOK_MOD",                          // 352
-        "TOK_NEW",                          // 353
-        "TOK_NOT",                          // 354
-        "TOK_NULL",                         // 355
-        "TOK_OF",                           // 356
-        "TOK_OR",                           // 357
-        "TOK_OTHERS",                       // 358
-        "TOK_OUT",                          // 359
-        "TOK_PACKAGE",                      // 360
-        "TOK_PRAGMA",                       // 361
-        "TOK_PRIVATE",                      // 362
-        "TOK_PROCEDURE",                    // 363
-        "TOK_RAISE",                        // 364
-        "TOK_RANGE",                        // 365
-        "TOK_RECORD",                       // 366
-        "TOK_REM",                          // 367
-        "TOK_RENAMES",                      // 368
-        "TOK_RETURN",                       // 369
-        "TOK_REVERSE",                      // 370
-        "TOK_SELECT",                       // 371
-        "TOK_SEPARATE",                     // 372
-        "TOK_SUBTYPE",                      // 373
-        "TOK_TASK",                         // 374
-        "TOK_TERMINATE",                    // 375
-        "TOK_THEN",                         // 376
-        "TOK_TYPE",                         // 377
-        "TOK_USE",                          // 378
-        "TOK_WHEN",                         // 379
-        "TOK_WHILE",                        // 380
-        "TOK_WITH",                         // 381
-        "TOK_XOR",                          // 382
-        "",                                 // 383
-        "",                                 // 384
-        "",                                 // 385
-        "",                                 // 386
-        "",                                 // 387
-        "",                                 // 388
-        "",                                 // 389
-        "TOK_IDENTIFIER",                   // 390
-        "TOK_UNIVERSAL_INT_LITERAL",        // 391
-        "TOK_UNIVERSAL_REAL_LITERAL",       // 392
-        "TOK_CHARACTER_LITERAL",            // 393
-        "TOK_STRING_LITERAL",               // 394
-        "",                                 // 395
-        "",                                 // 396
-        "",                                 // 397
-        "",                                 // 398
-        "",                                 // 399
+        "YYerror",                         // 256
+        "YYUNDEF",                         // 257
+        "TOK_QUOTATION",                   // 258
+        "TOK_SHARP",                       // 259
+        "TOK_AMPERSAND",                   // 260
+        "TOK_APOSTROPHE",                  // 261
+        "TOK_LEFT_PARENTHESIS",            // 262
+        "TOK_RIGHT_PARENTHESIS",           // 263
+        "TOK_STAR",                        // 264
+        "TOK_MULTIPLY",                    // 265
+        "TOK_PLUS",                        // 266
+        "TOK_COMMA",                       // 267
+        "TOK_HYPHEN",                      // 268
+        "TOK_MINUS",                       // 269
+        "TOK_DOT",                         // 270
+        "TOK_POINT",                       // 271
+        "TOK_PERIOD",                      // 272
+        "TOK_SLASH",                       // 273
+        "TOK_DIVIDE",                      // 274
+        "TOK_COLON",                       // 275
+        "TOK_SEMICOLON",                   // 276
+        "TOK_LESS_THAN",                   // 277
+        "TOK_EQUAL",                       // 278
+        "TOK_GREATER_THAN",                // 279
+        "TOK_UNDERLINE",                   // 280
+        "TOK_VERTICAL_BAR",                // 281
+        "TOK_EXCLAMATION_MARK",            // 282
+        "TOK_DOLLAR",                      // 283
+        "TOK_PERCENT",                     // 284
+        "TOK_QUESTION_MARK",               // 285
+        "TOK_COMMERCIAL_AT",               // 286
+        "TOK_LEFT_SQUARE_BRACKET",         // 287
+        "TOK_BACK_SLASH",                  // 288
+        "TOK_RIGHT_SQUARE_BRACKET",        // 289
+        "TOK_CIRCUMFLEX",                  // 290
+        "TOK_GRAVE_ACCENT",                // 291
+        "TOK_LEFT_BRACE",                  // 292
+        "TOK_RIGHT_BRACE",                 // 293
+        "TOK_TILDE",                       // 294
+        "TOK_ARROW",                       // 295
+        "TOK_DOUBLE_DOT",                  // 296
+        "TOK_DOUBLE_STAR",                 // 297
+        "TOK_EXPONENTIATE",                // 298
+        "TOK_ASSIGNMENT",                  // 299
+        "TOK_INEQUALITY",                  // 300
+        "TOK_GREATER_THAN_OR_EQUAL",       // 301
+        "TOK_LESS_THAN_OR_EQUAL",          // 302
+        "TOK_LEFT_LABEL_BRACKET",          // 303
+        "TOK_RIGHT_LABEL_BRACKET",         // 304
+        "TOK_BOX",                         // 305
+        "TOK_ABORT",                       // 306
+        "TOK_ABS",                         // 307
+        "TOK_ACCEPT",                      // 308
+        "TOK_ACCESS",                      // 309
+        "TOK_ALL",                         // 310
+        "TOK_AND",                         // 311
+        "TOK_ARRAY",                       // 312
+        "TOK_AT",                          // 313
+        "TOK_BEGIN",                       // 314
+        "TOK_BODY",                        // 315
+        "TOK_CASE",                        // 316
+        "TOK_CONSTANT",                    // 317
+        "TOK_DECLARE",                     // 318
+        "TOK_DELAY",                       // 319
+        "TOK_DELTA",                       // 320
+        "TOK_DIGITS",                      // 321
+        "TOK_DO",                          // 322
+        "TOK_ELSE",                        // 323
+        "TOK_ELSIF",                       // 324
+        "TOK_END",                         // 325
+        "TOK_ENTRY",                       // 326
+        "TOK_EXCEPTION",                   // 327
+        "TOK_EXIT",                        // 328
+        "TOK_FOR",                         // 329
+        "TOK_FUNCTION",                    // 330
+        "TOK_GENERIC",                     // 331
+        "TOK_GOTO",                        // 332
+        "TOK_IF",                          // 333
+        "TOK_IN",                          // 334
+        "TOK_IS",                          // 335
+        "TOK_LIMITED",                     // 336
+        "TOK_LOOP",                        // 337
+        "TOK_MOD",                         // 338
+        "TOK_NEW",                         // 339
+        "TOK_NOT",                         // 340
+        "TOK_NULL",                        // 341
+        "TOK_OF",                          // 342
+        "TOK_OR",                          // 343
+        "TOK_OTHERS",                      // 344
+        "TOK_OUT",                         // 345
+        "TOK_PACKAGE",                     // 346
+        "TOK_PRAGMA",                      // 347
+        "TOK_PRIVATE",                     // 348
+        "TOK_PROCEDURE",                   // 349
+        "TOK_RAISE",                       // 350
+        "TOK_RANGE",                       // 351
+        "TOK_RECORD",                      // 352
+        "TOK_REM",                         // 353
+        "TOK_RENAMES",                     // 354
+        "TOK_RETURN",                      // 355
+        "TOK_REVERSE",                     // 356
+        "TOK_SELECT",                      // 357
+        "TOK_SEPARATE",                    // 358
+        "TOK_SUBTYPE",                     // 359
+        "TOK_TASK",                        // 360
+        "TOK_TERMINATE",                   // 361
+        "TOK_THEN",                        // 362
+        "TOK_TYPE",                        // 363
+        "TOK_USE",                         // 364
+        "TOK_WHEN",                        // 365
+        "TOK_WHILE",                       // 366
+        "TOK_WITH",                        // 367
+        "TOK_XOR",                         // 368
+        "TOK_IDENTIFIER",                  // 369
+        "TOK_UNIVERSAL_INT_LITERAL",       // 370
+        "TOK_UNIVERSAL_REAL_LITERAL",      // 371
+        "TOK_CHARACTER_LITERAL",           // 372
+        "TOK_STRING_LITERAL",              // 373
+        "TOK_PRAGMA_NAME",                 // 374
+        "TOK_ERROR",                       // 375
     };
 
-    if (tok == YYEOF) return "YYEOF";
-    if (tok == TOK_ERROR) return "TOK_ERROR";
-    if (tok == TOK_PRAGMA_NAME) return "TOK_PRAGMA_NAME";
-    if ((int)tok >= 400) return "UNKNOWN";
+    if ((int)tok >= TOK_ERROR) return "UNKNOWN";
 
-    return str[tok - DUMMY_FIRST_TOKEN];
+    return str[tok - 256];
 }
 
 

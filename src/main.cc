@@ -190,9 +190,9 @@ static int Scan(std::string filename)
 //    ---------------------------------------
 static int Tokenize(std::string filename)
 {
-    TokenStream tokens(filename.c_str());
-    tokens.Listing();
-    tokens.List();
+    tokens = new TokenStream(filename.c_str());
+    tokens->Listing();
+    tokens->List();
 
     return EXIT_SUCCESS;
 }
@@ -202,8 +202,12 @@ static int Tokenize(std::string filename)
 //
 // -- Properly Compile the source
 //    ---------------------------
-static int Compile(std::string filename)
+static int Compile(std::string filename, ParserMode_t mode)
 {
+    extern ParserMode_t parserMode;
+    tokens = new TokenStream(filename.c_str());
+    parserMode = mode;
+    yyparse();
     return EXIT_SUCCESS;
 }
 
@@ -232,6 +236,7 @@ int main(int argc, char *argv[])
         ACT_TOKENIZE,
     } action = ACT_COMPILE;
     std::string filename = "";
+    ParserMode_t mode = MODE_FULL_PROGRAM;
 
     for (int i = 1; i < argc; i ++) {
         std::string arg(argv[i]);
@@ -250,6 +255,12 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        if (arg == "declarations" || arg == "types") {
+            action = ACT_COMPILE;
+            mode = MODE_BASIC_DECLARATION;
+            continue;
+        }
+
         filename = arg;
     }
 
@@ -263,7 +274,7 @@ int main(int argc, char *argv[])
         return Tokenize(filename);
 
     default:
-        return Compile(filename);
+        return Compile(filename, mode);
     }
 }
 

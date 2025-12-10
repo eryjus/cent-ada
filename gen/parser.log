@@ -1,0 +1,2675 @@
+Nonterminals useless in grammar
+
+    declarative_part
+    basic_declarative_item_list
+    later_declarative_item_list
+    basic_declarative_item
+    later_declarative_item
+    body
+    proper_body
+    task_body
+    package_body
+    subprogram_body
+    body_stub
+    use_clause
+    representation_clause
+
+
+Terminals unused in grammar
+
+    TOK_QUOTATION
+    TOK_SHARP
+    TOK_AMPERSAND
+    TOK_APOSTROPHE
+    TOK_STAR
+    TOK_MULTIPLY
+    TOK_PLUS
+    TOK_HYPHEN
+    TOK_MINUS
+    TOK_DOT
+    TOK_POINT
+    TOK_PERIOD
+    TOK_SLASH
+    TOK_DIVIDE
+    TOK_LESS_THAN
+    TOK_EQUAL
+    TOK_GREATER_THAN
+    TOK_UNDERLINE
+    TOK_EXCLAMATION_MARK
+    TOK_DOLLAR
+    TOK_PERCENT
+    TOK_QUESTION_MARK
+    TOK_COMMERCIAL_AT
+    TOK_LEFT_SQUARE_BRACKET
+    TOK_BACK_SLASH
+    TOK_RIGHT_SQUARE_BRACKET
+    TOK_CIRCUMFLEX
+    TOK_LEFT_BRACE
+    TOK_RIGHT_BRACE
+    TOK_TILDE
+    TOK_DOUBLE_STAR
+    TOK_EXPONENTIATE
+    TOK_INEQUALITY
+    TOK_GREATER_THAN_OR_EQUAL
+    TOK_LESS_THAN_OR_EQUAL
+    TOK_LEFT_LABEL_BRACKET
+    TOK_RIGHT_LABEL_BRACKET
+    TOK_ABORT
+    TOK_ABS
+    TOK_ACCEPT
+    TOK_ALL
+    TOK_AND
+    TOK_AT
+    TOK_BEGIN
+    TOK_BODY
+    TOK_DECLARE
+    TOK_DELAY
+    TOK_DO
+    TOK_ELSE
+    TOK_ELSIF
+    TOK_ENTRY
+    TOK_EXIT
+    TOK_FOR
+    TOK_FUNCTION
+    TOK_GOTO
+    TOK_IF
+    TOK_IN
+    TOK_LIMITED
+    TOK_LOOP
+    TOK_MOD
+    TOK_NOT
+    TOK_OR
+    TOK_OUT
+    TOK_PRAGMA
+    TOK_RAISE
+    TOK_REM
+    TOK_RETURN
+    TOK_REVERSE
+    TOK_SELECT
+    TOK_SEPARATE
+    TOK_TERMINATE
+    TOK_THEN
+    TOK_USE
+    TOK_WHILE
+    TOK_WITH
+    TOK_XOR
+    TOK_UNIVERSAL_REAL_LITERAL
+    TOK_STRING_LITERAL
+    TOK_PRAGMA_NAME
+    TOK_ERROR
+
+
+Rules useless in grammar
+
+  127 declarative_part: basic_declarative_item_list later_declarative_item_list
+
+  128 basic_declarative_item_list: basic_declarative_item
+  129                            | basic_declarative_item_list basic_declarative_item
+
+  130 later_declarative_item_list: later_declarative_item
+  131                            | later_declarative_item_list later_declarative_item
+
+  132 basic_declarative_item: basic_declaration
+  133                       | representation_clause
+  134                       | use_clause
+
+  135 later_declarative_item: body
+  136                       | subprogram_declaration
+  137                       | package_declaration
+  138                       | task_declaraction
+  139                       | generic_declaration
+  140                       | use_clause
+  141                       | generic_instantiation
+
+  142 body: proper_body
+  143     | body_stub
+
+  144 proper_body: subprogram_body
+  145            | package_body
+  146            | task_body
+
+  147 task_body: TOK_TASK TOK_BODY
+
+  148 package_body: TOK_PACKAGE TOK_BODY
+
+  149 subprogram_body: TOK_PROCEDURE
+  150                | TOK_FUNCTION
+
+  151 body_stub: TOK_BEGIN TOK_END
+
+  152 use_clause: TOK_USE
+
+  153 representation_clause: TOK_WITH
+
+
+State 212 conflicts: 2 reduce/reduce
+
+
+Grammar
+
+    0 $accept: start $end
+
+    1 start: basic_declaration
+
+    2 basic_declaration: object_declaration
+    3                  | number_declaration
+    4                  | type_declaration
+    5                  | subtype_declaration
+    6                  | subprogram_declaration
+    7                  | package_declaration
+    8                  | task_declaraction
+    9                  | generic_declaration
+   10                  | exception_declaration
+   11                  | generic_instantiation
+   12                  | renaming_declaration
+   13                  | deferred_constant_declaration
+
+   14 object_declaration: identifier_list TOK_COLON TOK_CONSTANT subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   15                   | identifier_list TOK_COLON subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   16                   | identifier_list TOK_COLON TOK_CONSTANT subtype_indication TOK_SEMICOLON
+   17                   | identifier_list TOK_COLON subtype_indication TOK_SEMICOLON
+   18                   | identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   19                   | identifier_list TOK_COLON constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   20                   | identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition TOK_SEMICOLON
+   21                   | identifier_list TOK_COLON constrained_array_definition TOK_SEMICOLON
+
+   22 number_declaration: identifier_list TOK_COLON TOK_CONSTANT TOK_ASSIGNMENT expression TOK_SEMICOLON
+
+   23 identifier_list: TOK_IDENTIFIER
+   24                | identifier_list TOK_COMMA TOK_IDENTIFIER
+
+   25 type_declaration: full_type_declaration
+   26                 | incomplete_type_declaration
+   27                 | private_type_declaration
+
+   28 full_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part TOK_IS type_definition TOK_SEMICOLON
+   29                      | TOK_TYPE TOK_IDENTIFIER TOK_IS type_definition TOK_SEMICOLON
+
+   30 type_definition: enumeration_type_definition
+   31                | integer_type_definition
+   32                | real_type_definition
+   33                | array_type_definition
+   34                | record_type_definition
+   35                | access_type_definition
+   36                | derived_type_definition
+
+   37 subtype_declaration: TOK_SUBTYPE TOK_IDENTIFIER TOK_IS subtype_indication TOK_SEMICOLON
+
+   38 subtype_indication: type_mark constraint
+   39                   | type_mark
+
+   40 type_mark: name
+
+   41 constraint: range_constraint
+   42           | floating_point_constraint
+   43           | fixed_point_constraint
+   44           | index_constraint
+   45           | discriminant_constraint
+
+   46 derived_type_definition: TOK_NEW subtype_indication
+
+   47 range_constraint: TOK_RANGE range
+
+   48 range: attribute
+   49      | simple_expression TOK_DOUBLE_DOT simple_expression
+
+   50 enumeration_type_definition: TOK_LEFT_PARENTHESIS enumeration_literal_specification_list TOK_RIGHT_PARENTHESIS
+
+   51 enumeration_literal_specification_list: enumeration_literal_specification
+   52                                       | enumeration_literal_specification_list TOK_COMMA enumeration_literal_specification
+
+   53 enumeration_literal_specification: enumeration_literal
+
+   54 enumeration_literal: TOK_IDENTIFIER
+   55                    | TOK_CHARACTER_LITERAL
+
+   56 integer_type_definition: range_constraint
+
+   57 real_type_definition: floating_point_constraint
+   58                     | fixed_point_constraint
+
+   59 floating_point_constraint: floating_accuracy_definition range_constraint
+   60                          | floating_accuracy_definition
+
+   61 floating_accuracy_definition: TOK_DIGITS simple_expression
+
+   62 fixed_point_constraint: fixed_accuracy_definition range_constraint
+   63                       | fixed_accuracy_definition
+
+   64 fixed_accuracy_definition: TOK_DELTA simple_expression
+
+   65 array_type_definition: unconstrained_array_definition
+   66                      | constrained_array_definition
+
+   67 unconstrained_array_definition: TOK_ARRAY TOK_LEFT_PARENTHESIS index_subtype_definition_list TOK_RIGHT_PARENTHESIS TOK_OF subtype_indication
+
+   68 index_subtype_definition_list: index_subtype_definition
+   69                              | index_subtype_definition_list TOK_COMMA index_subtype_definition
+
+   70 constrained_array_definition: TOK_ARRAY index_constraint TOK_OF subtype_indication
+
+   71 index_subtype_definition: type_mark TOK_RANGE TOK_BOX
+
+   72 index_constraint: TOK_LEFT_PARENTHESIS discrete_range_list TOK_RIGHT_PARENTHESIS
+
+   73 discrete_range_list: discrete_range
+   74                    | discrete_range_list TOK_COMMA discrete_range
+
+   75 discrete_range: subtype_indication
+   76               | range
+
+   77 record_type_definition: TOK_RECORD component_list TOK_END TOK_RECORD
+
+   78 component_list: component_declaration_list
+   79               | component_declaration_list_opt variant_part
+   80               | TOK_NULL TOK_SEMICOLON
+
+   81 component_declaration_list_opt: %empty
+   82                               | component_declaration_list
+
+   83 component_declaration_list: component_declaration
+   84                           | component_declaration_list component_declaration
+
+   85 component_declaration: identifier_list TOK_COLON component_subtype_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   86                      | identifier_list TOK_COLON component_subtype_definition TOK_SEMICOLON
+
+   87 component_subtype_definition: subtype_indication
+
+   88 discriminant_part: TOK_LEFT_PARENTHESIS discriminant_specification_list TOK_RIGHT_PARENTHESIS
+
+   89 discriminant_specification_list: discriminant_specification
+   90                                | discriminant_specification_list TOK_SEMICOLON discriminant_specification
+
+   91 discriminant_specification: identifier_list TOK_COLON type_mark TOK_ASSIGNMENT expression
+   92                           | identifier_list TOK_COLON type_mark
+
+   93 discriminant_constraint: TOK_LEFT_PARENTHESIS discriminant_association_list TOK_RIGHT_PARENTHESIS
+
+   94 discriminant_association_list: discriminant_association
+   95                              | discriminant_association_list TOK_COMMA discriminant_association
+
+   96 discriminant_association: discriminant_simple_name_list TOK_ARROW expression
+   97                         | expression
+
+   98 discriminant_simple_name_list: simple_name
+   99                              | discriminant_simple_name_list TOK_VERTICAL_BAR simple_name
+
+  100 variant_part: TOK_CASE simple_name TOK_IS variant_list TOK_END TOK_CASE TOK_SEMICOLON
+
+  101 variant_list: variant
+  102             | variant_list variant
+
+  103 variant: TOK_WHEN choice_list TOK_ARROW component_list
+
+  104 choice_list: choice
+  105            | choice_list TOK_VERTICAL_BAR choice
+
+  106 choice: simple_expression
+  107       | discrete_range
+  108       | TOK_OTHERS
+  109       | simple_name
+
+  110 access_type_definition: TOK_ACCESS subtype_indication
+
+  111 incomplete_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part TOK_SEMICOLON
+  112                            | TOK_TYPE TOK_IDENTIFIER TOK_SEMICOLON
+
+  113 private_type_declaration: TOK_PRIVATE
+
+  114 deferred_constant_declaration: TOK_CONSTANT TOK_SEMICOLON
+
+  115 renaming_declaration: TOK_RENAMES
+
+  116 generic_declaration: TOK_GENERIC
+
+  117 generic_instantiation: TOK_IS TOK_GENERIC
+
+  118 exception_declaration: TOK_EXCEPTION
+
+  119 subprogram_declaration: TOK_PROCEDURE TOK_SEMICOLON
+
+  120 package_declaration: TOK_PACKAGE TOK_SEMICOLON
+
+  121 task_declaraction: TOK_TASK TOK_SEMICOLON
+
+  122 name: simple_name
+
+  123 simple_name: TOK_IDENTIFIER
+
+  124 simple_expression: expression
+
+  125 expression: TOK_UNIVERSAL_INT_LITERAL
+
+  126 attribute: TOK_GRAVE_ACCENT TOK_IDENTIFIER
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    TOK_QUOTATION (258)
+    TOK_SHARP (259)
+    TOK_AMPERSAND (260)
+    TOK_APOSTROPHE (261)
+    TOK_LEFT_PARENTHESIS (262) 50 67 72 88 93
+    TOK_RIGHT_PARENTHESIS (263) 50 67 72 88 93
+    TOK_STAR (264)
+    TOK_MULTIPLY (265)
+    TOK_PLUS (266)
+    TOK_COMMA (267) 24 52 69 74 95
+    TOK_HYPHEN (268)
+    TOK_MINUS (269)
+    TOK_DOT (270)
+    TOK_POINT (271)
+    TOK_PERIOD (272)
+    TOK_SLASH (273)
+    TOK_DIVIDE (274)
+    TOK_COLON (275) 14 15 16 17 18 19 20 21 22 85 86 91 92
+    TOK_SEMICOLON (276) 14 15 16 17 18 19 20 21 22 28 29 37 80 85 86 90 100 111 112 114 119 120 121
+    TOK_LESS_THAN (277)
+    TOK_EQUAL (278)
+    TOK_GREATER_THAN (279)
+    TOK_UNDERLINE (280)
+    TOK_VERTICAL_BAR (281) 99 105
+    TOK_EXCLAMATION_MARK (282)
+    TOK_DOLLAR (283)
+    TOK_PERCENT (284)
+    TOK_QUESTION_MARK (285)
+    TOK_COMMERCIAL_AT (286)
+    TOK_LEFT_SQUARE_BRACKET (287)
+    TOK_BACK_SLASH (288)
+    TOK_RIGHT_SQUARE_BRACKET (289)
+    TOK_CIRCUMFLEX (290)
+    TOK_GRAVE_ACCENT (291) 126
+    TOK_LEFT_BRACE (292)
+    TOK_RIGHT_BRACE (293)
+    TOK_TILDE (294)
+    TOK_ARROW (295) 96 103
+    TOK_DOUBLE_DOT (296) 49
+    TOK_DOUBLE_STAR (297)
+    TOK_EXPONENTIATE (298)
+    TOK_ASSIGNMENT (299) 14 15 18 19 22 85 91
+    TOK_INEQUALITY (300)
+    TOK_GREATER_THAN_OR_EQUAL (301)
+    TOK_LESS_THAN_OR_EQUAL (302)
+    TOK_LEFT_LABEL_BRACKET (303)
+    TOK_RIGHT_LABEL_BRACKET (304)
+    TOK_BOX (305) 71
+    TOK_ABORT (306)
+    TOK_ABS (307)
+    TOK_ACCEPT (308)
+    TOK_ACCESS (309) 110
+    TOK_ALL (310)
+    TOK_AND (311)
+    TOK_ARRAY (312) 67 70
+    TOK_AT (313)
+    TOK_BEGIN (314)
+    TOK_BODY (315)
+    TOK_CASE (316) 100
+    TOK_CONSTANT (317) 14 16 18 20 22 114
+    TOK_DECLARE (318)
+    TOK_DELAY (319)
+    TOK_DELTA (320) 64
+    TOK_DIGITS (321) 61
+    TOK_DO (322)
+    TOK_ELSE (323)
+    TOK_ELSIF (324)
+    TOK_END (325) 77 100
+    TOK_ENTRY (326)
+    TOK_EXCEPTION (327) 118
+    TOK_EXIT (328)
+    TOK_FOR (329)
+    TOK_FUNCTION (330)
+    TOK_GENERIC (331) 116 117
+    TOK_GOTO (332)
+    TOK_IF (333)
+    TOK_IN (334)
+    TOK_IS (335) 28 29 37 100 117
+    TOK_LIMITED (336)
+    TOK_LOOP (337)
+    TOK_MOD (338)
+    TOK_NEW (339) 46
+    TOK_NOT (340)
+    TOK_NULL (341) 80
+    TOK_OF (342) 67 70
+    TOK_OR (343)
+    TOK_OTHERS (344) 108
+    TOK_OUT (345)
+    TOK_PACKAGE (346) 120
+    TOK_PRAGMA (347)
+    TOK_PRIVATE (348) 113
+    TOK_PROCEDURE (349) 119
+    TOK_RAISE (350)
+    TOK_RANGE (351) 47 71
+    TOK_RECORD (352) 77
+    TOK_REM (353)
+    TOK_RENAMES (354) 115
+    TOK_RETURN (355)
+    TOK_REVERSE (356)
+    TOK_SELECT (357)
+    TOK_SEPARATE (358)
+    TOK_SUBTYPE (359) 37
+    TOK_TASK (360) 121
+    TOK_TERMINATE (361)
+    TOK_THEN (362)
+    TOK_TYPE (363) 28 29 111 112
+    TOK_USE (364)
+    TOK_WHEN (365) 103
+    TOK_WHILE (366)
+    TOK_WITH (367)
+    TOK_XOR (368)
+    TOK_IDENTIFIER (369) 23 24 28 29 37 54 111 112 123 126
+    TOK_UNIVERSAL_INT_LITERAL (370) 125
+    TOK_UNIVERSAL_REAL_LITERAL (371)
+    TOK_CHARACTER_LITERAL (372) 55
+    TOK_STRING_LITERAL (373)
+    TOK_PRAGMA_NAME (374)
+    TOK_ERROR (375)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (121)
+        on left: 0
+    start (122)
+        on left: 1
+        on right: 0
+    basic_declaration (123)
+        on left: 2 3 4 5 6 7 8 9 10 11 12 13
+        on right: 1
+    object_declaration (124)
+        on left: 14 15 16 17 18 19 20 21
+        on right: 2
+    number_declaration (125)
+        on left: 22
+        on right: 3
+    identifier_list (126)
+        on left: 23 24
+        on right: 14 15 16 17 18 19 20 21 22 24 85 86 91 92
+    type_declaration (127)
+        on left: 25 26 27
+        on right: 4
+    full_type_declaration (128)
+        on left: 28 29
+        on right: 25
+    type_definition (129)
+        on left: 30 31 32 33 34 35 36
+        on right: 28 29
+    subtype_declaration (130)
+        on left: 37
+        on right: 5
+    subtype_indication (131)
+        on left: 38 39
+        on right: 14 15 16 17 37 46 67 70 75 87 110
+    type_mark (132)
+        on left: 40
+        on right: 38 39 71 91 92
+    constraint (133)
+        on left: 41 42 43 44 45
+        on right: 38
+    derived_type_definition (134)
+        on left: 46
+        on right: 36
+    range_constraint (135)
+        on left: 47
+        on right: 41 56 59 62
+    range (136)
+        on left: 48 49
+        on right: 47 76
+    enumeration_type_definition (137)
+        on left: 50
+        on right: 30
+    enumeration_literal_specification_list (138)
+        on left: 51 52
+        on right: 50 52
+    enumeration_literal_specification (139)
+        on left: 53
+        on right: 51 52
+    enumeration_literal (140)
+        on left: 54 55
+        on right: 53
+    integer_type_definition (141)
+        on left: 56
+        on right: 31
+    real_type_definition (142)
+        on left: 57 58
+        on right: 32
+    floating_point_constraint (143)
+        on left: 59 60
+        on right: 42 57
+    floating_accuracy_definition (144)
+        on left: 61
+        on right: 59 60
+    fixed_point_constraint (145)
+        on left: 62 63
+        on right: 43 58
+    fixed_accuracy_definition (146)
+        on left: 64
+        on right: 62 63
+    array_type_definition (147)
+        on left: 65 66
+        on right: 33
+    unconstrained_array_definition (148)
+        on left: 67
+        on right: 65
+    index_subtype_definition_list (149)
+        on left: 68 69
+        on right: 67 69
+    constrained_array_definition (150)
+        on left: 70
+        on right: 18 19 20 21 66
+    index_subtype_definition (151)
+        on left: 71
+        on right: 68 69
+    index_constraint (152)
+        on left: 72
+        on right: 44 70
+    discrete_range_list (153)
+        on left: 73 74
+        on right: 72 74
+    discrete_range (154)
+        on left: 75 76
+        on right: 73 74 107
+    record_type_definition (155)
+        on left: 77
+        on right: 34
+    component_list (156)
+        on left: 78 79 80
+        on right: 77 103
+    component_declaration_list_opt (157)
+        on left: 81 82
+        on right: 79
+    component_declaration_list (158)
+        on left: 83 84
+        on right: 78 82 84
+    component_declaration (159)
+        on left: 85 86
+        on right: 83 84
+    component_subtype_definition (160)
+        on left: 87
+        on right: 85 86
+    discriminant_part (161)
+        on left: 88
+        on right: 28 111
+    discriminant_specification_list (162)
+        on left: 89 90
+        on right: 88 90
+    discriminant_specification (163)
+        on left: 91 92
+        on right: 89 90
+    discriminant_constraint (164)
+        on left: 93
+        on right: 45
+    discriminant_association_list (165)
+        on left: 94 95
+        on right: 93 95
+    discriminant_association (166)
+        on left: 96 97
+        on right: 94 95
+    discriminant_simple_name_list (167)
+        on left: 98 99
+        on right: 96 99
+    variant_part (168)
+        on left: 100
+        on right: 79
+    variant_list (169)
+        on left: 101 102
+        on right: 100 102
+    variant (170)
+        on left: 103
+        on right: 101 102
+    choice_list (171)
+        on left: 104 105
+        on right: 103 105
+    choice (172)
+        on left: 106 107 108 109
+        on right: 104 105
+    access_type_definition (173)
+        on left: 110
+        on right: 35
+    incomplete_type_declaration (174)
+        on left: 111 112
+        on right: 26
+    private_type_declaration (175)
+        on left: 113
+        on right: 27
+    deferred_constant_declaration (176)
+        on left: 114
+        on right: 13
+    renaming_declaration (177)
+        on left: 115
+        on right: 12
+    generic_declaration (178)
+        on left: 116
+        on right: 9
+    generic_instantiation (179)
+        on left: 117
+        on right: 11
+    exception_declaration (180)
+        on left: 118
+        on right: 10
+    subprogram_declaration (181)
+        on left: 119
+        on right: 6
+    package_declaration (182)
+        on left: 120
+        on right: 7
+    task_declaraction (183)
+        on left: 121
+        on right: 8
+    name (184)
+        on left: 122
+        on right: 40
+    simple_name (185)
+        on left: 123
+        on right: 98 99 100 109 122
+    simple_expression (186)
+        on left: 124
+        on right: 49 61 64 106
+    expression (187)
+        on left: 125
+        on right: 14 15 18 19 22 85 91 96 97 124
+    attribute (188)
+        on left: 126
+        on right: 48
+
+
+State 0
+
+    0 $accept: . start $end
+
+    TOK_CONSTANT    shift, and go to state 1
+    TOK_EXCEPTION   shift, and go to state 2
+    TOK_GENERIC     shift, and go to state 3
+    TOK_IS          shift, and go to state 4
+    TOK_PACKAGE     shift, and go to state 5
+    TOK_PRIVATE     shift, and go to state 6
+    TOK_PROCEDURE   shift, and go to state 7
+    TOK_RENAMES     shift, and go to state 8
+    TOK_SUBTYPE     shift, and go to state 9
+    TOK_TASK        shift, and go to state 10
+    TOK_TYPE        shift, and go to state 11
+    TOK_IDENTIFIER  shift, and go to state 12
+
+    start                          go to state 13
+    basic_declaration              go to state 14
+    object_declaration             go to state 15
+    number_declaration             go to state 16
+    identifier_list                go to state 17
+    type_declaration               go to state 18
+    full_type_declaration          go to state 19
+    subtype_declaration            go to state 20
+    incomplete_type_declaration    go to state 21
+    private_type_declaration       go to state 22
+    deferred_constant_declaration  go to state 23
+    renaming_declaration           go to state 24
+    generic_declaration            go to state 25
+    generic_instantiation          go to state 26
+    exception_declaration          go to state 27
+    subprogram_declaration         go to state 28
+    package_declaration            go to state 29
+    task_declaraction              go to state 30
+
+
+State 1
+
+  114 deferred_constant_declaration: TOK_CONSTANT . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 31
+
+
+State 2
+
+  118 exception_declaration: TOK_EXCEPTION .
+
+    $default  reduce using rule 118 (exception_declaration)
+
+
+State 3
+
+  116 generic_declaration: TOK_GENERIC .
+
+    $default  reduce using rule 116 (generic_declaration)
+
+
+State 4
+
+  117 generic_instantiation: TOK_IS . TOK_GENERIC
+
+    TOK_GENERIC  shift, and go to state 32
+
+
+State 5
+
+  120 package_declaration: TOK_PACKAGE . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 33
+
+
+State 6
+
+  113 private_type_declaration: TOK_PRIVATE .
+
+    $default  reduce using rule 113 (private_type_declaration)
+
+
+State 7
+
+  119 subprogram_declaration: TOK_PROCEDURE . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 34
+
+
+State 8
+
+  115 renaming_declaration: TOK_RENAMES .
+
+    $default  reduce using rule 115 (renaming_declaration)
+
+
+State 9
+
+   37 subtype_declaration: TOK_SUBTYPE . TOK_IDENTIFIER TOK_IS subtype_indication TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 35
+
+
+State 10
+
+  121 task_declaraction: TOK_TASK . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 36
+
+
+State 11
+
+   28 full_type_declaration: TOK_TYPE . TOK_IDENTIFIER discriminant_part TOK_IS type_definition TOK_SEMICOLON
+   29                      | TOK_TYPE . TOK_IDENTIFIER TOK_IS type_definition TOK_SEMICOLON
+  111 incomplete_type_declaration: TOK_TYPE . TOK_IDENTIFIER discriminant_part TOK_SEMICOLON
+  112                            | TOK_TYPE . TOK_IDENTIFIER TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 37
+
+
+State 12
+
+   23 identifier_list: TOK_IDENTIFIER .
+
+    $default  reduce using rule 23 (identifier_list)
+
+
+State 13
+
+    0 $accept: start . $end
+
+    $end  shift, and go to state 38
+
+
+State 14
+
+    1 start: basic_declaration .
+
+    $default  reduce using rule 1 (start)
+
+
+State 15
+
+    2 basic_declaration: object_declaration .
+
+    $default  reduce using rule 2 (basic_declaration)
+
+
+State 16
+
+    3 basic_declaration: number_declaration .
+
+    $default  reduce using rule 3 (basic_declaration)
+
+
+State 17
+
+   14 object_declaration: identifier_list . TOK_COLON TOK_CONSTANT subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   15                   | identifier_list . TOK_COLON subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   16                   | identifier_list . TOK_COLON TOK_CONSTANT subtype_indication TOK_SEMICOLON
+   17                   | identifier_list . TOK_COLON subtype_indication TOK_SEMICOLON
+   18                   | identifier_list . TOK_COLON TOK_CONSTANT constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   19                   | identifier_list . TOK_COLON constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   20                   | identifier_list . TOK_COLON TOK_CONSTANT constrained_array_definition TOK_SEMICOLON
+   21                   | identifier_list . TOK_COLON constrained_array_definition TOK_SEMICOLON
+   22 number_declaration: identifier_list . TOK_COLON TOK_CONSTANT TOK_ASSIGNMENT expression TOK_SEMICOLON
+   24 identifier_list: identifier_list . TOK_COMMA TOK_IDENTIFIER
+
+    TOK_COMMA  shift, and go to state 39
+    TOK_COLON  shift, and go to state 40
+
+
+State 18
+
+    4 basic_declaration: type_declaration .
+
+    $default  reduce using rule 4 (basic_declaration)
+
+
+State 19
+
+   25 type_declaration: full_type_declaration .
+
+    $default  reduce using rule 25 (type_declaration)
+
+
+State 20
+
+    5 basic_declaration: subtype_declaration .
+
+    $default  reduce using rule 5 (basic_declaration)
+
+
+State 21
+
+   26 type_declaration: incomplete_type_declaration .
+
+    $default  reduce using rule 26 (type_declaration)
+
+
+State 22
+
+   27 type_declaration: private_type_declaration .
+
+    $default  reduce using rule 27 (type_declaration)
+
+
+State 23
+
+   13 basic_declaration: deferred_constant_declaration .
+
+    $default  reduce using rule 13 (basic_declaration)
+
+
+State 24
+
+   12 basic_declaration: renaming_declaration .
+
+    $default  reduce using rule 12 (basic_declaration)
+
+
+State 25
+
+    9 basic_declaration: generic_declaration .
+
+    $default  reduce using rule 9 (basic_declaration)
+
+
+State 26
+
+   11 basic_declaration: generic_instantiation .
+
+    $default  reduce using rule 11 (basic_declaration)
+
+
+State 27
+
+   10 basic_declaration: exception_declaration .
+
+    $default  reduce using rule 10 (basic_declaration)
+
+
+State 28
+
+    6 basic_declaration: subprogram_declaration .
+
+    $default  reduce using rule 6 (basic_declaration)
+
+
+State 29
+
+    7 basic_declaration: package_declaration .
+
+    $default  reduce using rule 7 (basic_declaration)
+
+
+State 30
+
+    8 basic_declaration: task_declaraction .
+
+    $default  reduce using rule 8 (basic_declaration)
+
+
+State 31
+
+  114 deferred_constant_declaration: TOK_CONSTANT TOK_SEMICOLON .
+
+    $default  reduce using rule 114 (deferred_constant_declaration)
+
+
+State 32
+
+  117 generic_instantiation: TOK_IS TOK_GENERIC .
+
+    $default  reduce using rule 117 (generic_instantiation)
+
+
+State 33
+
+  120 package_declaration: TOK_PACKAGE TOK_SEMICOLON .
+
+    $default  reduce using rule 120 (package_declaration)
+
+
+State 34
+
+  119 subprogram_declaration: TOK_PROCEDURE TOK_SEMICOLON .
+
+    $default  reduce using rule 119 (subprogram_declaration)
+
+
+State 35
+
+   37 subtype_declaration: TOK_SUBTYPE TOK_IDENTIFIER . TOK_IS subtype_indication TOK_SEMICOLON
+
+    TOK_IS  shift, and go to state 41
+
+
+State 36
+
+  121 task_declaraction: TOK_TASK TOK_SEMICOLON .
+
+    $default  reduce using rule 121 (task_declaraction)
+
+
+State 37
+
+   28 full_type_declaration: TOK_TYPE TOK_IDENTIFIER . discriminant_part TOK_IS type_definition TOK_SEMICOLON
+   29                      | TOK_TYPE TOK_IDENTIFIER . TOK_IS type_definition TOK_SEMICOLON
+  111 incomplete_type_declaration: TOK_TYPE TOK_IDENTIFIER . discriminant_part TOK_SEMICOLON
+  112                            | TOK_TYPE TOK_IDENTIFIER . TOK_SEMICOLON
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 42
+    TOK_SEMICOLON         shift, and go to state 43
+    TOK_IS                shift, and go to state 44
+
+    discriminant_part  go to state 45
+
+
+State 38
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+State 39
+
+   24 identifier_list: identifier_list TOK_COMMA . TOK_IDENTIFIER
+
+    TOK_IDENTIFIER  shift, and go to state 46
+
+
+State 40
+
+   14 object_declaration: identifier_list TOK_COLON . TOK_CONSTANT subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   15                   | identifier_list TOK_COLON . subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   16                   | identifier_list TOK_COLON . TOK_CONSTANT subtype_indication TOK_SEMICOLON
+   17                   | identifier_list TOK_COLON . subtype_indication TOK_SEMICOLON
+   18                   | identifier_list TOK_COLON . TOK_CONSTANT constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   19                   | identifier_list TOK_COLON . constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   20                   | identifier_list TOK_COLON . TOK_CONSTANT constrained_array_definition TOK_SEMICOLON
+   21                   | identifier_list TOK_COLON . constrained_array_definition TOK_SEMICOLON
+   22 number_declaration: identifier_list TOK_COLON . TOK_CONSTANT TOK_ASSIGNMENT expression TOK_SEMICOLON
+
+    TOK_ARRAY       shift, and go to state 47
+    TOK_CONSTANT    shift, and go to state 48
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication            go to state 50
+    type_mark                     go to state 51
+    constrained_array_definition  go to state 52
+    name                          go to state 53
+    simple_name                   go to state 54
+
+
+State 41
+
+   37 subtype_declaration: TOK_SUBTYPE TOK_IDENTIFIER TOK_IS . subtype_indication TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication  go to state 55
+    type_mark           go to state 51
+    name                go to state 53
+    simple_name         go to state 54
+
+
+State 42
+
+   88 discriminant_part: TOK_LEFT_PARENTHESIS . discriminant_specification_list TOK_RIGHT_PARENTHESIS
+
+    TOK_IDENTIFIER  shift, and go to state 12
+
+    identifier_list                  go to state 56
+    discriminant_specification_list  go to state 57
+    discriminant_specification       go to state 58
+
+
+State 43
+
+  112 incomplete_type_declaration: TOK_TYPE TOK_IDENTIFIER TOK_SEMICOLON .
+
+    $default  reduce using rule 112 (incomplete_type_declaration)
+
+
+State 44
+
+   29 full_type_declaration: TOK_TYPE TOK_IDENTIFIER TOK_IS . type_definition TOK_SEMICOLON
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 59
+    TOK_ACCESS            shift, and go to state 60
+    TOK_ARRAY             shift, and go to state 61
+    TOK_DELTA             shift, and go to state 62
+    TOK_DIGITS            shift, and go to state 63
+    TOK_NEW               shift, and go to state 64
+    TOK_RANGE             shift, and go to state 65
+    TOK_RECORD            shift, and go to state 66
+
+    type_definition                 go to state 67
+    derived_type_definition         go to state 68
+    range_constraint                go to state 69
+    enumeration_type_definition     go to state 70
+    integer_type_definition         go to state 71
+    real_type_definition            go to state 72
+    floating_point_constraint       go to state 73
+    floating_accuracy_definition    go to state 74
+    fixed_point_constraint          go to state 75
+    fixed_accuracy_definition       go to state 76
+    array_type_definition           go to state 77
+    unconstrained_array_definition  go to state 78
+    constrained_array_definition    go to state 79
+    record_type_definition          go to state 80
+    access_type_definition          go to state 81
+
+
+State 45
+
+   28 full_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part . TOK_IS type_definition TOK_SEMICOLON
+  111 incomplete_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 82
+    TOK_IS         shift, and go to state 83
+
+
+State 46
+
+   24 identifier_list: identifier_list TOK_COMMA TOK_IDENTIFIER .
+
+    $default  reduce using rule 24 (identifier_list)
+
+
+State 47
+
+   70 constrained_array_definition: TOK_ARRAY . index_constraint TOK_OF subtype_indication
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 84
+
+    index_constraint  go to state 85
+
+
+State 48
+
+   14 object_declaration: identifier_list TOK_COLON TOK_CONSTANT . subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON
+   16                   | identifier_list TOK_COLON TOK_CONSTANT . subtype_indication TOK_SEMICOLON
+   18                   | identifier_list TOK_COLON TOK_CONSTANT . constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   20                   | identifier_list TOK_COLON TOK_CONSTANT . constrained_array_definition TOK_SEMICOLON
+   22 number_declaration: identifier_list TOK_COLON TOK_CONSTANT . TOK_ASSIGNMENT expression TOK_SEMICOLON
+
+    TOK_ASSIGNMENT  shift, and go to state 86
+    TOK_ARRAY       shift, and go to state 47
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication            go to state 87
+    type_mark                     go to state 51
+    constrained_array_definition  go to state 88
+    name                          go to state 53
+    simple_name                   go to state 54
+
+
+State 49
+
+  123 simple_name: TOK_IDENTIFIER .
+
+    $default  reduce using rule 123 (simple_name)
+
+
+State 50
+
+   15 object_declaration: identifier_list TOK_COLON subtype_indication . TOK_ASSIGNMENT expression TOK_SEMICOLON
+   17                   | identifier_list TOK_COLON subtype_indication . TOK_SEMICOLON
+
+    TOK_SEMICOLON   shift, and go to state 89
+    TOK_ASSIGNMENT  shift, and go to state 90
+
+
+State 51
+
+   38 subtype_indication: type_mark . constraint
+   39                   | type_mark .
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 91
+    TOK_DELTA             shift, and go to state 62
+    TOK_DIGITS            shift, and go to state 63
+    TOK_RANGE             shift, and go to state 65
+
+    $default  reduce using rule 39 (subtype_indication)
+
+    constraint                    go to state 92
+    range_constraint              go to state 93
+    floating_point_constraint     go to state 94
+    floating_accuracy_definition  go to state 74
+    fixed_point_constraint        go to state 95
+    fixed_accuracy_definition     go to state 76
+    index_constraint              go to state 96
+    discriminant_constraint       go to state 97
+
+
+State 52
+
+   19 object_declaration: identifier_list TOK_COLON constrained_array_definition . TOK_ASSIGNMENT expression TOK_SEMICOLON
+   21                   | identifier_list TOK_COLON constrained_array_definition . TOK_SEMICOLON
+
+    TOK_SEMICOLON   shift, and go to state 98
+    TOK_ASSIGNMENT  shift, and go to state 99
+
+
+State 53
+
+   40 type_mark: name .
+
+    $default  reduce using rule 40 (type_mark)
+
+
+State 54
+
+  122 name: simple_name .
+
+    $default  reduce using rule 122 (name)
+
+
+State 55
+
+   37 subtype_declaration: TOK_SUBTYPE TOK_IDENTIFIER TOK_IS subtype_indication . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 100
+
+
+State 56
+
+   24 identifier_list: identifier_list . TOK_COMMA TOK_IDENTIFIER
+   91 discriminant_specification: identifier_list . TOK_COLON type_mark TOK_ASSIGNMENT expression
+   92                           | identifier_list . TOK_COLON type_mark
+
+    TOK_COMMA  shift, and go to state 39
+    TOK_COLON  shift, and go to state 101
+
+
+State 57
+
+   88 discriminant_part: TOK_LEFT_PARENTHESIS discriminant_specification_list . TOK_RIGHT_PARENTHESIS
+   90 discriminant_specification_list: discriminant_specification_list . TOK_SEMICOLON discriminant_specification
+
+    TOK_RIGHT_PARENTHESIS  shift, and go to state 102
+    TOK_SEMICOLON          shift, and go to state 103
+
+
+State 58
+
+   89 discriminant_specification_list: discriminant_specification .
+
+    $default  reduce using rule 89 (discriminant_specification_list)
+
+
+State 59
+
+   50 enumeration_type_definition: TOK_LEFT_PARENTHESIS . enumeration_literal_specification_list TOK_RIGHT_PARENTHESIS
+
+    TOK_IDENTIFIER         shift, and go to state 104
+    TOK_CHARACTER_LITERAL  shift, and go to state 105
+
+    enumeration_literal_specification_list  go to state 106
+    enumeration_literal_specification       go to state 107
+    enumeration_literal                     go to state 108
+
+
+State 60
+
+  110 access_type_definition: TOK_ACCESS . subtype_indication
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication  go to state 109
+    type_mark           go to state 51
+    name                go to state 53
+    simple_name         go to state 54
+
+
+State 61
+
+   67 unconstrained_array_definition: TOK_ARRAY . TOK_LEFT_PARENTHESIS index_subtype_definition_list TOK_RIGHT_PARENTHESIS TOK_OF subtype_indication
+   70 constrained_array_definition: TOK_ARRAY . index_constraint TOK_OF subtype_indication
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 110
+
+    index_constraint  go to state 85
+
+
+State 62
+
+   64 fixed_accuracy_definition: TOK_DELTA . simple_expression
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    simple_expression  go to state 112
+    expression         go to state 113
+
+
+State 63
+
+   61 floating_accuracy_definition: TOK_DIGITS . simple_expression
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    simple_expression  go to state 114
+    expression         go to state 113
+
+
+State 64
+
+   46 derived_type_definition: TOK_NEW . subtype_indication
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication  go to state 115
+    type_mark           go to state 51
+    name                go to state 53
+    simple_name         go to state 54
+
+
+State 65
+
+   47 range_constraint: TOK_RANGE . range
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    range              go to state 117
+    simple_expression  go to state 118
+    expression         go to state 113
+    attribute          go to state 119
+
+
+State 66
+
+   77 record_type_definition: TOK_RECORD . component_list TOK_END TOK_RECORD
+
+    TOK_NULL        shift, and go to state 120
+    TOK_IDENTIFIER  shift, and go to state 12
+
+    $default  reduce using rule 81 (component_declaration_list_opt)
+
+    identifier_list                 go to state 121
+    component_list                  go to state 122
+    component_declaration_list_opt  go to state 123
+    component_declaration_list      go to state 124
+    component_declaration           go to state 125
+
+
+State 67
+
+   29 full_type_declaration: TOK_TYPE TOK_IDENTIFIER TOK_IS type_definition . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 126
+
+
+State 68
+
+   36 type_definition: derived_type_definition .
+
+    $default  reduce using rule 36 (type_definition)
+
+
+State 69
+
+   56 integer_type_definition: range_constraint .
+
+    $default  reduce using rule 56 (integer_type_definition)
+
+
+State 70
+
+   30 type_definition: enumeration_type_definition .
+
+    $default  reduce using rule 30 (type_definition)
+
+
+State 71
+
+   31 type_definition: integer_type_definition .
+
+    $default  reduce using rule 31 (type_definition)
+
+
+State 72
+
+   32 type_definition: real_type_definition .
+
+    $default  reduce using rule 32 (type_definition)
+
+
+State 73
+
+   57 real_type_definition: floating_point_constraint .
+
+    $default  reduce using rule 57 (real_type_definition)
+
+
+State 74
+
+   59 floating_point_constraint: floating_accuracy_definition . range_constraint
+   60                          | floating_accuracy_definition .
+
+    TOK_RANGE  shift, and go to state 65
+
+    $default  reduce using rule 60 (floating_point_constraint)
+
+    range_constraint  go to state 127
+
+
+State 75
+
+   58 real_type_definition: fixed_point_constraint .
+
+    $default  reduce using rule 58 (real_type_definition)
+
+
+State 76
+
+   62 fixed_point_constraint: fixed_accuracy_definition . range_constraint
+   63                       | fixed_accuracy_definition .
+
+    TOK_RANGE  shift, and go to state 65
+
+    $default  reduce using rule 63 (fixed_point_constraint)
+
+    range_constraint  go to state 128
+
+
+State 77
+
+   33 type_definition: array_type_definition .
+
+    $default  reduce using rule 33 (type_definition)
+
+
+State 78
+
+   65 array_type_definition: unconstrained_array_definition .
+
+    $default  reduce using rule 65 (array_type_definition)
+
+
+State 79
+
+   66 array_type_definition: constrained_array_definition .
+
+    $default  reduce using rule 66 (array_type_definition)
+
+
+State 80
+
+   34 type_definition: record_type_definition .
+
+    $default  reduce using rule 34 (type_definition)
+
+
+State 81
+
+   35 type_definition: access_type_definition .
+
+    $default  reduce using rule 35 (type_definition)
+
+
+State 82
+
+  111 incomplete_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part TOK_SEMICOLON .
+
+    $default  reduce using rule 111 (incomplete_type_declaration)
+
+
+State 83
+
+   28 full_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part TOK_IS . type_definition TOK_SEMICOLON
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 59
+    TOK_ACCESS            shift, and go to state 60
+    TOK_ARRAY             shift, and go to state 61
+    TOK_DELTA             shift, and go to state 62
+    TOK_DIGITS            shift, and go to state 63
+    TOK_NEW               shift, and go to state 64
+    TOK_RANGE             shift, and go to state 65
+    TOK_RECORD            shift, and go to state 66
+
+    type_definition                 go to state 129
+    derived_type_definition         go to state 68
+    range_constraint                go to state 69
+    enumeration_type_definition     go to state 70
+    integer_type_definition         go to state 71
+    real_type_definition            go to state 72
+    floating_point_constraint       go to state 73
+    floating_accuracy_definition    go to state 74
+    fixed_point_constraint          go to state 75
+    fixed_accuracy_definition       go to state 76
+    array_type_definition           go to state 77
+    unconstrained_array_definition  go to state 78
+    constrained_array_definition    go to state 79
+    record_type_definition          go to state 80
+    access_type_definition          go to state 81
+
+
+State 84
+
+   72 index_constraint: TOK_LEFT_PARENTHESIS . discrete_range_list TOK_RIGHT_PARENTHESIS
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    subtype_indication   go to state 130
+    type_mark            go to state 51
+    range                go to state 131
+    discrete_range_list  go to state 132
+    discrete_range       go to state 133
+    name                 go to state 53
+    simple_name          go to state 54
+    simple_expression    go to state 118
+    expression           go to state 113
+    attribute            go to state 119
+
+
+State 85
+
+   70 constrained_array_definition: TOK_ARRAY index_constraint . TOK_OF subtype_indication
+
+    TOK_OF  shift, and go to state 134
+
+
+State 86
+
+   22 number_declaration: identifier_list TOK_COLON TOK_CONSTANT TOK_ASSIGNMENT . expression TOK_SEMICOLON
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 135
+
+
+State 87
+
+   14 object_declaration: identifier_list TOK_COLON TOK_CONSTANT subtype_indication . TOK_ASSIGNMENT expression TOK_SEMICOLON
+   16                   | identifier_list TOK_COLON TOK_CONSTANT subtype_indication . TOK_SEMICOLON
+
+    TOK_SEMICOLON   shift, and go to state 136
+    TOK_ASSIGNMENT  shift, and go to state 137
+
+
+State 88
+
+   18 object_declaration: identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition . TOK_ASSIGNMENT expression TOK_SEMICOLON
+   20                   | identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition . TOK_SEMICOLON
+
+    TOK_SEMICOLON   shift, and go to state 138
+    TOK_ASSIGNMENT  shift, and go to state 139
+
+
+State 89
+
+   17 object_declaration: identifier_list TOK_COLON subtype_indication TOK_SEMICOLON .
+
+    $default  reduce using rule 17 (object_declaration)
+
+
+State 90
+
+   15 object_declaration: identifier_list TOK_COLON subtype_indication TOK_ASSIGNMENT . expression TOK_SEMICOLON
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 140
+
+
+State 91
+
+   72 index_constraint: TOK_LEFT_PARENTHESIS . discrete_range_list TOK_RIGHT_PARENTHESIS
+   93 discriminant_constraint: TOK_LEFT_PARENTHESIS . discriminant_association_list TOK_RIGHT_PARENTHESIS
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    subtype_indication             go to state 130
+    type_mark                      go to state 51
+    range                          go to state 131
+    discrete_range_list            go to state 132
+    discrete_range                 go to state 133
+    discriminant_association_list  go to state 141
+    discriminant_association       go to state 142
+    discriminant_simple_name_list  go to state 143
+    name                           go to state 53
+    simple_name                    go to state 144
+    simple_expression              go to state 118
+    expression                     go to state 145
+    attribute                      go to state 119
+
+
+State 92
+
+   38 subtype_indication: type_mark constraint .
+
+    $default  reduce using rule 38 (subtype_indication)
+
+
+State 93
+
+   41 constraint: range_constraint .
+
+    $default  reduce using rule 41 (constraint)
+
+
+State 94
+
+   42 constraint: floating_point_constraint .
+
+    $default  reduce using rule 42 (constraint)
+
+
+State 95
+
+   43 constraint: fixed_point_constraint .
+
+    $default  reduce using rule 43 (constraint)
+
+
+State 96
+
+   44 constraint: index_constraint .
+
+    $default  reduce using rule 44 (constraint)
+
+
+State 97
+
+   45 constraint: discriminant_constraint .
+
+    $default  reduce using rule 45 (constraint)
+
+
+State 98
+
+   21 object_declaration: identifier_list TOK_COLON constrained_array_definition TOK_SEMICOLON .
+
+    $default  reduce using rule 21 (object_declaration)
+
+
+State 99
+
+   19 object_declaration: identifier_list TOK_COLON constrained_array_definition TOK_ASSIGNMENT . expression TOK_SEMICOLON
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 146
+
+
+State 100
+
+   37 subtype_declaration: TOK_SUBTYPE TOK_IDENTIFIER TOK_IS subtype_indication TOK_SEMICOLON .
+
+    $default  reduce using rule 37 (subtype_declaration)
+
+
+State 101
+
+   91 discriminant_specification: identifier_list TOK_COLON . type_mark TOK_ASSIGNMENT expression
+   92                           | identifier_list TOK_COLON . type_mark
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    type_mark    go to state 147
+    name         go to state 53
+    simple_name  go to state 54
+
+
+State 102
+
+   88 discriminant_part: TOK_LEFT_PARENTHESIS discriminant_specification_list TOK_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 88 (discriminant_part)
+
+
+State 103
+
+   90 discriminant_specification_list: discriminant_specification_list TOK_SEMICOLON . discriminant_specification
+
+    TOK_IDENTIFIER  shift, and go to state 12
+
+    identifier_list             go to state 56
+    discriminant_specification  go to state 148
+
+
+State 104
+
+   54 enumeration_literal: TOK_IDENTIFIER .
+
+    $default  reduce using rule 54 (enumeration_literal)
+
+
+State 105
+
+   55 enumeration_literal: TOK_CHARACTER_LITERAL .
+
+    $default  reduce using rule 55 (enumeration_literal)
+
+
+State 106
+
+   50 enumeration_type_definition: TOK_LEFT_PARENTHESIS enumeration_literal_specification_list . TOK_RIGHT_PARENTHESIS
+   52 enumeration_literal_specification_list: enumeration_literal_specification_list . TOK_COMMA enumeration_literal_specification
+
+    TOK_RIGHT_PARENTHESIS  shift, and go to state 149
+    TOK_COMMA              shift, and go to state 150
+
+
+State 107
+
+   51 enumeration_literal_specification_list: enumeration_literal_specification .
+
+    $default  reduce using rule 51 (enumeration_literal_specification_list)
+
+
+State 108
+
+   53 enumeration_literal_specification: enumeration_literal .
+
+    $default  reduce using rule 53 (enumeration_literal_specification)
+
+
+State 109
+
+  110 access_type_definition: TOK_ACCESS subtype_indication .
+
+    $default  reduce using rule 110 (access_type_definition)
+
+
+State 110
+
+   67 unconstrained_array_definition: TOK_ARRAY TOK_LEFT_PARENTHESIS . index_subtype_definition_list TOK_RIGHT_PARENTHESIS TOK_OF subtype_indication
+   72 index_constraint: TOK_LEFT_PARENTHESIS . discrete_range_list TOK_RIGHT_PARENTHESIS
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    subtype_indication             go to state 130
+    type_mark                      go to state 151
+    range                          go to state 131
+    index_subtype_definition_list  go to state 152
+    index_subtype_definition       go to state 153
+    discrete_range_list            go to state 132
+    discrete_range                 go to state 133
+    name                           go to state 53
+    simple_name                    go to state 54
+    simple_expression              go to state 118
+    expression                     go to state 113
+    attribute                      go to state 119
+
+
+State 111
+
+  125 expression: TOK_UNIVERSAL_INT_LITERAL .
+
+    $default  reduce using rule 125 (expression)
+
+
+State 112
+
+   64 fixed_accuracy_definition: TOK_DELTA simple_expression .
+
+    $default  reduce using rule 64 (fixed_accuracy_definition)
+
+
+State 113
+
+  124 simple_expression: expression .
+
+    $default  reduce using rule 124 (simple_expression)
+
+
+State 114
+
+   61 floating_accuracy_definition: TOK_DIGITS simple_expression .
+
+    $default  reduce using rule 61 (floating_accuracy_definition)
+
+
+State 115
+
+   46 derived_type_definition: TOK_NEW subtype_indication .
+
+    $default  reduce using rule 46 (derived_type_definition)
+
+
+State 116
+
+  126 attribute: TOK_GRAVE_ACCENT . TOK_IDENTIFIER
+
+    TOK_IDENTIFIER  shift, and go to state 154
+
+
+State 117
+
+   47 range_constraint: TOK_RANGE range .
+
+    $default  reduce using rule 47 (range_constraint)
+
+
+State 118
+
+   49 range: simple_expression . TOK_DOUBLE_DOT simple_expression
+
+    TOK_DOUBLE_DOT  shift, and go to state 155
+
+
+State 119
+
+   48 range: attribute .
+
+    $default  reduce using rule 48 (range)
+
+
+State 120
+
+   80 component_list: TOK_NULL . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 156
+
+
+State 121
+
+   24 identifier_list: identifier_list . TOK_COMMA TOK_IDENTIFIER
+   85 component_declaration: identifier_list . TOK_COLON component_subtype_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   86                      | identifier_list . TOK_COLON component_subtype_definition TOK_SEMICOLON
+
+    TOK_COMMA  shift, and go to state 39
+    TOK_COLON  shift, and go to state 157
+
+
+State 122
+
+   77 record_type_definition: TOK_RECORD component_list . TOK_END TOK_RECORD
+
+    TOK_END  shift, and go to state 158
+
+
+State 123
+
+   79 component_list: component_declaration_list_opt . variant_part
+
+    TOK_CASE  shift, and go to state 159
+
+    variant_part  go to state 160
+
+
+State 124
+
+   78 component_list: component_declaration_list .
+   82 component_declaration_list_opt: component_declaration_list .
+   84 component_declaration_list: component_declaration_list . component_declaration
+
+    TOK_IDENTIFIER  shift, and go to state 12
+
+    TOK_CASE  reduce using rule 82 (component_declaration_list_opt)
+    $default  reduce using rule 78 (component_list)
+
+    identifier_list        go to state 121
+    component_declaration  go to state 161
+
+
+State 125
+
+   83 component_declaration_list: component_declaration .
+
+    $default  reduce using rule 83 (component_declaration_list)
+
+
+State 126
+
+   29 full_type_declaration: TOK_TYPE TOK_IDENTIFIER TOK_IS type_definition TOK_SEMICOLON .
+
+    $default  reduce using rule 29 (full_type_declaration)
+
+
+State 127
+
+   59 floating_point_constraint: floating_accuracy_definition range_constraint .
+
+    $default  reduce using rule 59 (floating_point_constraint)
+
+
+State 128
+
+   62 fixed_point_constraint: fixed_accuracy_definition range_constraint .
+
+    $default  reduce using rule 62 (fixed_point_constraint)
+
+
+State 129
+
+   28 full_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part TOK_IS type_definition . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 162
+
+
+State 130
+
+   75 discrete_range: subtype_indication .
+
+    $default  reduce using rule 75 (discrete_range)
+
+
+State 131
+
+   76 discrete_range: range .
+
+    $default  reduce using rule 76 (discrete_range)
+
+
+State 132
+
+   72 index_constraint: TOK_LEFT_PARENTHESIS discrete_range_list . TOK_RIGHT_PARENTHESIS
+   74 discrete_range_list: discrete_range_list . TOK_COMMA discrete_range
+
+    TOK_RIGHT_PARENTHESIS  shift, and go to state 163
+    TOK_COMMA              shift, and go to state 164
+
+
+State 133
+
+   73 discrete_range_list: discrete_range .
+
+    $default  reduce using rule 73 (discrete_range_list)
+
+
+State 134
+
+   70 constrained_array_definition: TOK_ARRAY index_constraint TOK_OF . subtype_indication
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication  go to state 165
+    type_mark           go to state 51
+    name                go to state 53
+    simple_name         go to state 54
+
+
+State 135
+
+   22 number_declaration: identifier_list TOK_COLON TOK_CONSTANT TOK_ASSIGNMENT expression . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 166
+
+
+State 136
+
+   16 object_declaration: identifier_list TOK_COLON TOK_CONSTANT subtype_indication TOK_SEMICOLON .
+
+    $default  reduce using rule 16 (object_declaration)
+
+
+State 137
+
+   14 object_declaration: identifier_list TOK_COLON TOK_CONSTANT subtype_indication TOK_ASSIGNMENT . expression TOK_SEMICOLON
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 167
+
+
+State 138
+
+   20 object_declaration: identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition TOK_SEMICOLON .
+
+    $default  reduce using rule 20 (object_declaration)
+
+
+State 139
+
+   18 object_declaration: identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition TOK_ASSIGNMENT . expression TOK_SEMICOLON
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 168
+
+
+State 140
+
+   15 object_declaration: identifier_list TOK_COLON subtype_indication TOK_ASSIGNMENT expression . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 169
+
+
+State 141
+
+   93 discriminant_constraint: TOK_LEFT_PARENTHESIS discriminant_association_list . TOK_RIGHT_PARENTHESIS
+   95 discriminant_association_list: discriminant_association_list . TOK_COMMA discriminant_association
+
+    TOK_RIGHT_PARENTHESIS  shift, and go to state 170
+    TOK_COMMA              shift, and go to state 171
+
+
+State 142
+
+   94 discriminant_association_list: discriminant_association .
+
+    $default  reduce using rule 94 (discriminant_association_list)
+
+
+State 143
+
+   96 discriminant_association: discriminant_simple_name_list . TOK_ARROW expression
+   99 discriminant_simple_name_list: discriminant_simple_name_list . TOK_VERTICAL_BAR simple_name
+
+    TOK_VERTICAL_BAR  shift, and go to state 172
+    TOK_ARROW         shift, and go to state 173
+
+
+State 144
+
+   98 discriminant_simple_name_list: simple_name .
+  122 name: simple_name .
+
+    TOK_VERTICAL_BAR  reduce using rule 98 (discriminant_simple_name_list)
+    TOK_ARROW         reduce using rule 98 (discriminant_simple_name_list)
+    $default          reduce using rule 122 (name)
+
+
+State 145
+
+   97 discriminant_association: expression .
+  124 simple_expression: expression .
+
+    TOK_DOUBLE_DOT  reduce using rule 124 (simple_expression)
+    $default        reduce using rule 97 (discriminant_association)
+
+
+State 146
+
+   19 object_declaration: identifier_list TOK_COLON constrained_array_definition TOK_ASSIGNMENT expression . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 174
+
+
+State 147
+
+   91 discriminant_specification: identifier_list TOK_COLON type_mark . TOK_ASSIGNMENT expression
+   92                           | identifier_list TOK_COLON type_mark .
+
+    TOK_ASSIGNMENT  shift, and go to state 175
+
+    $default  reduce using rule 92 (discriminant_specification)
+
+
+State 148
+
+   90 discriminant_specification_list: discriminant_specification_list TOK_SEMICOLON discriminant_specification .
+
+    $default  reduce using rule 90 (discriminant_specification_list)
+
+
+State 149
+
+   50 enumeration_type_definition: TOK_LEFT_PARENTHESIS enumeration_literal_specification_list TOK_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 50 (enumeration_type_definition)
+
+
+State 150
+
+   52 enumeration_literal_specification_list: enumeration_literal_specification_list TOK_COMMA . enumeration_literal_specification
+
+    TOK_IDENTIFIER         shift, and go to state 104
+    TOK_CHARACTER_LITERAL  shift, and go to state 105
+
+    enumeration_literal_specification  go to state 176
+    enumeration_literal                go to state 108
+
+
+State 151
+
+   38 subtype_indication: type_mark . constraint
+   39                   | type_mark .
+   71 index_subtype_definition: type_mark . TOK_RANGE TOK_BOX
+
+    TOK_LEFT_PARENTHESIS  shift, and go to state 91
+    TOK_DELTA             shift, and go to state 62
+    TOK_DIGITS            shift, and go to state 63
+    TOK_RANGE             shift, and go to state 177
+
+    $default  reduce using rule 39 (subtype_indication)
+
+    constraint                    go to state 92
+    range_constraint              go to state 93
+    floating_point_constraint     go to state 94
+    floating_accuracy_definition  go to state 74
+    fixed_point_constraint        go to state 95
+    fixed_accuracy_definition     go to state 76
+    index_constraint              go to state 96
+    discriminant_constraint       go to state 97
+
+
+State 152
+
+   67 unconstrained_array_definition: TOK_ARRAY TOK_LEFT_PARENTHESIS index_subtype_definition_list . TOK_RIGHT_PARENTHESIS TOK_OF subtype_indication
+   69 index_subtype_definition_list: index_subtype_definition_list . TOK_COMMA index_subtype_definition
+
+    TOK_RIGHT_PARENTHESIS  shift, and go to state 178
+    TOK_COMMA              shift, and go to state 179
+
+
+State 153
+
+   68 index_subtype_definition_list: index_subtype_definition .
+
+    $default  reduce using rule 68 (index_subtype_definition_list)
+
+
+State 154
+
+  126 attribute: TOK_GRAVE_ACCENT TOK_IDENTIFIER .
+
+    $default  reduce using rule 126 (attribute)
+
+
+State 155
+
+   49 range: simple_expression TOK_DOUBLE_DOT . simple_expression
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    simple_expression  go to state 180
+    expression         go to state 113
+
+
+State 156
+
+   80 component_list: TOK_NULL TOK_SEMICOLON .
+
+    $default  reduce using rule 80 (component_list)
+
+
+State 157
+
+   85 component_declaration: identifier_list TOK_COLON . component_subtype_definition TOK_ASSIGNMENT expression TOK_SEMICOLON
+   86                      | identifier_list TOK_COLON . component_subtype_definition TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication            go to state 181
+    type_mark                     go to state 51
+    component_subtype_definition  go to state 182
+    name                          go to state 53
+    simple_name                   go to state 54
+
+
+State 158
+
+   77 record_type_definition: TOK_RECORD component_list TOK_END . TOK_RECORD
+
+    TOK_RECORD  shift, and go to state 183
+
+
+State 159
+
+  100 variant_part: TOK_CASE . simple_name TOK_IS variant_list TOK_END TOK_CASE TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    simple_name  go to state 184
+
+
+State 160
+
+   79 component_list: component_declaration_list_opt variant_part .
+
+    $default  reduce using rule 79 (component_list)
+
+
+State 161
+
+   84 component_declaration_list: component_declaration_list component_declaration .
+
+    $default  reduce using rule 84 (component_declaration_list)
+
+
+State 162
+
+   28 full_type_declaration: TOK_TYPE TOK_IDENTIFIER discriminant_part TOK_IS type_definition TOK_SEMICOLON .
+
+    $default  reduce using rule 28 (full_type_declaration)
+
+
+State 163
+
+   72 index_constraint: TOK_LEFT_PARENTHESIS discrete_range_list TOK_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 72 (index_constraint)
+
+
+State 164
+
+   74 discrete_range_list: discrete_range_list TOK_COMMA . discrete_range
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    subtype_indication  go to state 130
+    type_mark           go to state 51
+    range               go to state 131
+    discrete_range      go to state 185
+    name                go to state 53
+    simple_name         go to state 54
+    simple_expression   go to state 118
+    expression          go to state 113
+    attribute           go to state 119
+
+
+State 165
+
+   70 constrained_array_definition: TOK_ARRAY index_constraint TOK_OF subtype_indication .
+
+    $default  reduce using rule 70 (constrained_array_definition)
+
+
+State 166
+
+   22 number_declaration: identifier_list TOK_COLON TOK_CONSTANT TOK_ASSIGNMENT expression TOK_SEMICOLON .
+
+    $default  reduce using rule 22 (number_declaration)
+
+
+State 167
+
+   14 object_declaration: identifier_list TOK_COLON TOK_CONSTANT subtype_indication TOK_ASSIGNMENT expression . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 186
+
+
+State 168
+
+   18 object_declaration: identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition TOK_ASSIGNMENT expression . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 187
+
+
+State 169
+
+   15 object_declaration: identifier_list TOK_COLON subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON .
+
+    $default  reduce using rule 15 (object_declaration)
+
+
+State 170
+
+   93 discriminant_constraint: TOK_LEFT_PARENTHESIS discriminant_association_list TOK_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 93 (discriminant_constraint)
+
+
+State 171
+
+   95 discriminant_association_list: discriminant_association_list TOK_COMMA . discriminant_association
+
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    discriminant_association       go to state 188
+    discriminant_simple_name_list  go to state 143
+    simple_name                    go to state 189
+    expression                     go to state 190
+
+
+State 172
+
+   99 discriminant_simple_name_list: discriminant_simple_name_list TOK_VERTICAL_BAR . simple_name
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    simple_name  go to state 191
+
+
+State 173
+
+   96 discriminant_association: discriminant_simple_name_list TOK_ARROW . expression
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 192
+
+
+State 174
+
+   19 object_declaration: identifier_list TOK_COLON constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON .
+
+    $default  reduce using rule 19 (object_declaration)
+
+
+State 175
+
+   91 discriminant_specification: identifier_list TOK_COLON type_mark TOK_ASSIGNMENT . expression
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 193
+
+
+State 176
+
+   52 enumeration_literal_specification_list: enumeration_literal_specification_list TOK_COMMA enumeration_literal_specification .
+
+    $default  reduce using rule 52 (enumeration_literal_specification_list)
+
+
+State 177
+
+   47 range_constraint: TOK_RANGE . range
+   71 index_subtype_definition: type_mark TOK_RANGE . TOK_BOX
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_BOX                    shift, and go to state 194
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    range              go to state 117
+    simple_expression  go to state 118
+    expression         go to state 113
+    attribute          go to state 119
+
+
+State 178
+
+   67 unconstrained_array_definition: TOK_ARRAY TOK_LEFT_PARENTHESIS index_subtype_definition_list TOK_RIGHT_PARENTHESIS . TOK_OF subtype_indication
+
+    TOK_OF  shift, and go to state 195
+
+
+State 179
+
+   69 index_subtype_definition_list: index_subtype_definition_list TOK_COMMA . index_subtype_definition
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    type_mark                 go to state 196
+    index_subtype_definition  go to state 197
+    name                      go to state 53
+    simple_name               go to state 54
+
+
+State 180
+
+   49 range: simple_expression TOK_DOUBLE_DOT simple_expression .
+
+    $default  reduce using rule 49 (range)
+
+
+State 181
+
+   87 component_subtype_definition: subtype_indication .
+
+    $default  reduce using rule 87 (component_subtype_definition)
+
+
+State 182
+
+   85 component_declaration: identifier_list TOK_COLON component_subtype_definition . TOK_ASSIGNMENT expression TOK_SEMICOLON
+   86                      | identifier_list TOK_COLON component_subtype_definition . TOK_SEMICOLON
+
+    TOK_SEMICOLON   shift, and go to state 198
+    TOK_ASSIGNMENT  shift, and go to state 199
+
+
+State 183
+
+   77 record_type_definition: TOK_RECORD component_list TOK_END TOK_RECORD .
+
+    $default  reduce using rule 77 (record_type_definition)
+
+
+State 184
+
+  100 variant_part: TOK_CASE simple_name . TOK_IS variant_list TOK_END TOK_CASE TOK_SEMICOLON
+
+    TOK_IS  shift, and go to state 200
+
+
+State 185
+
+   74 discrete_range_list: discrete_range_list TOK_COMMA discrete_range .
+
+    $default  reduce using rule 74 (discrete_range_list)
+
+
+State 186
+
+   14 object_declaration: identifier_list TOK_COLON TOK_CONSTANT subtype_indication TOK_ASSIGNMENT expression TOK_SEMICOLON .
+
+    $default  reduce using rule 14 (object_declaration)
+
+
+State 187
+
+   18 object_declaration: identifier_list TOK_COLON TOK_CONSTANT constrained_array_definition TOK_ASSIGNMENT expression TOK_SEMICOLON .
+
+    $default  reduce using rule 18 (object_declaration)
+
+
+State 188
+
+   95 discriminant_association_list: discriminant_association_list TOK_COMMA discriminant_association .
+
+    $default  reduce using rule 95 (discriminant_association_list)
+
+
+State 189
+
+   98 discriminant_simple_name_list: simple_name .
+
+    $default  reduce using rule 98 (discriminant_simple_name_list)
+
+
+State 190
+
+   97 discriminant_association: expression .
+
+    $default  reduce using rule 97 (discriminant_association)
+
+
+State 191
+
+   99 discriminant_simple_name_list: discriminant_simple_name_list TOK_VERTICAL_BAR simple_name .
+
+    $default  reduce using rule 99 (discriminant_simple_name_list)
+
+
+State 192
+
+   96 discriminant_association: discriminant_simple_name_list TOK_ARROW expression .
+
+    $default  reduce using rule 96 (discriminant_association)
+
+
+State 193
+
+   91 discriminant_specification: identifier_list TOK_COLON type_mark TOK_ASSIGNMENT expression .
+
+    $default  reduce using rule 91 (discriminant_specification)
+
+
+State 194
+
+   71 index_subtype_definition: type_mark TOK_RANGE TOK_BOX .
+
+    $default  reduce using rule 71 (index_subtype_definition)
+
+
+State 195
+
+   67 unconstrained_array_definition: TOK_ARRAY TOK_LEFT_PARENTHESIS index_subtype_definition_list TOK_RIGHT_PARENTHESIS TOK_OF . subtype_indication
+
+    TOK_IDENTIFIER  shift, and go to state 49
+
+    subtype_indication  go to state 201
+    type_mark           go to state 51
+    name                go to state 53
+    simple_name         go to state 54
+
+
+State 196
+
+   71 index_subtype_definition: type_mark . TOK_RANGE TOK_BOX
+
+    TOK_RANGE  shift, and go to state 202
+
+
+State 197
+
+   69 index_subtype_definition_list: index_subtype_definition_list TOK_COMMA index_subtype_definition .
+
+    $default  reduce using rule 69 (index_subtype_definition_list)
+
+
+State 198
+
+   86 component_declaration: identifier_list TOK_COLON component_subtype_definition TOK_SEMICOLON .
+
+    $default  reduce using rule 86 (component_declaration)
+
+
+State 199
+
+   85 component_declaration: identifier_list TOK_COLON component_subtype_definition TOK_ASSIGNMENT . expression TOK_SEMICOLON
+
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    expression  go to state 203
+
+
+State 200
+
+  100 variant_part: TOK_CASE simple_name TOK_IS . variant_list TOK_END TOK_CASE TOK_SEMICOLON
+
+    TOK_WHEN  shift, and go to state 204
+
+    variant_list  go to state 205
+    variant       go to state 206
+
+
+State 201
+
+   67 unconstrained_array_definition: TOK_ARRAY TOK_LEFT_PARENTHESIS index_subtype_definition_list TOK_RIGHT_PARENTHESIS TOK_OF subtype_indication .
+
+    $default  reduce using rule 67 (unconstrained_array_definition)
+
+
+State 202
+
+   71 index_subtype_definition: type_mark TOK_RANGE . TOK_BOX
+
+    TOK_BOX  shift, and go to state 194
+
+
+State 203
+
+   85 component_declaration: identifier_list TOK_COLON component_subtype_definition TOK_ASSIGNMENT expression . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 207
+
+
+State 204
+
+  103 variant: TOK_WHEN . choice_list TOK_ARROW component_list
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_OTHERS                 shift, and go to state 208
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    subtype_indication  go to state 130
+    type_mark           go to state 51
+    range               go to state 131
+    discrete_range      go to state 209
+    choice_list         go to state 210
+    choice              go to state 211
+    name                go to state 53
+    simple_name         go to state 212
+    simple_expression   go to state 213
+    expression          go to state 113
+    attribute           go to state 119
+
+
+State 205
+
+  100 variant_part: TOK_CASE simple_name TOK_IS variant_list . TOK_END TOK_CASE TOK_SEMICOLON
+  102 variant_list: variant_list . variant
+
+    TOK_END   shift, and go to state 214
+    TOK_WHEN  shift, and go to state 204
+
+    variant  go to state 215
+
+
+State 206
+
+  101 variant_list: variant .
+
+    $default  reduce using rule 101 (variant_list)
+
+
+State 207
+
+   85 component_declaration: identifier_list TOK_COLON component_subtype_definition TOK_ASSIGNMENT expression TOK_SEMICOLON .
+
+    $default  reduce using rule 85 (component_declaration)
+
+
+State 208
+
+  108 choice: TOK_OTHERS .
+
+    $default  reduce using rule 108 (choice)
+
+
+State 209
+
+  107 choice: discrete_range .
+
+    $default  reduce using rule 107 (choice)
+
+
+State 210
+
+  103 variant: TOK_WHEN choice_list . TOK_ARROW component_list
+  105 choice_list: choice_list . TOK_VERTICAL_BAR choice
+
+    TOK_VERTICAL_BAR  shift, and go to state 216
+    TOK_ARROW         shift, and go to state 217
+
+
+State 211
+
+  104 choice_list: choice .
+
+    $default  reduce using rule 104 (choice_list)
+
+
+State 212
+
+  109 choice: simple_name .
+  122 name: simple_name .
+
+    TOK_VERTICAL_BAR  reduce using rule 109 (choice)
+    TOK_VERTICAL_BAR  [reduce using rule 122 (name)]
+    TOK_ARROW         reduce using rule 109 (choice)
+    TOK_ARROW         [reduce using rule 122 (name)]
+    $default          reduce using rule 122 (name)
+
+
+State 213
+
+   49 range: simple_expression . TOK_DOUBLE_DOT simple_expression
+  106 choice: simple_expression .
+
+    TOK_DOUBLE_DOT  shift, and go to state 155
+
+    $default  reduce using rule 106 (choice)
+
+
+State 214
+
+  100 variant_part: TOK_CASE simple_name TOK_IS variant_list TOK_END . TOK_CASE TOK_SEMICOLON
+
+    TOK_CASE  shift, and go to state 218
+
+
+State 215
+
+  102 variant_list: variant_list variant .
+
+    $default  reduce using rule 102 (variant_list)
+
+
+State 216
+
+  105 choice_list: choice_list TOK_VERTICAL_BAR . choice
+
+    TOK_GRAVE_ACCENT           shift, and go to state 116
+    TOK_OTHERS                 shift, and go to state 208
+    TOK_IDENTIFIER             shift, and go to state 49
+    TOK_UNIVERSAL_INT_LITERAL  shift, and go to state 111
+
+    subtype_indication  go to state 130
+    type_mark           go to state 51
+    range               go to state 131
+    discrete_range      go to state 209
+    choice              go to state 219
+    name                go to state 53
+    simple_name         go to state 212
+    simple_expression   go to state 213
+    expression          go to state 113
+    attribute           go to state 119
+
+
+State 217
+
+  103 variant: TOK_WHEN choice_list TOK_ARROW . component_list
+
+    TOK_NULL        shift, and go to state 120
+    TOK_IDENTIFIER  shift, and go to state 12
+
+    $default  reduce using rule 81 (component_declaration_list_opt)
+
+    identifier_list                 go to state 121
+    component_list                  go to state 220
+    component_declaration_list_opt  go to state 123
+    component_declaration_list      go to state 124
+    component_declaration           go to state 125
+
+
+State 218
+
+  100 variant_part: TOK_CASE simple_name TOK_IS variant_list TOK_END TOK_CASE . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 221
+
+
+State 219
+
+  105 choice_list: choice_list TOK_VERTICAL_BAR choice .
+
+    $default  reduce using rule 105 (choice_list)
+
+
+State 220
+
+  103 variant: TOK_WHEN choice_list TOK_ARROW component_list .
+
+    $default  reduce using rule 103 (variant)
+
+
+State 221
+
+  100 variant_part: TOK_CASE simple_name TOK_IS variant_list TOK_END TOK_CASE TOK_SEMICOLON .
+
+    $default  reduce using rule 100 (variant_part)
