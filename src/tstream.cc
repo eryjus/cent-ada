@@ -238,7 +238,7 @@ void TokenStream::List(void)
 
     std::cout << "Token Stream for " << filename << ":\n";
     std::cout << std::string(line).substr(0, filename.length() + 18) << '\n';
-    Reset();
+    Reset(0);
 
     while (Current() != YYEOF) {
         std::cout << std::setw(8) << loc + 1;

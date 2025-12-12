@@ -60,7 +60,8 @@ public:
     long LineNo(void) const { return tokStream[loc]->yylineno; }
     int Column(void) const { return tokStream[loc]->column; }
     void Recovery(TokenType_t t = TOK_SEMICOLON) { while (Current() != t) { Advance(); } Advance(); }
-    void Reset(void) { loc = 0; }
+    void Reset(int nLoc) { loc = nLoc; }
+    int Location(void) const { return loc; }
     void Listing(void);
     void List(void);
 

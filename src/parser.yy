@@ -14,6 +14,7 @@
 
 %output "parser.cc"
 %defines "tokens.hh"
+%glr-parser
 
 %{
     #include "ada.hh"
@@ -357,8 +358,8 @@ enumeration_type_definition : TOK_LEFT_PARENTHESIS enumeration_literal_specifica
 
 
 //
-// -- Additional Enumeration Literal Specifications
-//    ---------------------------------------------
+// -- Enumeration Literal Specification Lists
+//    ---------------------------------------
 enumeration_literal_specification_list : enumeration_literal_specification
 enumeration_literal_specification_list : enumeration_literal_specification_list TOK_COMMA enumeration_literal_specification
 
@@ -604,15 +605,15 @@ discriminant_association : expression
 
 
 //
-// -- Simple Name Lists
+// -- Discriminant Simple Name Lists
 //
 //    This is important:
 //    The specification officially defines `*discriminant_*simple_name`.  Here we will
 //    only map to a `simple_name`.  The additional discernment will happen in
 //    the semantic phase.
 //    --------------------------------------------------------------------------------
-discriminant_simple_name_list : simple_name
-discriminant_simple_name_list : discriminant_simple_name_list TOK_VERTICAL_BAR simple_name
+discriminant_simple_name_list : TOK_IDENTIFIER
+discriminant_simple_name_list : discriminant_simple_name_list TOK_VERTICAL_BAR TOK_IDENTIFIER
 
 
 
@@ -624,7 +625,7 @@ discriminant_simple_name_list : discriminant_simple_name_list TOK_VERTICAL_BAR s
 //    only map to a `simple_name`.  The additional discernment will happen in
 //    the semantic phase.
 //    --------------------------------------------------------------------------------
-variant_part : TOK_CASE simple_name TOK_IS variant_list TOK_END TOK_CASE TOK_SEMICOLON
+variant_part : TOK_CASE TOK_IDENTIFIER TOK_IS variant_list TOK_END TOK_CASE TOK_SEMICOLON
 
 
 
@@ -662,7 +663,7 @@ choice_list : choice_list TOK_VERTICAL_BAR choice
 choice : simple_expression
 choice : discrete_range
 choice : TOK_OTHERS
-choice : simple_name
+choice : TOK_IDENTIFIER
 
 
 
@@ -782,8 +783,8 @@ package_declaration : TOK_PACKAGE TOK_SEMICOLON
 task_declaraction : TOK_TASK TOK_SEMICOLON
 
 
-name : simple_name
-simple_name : TOK_IDENTIFIER
+name : TOK_IDENTIFIER
+/* simple_name : TOK_IDENTIFIER */
 simple_expression : expression
 expression : TOK_UNIVERSAL_INT_LITERAL
 attribute : TOK_GRAVE_ACCENT TOK_IDENTIFIER

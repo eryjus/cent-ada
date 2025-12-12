@@ -41,6 +41,7 @@ typedef union YYSTYPE yystype_t;
 // -- Include the other headers
 //    -------------------------
 #include "tstream.hh"
+#include "parser.hh"
 
 
 
