@@ -251,3 +251,21 @@ void TokenStream::List(void)
 }
 
 
+
+//
+// -- Get the source location for diagnostic messages
+//    -----------------------------------------------
+SourceLoc_t TokenStream::SourceLocation(void)
+{
+    SourceLoc_t rv;
+
+    rv.filename = filename;
+    rv.line = tokStream[loc]->yylineno + 1;
+    rv.col = tokStream[loc]->column - 1;
+    rv.sourceLine = source[tokStream[loc]->yylineno];
+    rv.valid = !rv.sourceLine.empty();
+
+    return rv;
+}
+
+

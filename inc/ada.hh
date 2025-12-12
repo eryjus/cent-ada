@@ -24,7 +24,9 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
+#include <cstring>
 #include <vector>
+#include <unordered_map>
 
 
 
@@ -42,6 +44,7 @@ typedef union YYSTYPE yystype_t;
 //    -------------------------
 #include "tstream.hh"
 #include "parser.hh"
+#include "diag.hh"
 
 
 

@@ -22,6 +22,8 @@
 //    ----------------------------------------------------------------
 bool Parser::ParseBasicDeclaration(void)
 {
+    diags.Note(tokens.SourceLocation(), DiagID::TestDiagnistic, {"it's working!"});
+
     if (ParseObjectDeclaration())           return true;
     if (ParseNumberDeclaration())           return true;
     if (ParseTypeDeclaration())             return true;

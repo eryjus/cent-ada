@@ -21,6 +21,19 @@
 
 
 //
+// -- This structure is the location of the token in the source file
+//    --------------------------------------------------------------
+typedef struct {
+    std::string filename;
+    long line;
+    int col;
+    std::string sourceLine;
+    bool valid;
+} SourceLoc_t;
+
+
+
+//
 // -- This is the stream of tokens organized as a vector table so the parser can look ahead
 //    -------------------------------------------------------------------------------------
 class TokenStream {
@@ -64,6 +77,7 @@ public:
     int Location(void) const { return loc; }
     void Listing(void);
     void List(void);
+    SourceLoc_t SourceLocation(void);
 
 
 public:

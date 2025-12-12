@@ -14,6 +14,9 @@
 
 
 
+//
+// -- This class will handle the entirety of the parser
+//    -------------------------------------------------
 class Parser {
 private:
     TokenStream &tokens;
