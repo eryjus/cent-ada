@@ -22,7 +22,12 @@
  *    -----------------------------------------------------------------
  */
 %{
-    #include "ada.hh"
+    #include <string>
+
+    extern int column;
+    extern std::string strVal;
+
+    #include "tokens.hh"
 %}
 
 
