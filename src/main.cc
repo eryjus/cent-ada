@@ -18,6 +18,23 @@
 
 
 //
+// -- This enum will be used to control the parse type
+//    ------------------------------------------------
+typedef enum {
+    COMPILE_FULL,
+    COMPILE_TYPES,
+} ParseType_t;
+
+
+
+//
+// -- The global token stream used for scanning
+//    -----------------------------------------
+TokenStream *tokens = nullptr;
+
+
+
+//
 // -- Scan the input for testing purposes
 //    -----------------------------------
 static int Scan(std::string filename)
@@ -202,12 +219,16 @@ static int Tokenize(std::string filename)
 //
 // -- Properly Compile the source
 //    ---------------------------
-static int Compile(std::string filename, ParserMode_t mode)
+static int Compile(std::string filename, ParseType_t type)
 {
-    extern ParserMode_t parserMode;
     tokens = new TokenStream(filename.c_str());
-    parserMode = mode;
-    yyparse();
+    Parser *parser = new Parser(*tokens);
+
+    switch (type) {
+    case COMPILE_TYPES: parser->ParseBasicDeclaration();    break;
+    default:                                                break;
+    }
+
     return EXIT_SUCCESS;
 }
 
@@ -236,7 +257,7 @@ int main(int argc, char *argv[])
         ACT_TOKENIZE,
     } action = ACT_COMPILE;
     std::string filename = "";
-    ParserMode_t mode = MODE_FULL_PROGRAM;
+    ParseType_t type = COMPILE_FULL;
 
     for (int i = 1; i < argc; i ++) {
         std::string arg(argv[i]);
@@ -257,7 +278,7 @@ int main(int argc, char *argv[])
 
         if (arg == "declarations" || arg == "types") {
             action = ACT_COMPILE;
-            mode = MODE_BASIC_DECLARATION;
+            type = COMPILE_TYPES;
             continue;
         }
 
@@ -274,7 +295,7 @@ int main(int argc, char *argv[])
         return Tokenize(filename);
 
     default:
-        return Compile(filename, mode);
+        return Compile(filename, type);
     }
 }
 
