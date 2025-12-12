@@ -21,16 +21,6 @@
 
 
 //
-// -- Additional information required for some tokens, such as ID names and literal values
-//    ------------------------------------------------------------------------------------
-typedef union YYSTYPE {
-    std::string *errMsg;
-} YYSTYPE;
-typedef YYSTYPE yystype_t;
-
-
-
-//
 // -- This is the stream of tokens organized as a vector table so the parser can look ahead
 //    -------------------------------------------------------------------------------------
 class TokenStream {
@@ -41,11 +31,10 @@ private:
         int yylineno;
         int column;
         TokenType_t tok;
-        yystype_t payload;
 
     public:
-        Token(std::string &f, int l, int c, TokenType_t t, yystype_t p)
-                : filename(f), yylineno(l), column(c), tok(t), payload(p) {}
+        Token(std::string &f, int l, int c, TokenType_t t)
+                : filename(f), yylineno(l), column(c), tok(t) {}
     } Token_t;
 
 
@@ -71,13 +60,14 @@ public:
     long LineNo(void) const { return tokStream[loc]->yylineno; }
     int Column(void) const { return tokStream[loc]->column; }
     void Recovery(TokenType_t t = TOK_SEMICOLON) { while (Current() != t) { Advance(); } Advance(); }
-    void Reset(void) { loc = 0; }
+    void Reset(int nLoc) { loc = nLoc; }
+    int Location(void) const { return loc; }
     void Listing(void);
     void List(void);
 
 
 public:
-    std::string &GetErrMsg(void) const { return *(tokStream[loc]->payload.errMsg); }
+//    std::string &GetErrMsg(void) const { return *(tokStream[loc]->payload.errMsg); }
 };
 
 

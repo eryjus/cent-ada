@@ -3,3 +3,6 @@
 
 obj/*.o
 bin/ada-cc
+gen/*.cc
+gen/*.hh
+
