@@ -1,4 +1,3 @@
-: ../src/parser.yy |> bison -k -t --report=states --report-file=parser.log %f |> parser.cc | tokens.hh parser.log
-: ../src/scanner.ll | ../gen/tokens.hh |> flex -o scanner.ll.cc ../src/scanner.ll |> scanner.ll.cc
+: ../src/scanner.ll |> flex -o scanner.ll.cc ../src/scanner.ll |> scanner.ll.cc
 
 
