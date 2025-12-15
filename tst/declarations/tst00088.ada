@@ -1,0 +1,1 @@
+subtype DRUM_UNIT is PERIPHERAL(DRUM);

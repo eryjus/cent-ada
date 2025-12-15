@@ -1,0 +1,1 @@
+subtype RED_BLUE is RAINBOW;

@@ -1,0 +1,1 @@
+type LOCAL_COORDINATE is new COORDINATE;

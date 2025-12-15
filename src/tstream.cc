@@ -81,7 +81,6 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 const char *TokenStream::tokenStr(int tok) const
 {
     const char *str[] = {
-        "YYerror",                         // 256
         "YYUNDEF",                         // 257
         "TOK_QUOTATION",                   // 258
         "TOK_SHARP",                       // 259
@@ -204,8 +203,9 @@ const char *TokenStream::tokenStr(int tok) const
     };
 
     if ((int)tok >= TOK_ERROR) return "UNKNOWN";
+    if ((int)tok == YYEOF) return "EOF";
 
-    return str[tok - 256];
+    return str[tok - 257];
 }
 
 
@@ -248,6 +248,24 @@ void TokenStream::List(void)
     }
 
     std::cout << "\n\n";
+}
+
+
+
+//
+// -- Get the source location for diagnostic messages
+//    -----------------------------------------------
+SourceLoc_t TokenStream::SourceLocation(void)
+{
+    SourceLoc_t rv;
+
+    rv.filename = filename;
+    rv.line = tokStream[loc]->yylineno + 1;
+    rv.col = tokStream[loc]->column - 1;
+    rv.sourceLine = (tokStream[loc]->yylineno < source.size()) ? source[tokStream[loc]->yylineno] : "";
+    rv.valid = !rv.sourceLine.empty();
+
+    return rv;
 }
 
 

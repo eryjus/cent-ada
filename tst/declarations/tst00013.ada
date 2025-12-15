@@ -1,0 +1,1 @@
+ONE, UN, EINS : constant := 1;

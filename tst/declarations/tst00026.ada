@@ -1,0 +1,1 @@
+type COUNTER is new POSITIVE;
