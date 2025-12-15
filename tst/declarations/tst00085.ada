@@ -1,0 +1,1 @@
+type DEVICE is (PRINTER, DISK, DRUM);

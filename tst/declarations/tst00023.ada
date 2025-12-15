@@ -1,0 +1,1 @@
+subtype MALE is PERSON(SEX => M);

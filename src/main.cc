@@ -223,12 +223,15 @@ static int Compile(std::string filename, ParseType_t type)
 {
     tokens = new TokenStream(filename.c_str());
     Parser *parser = new Parser(*tokens);
+    diags.SetParser(parser);
+    parser->SetTrace(true);
 
     switch (type) {
     case COMPILE_TYPES: parser->ParseBasicDeclaration();    break;
     default:                                                break;
     }
 
+    std::cout << "Parse Complete.\n";
     return EXIT_SUCCESS;
 }
 

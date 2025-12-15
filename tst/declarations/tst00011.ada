@@ -1,0 +1,1 @@
+MAX : constant := 500;

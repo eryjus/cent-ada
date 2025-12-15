@@ -1,0 +1,1 @@
+NINETY_SIX : constant ROMAN := "XCVI";

@@ -1,0 +1,4 @@
+COLOR_TABLE : ARRAY(1 .. N) of COLOR;
+
+
+

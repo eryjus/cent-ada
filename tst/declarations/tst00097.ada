@@ -1,0 +1,1 @@
+type PERSON(SEX : GENGER);

@@ -1,0 +1,2 @@
+type LEVEL is (LOW, MEDIUM, URGENT);
+

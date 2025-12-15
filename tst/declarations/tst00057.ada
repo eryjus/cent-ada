@@ -1,0 +1,1 @@
+type ROMAN is array(POSITIVE range <>) of ROMAN_DIGIT;
