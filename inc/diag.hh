@@ -14,11 +14,23 @@
 
 
 //
+// -- a forward declaration needed to keep the compiler quite
+//    -------------------------------------------------------
+class Parser;
+
+
+//
 // -- These are the list of possible diagnostic messages
 //    --------------------------------------------------
 enum class DiagID {
-    TestDiagnistic,
+    UnexpectedEOF,
+    UnexpectedToken,
     MissingSemicolon,
+    MissingRightParen,
+    MissingEnd,
+    MissingEndingTag,
+    MissingRecordComponentDefinitions,
+    InvalidChoiceInVariant,
 };
 
 
@@ -28,15 +40,19 @@ enum class DiagID {
 //    ------------------------------------------------------
 class Diagnostics {
 private:
+    Parser *parser;
     static const std::unordered_map<DiagID, std::string> DiagMsgs;
+    std::vector<std::string> msgQueue;
     int warnings;
     int errors;
 
 
     // -- ctor/dtor
 public:
-    Diagnostics(void) : warnings(0), errors(0) {}
+    Diagnostics(void) : parser(nullptr), warnings(0), errors(0) {}
     virtual ~Diagnostics()= default;
+
+    void SetParser(Parser *p) { parser = p; }
 
 
     // -- public interface functions
@@ -52,11 +68,22 @@ public:
     void Note(SourceLoc_t loc, DiagID id, std::vector<std::string> args = {}) {
         Emit("note", id, loc, args);
     }
+    void Debug(std::string s) { std::cerr << s << '\n'; }
 
 
 private:
     void Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string> &args);
     std::string Format(std::string tmpl, const std::vector<std::string> args);
+
+
+public:
+    void Queue(std::string msg) { msgQueue.push_back(msg); }
+    size_t Checkpoint(void) const { return msgQueue.size(); }
+    void Rollback(size_t loc) { assert(loc <= msgQueue.size()); msgQueue.resize(loc); }
+    void Flush(void) {
+        for (const auto &m : msgQueue) { assert(!m.empty()); }
+        for (auto m : msgQueue) { std::cerr << m; } msgQueue.clear();
+    }
 };
 
 

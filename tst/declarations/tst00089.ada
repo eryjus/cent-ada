@@ -1,0 +1,2 @@
+subtype DISK_UNIT is PERIPHERAL(DISK);
+

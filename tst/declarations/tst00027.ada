@@ -1,0 +1,1 @@
+type SPECIAL_KEY is new KEY_MANAGER.KEY;

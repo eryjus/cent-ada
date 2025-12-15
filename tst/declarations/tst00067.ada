@@ -1,0 +1,2 @@
+
+FILTER : BIT_VECTOR(0 .. 31);

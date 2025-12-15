@@ -1,0 +1,1 @@
+TOLLERANCE : constant REAL := DISPERSION(1.15):

@@ -1,0 +1,1 @@
+subtype SMALL_INT is INTEGER range -10 .. 10;

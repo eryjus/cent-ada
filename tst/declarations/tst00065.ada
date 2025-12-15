@@ -1,0 +1,2 @@
+RECTANGLE : MATRIX(1 .. 20, 1 .. 30);
+

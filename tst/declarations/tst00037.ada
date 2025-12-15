@@ -1,0 +1,1 @@
+subtype MAJOR is SUIT range HEARTS .. SPADES;

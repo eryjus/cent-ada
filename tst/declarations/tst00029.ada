@@ -1,0 +1,2 @@
+type suit is (CLUBS, DIAMONDS, HEARTS, SPADES);
+

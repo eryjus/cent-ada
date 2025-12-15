@@ -1,0 +1,1 @@
+subtype INT is INTEGER;

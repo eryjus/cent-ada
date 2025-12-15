@@ -1,0 +1,1 @@
+ASK_TWICE : constant STRING := QUESTION & QUESTION;

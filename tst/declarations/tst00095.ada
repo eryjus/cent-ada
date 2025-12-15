@@ -1,0 +1,1 @@
+HEAD : LINK := new CELL'(0, null, null);

@@ -17,25 +17,37 @@
 
 
 
+
+//
+// -- This statically declaraed member in the Mark class needs a physical memory location
+//    -----------------------------------------------------------------------------------
+int Parser::Mark::depth = 0;
+bool Parser::Production::trace = false;
+
+
+
 //
 // -- For Chapter 3, a `basic_declaration` is the top-level production
 //    ----------------------------------------------------------------
 bool Parser::ParseBasicDeclaration(void)
 {
-    diags.Note(tokens.SourceLocation(), DiagID::TestDiagnistic, {"it's working!"});
+    // -- This top-level production must Mark its location so it can output diags
+    Production p(*this, "basic_declaration");
+    Mark m(tokens, diags);
 
-    if (ParseObjectDeclaration())           return true;
-    if (ParseNumberDeclaration())           return true;
-    if (ParseTypeDeclaration())             return true;
-    if (ParseSubtypeDeclaration())          return true;
-    if (ParseSubprogramDeclaration())       return true;
-    if (ParsePackageDeclaration())          return true;
-    if (ParseTaskDeclaration())             return true;
-    if (ParseGenericDeclaration())          return true;
-    if (ParseExpeptionDeclaration())        return true;
-    if (ParseGenericInstantiation())        return true;
-    if (ParseRenamingDeclaration())         return true;
-    if (ParseDeferredConstantDeclaration()) return true;
+    if (m.CommitAlternative(ParseObjectDeclaration()))            return true;
+    if (m.CommitAlternative(ParseNumberDeclaration()))            return true;
+    if (m.CommitAlternative(ParseTypeDeclaration()))              return true;
+    if (m.CommitAlternative(ParseSubtypeDeclaration()))           return true;
+    if (m.CommitAlternative(ParseSubprogramDeclaration()))        return true;
+    if (m.CommitAlternative(ParsePackageDeclaration()))           return true;
+    if (m.CommitAlternative(ParseTaskDeclaration()))              return true;
+    if (m.CommitAlternative(ParseGenericDeclaration()))           return true;
+    if (m.CommitAlternative(ParseExceptionDeclaration()))         return true;
+    if (m.CommitAlternative(ParseGenericInstantiation()))         return true;
+    if (m.CommitAlternative(ParseRenamingDeclaration()))          return true;
+    if (m.CommitAlternative(ParseDeferredConstantDeclaration()))  return true;
+
     return false;
 }
 
@@ -46,16 +58,27 @@ bool Parser::ParseBasicDeclaration(void)
 //    ---------------------------
 bool Parser::ParseObjectDeclaration(void)
 {
-    Mark m(tokens);
+    Production p(*this, "object_declaration");
+    Mark m(tokens, diags);
 
     bool isConstant = false;
     if (!ParseIdentifierList()) return false;
     if (!Require(TOK_COLON)) return false;
     isConstant = Optional(TOK_CONSTANT);
-    if (!(ParseSubtypeIndication() || ParseConstrainedArrayDefinition())) return false;
-    if (Optional(TOK_ASSIGNMENT)) ParseExpression();
+
+    if (ParseSubtypeIndication()) {
+        // -- do something important here
+    } else if (ParseConstrainedArrayDefinition()) {
+        // -- do something important here
+    } else return false;
+
+    if (Optional(TOK_ASSIGNMENT)) {
+        ParseExpression();
+    }
+
     if (!Require(TOK_SEMICOLON)) {
-        // -- TODO: simply missing a semicolon; issue an error and continue
+        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, {"expression"});
+        // -- continue on in hopes that this does not create a cascade of errors
     }
 
     m.Commit();
@@ -69,7 +92,8 @@ bool Parser::ParseObjectDeclaration(void)
 //    --------------------------
 bool Parser::ParseNumberDeclaration(void)
 {
-    Mark m(tokens);
+    Production p(*this, "number_declaration");
+    Mark m(tokens, diags);
 
     if (!ParseIdentifierList()) return false;
     if (!Require(TOK_COLON)) return false;
@@ -84,7 +108,8 @@ bool Parser::ParseNumberDeclaration(void)
     ParseExpression();
 
     if (!Require(TOK_SEMICOLON)) {
-        // -- TODO: maybe only missing a semicolon; issue an error and continue on
+        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, {"expression"});
+        // -- continue on in hopes that this does not create a cascade of errors
     }
 
 
@@ -104,7 +129,8 @@ bool Parser::ParseNumberDeclaration(void)
 //    ------------------------
 bool Parser::ParseIdentifierList(void)
 {
-    Mark m(tokens);
+    Production p(*this, "identifier_list");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_IDENTIFIER)) return false;
 
@@ -123,9 +149,12 @@ bool Parser::ParseIdentifierList(void)
 //    ------------------------
 bool Parser::ParseTypeDeclaration(void)
 {
-    if (ParseFullTypeDeclaration())         return true;
-    if (ParseIncompleteTypeDeclaration())   return true;
-    if (ParsePrivateTypeDeclaration())      return true;
+    Production p(*this, "type_declaration");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseFullTypeDeclaration()))         return true;
+    if (m.CommitAlternative(ParseIncompleteTypeDeclaration()))   return true;
+    if (m.CommitAlternative(ParsePrivateTypeDeclaration()))      return true;
     return false;
 }
 
@@ -136,7 +165,8 @@ bool Parser::ParseTypeDeclaration(void)
 //    -----------------------------
 bool Parser::ParseFullTypeDeclaration(void)
 {
-    Mark m(tokens);
+    Production p(*this, "full_type_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_TYPE)) return false;
     if (!Require(TOK_IDENTIFIER)) return false;
@@ -144,7 +174,8 @@ bool Parser::ParseFullTypeDeclaration(void)
     if (!Require(TOK_IS)) return false;
     ParseTypeDefinition();
     if (!Require(TOK_SEMICOLON)) {
-        // TODO: issue an error and assume a semicolon is missing
+        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, {"expression"});
+        // -- continue on in hopes that this does not create a cascade of errors
     }
 
     m.Commit();
@@ -158,13 +189,16 @@ bool Parser::ParseFullTypeDeclaration(void)
 //    ------------------------
 bool Parser::ParseTypeDefinition(void)
 {
-    if (ParseEnumerationTypeDefinition())   return true;
-    if (ParseIntegerTypeDefinition())       return true;
-    if (ParseRealTypeDefinition())          return true;
-    if (ParseArrayTypeDefinition())         return true;
-    if (ParseRecordTypeDefinition())        return true;
-    if (ParseAccessTypeDefinition())        return true;
-    if (ParseDerivedTypeDefinition())       return true;
+    Production p(*this, "type_definition");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseEnumerationTypeDefinition()))      return true;
+    if (m.CommitAlternative(ParseIntegerTypeDefinition()))          return true;
+    if (m.CommitAlternative(ParseRealTypeDefinition()))             return true;
+    if (m.CommitAlternative(ParseArrayTypeDefinition()))            return true;
+    if (m.CommitAlternative(ParseRecordTypeDefinition()))           return true;
+    if (m.CommitAlternative(ParseAccessTypeDefinition()))           return true;
+    if (m.CommitAlternative(ParseDerivedTypeDefinition()))          return true;
     return false;
 }
 
@@ -176,7 +210,8 @@ bool Parser::ParseTypeDefinition(void)
 //    ---------------------------
 bool Parser::ParseSubtypeDeclaration(void)
 {
-    Mark m(tokens);
+    Production p(*this, "subtype_declaration");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_SUBTYPE)) return false;
     if (!Require(TOK_IDENTIFIER)) return false;
@@ -194,10 +229,11 @@ bool Parser::ParseSubtypeDeclaration(void)
 //    --------------------------
 bool Parser::ParseSubtypeIndication(void)
 {
-    Mark m(tokens);
+    Production p(*this, "subtype_indication");
+    Mark m(tokens, diags);
 
     if (!ParseTypeMark()) return false;
-    ParseConstrant();
+    ParseConstraint();
 
     m.Commit();
     return true;
@@ -210,7 +246,8 @@ bool Parser::ParseSubtypeIndication(void)
 //    -----------------
 bool Parser::ParseTypeMark(void)
 {
-    Mark m(tokens);
+    Production p(*this, "type_mark");
+    Mark m(tokens, diags);
 
     if (!ParseName()) return false;
 
@@ -235,13 +272,16 @@ bool Parser::ParseTypeMark(void)
 //
 // -- Parse a Constraint
 //    ------------------
-bool Parser::ParseConstrant(void)
+bool Parser::ParseConstraint(void)
 {
-    if (ParseRangeConstraint())                 return true;
-    if (ParseFloatingPointConstraint())         return true;
-    if (ParseFixedPointConstraint())            return true;
-    if (ParseIndexConstraint())                 return true;
-    if (ParseDiscriminantConstraint())          return true;
+    Production p(*this, "constraint");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseRangeConstraint()))                return true;
+    if (m.CommitAlternative(ParseFloatingPointConstraint()))        return true;
+    if (m.CommitAlternative(ParseFixedPointConstraint()))           return true;
+    if (m.CommitAlternative(ParseIndexConstraint()))                return true;
+    if (m.CommitAlternative(ParseDiscriminantConstraint()))         return true;
     return false;
 }
 
@@ -252,7 +292,8 @@ bool Parser::ParseConstrant(void)
 //    -------------------------------
 bool Parser::ParseDerivedTypeDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "derived_type_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_NEW)) return false;
     if (!ParseSubtypeIndication()) return false;
@@ -268,7 +309,8 @@ bool Parser::ParseDerivedTypeDefinition(void)
 //    ------------------------
 bool Parser::ParseRangeConstraint(void)
 {
-    Mark m(tokens);
+    Production p(*this, "range_constraint");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_RANGE)) return false;
     if (!ParseRange()) return false;
@@ -284,7 +326,8 @@ bool Parser::ParseRangeConstraint(void)
 //    -------------
 bool Parser::ParseRange(void)
 {
-    Mark m(tokens);
+    Production p(*this, "range");
+    Mark m(tokens, diags);
 
     if (ParseAttribute()) {
         m.Commit();
@@ -307,7 +350,8 @@ bool Parser::ParseRange(void)
 //    ------------------------------------
 bool Parser::ParseEnumerationTypeDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "enumeration_type_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseEnumerationLiteralSpecification()) return false;
@@ -317,7 +361,8 @@ bool Parser::ParseEnumerationTypeDefinition(void)
     }
 
     if (!Require(TOK_RIGHT_PARENTHESIS)) {
-        // TODO: issue an error about a closing paren and continue
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRightParen, {"enumeration literal"});
+        // -- continue on in hopes that this does not create a cascade of errors
     }
 
     m.Commit();
@@ -331,7 +376,12 @@ bool Parser::ParseEnumerationTypeDefinition(void)
 //    ------------------------------------------
 bool Parser::ParseEnumerationLiteralSpecification(void)
 {
+    Production p(*this, "enumeration_literal_specification");
+    Mark m(tokens, diags);
+
     if (!ParseEnumerationLiteral()) return false;
+
+    m.Commit();
     return true;
 }
 
@@ -342,7 +392,8 @@ bool Parser::ParseEnumerationLiteralSpecification(void)
 //    ----------------------------
 bool Parser::ParseEnumerationLiteral(void)
 {
-    Mark m(tokens);
+    Production p(*this, "enumeration_literal");
+    Mark m(tokens, diags);
 
     if (Optional(TOK_IDENTIFIER)) {
         m.Commit();
@@ -376,7 +427,12 @@ bool Parser::ParseEnumerationLiteral(void)
 //    --------------------------------
 bool Parser::ParseIntegerTypeDefinition(void)
 {
+    Production p(*this, "integer_type_definition");
+    Mark m(tokens, diags);
+
     if (!ParseRangeConstraint()) return false;
+
+    m.Commit();
     return true;
 }
 
@@ -387,8 +443,11 @@ bool Parser::ParseIntegerTypeDefinition(void)
 //    ----------------------------
 bool Parser::ParseRealTypeDefinition(void)
 {
-    if (ParseFloatingPointConstraint()) return true;
-    if (ParseFixedPointConstraint()) return true;
+    Production p(*this, "real_type_definition");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseFloatingPointConstraint()))    return true;
+    if (m.CommitAlternative(ParseFixedPointConstraint()))       return true;
     return false;
 }
 
@@ -399,9 +458,13 @@ bool Parser::ParseRealTypeDefinition(void)
 //    ---------------------------------
 bool Parser::ParseFloatingPointConstraint(void)
 {
+    Production p(*this, "floating_point_constraint");
+    Mark m(tokens, diags);
+
     if (!ParseFloatingAccuracyDefinition()) return false;
     ParseRangeConstraint();
 
+    m.Commit();
     return true;
 }
 
@@ -412,7 +475,8 @@ bool Parser::ParseFloatingPointConstraint(void)
 //    -----------------------------------
 bool Parser::ParseFloatingAccuracyDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "floating_accuracy_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_DIGITS)) return false;
     if (!ParseSimpleExpression()) return false;
@@ -436,9 +500,13 @@ bool Parser::ParseFloatingAccuracyDefinition(void)
 //    ------------------------------
 bool Parser::ParseFixedPointConstraint(void)
 {
+    Production p(*this, "fixed_point_constraint");
+    Mark m(tokens, diags);
+
     if (!ParseFixedAccuracyDefinition()) return false;
     ParseRangeConstraint();
 
+    m.Commit();
     return true;
 }
 
@@ -449,7 +517,8 @@ bool Parser::ParseFixedPointConstraint(void)
 //    --------------------------------
 bool Parser::ParseFixedAccuracyDefinition(void)
 {
-    Mark m(tokens);
+    Production(*this, "fixed_accuracy_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_DELTA)) return false;
     if (!ParseSimpleExpression()) return false;
@@ -473,8 +542,11 @@ bool Parser::ParseFixedAccuracyDefinition(void)
 //    ------------------------------
 bool Parser::ParseArrayTypeDefinition(void)
 {
-    if (ParseUnconstrainedArrayDefinition()) return true;
-    if (ParseConstrinedArrayDefinition()) return true;
+    Production p(*this, "array_type_definition");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseUnconstrainedArrayDefinition()))   return true;
+    if (m.CommitAlternative(ParseConstrainedArrayDefinition()))     return true;
     return false;
 }
 
@@ -485,7 +557,8 @@ bool Parser::ParseArrayTypeDefinition(void)
 //    ---------------------------------------
 bool Parser::ParseUnconstrainedArrayDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "unconstrained_array_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_ARRAY)) return false;
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
@@ -495,7 +568,11 @@ bool Parser::ParseUnconstrainedArrayDefinition(void)
         if (!ParseIndexSubtypeDefinition()) return false;
     }
 
-    if (!Require(TOK_RIGHT_PARENTHESIS)) return false;
+    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRightParen, {"array index subtype definition"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
     if (!Require(TOK_OF)) return false;
     if (!ParseSubtypeIndication()) return false;
 
@@ -519,7 +596,8 @@ bool Parser::ParseUnconstrainedArrayDefinition(void)
 //    ------------------------------------
 bool Parser::ParseConstrainedArrayDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "constrained_array_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_ARRAY)) return false;
     if (!ParseIndexConstraint()) return false;
@@ -547,7 +625,8 @@ bool Parser::ParseConstrainedArrayDefinition(void)
 //    ---------------------------------
 bool Parser::ParseIndexSubtypeDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "index_subtype_definition");
+    Mark m(tokens, diags);
 
     if (!ParseTypeMark()) return false;
     if (!Require(TOK_RANGE)) return false;
@@ -564,16 +643,20 @@ bool Parser::ParseIndexSubtypeDefinition(void)
 //    -------------------------
 bool Parser::ParseIndexConstraint(void)
 {
-    Mark m(tokens);
+    Production p(*this, "index_constraint");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseDiscreteRange()) return false;
 
-    while (!Optional(TOK_COMMA)) {
+    while (Optional(TOK_COMMA)) {
         if (!ParseDiscreteRange()) return false;
     }
 
-    if (!Require(TOK_RIGHT_PARENTHESIS)) return false;
+    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRightParen, {"discrete range"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
 
     m.Commit();
     return true;
@@ -586,15 +669,17 @@ bool Parser::ParseIndexConstraint(void)
 //    --------------------
 bool Parser::ParseDiscreteRange(void)
 {
+    Production p(*this, "discrete_range");
+    Mark m(tokens, diags);
+
     //
     // -- In the following check, it must be a `discrete_` subtype indication.  Just
     //    having a successful parse is not correct.
     //
     //    TODO: Check for Discrete type
     //    ---------------------------------------------------------------------------
-    if (ParseSubtypeIndication()) return true;
-
-    if (ParseRange()) return true;
+    if (m.CommitAlternative(ParseSubtypeIndication()))      return true;
+    if (m.CommitAlternative(ParseRange()))                  return true;
 
     return false;
 }
@@ -606,12 +691,20 @@ bool Parser::ParseDiscreteRange(void)
 //    ------------------------------
 bool Parser::ParseRecordTypeDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "record_type_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_RECORD)) return false;
     if (!ParseComponentList()) return false;
-    if (!Require(TOK_END)) return false;
-    if (!Require(TOK_RECORD)) return false;
+    if (!Require(TOK_END)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingEnd, {"record component list"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
+    if (!Require(TOK_RECORD)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingEndingTag, {"record"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
 
     m.Commit();
     return true;
@@ -625,11 +718,13 @@ bool Parser::ParseRecordTypeDefinition(void)
 //    ----------------------
 bool Parser::ParseComponentList(void)
 {
-    Mark m(tokens);
+    Production p(*this, "component_list");
+    Mark m(tokens, diags);
 
     if (Require(TOK_NULL)) {
         if (!Require(TOK_SEMICOLON)) {
-            // -- TODO: issue a missing semicolon error message
+            diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, {"null"});
+            // -- continue on in hopes that this does not create a cascade of errors
         }
 
         m.Commit();
@@ -650,8 +745,8 @@ bool Parser::ParseComponentList(void)
     }
 
     if (declCnt == 0 && hasVariant == false) {
-        // -- TODO: issue an error about missing record component definitions
-        return false;
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRecordComponentDefinitions);
+        // -- continue on in hopes that this does not create a cascade of errors
     }
 
     m.Commit();
@@ -665,7 +760,8 @@ bool Parser::ParseComponentList(void)
 //    -----------------------------
 bool Parser::ParseComponentDeclaration(void)
 {
-    Mark m(tokens);
+    Production p(*this, "component_declaration");
+    Mark m(tokens, diags);
 
     if (!ParseIdentifierList()) return false;
     if (!Require(TOK_COLON)) return false;
@@ -673,6 +769,12 @@ bool Parser::ParseComponentDeclaration(void)
 
     if (Optional(TOK_ASSIGNMENT)) {
         if (!ParseExpression()) return false;
+    }
+
+    if (!Require(TOK_SEMICOLON)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, {"expression"});
+        // -- continue on in hopes that this does not create a cascade of errors
+
     }
 
     m.Commit();
@@ -686,7 +788,10 @@ bool Parser::ParseComponentDeclaration(void)
 //    ------------------------------------
 bool Parser::ParseComponentSubtypeDefinition(void)
 {
-    if (ParseSubtypeIndication()) return true;
+    Production p(*this, "component_subtype_definition");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseSubtypeIndication()))      return true;
     return false;
 }
 
@@ -697,7 +802,8 @@ bool Parser::ParseComponentSubtypeDefinition(void)
 //    -------------------------
 bool Parser::ParseDiscriminantPart(void)
 {
-    Mark m(tokens);
+    Production p(*this, "disctiminant_part");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseDiscriminantSpecification()) return false;
@@ -706,7 +812,11 @@ bool Parser::ParseDiscriminantPart(void)
         if (!ParseDiscriminantSpecification()) return false;
     }
 
-    if (!Require(TOK_RIGHT_PARENTHESIS)) return false;
+    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRightParen, {"discriminant specification"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
 
     m.Commit();
     return true;
@@ -719,7 +829,8 @@ bool Parser::ParseDiscriminantPart(void)
 //    ----------------------------------
 bool Parser::ParseDiscriminantSpecification(void)
 {
-    Mark m(tokens);
+    Production p(*this, "discriminant_specification");
+    Mark m(tokens, diags);
 
     if (!ParseIdentifierList()) return false;
     if (!Require(TOK_COLON)) return false;
@@ -740,7 +851,8 @@ bool Parser::ParseDiscriminantSpecification(void)
 //    -------------------------------
 bool Parser::ParseDiscriminantConstraint(void)
 {
-    Mark m(tokens);
+    Production p(*this, "discriminant_constraint");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseDiscriminantAssociation()) return false;
@@ -749,7 +861,11 @@ bool Parser::ParseDiscriminantConstraint(void)
         if (!ParseDiscriminantAssociation()) return false;
     }
 
-    if (!Require(TOK_RIGHT_PARENTHESIS)) return false;
+    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRightParen, {"discriminant association"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
 
     m.Commit();
     return true;
@@ -762,7 +878,8 @@ bool Parser::ParseDiscriminantConstraint(void)
 //    --------------------------------
 bool Parser::ParseDiscriminantAssociation(void)
 {
-    Mark m(tokens);
+    Production p(*this, "disriminant_association");
+    Mark m(tokens, diags);
 
     if (ParseSimpleName()) {
         //
@@ -793,7 +910,8 @@ bool Parser::ParseDiscriminantAssociation(void)
 //    --------------------
 bool Parser::ParseVariantPart(void)
 {
-    Mark m(tokens);
+    Production p(*this, "variant_part");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_CASE)) return false;
     if (!ParseSimpleName()) return false;
@@ -804,8 +922,16 @@ bool Parser::ParseVariantPart(void)
         // -- for the moment, nothing is needed here
     }
 
-    if (!Require(TOK_END)) return false;
-    if (!Require(TOK_CASE)) return false;
+    if (!Require(TOK_END)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingEnd, {"variant part"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
+    if (!Require(TOK_CASE)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingRightParen, {"discriminant specification"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
     if (!Require(TOK_SEMICOLON)) return false;
 
     m.Commit();
@@ -819,7 +945,8 @@ bool Parser::ParseVariantPart(void)
 //    ---------------
 bool Parser::ParseVariant(void)
 {
-    Mark m(tokens);
+    Production p(*this, "variant");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_WHEN)) return false;
     if (!ParseChoice()) return false;
@@ -842,7 +969,8 @@ bool Parser::ParseVariant(void)
 //    --------------
 bool Parser::ParseChoice(void)
 {
-    Mark m(tokens);
+    Production p(*this, "choice");
+    Mark m(tokens, diags);
 
     if (ParseSimpleExpression()) {
         m.Commit();
@@ -869,6 +997,8 @@ bool Parser::ParseChoice(void)
         return true;
     }
 
+    diags.Error(tokens.SourceLocation(), DiagID::InvalidChoiceInVariant);
+
     return false;
 }
 
@@ -879,7 +1009,8 @@ bool Parser::ParseChoice(void)
 //    -------------------------------
 bool Parser::ParseAccessTypeDefinition(void)
 {
-    Mark m(tokens);
+    Production p(*this, "access_type_definition");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_ACCESS)) return false;
     if (!ParseSubtypeIndication()) return false;
@@ -895,7 +1026,8 @@ bool Parser::ParseAccessTypeDefinition(void)
 //    ------------------------------------
 bool Parser::ParseIncompleteTypeDeclaration(void)
 {
-    Mark m(tokens);
+    Production p(*this, "incomplete_type_declaration");
+    Mark m(tokens, diags);
 
     if (!Require(TOK_TYPE)) return false;
     if (!Require(TOK_IDENTIFIER)) return false;
@@ -903,7 +1035,11 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     // -- this is optional
     ParseDiscriminantPart();
 
-    if (!Require(TOK_SEMICOLON)) return false;
+    if (!Require(TOK_SEMICOLON)) {
+        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, {"disctiminant part"});
+        // -- continue on in hopes that this does not create a cascade of errors
+    }
+
 
     m.Commit();
     return true;
@@ -916,6 +1052,9 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
 //    ------------------------
 bool Parser::ParseDeclarativePart(void)
 {
+    Production p(*this, "declarative_part");
+    Mark m(tokens, diags);
+
     while (ParseBasicDeclarativeItem()) {
         // -- for now, nothing to be done here
     }
@@ -924,6 +1063,7 @@ bool Parser::ParseDeclarativePart(void)
         // -- for now, nothing to be done here
     }
 
+    m.Commit();
     return true;
 }
 
@@ -934,9 +1074,12 @@ bool Parser::ParseDeclarativePart(void)
 //    ------------------------------
 bool Parser::ParseBasicDeclarativeItem(void)
 {
-    if (ParseBasicDeclaration()) return true;
-    if (ParseRepresentationClause()) return true;
-    if (ParseUseClause()) return true;
+    Production p(*this, "basic_declarative_item");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseBasicDeclaration()))               return true;
+    if (m.CommitAlternative(ParseRepresentationClause()))           return true;
+    if (m.CommitAlternative(ParseUseClause()))                      return true;
 
     return false;
 }
@@ -948,13 +1091,16 @@ bool Parser::ParseBasicDeclarativeItem(void)
 //    ------------------------------
 bool Parser::ParseLaterDeclarativeItem(void)
 {
-    if (ParseBody()) return true;
-    if (ParseSubprogramDeclaration()) return true;
-    if (ParsePackageDeclaration()) return true;
-    if (ParseTaskDeclaration()) return true;
-    if (ParseGenericDeclaration()) return true;
-    if (ParseUseClause()) return true;
-    if (ParseGenericInstantiation()) return true;
+    Production p(*this, "later_declarative_item");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseBody()))                           return true;
+    if (m.CommitAlternative(ParseSubprogramDeclaration()))          return true;
+    if (m.CommitAlternative(ParsePackageDeclaration()))             return true;
+    if (m.CommitAlternative(ParseTaskDeclaration()))                return true;
+    if (m.CommitAlternative(ParseGenericDeclaration()))             return true;
+    if (m.CommitAlternative(ParseUseClause()))                      return true;
+    if (m.CommitAlternative(ParseGenericInstantiation()))           return true;
 
     return false;
 }
@@ -966,8 +1112,11 @@ bool Parser::ParseLaterDeclarativeItem(void)
 //    ------------
 bool Parser::ParseBody(void)
 {
-    if (ParseProperBody()) return true;
-    if (ParseBodyStub()) return true;
+    Production p(*this, "body");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseProperBody()))                     return true;
+    if (m.CommitAlternative(ParseBodyStub()))                       return true;
 
     return false;
 }
@@ -979,9 +1128,12 @@ bool Parser::ParseBody(void)
 //    -------------------
 bool Parser::ParseProperBody(void)
 {
-    if (ParseSubprogramBody()) return true;
-    if (ParsePackageBody()) return true;
-    if (ParseTaskBody()) return true;
+    Production p(*this, "proper_body");
+    Mark m(tokens, diags);
+
+    if (m.CommitAlternative(ParseSubprogramBody()))                 return true;
+    if (m.CommitAlternative(ParsePackageBody()))                    return true;
+    if (m.CommitAlternative(ParseTaskBody()))                       return true;
 
     return false;
 }

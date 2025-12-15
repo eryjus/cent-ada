@@ -28,8 +28,11 @@ Diagnostics diags;
 //    -------------------------
 void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string> &args)
 {
+    assert(DiagMsgs.find(id) != DiagMsgs.end());
+
     auto it = DiagMsgs.find(id);
     const std::string tmpl = (it == DiagMsgs.end() ? "" : it->second);
+    std::string msg = "";
 
     if (tmpl == "") {
         std::cerr << "internal error: unknown diagnostic ID "
@@ -50,21 +53,35 @@ void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, con
 
 
     if (loc.valid) {
-        std::cerr << loc.filename << ":"
-                  << loc.line << ":"
-                  << loc.col << ": ";
+        msg += loc.filename;
+        msg += ":";
+        msg += std::to_string(loc.line);
+        msg += ":";
+        msg += std::to_string(loc.col);
+        msg += ": ";
     }
 
 
-    std::cerr << level << ": ";
-    std::cerr << text << "\n";
+    msg += level;
+    msg += ": ";
+    msg += text;
+    msg += "\n";
 
 
     if (loc.valid && loc.sourceLine.size()) {
-        std::cerr << "    " << loc.sourceLine << "\n";
-        std::cerr << "    " << std::string(loc.col-1, ' ')
-                  << "^" << "\n";
+        msg += "    ";
+        msg += loc.sourceLine;
+        msg += "\n";
+        msg += "    ";
+        msg += std::string(loc.col - 1, ' ');
+        msg += "^";
+        msg += "\n";
     }
+
+
+    if (parser) msg += parser->UnwindStack();
+
+    Queue(msg);
 }
 
 
@@ -132,8 +149,14 @@ std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string>
 // -- The last thing in this source will be the list of messages
 //    ----------------------------------------------------------
 const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
-    { DiagID::TestDiagnistic, "This is a test diag <{0}>"},
+    { DiagID::UnexpectedEOF, "unexpected EOF in `{0}`" },
+    { DiagID::UnexpectedToken, "unexpected token in `{0}`; expected {1}" },
     { DiagID::MissingSemicolon, "expected ';' after {0}" },
+    { DiagID::MissingRightParen, "expected ')' after {0}" },
+    { DiagID::MissingEnd, "expected 'end' after {0}" },
+    { DiagID::MissingEndingTag, "after an 'end', expected to see {0}" },
+    { DiagID::MissingRecordComponentDefinitions, "a record definition requires at least 1 component" },
+    { DiagID::InvalidChoiceInVariant, "invalid choice in variant" },
 };
 
 
