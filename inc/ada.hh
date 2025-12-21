@@ -21,6 +21,7 @@
 // -- Include standard libraries
 //    --------------------------
 #include <string>
+#include <string_view>
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
@@ -28,6 +29,7 @@
 #include <vector>
 #include <cassert>
 #include <unordered_map>
+#include <memory>
 
 
 
@@ -37,6 +39,7 @@
 #include "tokens.hh"
 typedef int TokenType_t;
 typedef union YYSTYPE yystype_t;
+extern yystype_t yylval;
 
 
 
@@ -45,6 +48,7 @@ typedef union YYSTYPE yystype_t;
 //    -------------------------
 #include "tstream.hh"
 #include "diag.hh"
+#include "scopes.hh"
 #include "parser.hh"
 
 

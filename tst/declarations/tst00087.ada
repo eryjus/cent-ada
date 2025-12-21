@@ -1,3 +1,9 @@
+type DEVICE is (PRINTER, DISK, DRUM);
+type STATE is (OPEN, CLOSED);
+
+subtype CYLINDER_INDEX is INTEGER range 1 .. 99;
+subtype TRACK_NUMBER is INTEGER range 1 .. 99;
+
 type PERIPHERAL(UNIT : DEVICE := DISK) is
     record
         STATUS : STATE;

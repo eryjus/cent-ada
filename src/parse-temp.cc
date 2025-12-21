@@ -9,7 +9,7 @@
 bool Parser::ParseAttribute(void)
 {
     Production p(*this, "attribute");
-    Mark m(tokens, diags);
+    MarkStream m(tokens, diags);
 
     return false;
 }
@@ -18,18 +18,20 @@ bool Parser::ParseAttribute(void)
 bool Parser::ParseBodyStub(void)
 {
     Production p(*this, "body_stub");
-    Mark m(tokens, diags);
+    MarkStream m(tokens, diags);
 
     return false;
 }
 
 
-bool Parser::ParseName(void)
+bool Parser::ParseName(std::string &id)
 {
     Production p(*this, "name");
-    Mark m(tokens, diags);
+    MarkStream m(tokens, diags);
 
-    if (!Require(TOK_IDENTIFIER)) return false;
+    if (!RequireIdent(id)) return false;
+
+    std::cerr << "Name is " << id << '\n';
 
     m.Commit();
     return true;

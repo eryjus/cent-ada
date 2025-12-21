@@ -21,10 +21,23 @@ class Parser {
 private:
     TokenStream &tokens;
     std::vector<std::string> stack;
+    ScopeManager scopes;
 
 
 private:
-    class Mark {
+    typedef struct Id {
+        std::string name;
+        SourceLoc_t loc;
+    } Id;
+
+    typedef std::vector<Id> IdList;
+
+private:
+    class MarkStream {
+        MarkStream(const MarkStream &) = delete;
+        MarkStream &operator=(const MarkStream &) = delete;
+
+
     private:
         TokenStream &ts;
         Diagnostics &diag;
@@ -35,18 +48,20 @@ private:
 
 
     public:
-        Mark(TokenStream &t, Diagnostics &d) : ts(t), diag(d), saved(ts.Location()), committed(false) {
+        MarkStream(TokenStream &t, Diagnostics &d) : ts(t), diag(d), saved(ts.Location()), committed(false) {
             ++depth;
             chkpt = diag.Checkpoint();
         }
 
-        ~Mark() {
+        ~MarkStream() {
             --depth;
             assert(depth >= 0);
 
             if (!committed) {
+                std::cerr << "Rejected\n";
                 ts.Reset(saved);
                 diag.Rollback(chkpt);
+                std::cerr << ".. Current first token is now " << ts.tokenStr(ts.Current()) << " on line " << std::to_string(ts.LineNo() + 1) << '\n';
             }
 
             if (depth == 0) diag.Flush();
@@ -54,17 +69,62 @@ private:
 
     public:
         //
+        // -- Parse in a single production has failed this far (typically an optional leading phrase)
+        //    and we need to reset to try the latter part.
+        //    ---------------------------------------------------------------------------------------
+        void Reset(void) { committed = false; ts.Reset(saved); }
+        //
         // -- The following member method may be used for any production whether tokens are directly
         //    consumed or not.
         //    ------------------------------------------------------------------------------------
-        void Commit(void) { std::cerr << "Accepted\n"; committed = true; }
+        void Commit(void) { committed = true; std::cerr << "Accepted\n"; }
 
         //
         // -- The following member method can only be used when no tokens are directly consumed in
         //    the production.  It is provided ONLY for ease of coding in lists of alternative
         //    productions such as `basic_declaration`.
         //    ------------------------------------------------------------------------------------
-        bool CommitAlternative(bool c) { if (c) committed = true; std::cerr << "Accepted\n"; return c; }
+        bool CommitIf(bool c) { if (c) { committed = true; } std::cerr << "Accepted\n"; return c; }
+    };
+
+
+private:
+    class MarkScope {
+        MarkScope(const MarkScope &) = delete;
+        MarkScope &operator=(const MarkScope &) = delete;
+
+
+    private:
+        ScopeManager &mgr;
+
+
+    public:
+        MarkScope(ScopeManager &m, Scope::Kind kind) : mgr(m) { mgr.PushScope(kind); }
+        ~MarkScope() { mgr.PopScope(); }
+
+
+    public:
+        std::unique_ptr<Scope> Commit(void) { return std::move(mgr.ClaimCurrentScope()); }
+    };
+
+
+private:
+    class MarkSymbols {
+    private:
+        ScopeManager &mgr;
+        size_t checkpoint;
+        bool committed;
+
+    public:
+        MarkSymbols(ScopeManager &m) : mgr(m), checkpoint(mgr.CurrentScope()->Checkpoint()), committed(false) {}
+        ~MarkSymbols() {
+            if (!committed) {
+                mgr.CurrentScope()->Rollback(checkpoint);
+            }
+        }
+
+    public:
+        void Commit(void) { committed = true; }
     };
 
 
@@ -78,10 +138,12 @@ private:
         Production(Parser &parser, std::string p) : parser(parser) {
             if (trace) std::cerr << "Entering " << p << " from " << parser.Last() << '\n';
             parser.stack.push_back(std::move(p));
+            std::cerr.flush();
         }
         ~Production() {
             if (trace) std::cerr << "Leaving " << parser.Last() << '\n';
             parser.stack.pop_back();
+            std::cerr.flush();
         }
 
 
@@ -114,6 +176,16 @@ public:
 
         return false;
     }
+    // -- An identifier is required to be next
+    bool RequireIdent(std::string &id) {
+        id = "";
+        if (tokens.Current() == TOK_IDENTIFIER) {
+            id = *(tokens.Payload().ident);
+            tokens.Advance();
+            return true;
+        }
+        return false;
+    }
 
     void SetTrace(bool t) { Production::SetTrace(t); }
     std::string Last(void) { if (stack.size() == 0) return "top level"; return stack[stack.size() - 1]; }
@@ -128,6 +200,24 @@ public:
         }
 
         return rv;
+    }
+
+    void CheckLocalId(std::string &id, SourceLoc_t loc, SymbolKind kind) {
+        if (scopes.IsLocalDefined(id)) {
+            Symbol *sym = scopes.CurrentScope()->LocalLookup(id);
+
+            if (kind == SymbolKind::Type && sym->kind == SymbolKind::IncompleteType) {
+                sym->kind = kind;
+                return;
+            }
+
+            diags.Error(loc, DiagID::DuplicateName, { id } );
+            diags.Note(scopes.CurrentScope()->LocalLookup(id)->loc, DiagID::DuplicateName2);
+        } else {
+            std::cerr << "New ID: " << id << '\n';
+            std::unique_ptr<Symbol> sym = std::make_unique<Symbol>(id, kind, loc);
+            scopes.Declare(std::move(sym));
+        }
     }
 
 
@@ -158,7 +248,7 @@ public:
     bool ParseFloatingAccuracyDefinition(void);                 // -- Ch 3
     bool ParseFloatingPointConstraint(void);                    // -- Ch 3
     bool ParseFullTypeDeclaration(void);                        // -- Ch 3
-    bool ParseIdentifierList(void);                             // -- Ch 3
+    bool ParseIdentifierList(IdList *ids);                      // -- Ch 3
     bool ParseIncompleteTypeDeclaration(void);                  // -- Ch 3
     bool ParseIndexConstraint(void);                            // -- Ch 3
     bool ParseIndexSubtypeDefinition(void);                     // -- Ch 3
@@ -188,14 +278,14 @@ public:
     bool ParseExpression(void) { tokens.Advance(); return true; }
     bool ParseGenericDeclaration(void) { return false; }
     bool ParseGenericInstantiation(void) { return false; }
-    bool ParseName(void);
+    bool ParseName(std::string &id);
     bool ParsePackageBody(void) { return false; }
     bool ParsePackageDeclaration(void) { return false; }
     bool ParsePrivateTypeDeclaration(void) { return false; }
     bool ParseRenamingDeclaration(void) { return false; }
     bool ParseRepresentationClause(void) { return false; }
     bool ParseSimpleExpression(void) { tokens.Advance(); return true; }
-    bool ParseSimpleName(void) { return ParseName(); }
+    bool ParseSimpleName(std::string &id) { return ParseName(id); }
     bool ParseSubprogramBody(void) { return false; }
     bool ParseSubprogramDeclaration(void) { return false; }
     bool ParseTaskBody(void) { return false; }

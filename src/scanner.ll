@@ -23,9 +23,11 @@
  */
 %{
     #include <string>
+    #include <iostream>
 
     extern int column;
     extern std::string strVal;
+    extern union YYSTYPE yylval;
 
     #include "tokens.hh"
 %}
@@ -186,7 +188,8 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          *    -----------------------------------------------
          */
 {LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval.ident = new std::string(yytext);
                 return TOK_IDENTIFIER;
             }
 
@@ -298,7 +301,8 @@ xor         { column += strlen(yytext); return TOK_XOR; }
 <arg>,      { column ++; return TOK_COMMA; }
 <arg>\=\>   { column += 2; return TOK_ARROW; }
 <arg>{LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval.ident = new std::string(yytext);
                 return TOK_IDENTIFIER;
             }
 <arg>.      { column ++; BEGIN(INITIAL); return TOK_ERROR; }
@@ -318,4 +322,5 @@ xor         { column += strlen(yytext); return TOK_XOR; }
 %%
 
 std::string strVal;
+union YYSTYPE yylval;
 

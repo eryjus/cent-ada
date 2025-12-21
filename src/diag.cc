@@ -157,6 +157,8 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::MissingEndingTag, "after an 'end', expected to see {0}" },
     { DiagID::MissingRecordComponentDefinitions, "a record definition requires at least 1 component" },
     { DiagID::InvalidChoiceInVariant, "invalid choice in variant" },
+    { DiagID::DuplicateName, "duplicate name {0} in the same scope"},
+    { DiagID::DuplicateName2, "the previous declaration was here"},
 };
 
 

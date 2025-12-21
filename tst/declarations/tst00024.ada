@@ -1,1 +1,3 @@
+type COORDINATE is new INTEGER;
+
 type LOCAL_COORDINATE is new COORDINATE;

@@ -56,9 +56,9 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
         sourceValid = true;
     }
 
-    int tok = yylex();
+    TokenType_t tok = yylex();
     while (tok) {
-        Token *t = new Token(filename, yylineno, column, (TokenType_t)tok);
+        Token *t = new Token(filename, yylineno, column, tok, yylval);
         tokStream.push_back(t);
 
         tok = yylex();
@@ -66,11 +66,12 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 
 
     //
-    // -- add an EOF marker so that we can query it
-    //    -----------------------------------------
-    tokStream.push_back(new Token(filename, source.size(), 0, (TokenType_t)EOF));
+    // -- add an EOF marker so that we can query it; yylval is irrelevant
+    //    ---------------------------------------------------------------
+    tokStream.push_back(new Token(filename, source.size(), 0, YYEOF, yylval));
 
     fclose(yyin);
+    Reset(0);
 }
 
 
@@ -268,4 +269,21 @@ SourceLoc_t TokenStream::SourceLocation(void)
     return rv;
 }
 
+
+
+//
+// -- Get an empty source location
+//    ----------------------------
+SourceLoc_t TokenStream::EmptyLocation(void) const
+{
+    SourceLoc_t rv;
+
+    rv.filename = "";
+    rv.line = 0;
+    rv.col = 0;
+    rv.sourceLine = "";
+    rv.valid = false;
+
+    return rv;
+}
 
