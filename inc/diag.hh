@@ -86,6 +86,8 @@ public:
         for (const auto &m : msgQueue) { assert(!m.empty()); }
         for (auto m : msgQueue) { std::cerr << m; } msgQueue.clear();
     }
+    int &Errors(void) { return errors; }
+    int &Warnings(void) { return warnings; }
 };
 
 
