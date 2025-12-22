@@ -1,1 +1,3 @@
+type SUIT is (CLUBS, DIAMONDS, HEARTS, SPADES);
+
 subtype MAJOR is SUIT range HEARTS .. SPADES;

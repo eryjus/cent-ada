@@ -1,3 +1,4 @@
+subtype BUFFER_SIZE is INTEGER range 0 .. MAX;
 type BUFFER(SIZE : BUFFER_SIZE := 100) is
     record
         POS : BUFFER_SIZE := 0;

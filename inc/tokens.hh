@@ -140,3 +140,13 @@ enum yytokentype {
 };
 
 
+union YYSTYPE {
+    YYSTYPE(void) {}
+    ~YYSTYPE() {}
+
+    std::string *errMsg;
+    std::string *ident;
+};
+
+
+

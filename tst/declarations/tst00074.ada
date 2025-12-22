@@ -1,3 +1,5 @@
+
+type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC);
 type DATE is
     record
         DAY : INTEGER range 1 .. 31;

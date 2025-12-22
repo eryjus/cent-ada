@@ -1,3 +1,7 @@
+type CELL;
+
+type LINK is access CELL;
+
 type CELL is
     record
         VALUE : INTEGER;
