@@ -1,1 +1,2 @@
-type REAL is digits 8;
+type MY_REAL is digits 8;
+

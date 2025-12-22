@@ -31,6 +31,8 @@ enum class DiagID {
     MissingEndingTag,
     MissingRecordComponentDefinitions,
     InvalidChoiceInVariant,
+    DuplicateName,
+    DuplicateName2,
 };
 
 

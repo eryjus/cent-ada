@@ -224,14 +224,26 @@ static int Compile(std::string filename, ParseType_t type)
     tokens = new TokenStream(filename.c_str());
     Parser *parser = new Parser(*tokens);
     diags.SetParser(parser);
-    parser->SetTrace(true);
+//    parser->SetTrace(true);
+    int cnt = 0;
 
     switch (type) {
-    case COMPILE_TYPES: parser->ParseBasicDeclaration();    break;
-    default:                                                break;
+    case COMPILE_TYPES:
+        while (tokens->Current() != YYEOF) {
+            if(!parser->ParseBasicDeclaration()) {
+                std::cerr << "Unable to properly parse Basic Declaration\n";
+                return EXIT_FAILURE;
+            }
+        }
+
+        break;
+
+
+    default:
+        break;
     }
 
-    std::cout << "Parse Complete.\n";
+    std::cerr << "Parse Complete.\n";
     return EXIT_SUCCESS;
 }
 
@@ -248,7 +260,7 @@ static void Usage(std::string pgm)
 }
 
 
-
+#include <unistd.h>
 //
 // -- The main entry point
 //    --------------------

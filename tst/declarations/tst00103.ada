@@ -1,0 +1,6 @@
+type color is (WHITE, RED, YELLOW, GREEN, BLUE, BROWN, BLACK);
+
+subtype RAINBOW is COLOR range RED .. BLUE;
+
+
+

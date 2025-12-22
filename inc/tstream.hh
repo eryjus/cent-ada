@@ -44,10 +44,11 @@ private:
         int yylineno;
         int column;
         TokenType_t tok;
+        YYSTYPE payload;
 
     public:
-        Token(std::string &f, int l, int c, TokenType_t t)
-                : filename(f), yylineno(l), column(c), tok(t) {}
+        Token(std::string &f, int l, int c, TokenType_t t, YYSTYPE &p)
+                : filename(f), yylineno(l), column(c), tok(t), payload(p) {}
     } Token_t;
 
 
@@ -68,6 +69,7 @@ public:
 public:
     void Advance(int n = 1) { loc += n; }
     TokenType_t Current(void) const { return tokStream[loc]->tok; }
+    YYSTYPE &Payload(void) const { return tokStream[loc]->payload; }
     TokenType_t Peek(int n = 1) { return tokStream[loc + n]->tok; }
     std::string FileName(void) const { return filename; }
     long LineNo(void) const { return tokStream[loc]->yylineno; }
@@ -78,6 +80,7 @@ public:
     void Listing(void);
     void List(void);
     SourceLoc_t SourceLocation(void);
+    SourceLoc_t EmptyLocation(void) const;
 
 
 public:

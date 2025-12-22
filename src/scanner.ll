@@ -23,9 +23,12 @@
  */
 %{
     #include <string>
+    #include <iostream>
 
     extern int column;
     extern std::string strVal;
+    extern union YYSTYPE yylval;
+    std::string ToLower(const char *s);
 
     #include "tokens.hh"
 %}
@@ -186,7 +189,9 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          *    -----------------------------------------------
          */
 {LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                std::string lower = ToLower(yytext);
+                yylval.ident = new std::string(lower);
                 return TOK_IDENTIFIER;
             }
 
@@ -298,7 +303,9 @@ xor         { column += strlen(yytext); return TOK_XOR; }
 <arg>,      { column ++; return TOK_COMMA; }
 <arg>\=\>   { column += 2; return TOK_ARROW; }
 <arg>{LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                std::string lower = ToLower(yytext);
+                yylval.ident = new std::string(lower);
                 return TOK_IDENTIFIER;
             }
 <arg>.      { column ++; BEGIN(INITIAL); return TOK_ERROR; }
@@ -318,4 +325,18 @@ xor         { column += strlen(yytext); return TOK_XOR; }
 %%
 
 std::string strVal;
+union YYSTYPE yylval;
 
+
+
+
+std::string ToLower(const char *s)
+{
+    std::string rv;
+
+    for (int i = 0; i < strlen(s); i ++) {
+        rv.push_back(s[i] >= 'A' && s[i] <= 'Z' ? s[i] - 'A' + 'a' : s[i]);
+    }
+
+    return rv;
+}
