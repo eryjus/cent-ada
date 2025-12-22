@@ -226,13 +226,15 @@ static int Compile(std::string filename, ParseType_t type)
     diags.SetParser(parser);
 //    parser->SetTrace(true);
     int cnt = 0;
+    int rv = EXIT_SUCCESS;
 
     switch (type) {
     case COMPILE_TYPES:
         while (tokens->Current() != YYEOF) {
             if(!parser->ParseBasicDeclaration()) {
                 std::cerr << "Unable to properly parse Basic Declaration\n";
-                return EXIT_FAILURE;
+                rv = EXIT_FAILURE;
+                goto exit;
             }
         }
 
@@ -244,7 +246,11 @@ static int Compile(std::string filename, ParseType_t type)
     }
 
     std::cerr << "Parse Complete.\n";
-    return EXIT_SUCCESS;
+
+exit:
+    std::cerr << "   Errors  : " << diags.Errors() << '\n';
+    std::cerr << "   Warnings: " << diags.Warnings() << '\n';
+    return rv;
 }
 
 

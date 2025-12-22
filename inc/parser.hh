@@ -45,10 +45,13 @@ private:
         bool committed;
         size_t chkpt;
         static int depth;
+        int errors;
+        int warnings;
 
 
     public:
-        MarkStream(TokenStream &t, Diagnostics &d) : ts(t), diag(d), saved(ts.Location()), committed(false) {
+        MarkStream(TokenStream &t, Diagnostics &d) :
+                ts(t), diag(d), saved(ts.Location()), committed(false), errors(d.Errors()), warnings(d.Warnings()) {
             ++depth;
             chkpt = diag.Checkpoint();
         }
@@ -60,6 +63,8 @@ private:
             if (!committed) {
                 ts.Reset(saved);
                 diag.Rollback(chkpt);
+                diag.Errors() = errors;
+                diag.Warnings() = warnings;
             }
 
             if (depth == 0) diag.Flush();
