@@ -58,10 +58,8 @@ private:
             assert(depth >= 0);
 
             if (!committed) {
-                std::cerr << "Rejected\n";
                 ts.Reset(saved);
                 diag.Rollback(chkpt);
-                std::cerr << ".. Current first token is now " << ts.tokenStr(ts.Current()) << " on line " << std::to_string(ts.LineNo() + 1) << '\n';
             }
 
             if (depth == 0) diag.Flush();
@@ -77,14 +75,14 @@ private:
         // -- The following member method may be used for any production whether tokens are directly
         //    consumed or not.
         //    ------------------------------------------------------------------------------------
-        void Commit(void) { committed = true; std::cerr << "Accepted\n"; }
+        void Commit(void) { committed = true; }
 
         //
         // -- The following member method can only be used when no tokens are directly consumed in
         //    the production.  It is provided ONLY for ease of coding in lists of alternative
         //    productions such as `basic_declaration`.
         //    ------------------------------------------------------------------------------------
-        bool CommitIf(bool c) { if (c) { committed = true; } std::cerr << "Accepted\n"; return c; }
+        bool CommitIf(bool c) { if (c) { committed = true; } return c; }
     };
 
 
@@ -214,7 +212,6 @@ public:
             diags.Error(loc, DiagID::DuplicateName, { id } );
             diags.Note(scopes.CurrentScope()->LocalLookup(id)->loc, DiagID::DuplicateName2);
         } else {
-            std::cerr << "New ID: " << id << '\n';
             std::unique_ptr<Symbol> sym = std::make_unique<Symbol>(id, kind, loc);
             scopes.Declare(std::move(sym));
         }

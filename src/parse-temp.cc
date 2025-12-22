@@ -31,8 +31,6 @@ bool Parser::ParseName(std::string &id)
 
     if (!RequireIdent(id)) return false;
 
-    std::cerr << "Name is " << id << '\n';
-
     m.Commit();
     return true;
 }

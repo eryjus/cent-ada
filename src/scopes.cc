@@ -67,16 +67,16 @@ ScopeManager::ScopeManager(void)
 {
     stack.push_back(std::make_unique<Scope>(nullptr, Scope::Kind::Global));
 
-    Declare(std::make_unique<Symbol>("INTEGER", SymbolKind::Type, tokens->EmptyLocation()));
-    Declare(std::make_unique<Symbol>("BOOLEAN", SymbolKind::Type, tokens->EmptyLocation()));
-    Declare(std::make_unique<Symbol>("ARRAY", SymbolKind::Type, tokens->EmptyLocation()));
-    Declare(std::make_unique<Symbol>("REAL", SymbolKind::Type, tokens->EmptyLocation()));
-    Declare(std::make_unique<Symbol>("CHARACTER", SymbolKind::Type, tokens->EmptyLocation()));
-    Declare(std::make_unique<Symbol>("STRING", SymbolKind::Type, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("integer", SymbolKind::Type, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("boolean", SymbolKind::Type, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("array", SymbolKind::Type, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("real", SymbolKind::Type, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("character", SymbolKind::Type, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("string", SymbolKind::Type, tokens->EmptyLocation()));
 
 
-    Declare(std::make_unique<Symbol>("FALSE",SymbolKind::Object, tokens->EmptyLocation()));
-    Declare(std::make_unique<Symbol>("TRUE",SymbolKind::Object, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("false",SymbolKind::Object, tokens->EmptyLocation()));
+    Declare(std::make_unique<Symbol>("true",SymbolKind::Object, tokens->EmptyLocation()));
 }
 
 
@@ -97,7 +97,6 @@ void ScopeManager::PushScope(Scope::Kind kind)
 void ScopeManager::PopScope(void)
 {
     if (CurrentScope()->GetKind() == Scope::Kind::Global) {
-        std::cerr << "Inrernal error: Tried to pop the Global scope\n";
         exit(EXIT_FAILURE);
     }
 

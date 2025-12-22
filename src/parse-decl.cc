@@ -268,11 +268,8 @@ bool Parser::ParseSubtypeIndication(void)
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
 
-    std::cerr << "Subtype Indication, leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!ParseTypeMark()) return false;
-    std::cerr << "Checking optional Constraint in `subtype_indication`\n";
     ParseConstraint();
-    std::cerr << "Subtype Indication, ending token: " << tokens.tokenStr(tokens.Current()) << '\n';
 
     m.Commit();
     return true;
@@ -289,7 +286,6 @@ bool Parser::ParseTypeMark(void)
     MarkStream m(tokens, diags);
     std::string id;
 
-    std::cerr << "Type Mark; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!ParseName(id)) return false;
 
     //
@@ -304,13 +300,11 @@ bool Parser::ParseTypeMark(void)
 
     Symbol *sym = scopes.Lookup(id);
     if (!sym) {
-        std::cerr << "Failed to find type " << id << '\n';
         // --TODO: Issue an error here for unknown type/subtype
         return false;
     }
 
     if (sym->kind != SymbolKind::Type && sym->kind != SymbolKind::Subtype && sym->kind != SymbolKind::IncompleteType) {
-        std::cerr << id << "is the wrong type \n";
         // -- TODO: Issue an error here?
         return false;
     }
@@ -330,17 +324,11 @@ bool Parser::ParseConstraint(void)
     Production p(*this, "constraint");
     MarkStream m(tokens, diags);
 
-    std::cerr << "Checking Range Constraint; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseRangeConstraint()))                return true;
-    std::cerr << "Checking Floating Point Constraint; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseFloatingPointConstraint()))        return true;
-    std::cerr << "Checking Fixed Point Constraint; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseFixedPointConstraint()))           return true;
-    std::cerr << "Checking Index Constraint; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseIndexConstraint()))                return true;
-    std::cerr << "Checking Discriminant Constraint; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseDiscriminantConstraint()))         return true;
-    std::cerr << "NO Constraint; leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     return false;
 }
 
@@ -757,7 +745,6 @@ bool Parser::ParseRecordTypeDefinition(void)
 
 
     if (!ParseComponentList()) return false;
-    std::cerr << "Back from Component List\n";
     if (!Require(TOK_END)) {
         diags.Error(tokens.SourceLocation(), DiagID::MissingEnd, {"record component list"});
         // -- continue on in hopes that this does not create a cascade of errors
@@ -797,13 +784,9 @@ bool Parser::ParseComponentList(void)
     int declCnt = 0;
     bool hasVariant = false;
 
-    std::cerr << "Starting checks for Component Declarations, leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
-
     while (ParseComponentDeclaration()) {
         declCnt ++;
     }
-
-    std::cerr << "Starting checks for Variant Part\n";
 
     if (ParseVariantPart()) {
         hasVariant = true;
@@ -813,8 +796,6 @@ bool Parser::ParseComponentList(void)
         diags.Error(tokens.SourceLocation(), DiagID::MissingRecordComponentDefinitions);
         // -- continue on in hopes that this does not create a cascade of errors
     }
-
-    std::cerr << "Returning at this point: declCnt = " << declCnt << "; hasVariant = " << hasVariant << '\n';
 
     m.Commit();
     return true;
@@ -831,7 +812,6 @@ bool Parser::ParseComponentDeclaration(void)
     MarkStream m(tokens, diags);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
 
-    std::cerr << "Component Declaration, leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!ParseIdentifierList(idList.get())) return false;
     if (!Require(TOK_COLON)) return false;
     if (!ParseComponentSubtypeDefinition()) return false;
@@ -860,7 +840,6 @@ bool Parser::ParseComponentSubtypeDefinition(void)
     Production p(*this, "component_subtype_definition");
     MarkStream m(tokens, diags);
 
-    std::cerr << "Component Subtype Definition, leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseSubtypeIndication()))      return true;
     return false;
 }
@@ -954,7 +933,6 @@ bool Parser::ParseDiscriminantAssociation(void)
     Symbol *sym = nullptr;
     std::string id;
 
-    std::cerr << "Discriminant Association, leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     //
     // -- This is critical here: just because we have a simple name does not mean we have a
     //    discriminant simple name.  We may in fact have an expression.  In order to discren
@@ -963,9 +941,7 @@ bool Parser::ParseDiscriminantAssociation(void)
     //    Otherwise we will just skip ahead to the expression.
     //    --------------------------------------------------------------------------------------------
     if (ParseSimpleName(id)) {
-        std::cerr << "Checking next token: " << tokens.tokenStr(tokens.Current()) << '\n';
         if (tokens.Current() != TOK_VERTICAL_BAR && tokens.Current() != TOK_ARROW) {
-            std::cerr << "Resetting for `expression`\n";
             m.Reset();
             goto expr;
         }
@@ -1014,17 +990,12 @@ bool Parser::ParseVariantPart(void)
     MarkStream m(tokens, diags);
     std::string id;
 
-    std::cerr << "Checking CASE, leading token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!Require(TOK_CASE)) return false;
-    std::cerr << "Checking ident\n";
     SourceLoc_t loc = tokens.SourceLocation();
     if (!ParseSimpleName(id)) return false;
     CheckLocalId(id, loc, SymbolKind::Discriminant);
-    std::cerr << "Checking IS\n";
     if (!Require(TOK_IS)) return false;
-    std::cerr << "Checking variant\n";
     if (!ParseVariant()) return false;
-    std::cerr << "Found variant\n";
 
     while (ParseVariant()) {
         // -- for the moment, nothing is needed here
@@ -1056,22 +1027,15 @@ bool Parser::ParseVariant(void)
     Production p(*this, "variant");
     MarkStream m(tokens, diags);
 
-    std::cerr << "Checking WHEN; token: " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!Require(TOK_WHEN)) return false;
-    std::cerr << "Checking choice\n";
     if (!ParseChoice()) return false;
-    std::cerr << "Found choice\n";
 
     while (Optional(TOK_VERTICAL_BAR)) {
         if (!ParseChoice()) return false;
     }
 
-    std::cerr << "Checking ARROW\n";
     if (!Require(TOK_ARROW)) return false;
-    std::cerr << "Found ARROW\n";
     if (!ParseComponentList()) return false;
-    std::cerr << "Found Component List\n";
-
 
     m.Commit();
     return true;

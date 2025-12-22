@@ -118,6 +118,7 @@ The command line to process any of these test cases is:
 | tst00100  |  ✓  |     |     |     |     |     |     |      |      |      |      |      |
 | tst00101  |  ✓  |     |     |     |     |     |     |      |      |      |      |      |
 | tst00102  |  ✓  |     |     |     |     |     |     |      |      |      |      |      |
+| tst00103  |  ✓  |     |     |     |     |     |     |      |      |      |      |      |
 
 
 ## TODO

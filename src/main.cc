@@ -224,7 +224,7 @@ static int Compile(std::string filename, ParseType_t type)
     tokens = new TokenStream(filename.c_str());
     Parser *parser = new Parser(*tokens);
     diags.SetParser(parser);
-    parser->SetTrace(true);
+//    parser->SetTrace(true);
     int cnt = 0;
 
     switch (type) {
