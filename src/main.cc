@@ -23,6 +23,7 @@
 typedef enum {
     COMPILE_FULL,
     COMPILE_TYPES,
+    COMPILE_EXPRS,
 } ParseType_t;
 
 
@@ -160,6 +161,8 @@ static int Scan(std::string filename)
         case TOK_WHILE:                 std::cout << "WHILE\n";     break;
         case TOK_WITH:                  std::cout << "WITH\n";      break;
         case TOK_XOR:                   std::cout << "XOR\n";       break;
+        case TOK_AND_THEN:              std::cout << "AND THEN\n";  break;
+        case TOK_OR_ELSE:               std::cout << "OR ELSE\n";   break;
 
         case TOK_IDENTIFIER:
             std::cout << "IDENTIFIER: (" << yytext << ")\n";
@@ -224,7 +227,7 @@ static int Compile(std::string filename, ParseType_t type)
     tokens = new TokenStream(filename.c_str());
     Parser *parser = new Parser(*tokens);
     diags.SetParser(parser);
-//    parser->SetTrace(true);
+    parser->SetTrace(true);
     int cnt = 0;
     int rv = EXIT_SUCCESS;
 
@@ -236,6 +239,28 @@ static int Compile(std::string filename, ParseType_t type)
                 rv = EXIT_FAILURE;
                 goto exit;
             }
+        }
+
+        break;
+
+
+    case COMPILE_EXPRS:
+        while (parser->ParseBasicDeclaration()) {}
+        std::cerr << "\n";
+        std::cerr << "********************************\n";
+        std::cerr << "** Starting Expressions Parse **\n";
+        std::cerr << "********************************\n\n";
+        if(!parser->ParseExpression()) {
+            std::cerr << "\nERROR: Unable to properly parse Expression\n";
+            rv = EXIT_FAILURE;
+            goto exit;
+        }
+
+        std::cerr << "next token " << tokens->tokenStr(tokens->Current()) << '\n';
+        if (tokens->Current() != YYEOF) {
+            std::cerr << "\nERROR: Extra input in Expression parse\n";
+            rv = EXIT_FAILURE;
+            goto exit;
         }
 
         break;
@@ -300,6 +325,12 @@ int main(int argc, char *argv[])
         if (arg == "declarations" || arg == "types") {
             action = ACT_COMPILE;
             type = COMPILE_TYPES;
+            continue;
+        }
+
+        if (arg == "expressions" || arg == "expr") {
+            action = ACT_COMPILE;
+            type = COMPILE_EXPRS;
             continue;
         }
 

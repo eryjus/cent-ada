@@ -242,6 +242,7 @@ bool Parser::ParseSubtypeDeclaration(void)
     MarkSymbols s(scopes);
     std::string id;
 
+    std::cerr << "** Parsing a Subtype Declaration, token is " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!Require(TOK_SUBTYPE)) return false;
     SourceLoc_t loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return false;
@@ -268,6 +269,7 @@ bool Parser::ParseSubtypeIndication(void)
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
 
+    std::cerr << "** Parsing a Subtype Indication, token is " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!ParseTypeMark()) return false;
     ParseConstraint();
 
@@ -286,7 +288,7 @@ bool Parser::ParseTypeMark(void)
     MarkStream m(tokens, diags);
     std::string id;
 
-    if (!ParseName(id)) return false;
+    if (!ParseNameNonExpr(id)) return false;
 
     //
     // -- At this point, the name is required to be either a `type_` name or a
@@ -324,11 +326,18 @@ bool Parser::ParseConstraint(void)
     Production p(*this, "constraint");
     MarkStream m(tokens, diags);
 
+    std::cerr << "** Parsing a Constraint, token is " << tokens.tokenStr(tokens.Current()) << '\n';
     if (m.CommitIf(ParseRangeConstraint()))                return true;
+    std::cerr << "** Not a range constraint\n";
     if (m.CommitIf(ParseFloatingPointConstraint()))        return true;
+    std::cerr << "** Not a floating point constraint\n";
     if (m.CommitIf(ParseFixedPointConstraint()))           return true;
+    std::cerr << "** Not a fixed point constraint\n";
     if (m.CommitIf(ParseIndexConstraint()))                return true;
+    std::cerr << "** Not an index constraint\n";
+    m.Reset();
     if (m.CommitIf(ParseDiscriminantConstraint()))         return true;
+    std::cerr << "** Not a discriminant constraint\n";
     return false;
 }
 
@@ -358,6 +367,8 @@ bool Parser::ParseRangeConstraint(void)
 {
     Production p(*this, "range_constraint");
     MarkStream m(tokens, diags);
+
+    std::cerr << "** Parsing a Range Constraint, token is " << tokens.tokenStr(tokens.Current()) << '\n';
 
     if (!Require(TOK_RANGE)) return false;
     if (!ParseRange()) return false;
@@ -441,17 +452,26 @@ bool Parser::ParseEnumerationLiteral(void)
 {
     Production p(*this, "enumeration_literal");
     MarkStream m(tokens, diags);
-
-    if (Optional(TOK_IDENTIFIER)) {
-        m.Commit();
-        return true;
-    }
+    SourceLoc_t loc = tokens.SourceLocation();
+    std::string id;
 
     if (Optional(TOK_CHARACTER_LITERAL)) {
         m.Commit();
         return true;
     }
 
+    if (RequireIdent(id)) {
+        Symbol *sym = scopes.Lookup(id);
+        if (sym) {
+            diags.Error(loc, DiagID::DuplicateName, { id } );
+            diags.Note(sym->loc, DiagID::DuplicateName2);
+        } else {
+            scopes.Declare(std::make_unique<Symbol>(id, SymbolKind::EnumerationLiteral, loc));
+        }
+
+        m.Commit();
+        return true;
+    }
 
     //
     // -- This is where bison has problems.  This may or may not be an error.
@@ -904,6 +924,7 @@ bool Parser::ParseDiscriminantConstraint(void)
     Production p(*this, "discriminant_constraint");
     MarkStream m(tokens, diags);
 
+    std::cerr << "** Parsing a Discriminant Constraint, token is " << tokens.tokenStr(tokens.Current()) << '\n';
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseDiscriminantAssociation()) return false;
 
@@ -933,6 +954,7 @@ bool Parser::ParseDiscriminantAssociation(void)
     Symbol *sym = nullptr;
     std::string id;
 
+    std::cerr << "** Parsing a Discriminant Association, token is " << tokens.tokenStr(tokens.Current()) << '\n';
     //
     // -- This is critical here: just because we have a simple name does not mean we have a
     //    discriminant simple name.  We may in fact have an expression.  In order to discren
@@ -973,6 +995,7 @@ bool Parser::ParseDiscriminantAssociation(void)
     }
 
 expr:
+    std::cerr << "** Parsing an expression for Discriminant Association\n";
     if (!ParseExpression()) return false;
 
     m.Commit();

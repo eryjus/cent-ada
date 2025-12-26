@@ -33,6 +33,7 @@ enum class DiagID {
     InvalidChoiceInVariant,
     DuplicateName,
     DuplicateName2,
+    UnknownName,
 };
 
 

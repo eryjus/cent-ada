@@ -1,3 +1,4 @@
 : foreach ../src/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> %b.o
 : foreach ../gen/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> %b.o
+: foreach ../src/parser/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> parser_%b.o
 

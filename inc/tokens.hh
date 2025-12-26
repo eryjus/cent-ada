@@ -136,7 +136,9 @@ enum yytokentype {
     TOK_CHARACTER_LITERAL = 372,            /* TOK_CHARACTER_LITERAL  */
     TOK_STRING_LITERAL = 373,               /* TOK_STRING_LITERAL  */
     TOK_PRAGMA_NAME = 374,                  /* TOK_PRAGMA_NAME  */
-    TOK_ERROR = 375,                        /* TOK_ERROR  */
+    TOK_AND_THEN = 375,                     /* TOK_AND_THEN  */
+    TOK_OR_ELSE = 376,                      /* TOK_OR_ELSE  */
+    TOK_ERROR = 377,                        /* TOK_ERROR  */
 };
 
 

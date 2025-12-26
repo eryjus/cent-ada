@@ -162,6 +162,13 @@ public:
 
 
 public:
+    // -- a token is illegal and if found is an illegal parse -- check only, never consumes
+    bool Illegal(TokenType_t tok) {
+        if (tokens.Current() == tok) {
+            return true;
+        }
+        return false;
+    }
     // -- a token is optional and if found advance past it
     bool Optional(TokenType_t tok) {
         if (tokens.Current() == tok) {
@@ -224,70 +231,100 @@ public:
 
 
 public:
-    bool ParseAccessTypeDefinition(void);                       // -- Ch 3
-    bool ParseArrayTypeDefinition(void);                        // -- Ch 3
-    bool ParseBasicDeclaration(void);                           // -- Ch 3
-    bool ParseBasicDeclarativeItem(void);                       // -- Ch 3
-    bool ParseBody(void);                                       // -- Ch 3
-    bool ParseChoice(void);                                     // -- Ch 3
-    bool ParseComponentDeclaration(void);                       // -- Ch 3
-    bool ParseComponentList(void);                              // -- Ch 3
-    bool ParseComponentSubtypeDefinition(void);                 // -- Ch 3
-    bool ParseConstrainedArrayDefinition(void);                 // -- Ch 3
-    bool ParseConstraint(void);                                 // -- Ch 3
-    bool ParseDeclarativePart(void);                            // -- Ch 3
-    bool ParseDerivedTypeDefinition(void);                      // -- Ch 3
-    bool ParseDiscreteRange(void);                              // -- Ch 3
-    bool ParseDiscriminantAssociation(void);                    // -- Ch 3
-    bool ParseDiscriminantConstraint(void);                     // -- Ch 3
-    bool ParseDiscriminantPart(void);                           // -- Ch 3
-    bool ParseDiscriminantSpecification(void);                  // -- Ch 3
-    bool ParseEnumerationLiteral(void);                         // -- Ch 3
-    bool ParseEnumerationLiteralSpecification(void);            // -- Ch 3
-    bool ParseEnumerationTypeDefinition(void);                  // -- Ch 3
-    bool ParseFixedAccuracyDefinition(void);                    // -- Ch 3
-    bool ParseFixedPointConstraint(void);                       // -- Ch 3
-    bool ParseFloatingAccuracyDefinition(void);                 // -- Ch 3
-    bool ParseFloatingPointConstraint(void);                    // -- Ch 3
-    bool ParseFullTypeDeclaration(void);                        // -- Ch 3
-    bool ParseIdentifierList(IdList *ids);                      // -- Ch 3
-    bool ParseIncompleteTypeDeclaration(void);                  // -- Ch 3
-    bool ParseIndexConstraint(void);                            // -- Ch 3
-    bool ParseIndexSubtypeDefinition(void);                     // -- Ch 3
-    bool ParseIntegerTypeDefinition(void);                      // -- Ch 3
-    bool ParseLaterDeclarativeItem(void);                       // -- Ch 3
-    bool ParseNumberDeclaration(void);                          // -- Ch 3
-    bool ParseObjectDeclaration(void);                          // -- Ch 3
-    bool ParseProperBody(void);                                 // -- Ch 3
-    bool ParseRange(void);                                      // -- Ch 3
-    bool ParseRangeConstraint(void);                            // -- Ch 3
-    bool ParseRealTypeDefinition(void);                         // -- Ch 3
-    bool ParseRecordTypeDefinition(void);                       // -- Ch 3
-    bool ParseSubtypeDeclaration(void);                         // -- Ch 3
-    bool ParseSubtypeIndication(void);                          // -- Ch 3
-    bool ParseTypeDeclaration(void);                            // -- Ch 3
-    bool ParseTypeDefinition(void);                             // -- Ch 3
-    bool ParseTypeMark(void);                                   // -- Ch 3
-    bool ParseUnconstrainedArrayDefinition(void);               // -- Ch 3
-    bool ParseVariant(void);                                    // -- Ch 3
-    bool ParseVariantPart(void);                                // -- Ch 3
+    bool ParseAccessTypeDefinition(void);                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseArrayTypeDefinition(void);                        // -- Ch 3: in `parse_decl.cc`
+    bool ParseBasicDeclaration(void);                           // -- Ch 3: in `parse_decl.cc`
+    bool ParseBasicDeclarativeItem(void);                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseBody(void);                                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseChoice(void);                                     // -- Ch 3: in `parse_decl.cc`
+    bool ParseComponentDeclaration(void);                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseComponentList(void);                              // -- Ch 3: in `parse_decl.cc`
+    bool ParseComponentSubtypeDefinition(void);                 // -- Ch 3: in `parse_decl.cc`
+    bool ParseConstrainedArrayDefinition(void);                 // -- Ch 3: in `parse_decl.cc`
+    bool ParseConstraint(void);                                 // -- Ch 3: in `parse_decl.cc`
+    bool ParseDeclarativePart(void);                            // -- Ch 3: in `parse_decl.cc`
+    bool ParseDerivedTypeDefinition(void);                      // -- Ch 3: in `parse_decl.cc`
+    bool ParseDiscreteRange(void);                              // -- Ch 3: in `parse_decl.cc`
+    bool ParseDiscriminantAssociation(void);                    // -- Ch 3: in `parse_decl.cc`
+    bool ParseDiscriminantConstraint(void);                     // -- Ch 3: in `parse_decl.cc`
+    bool ParseDiscriminantPart(void);                           // -- Ch 3: in `parse_decl.cc`
+    bool ParseDiscriminantSpecification(void);                  // -- Ch 3: in `parse_decl.cc`
+    bool ParseEnumerationLiteral(void);                         // -- Ch 3: in `parse_decl.cc`
+    bool ParseEnumerationLiteralSpecification(void);            // -- Ch 3: in `parse_decl.cc`
+    bool ParseEnumerationTypeDefinition(void);                  // -- Ch 3: in `parse_decl.cc`
+    bool ParseFixedAccuracyDefinition(void);                    // -- Ch 3: in `parse_decl.cc`
+    bool ParseFixedPointConstraint(void);                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseFloatingAccuracyDefinition(void);                 // -- Ch 3: in `parse_decl.cc`
+    bool ParseFloatingPointConstraint(void);                    // -- Ch 3: in `parse_decl.cc`
+    bool ParseFullTypeDeclaration(void);                        // -- Ch 3: in `parse_decl.cc`
+    bool ParseIdentifierList(IdList *ids);                      // -- Ch 3: in `parse_decl.cc`
+    bool ParseIncompleteTypeDeclaration(void);                  // -- Ch 3: in `parse_decl.cc`
+    bool ParseIndexConstraint(void);                            // -- Ch 3: in `parse_decl.cc`
+    bool ParseIndexSubtypeDefinition(void);                     // -- Ch 3: in `parse_decl.cc`
+    bool ParseIntegerTypeDefinition(void);                      // -- Ch 3: in `parse_decl.cc`
+    bool ParseLaterDeclarativeItem(void);                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseNumberDeclaration(void);                          // -- Ch 3: in `parse_decl.cc`
+    bool ParseObjectDeclaration(void);                          // -- Ch 3: in `parse_decl.cc`
+    bool ParseProperBody(void);                                 // -- Ch 3: in `parse_decl.cc`
+    bool ParseRange(void);                                      // -- Ch 3: in `parse_decl.cc`
+    bool ParseRangeConstraint(void);                            // -- Ch 3: in `parse_decl.cc`
+    bool ParseRealTypeDefinition(void);                         // -- Ch 3: in `parse_decl.cc`
+    bool ParseRecordTypeDefinition(void);                       // -- Ch 3: in `parse_decl.cc`
+    bool ParseSubtypeDeclaration(void);                         // -- Ch 3: in `parse_decl.cc`
+    bool ParseSubtypeIndication(void);                          // -- Ch 3: in `parse_decl.cc`
+    bool ParseTypeDeclaration(void);                            // -- Ch 3: in `parse_decl.cc`
+    bool ParseTypeDefinition(void);                             // -- Ch 3: in `parse_decl.cc`
+    bool ParseTypeMark(void);                                   // -- Ch 3: in `parse_decl.cc`
+    bool ParseUnconstrainedArrayDefinition(void);               // -- Ch 3: in `parse_decl.cc`
+    bool ParseVariant(void);                                    // -- Ch 3: in `parse_decl.cc`
+    bool ParseVariantPart(void);                                // -- Ch 3: in `parse_decl.cc`
 
+    bool ParseAggregate(void);                                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseAggregateMore(void);                              // -- Ch 4: in `parse_expr.cc`
+    bool ParseAllocator(void);                                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseAttribute(void);                                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseAttributeDesignator(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseBinaryAddingOperator(void);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseComponentAssociation(void);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseExpression(void);                                 // -- Ch 4: in `parse_expr.cc`
+    bool ParseFactor(void);                                     // -- Ch 4: in `parse_expr.cc`
+    bool ParseIndexedComponent(void);                           // -- Ch 4: in `parse_expr.cc`
+    bool ParseMultiplyingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseNameNonExpr(std::string &id);                            // -- Ch 4: in `parse_expr.cc`
+    bool ParseNameExpr(std::string &id);                            // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_Base(std::string &id);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
+    bool ParsePrefix(void);                                     // -- Ch 4: in `parse_expr.cc`
+    bool ParsePrimary(void);                                    // -- Ch 4: in `parse_expr.cc`
+    bool ParseQualifiedExpression(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseRelation(void);                                   // -- Ch 4: in `parse_expr.cc`
+    bool ParseRelationalOperator(void);                         // -- Ch 4: in `parse_expr.cc`
+    bool ParseSelectedComponent(void);                          // -- Ch 4: in `parse_expr.cc`
+    bool ParseSelector(void);                                   // -- Ch 4: in `parse_expr.cc`
+    bool ParseSimpleExpression(void);                           // -- Ch 4: in `parse_expr.cc`
+    bool ParseSimpleName(std::string &id);                      // -- Ch 4: in `parse_expr.cc`
+    bool ParseSlice(void);                                      // -- Ch 4: in `parse_expr.cc`
+    bool ParseTerm(void);                                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseTypeConversion(void);                             // -- Ch 4: in `parse_expr.cc`
+    bool ParseUnaryAddingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_IndexComponentSuffix(void);                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_SliceSuffix(void);                           // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_SelectedComponentSuffix(void);               // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_AttributeSuffix(void);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_IndexOrSliceSuffix(void);                    // -- Ch 4: in `parse_expr.cc`
 
-    bool ParseAttribute(void);
-    bool ParseBodyStub(void);
+    bool ParseFunctionCall(void) { return false; }
+    bool ParseOperatorSymbol(void) { return false; }
+    bool ParseBodyStub(void) { return false; }
     bool ParseDeferredConstantDeclaration(void) { return false; }
     bool ParseExceptionDeclaration(void) { return false; }
-    bool ParseExpression(void) { tokens.Advance(); return true; }
     bool ParseGenericDeclaration(void) { return false; }
     bool ParseGenericInstantiation(void) { return false; }
-    bool ParseName(std::string &id);
     bool ParsePackageBody(void) { return false; }
     bool ParsePackageDeclaration(void) { return false; }
     bool ParsePrivateTypeDeclaration(void) { return false; }
     bool ParseRenamingDeclaration(void) { return false; }
     bool ParseRepresentationClause(void) { return false; }
-    bool ParseSimpleExpression(void) { tokens.Advance(); return true; }
-    bool ParseSimpleName(std::string &id) { return ParseName(id); }
     bool ParseSubprogramBody(void) { return false; }
     bool ParseSubprogramDeclaration(void) { return false; }
     bool ParseTaskBody(void) { return false; }
