@@ -10,7 +10,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [ ] Redo the symbol table lookups/inserts to conform to new model
 - [ ] Mark Enums properly against multiple scopes
 - [x] Re-evaluate PushScope and PopScope (should pop-scope remove/delete the scope or just point back to the parent?)
-- [ ] Hide Symbol members and create accessors
+- [x] Hide Symbol members and create accessors
 - [x] Consider adding a name/level to the scope for debugging
 - [x] Print out the symbol table (print name and depth!)
 - [x] Hide core language symbols

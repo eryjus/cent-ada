@@ -347,7 +347,7 @@ public:
         const std::vector<Symbol *> *vec = scopes.Lookup(id);
         if (!vec || vec->empty()) return false;
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
+            if (vec->at(i)->Kind() == Symbol::SymbolKind::Type) return true;
         }
 
         return false;
@@ -358,7 +358,7 @@ public:
         const std::vector<Symbol *> *vec = scopes.Lookup(id);
         if (!vec || vec->empty()) return false;
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Subtype) return true;
+            if (vec->at(i)->Kind() == Symbol::SymbolKind::Subtype) return true;
         }
 
         return false;

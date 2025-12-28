@@ -37,18 +37,22 @@ public:
     };
 
 
-public:
+private:
     std::string name;
     SymbolKind kind;
     SourceLoc_t loc;
     bool hidden = false;
 
+public:
     Symbol(std::string n, SymbolKind k, SourceLoc_t l) : name(n), kind(k), loc(l) {}
     const std::string &to_string(void);
 
 public:
     void Hide(bool h = true) { hidden = h; }
     bool Hidden(void) const { return hidden; }
+    const std::string &Name(void) const { return name; }
+    SymbolKind Kind(void) const { return kind; }
+    const SourceLoc_t &Loc(void) const { return loc; }
 };
 
 
