@@ -17,5 +17,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [ ] Re-execute all Ch3 tests and evaluate the results
 - [ ] Add trace to the command line parameters
 - [ ] Add symbol table dump to the command line parameters
+- [ ] Hide symbol members and create accessors
+- [ ] Redo BOOLEAN as enumeration to match language
 - [x] Split symbols and scopes (and scope manager?) to separate sources
 

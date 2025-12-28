@@ -88,6 +88,8 @@ void Scope::Print(void) const
     for (auto it = ordered.begin(); it != ordered.end(); it ++) {
         Symbol *sym = it->get();
 
+        if (sym->Hidden()) continue;
+
         std::cerr << "Symbol: " << sym->name << " : " << sym->to_string() << '\n';
         std::vector<Symbol *> vec = index.find(sym->name)->second;
 
