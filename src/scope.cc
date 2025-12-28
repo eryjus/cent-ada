@@ -38,7 +38,7 @@ void Scope::Rollback(size_t cp)
 {
     while (ordered.size() > cp) {
         Symbol *sym = ordered.back().get();
-        auto it = index.find(sym->name);
+        auto it = index.find(sym->Name());
         if (it != index.end()) {
             auto &vec = it->second;
             vec.pop_back();
@@ -75,7 +75,7 @@ Symbol *Scope::Declare(std::unique_ptr<Symbol> sym)
 {
     Symbol *raw = sym.get();
     ordered.push_back(std::move(sym));
-    index[raw->name].push_back(raw);
+    index[raw->Name()].push_back(raw);
     return raw;
 }
 
@@ -91,12 +91,12 @@ void Scope::Print(void) const
 
         if (sym->Hidden()) continue;
 
-        std::cerr << "Symbol: " << sym->name << " : " << sym->to_string() << '\n';
-        std::vector<Symbol *> vec = index.find(sym->name)->second;
+        std::cerr << "Symbol: " << sym->Name() << " : " << sym->to_string() << '\n';
+        std::vector<Symbol *> vec = index.find(sym->Name())->second;
 
-        if (sym->kind == Symbol::SymbolKind::EnumerationLiteral) {
+        if (sym->Kind() == Symbol::SymbolKind::EnumerationLiteral) {
             for (int i = 0; i < vec.size(); i ++) {
-                std::cerr << "   of type " << vec[i]->name << '\n';
+                std::cerr << "   of type " << vec[i]->Name() << '\n';
             }
         }
     }
