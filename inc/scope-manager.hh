@@ -25,27 +25,13 @@ class ScopeManager {
 
 private:
     std::vector<std::unique_ptr<Scope>> stack;
+    Scope *current = nullptr;
 
 
 private:
     // -- these are only accessible from Parser
     void PushScope(Scope::ScopeKind kind, std::string name);
     void PopScope(void);
-    //
-    // -- This function must be called no more than once for any given scope
-    //    ------------------------------------------------------------------
-    std::unique_ptr<Scope> ClaimCurrentScope(void) {
-        if (CurrentScope() == nullptr) {
-            std::cerr << "Internal error: Scope claimed multiple times\n";
-            exit(EXIT_FAILURE);
-        }
-        if (CurrentScope()->GetKind() != Scope::ScopeKind::Global) {
-            return std::move(stack[stack.size() - 1]);
-        } else {
-            std::cerr << "Internal error: tried to claim the global scope; not allowed\n";
-            exit(EXIT_FAILURE);
-        }
-    }
     Symbol *Declare(std::unique_ptr<Symbol> sym) { return CurrentScope()->Declare(std::move(sym)); }
 
 
@@ -58,6 +44,12 @@ public:
     Scope *CurrentScope(void) const { return stack[stack.size() - 1].get(); }
     bool IsLocalDefined(std::string_view name) const { return CurrentScope()->LocalLookup(name) != nullptr; }
     void Print(void) const;
+    std::unique_ptr<Scope> Claim(void) {
+        std::unique_ptr<Scope> rv = std::move(stack.back());
+        stack.pop_back();
+        current = rv->Parent();
+        return std::move(rv);
+    }
 };
 
 
