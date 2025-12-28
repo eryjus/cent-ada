@@ -23,7 +23,7 @@
 //    ---------------------------
 ScopeManager::ScopeManager(void)
 {
-    stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global));
+    stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, 0, "standard"));
 
     Declare(std::make_unique<Symbol>("integer", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
     Declare(std::make_unique<Symbol>("boolean", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
@@ -35,6 +35,8 @@ ScopeManager::ScopeManager(void)
 
     Declare(std::make_unique<Symbol>("false", Symbol::SymbolKind::Object, tokens->EmptyLocation()))->Hide();
     Declare(std::make_unique<Symbol>("true", Symbol::SymbolKind::Object, tokens->EmptyLocation()))->Hide();
+
+    stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "global"));
 }
 
 
@@ -42,9 +44,9 @@ ScopeManager::ScopeManager(void)
 //
 // -- Create a new scope and push it onto the stack
 //    ---------------------------------------------
-void ScopeManager::PushScope(Scope::ScopeKind kind)
+void ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 {
-    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind));
+    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, CurrentScope()->Level() + 1, name));
 }
 
 
@@ -83,8 +85,21 @@ const std::vector<Symbol *> *ScopeManager::Lookup(std::string_view name) const
 //    -------------------------------
 void ScopeManager::Print(void) const
 {
-    for (auto it = stack.rbegin(); it != stack.rend(); it ++) {
+    std::cerr << "=========================================\n";
+    std::cerr << "=========================================\n";
+    std::cerr << "====   Printing Symbol Scope Stack   ====\n";
+    std::cerr << "=========================================\n";
+    std::cerr << "=========================================\n";
+    std::cerr << '\n';
+
+    for (auto it = stack.begin(); it != stack.end(); it ++) {
+        std::cerr << "Scope Name : " << it->get()->Name() << '\n';
+        std::cerr << "Scope Depth: " << it->get()->Level() << '\n';
+        std::cerr << "-------------------\n";
+
         it->get()->Print();
+
+        std::cerr << "-------------------\n\n";
     }
 }
 

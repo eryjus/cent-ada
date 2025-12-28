@@ -102,7 +102,7 @@ private:
 
 
     public:
-        MarkScope(ScopeManager &m, Scope::ScopeKind kind) : mgr(m) { mgr.PushScope(kind); }
+        MarkScope(ScopeManager &m, Scope::ScopeKind kind, std::string name) : mgr(m) { mgr.PushScope(kind, name); }
         ~MarkScope() { mgr.PopScope(); }
 
 

@@ -22,7 +22,8 @@
 //
 // -- Construct a scope
 //    -----------------
-Scope::Scope(Scope *parent, ScopeKind kind) : parent(parent),kind(kind)
+Scope::Scope(Scope *parent, ScopeKind kind, int level, std::string name)
+        : parent(parent),kind(kind), level(level), name(name)
 {
     ordered.clear();
     index.clear();

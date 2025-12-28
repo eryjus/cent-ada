@@ -29,7 +29,7 @@ private:
 
 private:
     // -- these are only accessible from Parser
-    void PushScope(Scope::ScopeKind kind);
+    void PushScope(Scope::ScopeKind kind, std::string name);
     void PopScope(void);
     //
     // -- This function must be called no more than once for any given scope
