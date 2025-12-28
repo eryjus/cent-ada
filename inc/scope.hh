@@ -35,6 +35,8 @@ public:
 
 
 private:
+    std::string name;
+    int level;
     Scope *parent;      // -- the next broader scope, not the owner
     ScopeKind kind;
 
@@ -46,7 +48,7 @@ private:
 
 
 public:
-    explicit Scope(Scope *parent, ScopeKind kind);
+    explicit Scope(Scope *parent, ScopeKind kind, int level, std::string name = "");
 
 public:
     Scope *Parent(void) const { return parent; }
@@ -58,6 +60,12 @@ public:
     const std::vector<Symbol *> *LocalLookup(std::string_view name) const;
     Symbol *Declare(std::unique_ptr<Symbol> sym);
     void Print(void) const;
+
+
+public:
+    int Level(void) const { return level; }
+    void Level(int l) { level = l; }
+    const std::string &Name(void) const { return name; }
 };
 
 
