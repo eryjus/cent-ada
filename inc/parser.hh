@@ -99,15 +99,24 @@ private:
 
     private:
         ScopeManager &mgr;
+        bool committed = false;
 
 
     public:
         MarkScope(ScopeManager &m, Scope::ScopeKind kind, std::string name) : mgr(m) { mgr.PushScope(kind, name); }
-        ~MarkScope() { mgr.PopScope(); }
+        ~MarkScope() {
+            if (!committed) {
+                //
+                // -- claim ownership of the pointer so that when this goes out of
+                //    scope, the data strutures are removed
+                //    -------------------------------------------------------------
+                std::unique_ptr<Scope> wrk = std::move(mgr.Claim());
+            }
+        }
 
 
     public:
-        std::unique_ptr<Scope> Commit(void) { return std::move(mgr.ClaimCurrentScope()); }
+        Scope *Commit(void) { committed = true; return mgr.CurrentScope(); }
     };
 
 

@@ -36,7 +36,7 @@ ScopeManager::ScopeManager(void)
     Declare(std::make_unique<Symbol>("false", Symbol::SymbolKind::Object, tokens->EmptyLocation()))->Hide();
     Declare(std::make_unique<Symbol>("true", Symbol::SymbolKind::Object, tokens->EmptyLocation()))->Hide();
 
-    stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "global"));
+    stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "global"));
 }
 
 
@@ -47,6 +47,7 @@ ScopeManager::ScopeManager(void)
 void ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 {
     stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, CurrentScope()->Level() + 1, name));
+    current = stack.back().get();
 }
 
 
@@ -60,7 +61,7 @@ void ScopeManager::PopScope(void)
         exit(EXIT_FAILURE);
     }
 
-    stack.pop_back();
+    current = current->Parent();
 }
 
 
