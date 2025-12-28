@@ -73,7 +73,6 @@ bool Parser::ParseNameExpr(std::string &id)
         // -- Do something important here
     }
 
-    std::cerr << "** Done in Name for ID " << id << '\n';
     m.Commit();
     return true;
 }
@@ -264,7 +263,6 @@ bool Parser::ParseSimpleName(std::string &id)
 
     if (scopes.Lookup(id) == nullptr) {
         diags.Error(loc, DiagID::UnknownName, { id } );
-        std::cerr << "** Unknown ID\n";
         // -- continue anyway
     }
 
@@ -604,8 +602,6 @@ bool Parser::ParseRelation(void)
     if (ParseRelationalOperator()) {
         if (!ParseSimpleExpression()) return false;
 
-        std::cerr << "** Relation operator return; next token is " << tokens.tokenStr(tokens.Current()) << '\n';
-
         m.Commit();
         return true;
     }
@@ -613,8 +609,6 @@ bool Parser::ParseRelation(void)
 
     if (Optional(TOK_NOT)) hasNot = true;
     if (!Optional(TOK_IN)) {
-        std::cerr << "** Relation simple expression only return; next token is " << tokens.tokenStr(tokens.Current()) << '\n';
-
         m.Commit();
         return true;
     }
@@ -631,7 +625,6 @@ bool Parser::ParseRelation(void)
 
     // -- TODO: Is there some form of recovery needed here?
 
-    std::cerr << "** Relation default return; next token is " << tokens.tokenStr(tokens.Current()) << '\n';
     m.Commit();
     return true;
 }
@@ -655,7 +648,6 @@ bool Parser::ParseSimpleExpression(void)
         if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW) return false;
     }
 
-    std::cerr << "** Simple Expression finds term\n";
     m.Commit();
     return true;
 }
@@ -676,7 +668,6 @@ bool Parser::ParseTerm(void)
         if (!ParseFactor()) return false;
     }
 
-    std::cerr << "** Term finds Factor\n";
     m.Commit();
     return true;
 }
@@ -712,7 +703,6 @@ bool Parser::ParseFactor(void)
             if (!ParsePrimary())    return false;
         }
 
-        std::cerr << "** Factor finds primary\n";
         m.Commit();
         return true;
     }
@@ -751,18 +741,13 @@ bool Parser::ParsePrimary(void)
     }
 
 
-    std::cerr << "** Checking for an aggregate, next token is " << tokens.tokenStr(tokens.Current()) << '\n';
     if (ParseAggregate()) {
-        std::cerr << "** Primary finds an aggregate\n";
         m.Commit();
         return true;
     }
-    std::cerr << "** Aggregate not found; checking left factored '('; token is: " << tokens.tokenStr(tokens.Current()) << '\n';
 
     if (Optional(TOK_LEFT_PARENTHESIS)) {
         if (!ParseExpression()) return false;
-
-        std::cerr << "Found a `( <expr>` sequence; next token is " << tokens.tokenStr(tokens.Current()) << '\n';
 
         if (Optional(TOK_RIGHT_PARENTHESIS)) {
             m.Commit();
@@ -802,7 +787,6 @@ bool Parser::ParsePrimary(void)
     }
 
     if (ParseNameExpr(id)) {
-        std::cerr << "** Primary finds name\n";
         m.Commit();
         return true;
     }

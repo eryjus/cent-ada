@@ -87,7 +87,7 @@ private:
         //    the production.  It is provided ONLY for ease of coding in lists of alternative
         //    productions such as `basic_declaration`.
         //    ------------------------------------------------------------------------------------
-        bool CommitIf(bool c) { if (c) { committed = true; } return c; }
+        bool CommitIf(bool c) { if (c) { committed = true; } else { Reset(); } return c; }
     };
 
 
@@ -102,7 +102,7 @@ private:
 
 
     public:
-        MarkScope(ScopeManager &m, Scope::Kind kind) : mgr(m) { mgr.PushScope(kind); }
+        MarkScope(ScopeManager &m, Scope::ScopeKind kind) : mgr(m) { mgr.PushScope(kind); }
         ~MarkScope() { mgr.PopScope(); }
 
 
@@ -212,72 +212,61 @@ public:
         return rv;
     }
 
-    void CheckLocalId(std::string &id, SourceLoc_t loc, SymbolKind kind) {
-        if (scopes.IsLocalDefined(id)) {
-            Symbol *sym = scopes.CurrentScope()->LocalLookup(id);
-
-            if (kind == SymbolKind::Type && sym->kind == SymbolKind::IncompleteType) {
-                sym->kind = kind;
-                return;
-            }
-
-            diags.Error(loc, DiagID::DuplicateName, { id } );
-            diags.Note(scopes.CurrentScope()->LocalLookup(id)->loc, DiagID::DuplicateName2);
-        } else {
-            std::unique_ptr<Symbol> sym = std::make_unique<Symbol>(id, kind, loc);
-            scopes.Declare(std::move(sym));
-        }
-    }
+    void CheckLocalId(std::string &id, SourceLoc_t loc, Symbol::SymbolKind kind);
 
 
 public:
-    bool ParseAccessTypeDefinition(void);                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseArrayTypeDefinition(void);                        // -- Ch 3: in `parse_decl.cc`
-    bool ParseBasicDeclaration(void);                           // -- Ch 3: in `parse_decl.cc`
-    bool ParseBasicDeclarativeItem(void);                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseBody(void);                                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseChoice(void);                                     // -- Ch 3: in `parse_decl.cc`
-    bool ParseComponentDeclaration(void);                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseComponentList(void);                              // -- Ch 3: in `parse_decl.cc`
-    bool ParseComponentSubtypeDefinition(void);                 // -- Ch 3: in `parse_decl.cc`
-    bool ParseConstrainedArrayDefinition(void);                 // -- Ch 3: in `parse_decl.cc`
-    bool ParseConstraint(void);                                 // -- Ch 3: in `parse_decl.cc`
-    bool ParseDeclarativePart(void);                            // -- Ch 3: in `parse_decl.cc`
-    bool ParseDerivedTypeDefinition(void);                      // -- Ch 3: in `parse_decl.cc`
-    bool ParseDiscreteRange(void);                              // -- Ch 3: in `parse_decl.cc`
-    bool ParseDiscriminantAssociation(void);                    // -- Ch 3: in `parse_decl.cc`
-    bool ParseDiscriminantConstraint(void);                     // -- Ch 3: in `parse_decl.cc`
-    bool ParseDiscriminantPart(void);                           // -- Ch 3: in `parse_decl.cc`
-    bool ParseDiscriminantSpecification(void);                  // -- Ch 3: in `parse_decl.cc`
-    bool ParseEnumerationLiteral(void);                         // -- Ch 3: in `parse_decl.cc`
-    bool ParseEnumerationLiteralSpecification(void);            // -- Ch 3: in `parse_decl.cc`
-    bool ParseEnumerationTypeDefinition(void);                  // -- Ch 3: in `parse_decl.cc`
-    bool ParseFixedAccuracyDefinition(void);                    // -- Ch 3: in `parse_decl.cc`
-    bool ParseFixedPointConstraint(void);                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseFloatingAccuracyDefinition(void);                 // -- Ch 3: in `parse_decl.cc`
-    bool ParseFloatingPointConstraint(void);                    // -- Ch 3: in `parse_decl.cc`
-    bool ParseFullTypeDeclaration(void);                        // -- Ch 3: in `parse_decl.cc`
-    bool ParseIdentifierList(IdList *ids);                      // -- Ch 3: in `parse_decl.cc`
-    bool ParseIncompleteTypeDeclaration(void);                  // -- Ch 3: in `parse_decl.cc`
-    bool ParseIndexConstraint(void);                            // -- Ch 3: in `parse_decl.cc`
-    bool ParseIndexSubtypeDefinition(void);                     // -- Ch 3: in `parse_decl.cc`
-    bool ParseIntegerTypeDefinition(void);                      // -- Ch 3: in `parse_decl.cc`
-    bool ParseLaterDeclarativeItem(void);                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseNumberDeclaration(void);                          // -- Ch 3: in `parse_decl.cc`
-    bool ParseObjectDeclaration(void);                          // -- Ch 3: in `parse_decl.cc`
-    bool ParseProperBody(void);                                 // -- Ch 3: in `parse_decl.cc`
-    bool ParseRange(void);                                      // -- Ch 3: in `parse_decl.cc`
-    bool ParseRangeConstraint(void);                            // -- Ch 3: in `parse_decl.cc`
-    bool ParseRealTypeDefinition(void);                         // -- Ch 3: in `parse_decl.cc`
-    bool ParseRecordTypeDefinition(void);                       // -- Ch 3: in `parse_decl.cc`
-    bool ParseSubtypeDeclaration(void);                         // -- Ch 3: in `parse_decl.cc`
-    bool ParseSubtypeIndication(void);                          // -- Ch 3: in `parse_decl.cc`
-    bool ParseTypeDeclaration(void);                            // -- Ch 3: in `parse_decl.cc`
-    bool ParseTypeDefinition(void);                             // -- Ch 3: in `parse_decl.cc`
-    bool ParseTypeMark(void);                                   // -- Ch 3: in `parse_decl.cc`
-    bool ParseUnconstrainedArrayDefinition(void);               // -- Ch 3: in `parse_decl.cc`
-    bool ParseVariant(void);                                    // -- Ch 3: in `parse_decl.cc`
-    bool ParseVariantPart(void);                                // -- Ch 3: in `parse_decl.cc`
+    bool ParseAccessTypeDefinition(void);
+    bool ParseArrayTypeDefinition(void);
+    bool ParseBasicDeclaration(void);
+    bool ParseBasicDeclarativeItem(void);
+    bool ParseBody(void);
+    bool ParseChoice(void);
+    bool ParseComponentDeclaration(void);
+    bool ParseComponentList(void);
+    bool ParseComponentSubtypeDefinition(void);
+    bool ParseConstrainedArrayDefinition(void);
+    bool ParseConstraint(void);
+    bool ParseDeclarativePart(void);
+    bool ParseDerivedTypeDefinition(void);
+    bool ParseDiscreteRange(void);
+    bool ParseDiscriminantAssociation(void);
+    bool ParseDiscriminantConstraint(void);
+    bool ParseDiscriminantPart(void);
+    bool ParseDiscriminantSpecification(void);
+    bool ParseEnumerationLiteral(void);
+    bool ParseEnumerationLiteralSpecification(void);
+    bool ParseEnumerationTypeDefinition(void);
+    bool ParseFixedAccuracyDefinition(void);
+    bool ParseFixedPointConstraint(void);
+    bool ParseFloatingAccuracyDefinition(void);
+    bool ParseFloatingPointConstraint(void);
+    bool ParseFullTypeDeclaration(void);
+    bool ParseIdentifierList(IdList *ids);
+    bool ParseIncompleteTypeDeclaration(void);
+    bool ParseIndexConstraint(void);
+    bool ParseIndexSubtypeDefinition(void);
+    bool ParseIntegerTypeDefinition(void);
+    bool ParseLaterDeclarativeItem(void);
+    bool ParseNumberDeclaration(void);
+    bool ParseObjectDeclaration(void);
+    bool ParseProperBody(void);
+    bool ParseRange(void);
+    bool ParseRangeConstraint(void);
+    bool ParseRealTypeDefinition(void);
+    bool ParseRecordTypeDefinition(void);
+    bool ParseSubtypeDeclaration(void);
+    bool ParseSubtypeIndication(void);
+    bool ParseTypeDeclaration(void);
+    bool ParseTypeDefinition(void);
+    bool ParseTypeMark(void);
+    bool ParseUnconstrainedArrayDefinition(void);
+    bool ParseVariant(void);
+    bool ParseVariantPart(void);
+
+
+
+
 
     bool ParseAggregate(void);                                  // -- Ch 4: in `parse_expr.cc`
     bool ParseAggregateMore(void);                              // -- Ch 4: in `parse_expr.cc`
@@ -330,6 +319,41 @@ public:
     bool ParseTaskBody(void) { return false; }
     bool ParseTaskDeclaration(void) { return false; }
     bool ParseUseClause(void) { return false; }
+
+    bool ParseUniversalStaticExpression(void) { return ParseExpression(); }
+    bool ParseRangeAttribute(void) { return ParseAttribute(); }
+    bool ParseStaticSimpleExpression(void) { return ParseSimpleExpression(); }
+    bool ParseDiscriminantSimpleName(std::string &id) { return ParseSimpleName(id);     CheckLocalId(id, tokens.EmptyLocation(), Symbol::SymbolKind::Discriminant); }
+
+
+
+    bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication(); }
+    bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication(); }
+
+
+
+    bool ParseTypeName(void) {
+        std::string id;
+        if (!ParseNameNonExpr(id)) return false;
+        const std::vector<Symbol *> *vec = scopes.Lookup(id);
+        if (!vec || vec->empty()) return false;
+        for (int i = 0; i < vec->size(); i ++) {
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
+        }
+
+        return false;
+    }
+    bool ParseSubtypeName(void) {
+        std::string id;
+        if (!ParseNameNonExpr(id)) return false;
+        const std::vector<Symbol *> *vec = scopes.Lookup(id);
+        if (!vec || vec->empty()) return false;
+        for (int i = 0; i < vec->size(); i ++) {
+            if (vec->at(i)->kind == Symbol::SymbolKind::Subtype) return true;
+        }
+
+        return false;
+    }
 
 };
 

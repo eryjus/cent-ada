@@ -156,10 +156,16 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::MissingEnd, "expected 'end' after {0}" },
     { DiagID::MissingEndingTag, "after an 'end', expected to see {0}" },
     { DiagID::MissingRecordComponentDefinitions, "a record definition requires at least 1 component" },
+    { DiagID::MissingExpression, "Missing an expression after {0}" },
     { DiagID::InvalidChoiceInVariant, "invalid choice in variant" },
     { DiagID::DuplicateName, "duplicate name {0} in the same scope" },
     { DiagID::DuplicateName2, "the previous declaration was here" },
-    { DiagID::UnknownName, "the name {0} is not known" },
+    { DiagID::UnknownName, "the name '{0}' is not known" },
+    { DiagID::ExtraComma, "extra comma (,) in {0}"},
+    { DiagID::ExtraSemicolon, "extra semicolon (;) in {0}"},
+    { DiagID::ExtraVertialBar, "extra vertical bar (|) in {0}"},
+    { DiagID::InvalidRangeConstraint, "invalid range constraint" },
+    { DiagID::InvalidName, "invalid name {0} in {1}" },
 };
 
 

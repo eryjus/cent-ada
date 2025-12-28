@@ -1,3 +1,4 @@
+N : constant := 10;
 type COLOR is (WHITE, RED, YELLOW, GREEN, BLUE, BROWN, BLACK);
 COLOR_TABLE : ARRAY(1 .. N) of COLOR;
 

@@ -41,6 +41,8 @@ typedef int TokenType_t;
 typedef union YYSTYPE yystype_t;
 extern yystype_t yylval;
 
+class ASTNode;
+
 
 
 //
@@ -48,7 +50,9 @@ extern yystype_t yylval;
 //    -------------------------
 #include "tstream.hh"
 #include "diag.hh"
-#include "scopes.hh"
+#include "symbol.hh"
+#include "scope.hh"
+#include "scope-manager.hh"
 #include "parser.hh"
 
 
