@@ -250,7 +250,7 @@ public:
     bool ParseConstrainedArrayDefinition(IdList *);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
-    bool ParseDerivedTypeDefinition(void);
+    bool ParseDerivedTypeDefinition(const std::string &id);
     bool ParseDiscreteRange(void);
     bool ParseDiscriminantAssociation(void);
     bool ParseDiscriminantConstraint(void);

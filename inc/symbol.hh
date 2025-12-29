@@ -106,6 +106,7 @@ public:
         Access,
         Subtype,
         Incomplete,
+        Derived,
     };
 
 
@@ -123,6 +124,7 @@ public:
             "Access",
             "Subtype",
             "Incomplete",
+            "Derived",
         };
 
         return s[(int)category];
@@ -153,6 +155,27 @@ public:
 
 public:
     EnumTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Enumeration, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- For Derived Types
+//    -----------------
+class DerivedTypeSymbol : public TypeSymbol {
+    DerivedTypeSymbol(void) = delete;
+    DerivedTypeSymbol(const DerivedTypeSymbol &) = delete;
+    DerivedTypeSymbol &operator=(const DerivedTypeSymbol &) = delete;
+
+
+public:
+    DerivedTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Derived, l, d) {}
 
 
 public:

@@ -22,22 +22,29 @@
 //
 // -- Parse a Derived Type Definition
 //    -------------------------------
-bool Parser::ParseDerivedTypeDefinition(void)
+bool Parser::ParseDerivedTypeDefinition(const std::string &id)
 {
     Production p(*this, "derived_type_definition");
     MarkStream m(tokens, diags);
+    MarkScope s(scopes);
 
 
     //
     // -- This is just a TOK_NEW with a Subtype Indication
     //    ------------------------------------------------
     if (!Require(TOK_NEW)) return false;
+
+    SourceLoc_t loc = tokens.SourceLocation();
+    scopes.Declare(std::make_unique<DerivedTypeSymbol>(id, loc, scopes.CurrentScope()));
+
+
     if (!ParseSubtypeIndication()) return false;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    s.Commit();
     m.Commit();
     return true;
 }
