@@ -43,7 +43,15 @@ private:
     // -- declaration order -- needed for rollback
     std::vector<std::unique_ptr<Symbol>> ordered;
 
-    // -- overloaded identifiers, pointing back to the type symbol name
+    //
+    // -- This is critical understanding:
+    //
+    //    Each identifier name needs to be able to be pointed to one of several symbol objects,
+    //    Each symbol object identifies its own type.  I believe at this point only enums cab be
+    //    overloaded.  However, this means that each name will need to be able to be resolved
+    //    to each possible symbol in the scope.  `std::vector<Symbol *>` is a vector of symbols,
+    //    not types.
+    //    ---------------------------------------------------------------------------------------
     std::unordered_map<std::string, std::vector<Symbol *>> index;
 
 
@@ -58,11 +66,20 @@ public:
 
     void Rollback(size_t cp);
     const std::vector<Symbol *> *LocalLookup(std::string_view name) const;
-    Symbol *DeclareSym(std::unique_ptr<Symbol> sym);
-    TypeSymbol *DeclareType(std::unique_ptr<TypeSymbol> sym);
-    EnumTypeSymbol *DeclareEnumType(std::unique_ptr<EnumTypeSymbol> sym);
     void AddType(const std::string name, TypeSymbol *type) { index.find(name)->second.push_back(type); };
     void Print(void) const;
+
+
+public:
+    template <typename T>
+    T *Declare(std::unique_ptr<T> sym) {
+        static_assert(std::is_base_of_v<Symbol, T>, "Declare<T>: T must derive from Symbol");
+        T *raw = sym.get();
+        ordered.push_back(std::move(sym));
+        index[raw->name].push_back(raw);
+        return raw;
+    }
+
 
 public:
     int Level(void) const { return level; }
