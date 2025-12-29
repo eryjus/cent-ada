@@ -15,7 +15,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [x] Print out the symbol table (print name and depth!)
 - [x] Hide core language symbols
 - [x] Split symbols and scopes (and scope manager?) to separate sources
-- [ ] Is there really a need for a vector for symbols in a scope (probably not -- i allow duplicate names)
+- [x] Change the unordered map to point 1 name to several symbols
 
 
 ### Parsing

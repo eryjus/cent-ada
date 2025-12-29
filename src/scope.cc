@@ -69,45 +69,6 @@ const std::vector<Symbol *> *Scope::LocalLookup(std::string_view name) const
 
 
 //
-// -- insert a new symbol into the table
-//    ----------------------------------
-Symbol *Scope::DeclareSym(std::unique_ptr<Symbol> sym)
-{
-    Symbol *raw = sym.get();
-    ordered.push_back(std::move(sym));
-    index[raw->name].push_back(raw);
-    return raw;
-}
-
-
-
-//
-// -- insert a new symbol into the table
-//    ----------------------------------
-TypeSymbol *Scope::DeclareType(std::unique_ptr<TypeSymbol> sym)
-{
-    TypeSymbol *raw = sym.get();
-    ordered.push_back(std::move(sym));
-    index[raw->name].push_back(raw);
-    return raw;
-}
-
-
-
-//
-// -- insert a new symbol into the table
-//    ----------------------------------
-EnumTypeSymbol *Scope::DeclareEnumType(std::unique_ptr<EnumTypeSymbol> sym)
-{
-    EnumTypeSymbol *raw = sym.get();
-    ordered.push_back(std::move(sym));
-    index[raw->name].push_back(raw);
-    return raw;
-}
-
-
-
-//
 // -- print the local scope
 //    ---------------------
 void Scope::Print(void) const

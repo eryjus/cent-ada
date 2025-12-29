@@ -235,7 +235,7 @@ static int Compile(std::string filename, ParseType_t type)
     case COMPILE_TYPES:
         while (tokens->Current() != YYEOF) {
             if(!parser->ParseBasicDeclaration()) {
-                std::cerr << "Unable to properly parse Basic Declaration\n";
+                std::cerr << "ERROR: Unable to properly parse Basic Declaration\n";
                 rv = EXIT_FAILURE;
                 goto exit;
             }
@@ -273,6 +273,7 @@ static int Compile(std::string filename, ParseType_t type)
     std::cerr << "Parse Complete.\n";
 
 exit:
+    tokens->Listing();
     parser->Scopes()->Print();
 
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
