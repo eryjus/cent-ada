@@ -162,6 +162,27 @@ public:
 
 
 //
+// -- For Array Types
+//    ---------------
+class ArrayTypeSymbol : public TypeSymbol {
+    ArrayTypeSymbol(void) = delete;
+    ArrayTypeSymbol(const ArrayTypeSymbol &) = delete;
+    ArrayTypeSymbol &operator=(const ArrayTypeSymbol &) = delete;
+
+
+public:
+    ArrayTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Enumeration, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
 // -- An Enumeration Literal
 //    ----------------------
 class EnumLiteralSymbol : public Symbol {

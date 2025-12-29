@@ -238,6 +238,8 @@ static int Compile(std::string filename, ParseType_t type)
                 std::cerr << "ERROR: Unable to properly parse Basic Declaration\n";
                 rv = EXIT_FAILURE;
                 goto exit;
+            } else {
+                std::cerr << "Completed a Declaration\n";
             }
         }
 

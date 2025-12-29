@@ -100,17 +100,30 @@ private:
     private:
         ScopeManager &mgr;
         bool committed = false;
+        size_t stackCkpt;
+        size_t scopeCkpt;
 
 
     public:
-        MarkScope(ScopeManager &m, Scope::ScopeKind kind, std::string name) : mgr(m) { }
+        MarkScope(ScopeManager &m) : mgr(m) {
+            stackCkpt = m.stack.size();
+            scopeCkpt = m.CurrentScope()->Checkpoint();
+        }
         ~MarkScope() {
             if (!committed) {
-                //
-                // -- claim ownership of the pointer so that when this goes out of
-                //    scope, the data strutures are removed
-                //    -------------------------------------------------------------
-                std::unique_ptr<Scope> wrk = std::move(mgr.Claim());
+                // -- roll back any added scopes
+                while (mgr.stack.size() > stackCkpt) {
+                    { // -- this creates a local scope in the loop to own the pointer for a short time
+                        std::unique_ptr<Scope> s = std::move(mgr.stack.back());
+                        mgr.stack.pop_back();
+                    }
+
+                    // -- should be nothing else to do
+                }
+
+
+                // -- rollback the symbols added in the original scope
+                mgr.CurrentScope()->Rollback(scopeCkpt);
             }
         }
 
@@ -225,7 +238,7 @@ public:
 
 public:
     bool ParseAccessTypeDefinition(void);
-    bool ParseArrayTypeDefinition(void);
+    bool ParseArrayTypeDefinition(const std::string &id);
     bool ParseBasicDeclaration(void);
     bool ParseBasicDeclarativeItem(void);
     bool ParseBody(void);
@@ -233,7 +246,8 @@ public:
     bool ParseComponentDeclaration(void);
     bool ParseComponentList(void);
     bool ParseComponentSubtypeDefinition(void);
-    bool ParseConstrainedArrayDefinition(void);
+    bool ParseConstrainedArrayDefinition(const std::string &id);
+    bool ParseConstrainedArrayDefinition(IdList *);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
     bool ParseDerivedTypeDefinition(void);
@@ -268,10 +282,10 @@ public:
     bool ParseTypeDeclaration(void);
     bool ParseTypeDefinition(const std::string &id);
     bool ParseTypeMark(void);
-    bool ParseUnconstrainedArrayDefinition(void);
+    bool ParseUnconstrainedArrayDefinition(const std::string &id);
     bool ParseVariant(void);
     bool ParseVariantPart(void);
-
+    bool _HelpParseConstrainedArrayDefinition(void);
 
 
 
@@ -287,8 +301,8 @@ public:
     bool ParseFactor(void);                                     // -- Ch 4: in `parse_expr.cc`
     bool ParseIndexedComponent(void);                           // -- Ch 4: in `parse_expr.cc`
     bool ParseMultiplyingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
-    bool ParseNameNonExpr(std::string &id);                            // -- Ch 4: in `parse_expr.cc`
-    bool ParseNameExpr(std::string &id);                            // -- Ch 4: in `parse_expr.cc`
+    bool ParseNameNonExpr(std::string &id);                     // -- Ch 4: in `parse_expr.cc`
+    bool ParseNameExpr(std::string &id);                        // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Base(std::string &id);                       // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
     bool ParsePrefix(void);                                     // -- Ch 4: in `parse_expr.cc`

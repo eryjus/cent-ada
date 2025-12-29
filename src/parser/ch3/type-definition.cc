@@ -35,7 +35,7 @@ bool Parser::ParseTypeDefinition(const std::string &id)
     if (ParseEnumerationTypeDefinition(id)) return true;
     if (ParseIntegerTypeDefinition())       return true;
     if (ParseRealTypeDefinition())          return true;
-    if (ParseArrayTypeDefinition())         return true;
+    if (ParseArrayTypeDefinition(id))       return true;
     if (ParseRecordTypeDefinition())        return true;
     if (ParseAccessTypeDefinition())        return true;
     if (ParseDerivedTypeDefinition())       return true;

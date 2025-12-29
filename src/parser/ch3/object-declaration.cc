@@ -60,7 +60,7 @@ bool Parser::ParseObjectDeclaration(void)
     if (ParseSubtypeIndication()) {
         where = "subtype_indication";
         // -- do something important here
-    } else if (ParseConstrainedArrayDefinition()) {
+    } else if (ParseConstrainedArrayDefinition(idList.get())) {
         where = "constrained_array_definition";
         // -- do something important here
     } else {

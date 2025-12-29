@@ -27,7 +27,7 @@ bool Parser::ParseEnumerationTypeDefinition(const std::string &id)
     Production p(*this, "enumeration_type_definition");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
-    MarkScope s(scopes, Scope::ScopeKind::Enumeration, id);
+    MarkScope s(scopes);
 
 
     //

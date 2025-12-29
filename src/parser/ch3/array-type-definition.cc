@@ -22,12 +22,12 @@
 //
 // -- Parse an Array Type Definition
 //    ------------------------------
-bool Parser::ParseArrayTypeDefinition(void)
+bool Parser::ParseArrayTypeDefinition(const std::string &id)
 {
     Production p(*this, "array_type_definition");
 
-    if (ParseUnconstrainedArrayDefinition())    return true;
-    if (ParseConstrainedArrayDefinition())      return true;
+    if (ParseUnconstrainedArrayDefinition(id))    return true;
+    if (ParseConstrainedArrayDefinition(id))      return true;
 
     return false;
 }
