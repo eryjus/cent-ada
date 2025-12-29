@@ -38,6 +38,7 @@ public:
         EnumLiteral,
         Package,
         Label,
+        Discriminant,
     };
 
 
@@ -76,6 +77,7 @@ public:
             "EnumLiteral",
             "Package",
             "Label",
+            "Discriminant",
         };
 
         return s[(int)kind];
@@ -209,6 +211,30 @@ public:
         v.Visit(*this);
     }
 };
+
+
+
+//
+// -- A Discriminant Symbol
+//    ---------------------
+class DiscriminantSymbol : public Symbol {
+    DiscriminantSymbol(void) = delete;
+    DiscriminantSymbol(const DiscriminantSymbol &) = delete;
+    DiscriminantSymbol &operator=(const DiscriminantSymbol &) = delete;
+
+
+public:
+    DiscriminantSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::Discriminant, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
 
 
 

@@ -41,7 +41,6 @@ bool Parser::ParseUnconstrainedArrayDefinition(const std::string &id)
 
     // -- Start parse with the first 2 required tokens
     //    --------------------------------------------
-    diags.Debug("Checking required tokens");
     if (!Require(TOK_ARRAY)) return false;
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
 
@@ -49,7 +48,6 @@ bool Parser::ParseUnconstrainedArrayDefinition(const std::string &id)
     //
     // -- now, there should be an index definition
     //    ----------------------------------------
-    diags.Debug("Checking index subtype definition(s)");
     if (!ParseIndexSubtypeDefinition()) return false;
 
 
@@ -73,7 +71,6 @@ bool Parser::ParseUnconstrainedArrayDefinition(const std::string &id)
     //
     // -- The closing paren is required
     //    -----------------------------
-    diags.Debug("Checking closing paren");
     loc = tokens.SourceLocation();
     if (!Require(TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"array index subtype definition"});
@@ -85,10 +82,8 @@ bool Parser::ParseUnconstrainedArrayDefinition(const std::string &id)
     //
     // -- Wrap up the rest of the production
     //    ----------------------------------
-    diags.Debug("Checking type of the array");
     if (!Require(TOK_OF)) return false;
     if (!ParseComponentSubtypeIndication()) return false;
-    diags.Debug("Complete!");
 
 
 

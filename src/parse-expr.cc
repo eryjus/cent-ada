@@ -691,7 +691,7 @@ bool Parser::ParseFactor(void)
         return true;
     } else if (Require(TOK_NOT)) {
         if (!ParsePrimary()) {
-            // -- TODO: issue an error here about missing a primary after 'abs'
+            // -- TODO: issue an error here about missing a primary after 'not'
         }
 
         m.Commit();
@@ -699,7 +699,7 @@ bool Parser::ParseFactor(void)
     } else {
         if (!ParsePrimary())    return false;
 
-        if (Optional(TOK_EXPONENTIATE)) {
+        if (Optional(TOK_DOUBLE_STAR)) {
             if (!ParsePrimary())    return false;
         }
 

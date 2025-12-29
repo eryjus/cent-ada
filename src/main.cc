@@ -239,7 +239,7 @@ static int Compile(std::string filename, ParseType_t type)
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {
-                std::cerr << "Completed a Declaration\n";
+//                std::cerr << "Completed a Declaration\n";
             }
         }
 

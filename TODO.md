@@ -16,7 +16,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [x] Hide core language symbols
 - [x] Split symbols and scopes (and scope manager?) to separate sources
 - [x] Change the unordered map to point 1 name to several symbols
-- [ ] MarkScope is a problem -- need to be able to checkout and back out any added symbols
+- [x] MarkScope is a problem -- need to be able to checkout and back out any added symbols
 
 
 ### Parsing
