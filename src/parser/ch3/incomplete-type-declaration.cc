@@ -43,7 +43,13 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     // -- Get the name of the incomplete type declaration
     //    -----------------------------------------------
     if (!RequireIdent(id)) return false;
-    CheckLocalId(id, loc, Symbol::SymbolKind::IncompleteType);
+
+    if (scopes.IsLocalDefined(id)) {
+        diags.Error(loc, DiagID::DuplicateName, { id } );
+        // -- TODO: issue the second part of this error
+    } else {
+        scopes.Declare(std::make_unique<Symbol>(id, Symbol::SymbolKind::Type, loc, scopes.CurrentScope()));
+    }
 
 
     //

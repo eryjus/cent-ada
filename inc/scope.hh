@@ -43,7 +43,7 @@ private:
     // -- declaration order -- needed for rollback
     std::vector<std::unique_ptr<Symbol>> ordered;
 
-    // -- overloaded identifiers
+    // -- overloaded identifiers, pointing back to the type symbol name
     std::unordered_map<std::string, std::vector<Symbol *>> index;
 
 
@@ -58,9 +58,11 @@ public:
 
     void Rollback(size_t cp);
     const std::vector<Symbol *> *LocalLookup(std::string_view name) const;
-    Symbol *Declare(std::unique_ptr<Symbol> sym);
+    Symbol *DeclareSym(std::unique_ptr<Symbol> sym);
+    TypeSymbol *DeclareType(std::unique_ptr<TypeSymbol> sym);
+    EnumTypeSymbol *DeclareEnumType(std::unique_ptr<EnumTypeSymbol> sym);
+    void AddType(const std::string name, TypeSymbol *type) { index.find(name)->second.push_back(type); };
     void Print(void) const;
-
 
 public:
     int Level(void) const { return level; }

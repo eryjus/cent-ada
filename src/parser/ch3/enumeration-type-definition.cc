@@ -22,18 +22,26 @@
 //
 // -- Parse an Enumeration Type Definition
 //    ------------------------------------
-bool Parser::ParseEnumerationTypeDefinition(void)
+bool Parser::ParseEnumerationTypeDefinition(const std::string &id)
 {
     Production p(*this, "enumeration_type_definition");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    MarkScope s(scopes, Scope::ScopeKind::Enumeration, id);
+
+
+    //
+    // -- Start by adding a new Enum Type with the name
+    //    ---------------------------------------------
+    EnumTypeSymbol *type = scopes.Declare(std::make_unique<EnumTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+
 
 
     //
     // -- The enumeration is enclosed in parens
     //    -------------------------------------
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
-    if (!ParseEnumerationLiteralSpecification()) return false;
+    if (!ParseEnumerationLiteralSpecification(type)) return false;
 
 
 
@@ -42,7 +50,7 @@ bool Parser::ParseEnumerationTypeDefinition(void)
     //    ---------------------------------------
     loc = tokens.SourceLocation();
     while (Optional(TOK_COMMA)) {
-        if (!ParseEnumerationLiteralSpecification()) {
+        if (!ParseEnumerationLiteralSpecification(type)) {
             diags.Error(loc, DiagID::ExtraComma, { "enumeration type definition" } );
             // -- continue on in hopes that this does not create a cascade of errors
 
@@ -66,6 +74,7 @@ bool Parser::ParseEnumerationTypeDefinition(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    s.Commit();
     m.Commit();
     return true;
 }

@@ -23,20 +23,23 @@
 //    ---------------------------
 ScopeManager::ScopeManager(void)
 {
+    Scope *declScope;
+
     stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, 0, "standard"));
+    declScope = stack.back().get();
 
-    Declare(std::make_unique<Symbol>("integer", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
-    Declare(std::make_unique<Symbol>("boolean", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
-    Declare(std::make_unique<Symbol>("array", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
-    Declare(std::make_unique<Symbol>("real", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
-    Declare(std::make_unique<Symbol>("character", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
-    Declare(std::make_unique<Symbol>("string", Symbol::SymbolKind::Type, tokens->EmptyLocation()))->Hide();
+    Declare(std::make_unique<Symbol>("integer", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<Symbol>("boolean", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<Symbol>("array", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<Symbol>("real", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<Symbol>("character", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<Symbol>("string", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
 
 
-    Declare(std::make_unique<Symbol>("false", Symbol::SymbolKind::Object, tokens->EmptyLocation()))->Hide();
-    Declare(std::make_unique<Symbol>("true", Symbol::SymbolKind::Object, tokens->EmptyLocation()))->Hide();
+    Declare(std::make_unique<Symbol>("false", Symbol::SymbolKind::Object, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<Symbol>("true", Symbol::SymbolKind::Object, tokens->EmptyLocation(), declScope));
 
-    stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "global"));
+    stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "GLOBAL"));
 }
 
 
@@ -93,7 +96,8 @@ void ScopeManager::Print(void) const
     std::cerr << "=========================================\n";
     std::cerr << '\n';
 
-    for (auto it = stack.begin(); it != stack.end(); it ++) {
+    // -- Skip the 'standard' scope, which is always the first one
+    for (auto it = stack.begin() + 1; it != stack.end(); it ++) {
         std::cerr << "Scope Name : " << it->get()->Name() << '\n';
         std::cerr << "Scope Depth: " << it->get()->Level() << '\n';
         std::cerr << "-------------------\n";

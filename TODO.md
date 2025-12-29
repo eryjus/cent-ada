@@ -7,8 +7,8 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Infrastructure
-- [ ] Redo the symbol table lookups/inserts to conform to new model
-- [ ] Mark Enums properly against multiple scopes
+- [x] Redo the symbol table lookups/inserts to conform to new model
+- [x] Mark Enums properly against multiple scopes
 - [x] Re-evaluate PushScope and PopScope (should pop-scope remove/delete the scope or just point back to the parent?)
 - [x] Hide Symbol members and create accessors
 - [x] Consider adding a name/level to the scope for debugging
@@ -23,8 +23,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Early Symbol Table
-- [ ] Check scopes for all calls to `CheckLocalId()` (***remove and rewrite function?***)
-- [ ] Create a scope for a record (***still the right thing to do?***)
+- [x] Check scopes for all calls to `CheckLocalId()` (***remove and rewrite function?***)
 - [ ] Redo BOOLEAN as enumeration to match language
 
 

@@ -42,7 +42,13 @@ bool Parser::ParseSubtypeDeclaration(void)
     //    ---------------------------------------
     loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return false;
-    CheckLocalId(id, loc, Symbol::SymbolKind::Subtype);
+
+    if (scopes.IsLocalDefined(id)) {
+        diags.Error(loc, DiagID::DuplicateName, { id } );
+        // -- TODO: issue the second part of this error
+    } else {
+        scopes.Declare(std::make_unique<Symbol>(id, Symbol::SymbolKind::Type, loc, scopes.CurrentScope()));
+    }
 
 
     //

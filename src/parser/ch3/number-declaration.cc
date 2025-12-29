@@ -41,7 +41,12 @@ bool Parser::ParseNumberDeclaration(void)
     // -- Now, check for any duplicates and add the name if there are none
     //    ----------------------------------------------------------------
     for (int i = 0; i < idList->size(); i ++) {
-        CheckLocalId(idList->at(i).name, idList->at(i).loc, Symbol::SymbolKind::Constant);
+        if (scopes.IsLocalDefined(idList->at(i).name)) {
+            diags.Error(idList->at(i).loc, DiagID::DuplicateName, { idList->at(i).name } );
+            // -- TODO: issue the second part of this error
+        } else {
+            scopes.Declare(std::make_unique<Symbol>(idList->at(i).name, Symbol::SymbolKind::Object, idList->at(i).loc, scopes.CurrentScope()));
+        }
     }
 
 

@@ -273,6 +273,8 @@ static int Compile(std::string filename, ParseType_t type)
     std::cerr << "Parse Complete.\n";
 
 exit:
+    parser->Scopes()->Print();
+
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
     std::cerr << "   Warnings: " << diags.Warnings() << '\n';
     return rv;

@@ -41,7 +41,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     //    ----------------------------------------------------
     SourceLoc_t loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return false;
-    CheckLocalId(id, loc, Symbol::SymbolKind::Type);
+
 
 
     //
@@ -56,7 +56,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     //    production to be valid.  See incomplete_type_declaration.
     //    -----------------------------------------------------------
     if (!Require(TOK_IS)) return false;
-    ParseTypeDefinition();
+    ParseTypeDefinition(id);
 
 
     //

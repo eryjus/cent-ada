@@ -19,27 +19,3 @@
 
 
 
-//
-// -- convert a SymbolKind to a string
-//    --------------------------------
-const std::string &Symbol::to_string(void)
-{
-    static std::vector<std::string> str = {
-        "IncompleteType",
-        "Type",
-        "Subtype",
-        "Object",
-        "Constant",
-        "EnumerationLiteral",
-        "Discriminant",
-        "Component",
-        "Subprogram",
-        "Package",
-    };
-
-    return str[(int)kind];
-}
-
-
-
-
