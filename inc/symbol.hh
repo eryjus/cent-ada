@@ -39,6 +39,8 @@ public:
         Package,
         Label,
         Discriminant,
+        Attribute,
+        Pragma,
     };
 
 
@@ -78,6 +80,8 @@ public:
             "Package",
             "Label",
             "Discriminant",
+            "Attribute",
+            "Pragma",
         };
 
         return s[(int)kind];
@@ -255,6 +259,30 @@ public:
         v.Visit(*this);
     }
 };
+
+
+
+//
+// -- An Attribute Symbol
+//    -------------------
+class AttributeSymbol : public Symbol {
+    AttributeSymbol(void) = delete;
+    AttributeSymbol(const AttributeSymbol &) = delete;
+    AttributeSymbol &operator=(const AttributeSymbol &) = delete;
+
+
+public:
+    AttributeSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::Attribute, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
 
 
 
