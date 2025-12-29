@@ -61,27 +61,43 @@ ScopeManager::ScopeManager(void)
     //
     // -- create all the possible attribute names
     //    ---------------------------------------
+    Declare(std::make_unique<AttributeSymbol>("address", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("aft", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("base", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("callable", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("constrained", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("count", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("delta", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("digits", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("emax", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("epsilon", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("first", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("first_bit", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("fore", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("image", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("large", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("last", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("last_bit", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("length", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_emax", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_emin", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_mastissa", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_overflows", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_radix", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_rounds", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("mantissa", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("pos", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("position", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("pred", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("range", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("safe_emax", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("safe_large", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("safe_small", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("size", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("small", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("storage_size", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("succ", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("terminated", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("val", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("value", TokenStream::EmptyLocation(), declScope));
     Declare(std::make_unique<AttributeSymbol>("width", TokenStream::EmptyLocation(), declScope));
