@@ -29,15 +29,25 @@ ScopeManager::ScopeManager(void)
     declScope = stack.back().get();
 
     Declare(std::make_unique<Symbol>("integer", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<Symbol>("boolean", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("array", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("real", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("character", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("string", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
 
+    std::unique_ptr<EnumTypeSymbol> b = std::make_unique<EnumTypeSymbol>("boolean", tokens->EmptyLocation(), declScope);
+    EnumTypeSymbol *bTyp = b.get();
+    Declare(std::move(b));
 
-    Declare(std::make_unique<Symbol>("false", Symbol::SymbolKind::Object, tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<Symbol>("true", Symbol::SymbolKind::Object, tokens->EmptyLocation(), declScope));
+    std::unique_ptr<EnumLiteralSymbol> f;
+    f = std::make_unique<EnumLiteralSymbol>("false", bTyp, 0, TokenStream::EmptyLocation(), declScope);
+    bTyp->literals.push_back(f.get());
+    Declare(std::move(f));
+
+    std::unique_ptr<EnumLiteralSymbol> t;
+    t = std::make_unique<EnumLiteralSymbol>("true", bTyp, 1, tokens->EmptyLocation(), declScope);
+    bTyp->literals.push_back(t.get());
+    Declare(std::move(t));
+
 
     stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "GLOBAL"));
 }

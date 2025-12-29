@@ -299,7 +299,7 @@ SourceLoc_t TokenStream::SourceLocation(void)
 //
 // -- Get an empty source location
 //    ----------------------------
-SourceLoc_t TokenStream::EmptyLocation(void) const
+SourceLoc_t TokenStream::EmptyLocation(void)
 {
     SourceLoc_t rv;
 

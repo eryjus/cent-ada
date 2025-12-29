@@ -15,6 +15,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [x] Print out the symbol table (print name and depth!)
 - [x] Hide core language symbols
 - [x] Split symbols and scopes (and scope manager?) to separate sources
+- [ ] Is there really a need for a vector for symbols in a scope (probably not -- i allow duplicate names)
 
 
 ### Parsing
@@ -24,7 +25,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 ### Early Symbol Table
 - [x] Check scopes for all calls to `CheckLocalId()` (***remove and rewrite function?***)
-- [ ] Redo BOOLEAN as enumeration to match language
+- [x] Redo BOOLEAN as enumeration to match language
 
 
 ### Command Line
