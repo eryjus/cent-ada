@@ -41,7 +41,13 @@ typedef int TokenType_t;
 typedef union YYSTYPE yystype_t;
 extern yystype_t yylval;
 
+
 class ASTNode;
+class SymbolVisitor;
+class Symbol;
+class TypeSymbol;
+class EnumTypeSymbol;
+class EnumLiteralSymbol;
 
 
 
@@ -50,6 +56,7 @@ class ASTNode;
 //    -------------------------
 #include "tstream.hh"
 #include "diag.hh"
+#include "visitors.hh"
 #include "symbol.hh"
 #include "scope.hh"
 #include "scope-manager.hh"

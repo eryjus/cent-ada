@@ -22,12 +22,13 @@
 //
 // -- Parse an Enumeration Literal
 //    ----------------------------
-bool Parser::ParseEnumerationLiteral(void)
+bool Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
 {
     Production p(*this, "enumeration_literal");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t loc = tokens.SourceLocation();
     std::string id;
+    EnumLiteralSymbol *sym;
 
 
     //
@@ -43,19 +44,10 @@ bool Parser::ParseEnumerationLiteral(void)
     // -- Now check for an id and if we have one check for duplicates
     //    -----------------------------------------------------------
     if (RequireIdent(id)) {
-
-        //
-        // -- Check for a duplicate and insert new or report an error
-        //    -------------------------------------------------------
-#if 0
-        const std::vector<Symbol *> *vec = scopes.Lookup(id);
-        if (vec || vec->empty()) {
-            diags.Error(loc, DiagID::DuplicateName, { id } );
-            diags.Note(sym->loc, DiagID::DuplicateName2);
-        } else {
-            scopes.Declare(std::make_unique<Symbol>(id, Symbol::SymbolKind::EnumerationLiteral, loc));
-        }
-#endif
+        std::unique_ptr<EnumLiteralSymbol> sym;
+        sym = std::make_unique<EnumLiteralSymbol>(id, type, type->literals.size(), loc, scopes.CurrentScope());
+        type->literals.push_back(sym.get());
+        scopes.Declare(std::move(sym));
 
 
         //

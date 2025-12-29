@@ -32,7 +32,8 @@ private:
     // -- these are only accessible from Parser
     void PushScope(Scope::ScopeKind kind, std::string name);
     void PopScope(void);
-    Symbol *Declare(std::unique_ptr<Symbol> sym) { return CurrentScope()->Declare(std::move(sym)); }
+    Symbol *Declare(std::unique_ptr<Symbol> sym) { return CurrentScope()->DeclareSym(std::move(sym)); }
+    EnumTypeSymbol *Declare(std::unique_ptr<EnumTypeSymbol> sym) { return CurrentScope()->DeclareEnumType(std::move(sym)); }
 
 
 public:

@@ -103,7 +103,7 @@ private:
 
 
     public:
-        MarkScope(ScopeManager &m, Scope::ScopeKind kind, std::string name) : mgr(m) { mgr.PushScope(kind, name); }
+        MarkScope(ScopeManager &m, Scope::ScopeKind kind, std::string name) : mgr(m) { }
         ~MarkScope() {
             if (!committed) {
                 //
@@ -210,6 +210,7 @@ public:
     std::string Last(void) { if (stack.size() == 0) return "top level"; return stack[stack.size() - 1]; }
     void Push(std::string p) { stack.push_back(p); }
     void Pop(void) { stack.pop_back(); }
+    const ScopeManager *Scopes(void) const { return &scopes; }
     std::string UnwindStack(void) {
         std::string rv = "";
         for (auto it = stack.rbegin(); it != stack.rend(); ++it) {
@@ -220,8 +221,6 @@ public:
 
         return rv;
     }
-
-    void CheckLocalId(std::string &id, SourceLoc_t loc, Symbol::SymbolKind kind);
 
 
 public:
@@ -243,9 +242,9 @@ public:
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
-    bool ParseEnumerationLiteral(void);
-    bool ParseEnumerationLiteralSpecification(void);
-    bool ParseEnumerationTypeDefinition(void);
+    bool ParseEnumerationLiteral(EnumTypeSymbol *type);
+    bool ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
+    bool ParseEnumerationTypeDefinition(const std::string &id);
     bool ParseFixedAccuracyDefinition(void);
     bool ParseFixedPointConstraint(void);
     bool ParseFloatingAccuracyDefinition(void);
@@ -267,7 +266,7 @@ public:
     bool ParseSubtypeDeclaration(void);
     bool ParseSubtypeIndication(void);
     bool ParseTypeDeclaration(void);
-    bool ParseTypeDefinition(void);
+    bool ParseTypeDefinition(const std::string &id);
     bool ParseTypeMark(void);
     bool ParseUnconstrainedArrayDefinition(void);
     bool ParseVariant(void);
@@ -332,7 +331,7 @@ public:
     bool ParseUniversalStaticExpression(void) { return ParseExpression(); }
     bool ParseRangeAttribute(void) { return ParseAttribute(); }
     bool ParseStaticSimpleExpression(void) { return ParseSimpleExpression(); }
-    bool ParseDiscriminantSimpleName(std::string &id) { return ParseSimpleName(id);     CheckLocalId(id, tokens.EmptyLocation(), Symbol::SymbolKind::Discriminant); }
+    bool ParseDiscriminantSimpleName(std::string &id) { return ParseSimpleName(id); }
 
 
 
@@ -347,7 +346,7 @@ public:
         const std::vector<Symbol *> *vec = scopes.Lookup(id);
         if (!vec || vec->empty()) return false;
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->Kind() == Symbol::SymbolKind::Type) return true;
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
         }
 
         return false;
@@ -358,7 +357,12 @@ public:
         const std::vector<Symbol *> *vec = scopes.Lookup(id);
         if (!vec || vec->empty()) return false;
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->Kind() == Symbol::SymbolKind::Subtype) return true;
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
+                TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
+                if (tp->category == TypeSymbol::TypeCategory::Subtype) {
+                    return true;
+                }
+            }
         }
 
         return false;

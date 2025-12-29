@@ -28,11 +28,11 @@
 //
 // -- Parse a Type Definition
 //    ------------------------
-bool Parser::ParseTypeDefinition(void)
+bool Parser::ParseTypeDefinition(const std::string &id)
 {
     Production p(*this, "type_definition");
 
-    if (ParseEnumerationTypeDefinition())   return true;
+    if (ParseEnumerationTypeDefinition(id)) return true;
     if (ParseIntegerTypeDefinition())       return true;
     if (ParseRealTypeDefinition())          return true;
     if (ParseArrayTypeDefinition())         return true;

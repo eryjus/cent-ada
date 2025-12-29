@@ -38,7 +38,7 @@ void Scope::Rollback(size_t cp)
 {
     while (ordered.size() > cp) {
         Symbol *sym = ordered.back().get();
-        auto it = index.find(sym->Name());
+        auto it = index.find(sym->name);
         if (it != index.end()) {
             auto &vec = it->second;
             vec.pop_back();
@@ -71,11 +71,37 @@ const std::vector<Symbol *> *Scope::LocalLookup(std::string_view name) const
 //
 // -- insert a new symbol into the table
 //    ----------------------------------
-Symbol *Scope::Declare(std::unique_ptr<Symbol> sym)
+Symbol *Scope::DeclareSym(std::unique_ptr<Symbol> sym)
 {
     Symbol *raw = sym.get();
     ordered.push_back(std::move(sym));
-    index[raw->Name()].push_back(raw);
+    index[raw->name].push_back(raw);
+    return raw;
+}
+
+
+
+//
+// -- insert a new symbol into the table
+//    ----------------------------------
+TypeSymbol *Scope::DeclareType(std::unique_ptr<TypeSymbol> sym)
+{
+    TypeSymbol *raw = sym.get();
+    ordered.push_back(std::move(sym));
+    index[raw->name].push_back(raw);
+    return raw;
+}
+
+
+
+//
+// -- insert a new symbol into the table
+//    ----------------------------------
+EnumTypeSymbol *Scope::DeclareEnumType(std::unique_ptr<EnumTypeSymbol> sym)
+{
+    EnumTypeSymbol *raw = sym.get();
+    ordered.push_back(std::move(sym));
+    index[raw->name].push_back(raw);
     return raw;
 }
 
@@ -86,19 +112,10 @@ Symbol *Scope::Declare(std::unique_ptr<Symbol> sym)
 //    ---------------------
 void Scope::Print(void) const
 {
-    for (auto it = ordered.begin(); it != ordered.end(); it ++) {
-        Symbol *sym = it->get();
+    SymbolPrinter printer(std::cerr);
 
-        if (sym->Hidden()) continue;
-
-        std::cerr << "Symbol: " << sym->Name() << " : " << sym->to_string() << '\n';
-        std::vector<Symbol *> vec = index.find(sym->Name())->second;
-
-        if (sym->Kind() == Symbol::SymbolKind::EnumerationLiteral) {
-            for (int i = 0; i < vec.size(); i ++) {
-                std::cerr << "   of type " << vec[i]->Name() << '\n';
-            }
-        }
+    for (auto &sym : ordered) {
+        sym.get()->Accept(printer);
     }
 }
 
