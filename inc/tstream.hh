@@ -80,7 +80,7 @@ public:
     void Listing(void);
     void List(void);
     SourceLoc_t SourceLocation(void);
-    SourceLoc_t EmptyLocation(void) const;
+    static SourceLoc_t EmptyLocation(void);
 
 
 public:

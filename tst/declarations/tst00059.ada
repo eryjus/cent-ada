@@ -1,2 +1,2 @@
 type DAY is (MON, TUE, WED, THU, FRI, SAT, SUN);
-type SCHEDULE is array(DAY) of BOOLEAN;
+type MY_SCHEDULE is array(DAY) of BOOLEAN;

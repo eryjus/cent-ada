@@ -87,7 +87,7 @@ private:
         //    the production.  It is provided ONLY for ease of coding in lists of alternative
         //    productions such as `basic_declaration`.
         //    ------------------------------------------------------------------------------------
-        bool CommitIf(bool c) { if (c) { committed = true; } return c; }
+        bool CommitIf(bool c) { if (c) { committed = true; } else { Reset(); } return c; }
     };
 
 
@@ -99,15 +99,37 @@ private:
 
     private:
         ScopeManager &mgr;
+        bool committed = false;
+        size_t stackCkpt;
+        size_t scopeCkpt;
 
 
     public:
-        MarkScope(ScopeManager &m, Scope::Kind kind) : mgr(m) { mgr.PushScope(kind); }
-        ~MarkScope() { mgr.PopScope(); }
+        MarkScope(ScopeManager &m) : mgr(m) {
+            stackCkpt = m.stack.size();
+            scopeCkpt = m.CurrentScope()->Checkpoint();
+        }
+        ~MarkScope() {
+            if (!committed) {
+                // -- roll back any added scopes
+                while (mgr.stack.size() > stackCkpt) {
+                    { // -- this creates a local scope in the loop to own the pointer for a short time
+                        std::unique_ptr<Scope> s = std::move(mgr.stack.back());
+                        mgr.stack.pop_back();
+                    }
+
+                    // -- should be nothing else to do
+                }
+
+
+                // -- rollback the symbols added in the original scope
+                mgr.CurrentScope()->Rollback(scopeCkpt);
+            }
+        }
 
 
     public:
-        std::unique_ptr<Scope> Commit(void) { return std::move(mgr.ClaimCurrentScope()); }
+        Scope *Commit(void) { committed = true; return mgr.CurrentScope(); }
     };
 
 
@@ -162,6 +184,13 @@ public:
 
 
 public:
+    // -- a token is illegal and if found is an illegal parse -- check only, never consumes
+    bool Illegal(TokenType_t tok) {
+        if (tokens.Current() == tok) {
+            return true;
+        }
+        return false;
+    }
     // -- a token is optional and if found advance past it
     bool Optional(TokenType_t tok) {
         if (tokens.Current() == tok) {
@@ -194,6 +223,7 @@ public:
     std::string Last(void) { if (stack.size() == 0) return "top level"; return stack[stack.size() - 1]; }
     void Push(std::string p) { stack.push_back(p); }
     void Pop(void) { stack.pop_back(); }
+    const ScopeManager *Scopes(void) const { return &scopes; }
     std::string UnwindStack(void) {
         std::string rv = "";
         for (auto it = stack.rbegin(); it != stack.rend(); ++it) {
@@ -205,94 +235,152 @@ public:
         return rv;
     }
 
-    void CheckLocalId(std::string &id, SourceLoc_t loc, SymbolKind kind) {
-        if (scopes.IsLocalDefined(id)) {
-            Symbol *sym = scopes.CurrentScope()->LocalLookup(id);
-
-            if (kind == SymbolKind::Type && sym->kind == SymbolKind::IncompleteType) {
-                sym->kind = kind;
-                return;
-            }
-
-            diags.Error(loc, DiagID::DuplicateName, { id } );
-            diags.Note(scopes.CurrentScope()->LocalLookup(id)->loc, DiagID::DuplicateName2);
-        } else {
-            std::unique_ptr<Symbol> sym = std::make_unique<Symbol>(id, kind, loc);
-            scopes.Declare(std::move(sym));
-        }
-    }
-
 
 public:
-    bool ParseAccessTypeDefinition(void);                       // -- Ch 3
-    bool ParseArrayTypeDefinition(void);                        // -- Ch 3
-    bool ParseBasicDeclaration(void);                           // -- Ch 3
-    bool ParseBasicDeclarativeItem(void);                       // -- Ch 3
-    bool ParseBody(void);                                       // -- Ch 3
-    bool ParseChoice(void);                                     // -- Ch 3
-    bool ParseComponentDeclaration(void);                       // -- Ch 3
-    bool ParseComponentList(void);                              // -- Ch 3
-    bool ParseComponentSubtypeDefinition(void);                 // -- Ch 3
-    bool ParseConstrainedArrayDefinition(void);                 // -- Ch 3
-    bool ParseConstraint(void);                                 // -- Ch 3
-    bool ParseDeclarativePart(void);                            // -- Ch 3
-    bool ParseDerivedTypeDefinition(void);                      // -- Ch 3
-    bool ParseDiscreteRange(void);                              // -- Ch 3
-    bool ParseDiscriminantAssociation(void);                    // -- Ch 3
-    bool ParseDiscriminantConstraint(void);                     // -- Ch 3
-    bool ParseDiscriminantPart(void);                           // -- Ch 3
-    bool ParseDiscriminantSpecification(void);                  // -- Ch 3
-    bool ParseEnumerationLiteral(void);                         // -- Ch 3
-    bool ParseEnumerationLiteralSpecification(void);            // -- Ch 3
-    bool ParseEnumerationTypeDefinition(void);                  // -- Ch 3
-    bool ParseFixedAccuracyDefinition(void);                    // -- Ch 3
-    bool ParseFixedPointConstraint(void);                       // -- Ch 3
-    bool ParseFloatingAccuracyDefinition(void);                 // -- Ch 3
-    bool ParseFloatingPointConstraint(void);                    // -- Ch 3
-    bool ParseFullTypeDeclaration(void);                        // -- Ch 3
-    bool ParseIdentifierList(IdList *ids);                      // -- Ch 3
-    bool ParseIncompleteTypeDeclaration(void);                  // -- Ch 3
-    bool ParseIndexConstraint(void);                            // -- Ch 3
-    bool ParseIndexSubtypeDefinition(void);                     // -- Ch 3
-    bool ParseIntegerTypeDefinition(void);                      // -- Ch 3
-    bool ParseLaterDeclarativeItem(void);                       // -- Ch 3
-    bool ParseNumberDeclaration(void);                          // -- Ch 3
-    bool ParseObjectDeclaration(void);                          // -- Ch 3
-    bool ParseProperBody(void);                                 // -- Ch 3
-    bool ParseRange(void);                                      // -- Ch 3
-    bool ParseRangeConstraint(void);                            // -- Ch 3
-    bool ParseRealTypeDefinition(void);                         // -- Ch 3
-    bool ParseRecordTypeDefinition(void);                       // -- Ch 3
-    bool ParseSubtypeDeclaration(void);                         // -- Ch 3
-    bool ParseSubtypeIndication(void);                          // -- Ch 3
-    bool ParseTypeDeclaration(void);                            // -- Ch 3
-    bool ParseTypeDefinition(void);                             // -- Ch 3
-    bool ParseTypeMark(void);                                   // -- Ch 3
-    bool ParseUnconstrainedArrayDefinition(void);               // -- Ch 3
-    bool ParseVariant(void);                                    // -- Ch 3
-    bool ParseVariantPart(void);                                // -- Ch 3
+    bool ParseAccessTypeDefinition(const std::string &id);
+    bool ParseArrayTypeDefinition(const std::string &id);
+    bool ParseBasicDeclaration(void);
+    bool ParseBasicDeclarativeItem(void);
+    bool ParseBody(void);
+    bool ParseChoice(void);
+    bool ParseComponentDeclaration(void);
+    bool ParseComponentList(void);
+    bool ParseComponentSubtypeDefinition(void);
+    bool ParseConstrainedArrayDefinition(const std::string &id);
+    bool ParseConstrainedArrayDefinition(IdList *);
+    bool ParseConstraint(void);
+    bool ParseDeclarativePart(void);
+    bool ParseDerivedTypeDefinition(const std::string &id);
+    bool ParseDiscreteRange(void);
+    bool ParseDiscriminantAssociation(void);
+    bool ParseDiscriminantConstraint(void);
+    bool ParseDiscriminantPart(void);
+    bool ParseDiscriminantSpecification(void);
+    bool ParseEnumerationLiteral(EnumTypeSymbol *type);
+    bool ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
+    bool ParseEnumerationTypeDefinition(const std::string &id);
+    bool ParseFixedAccuracyDefinition(void);
+    bool ParseFixedPointConstraint(const std::string &id);
+    bool ParseFloatingAccuracyDefinition(void);
+    bool ParseFloatingPointConstraint(const std::string &id);
+    bool ParseFullTypeDeclaration(void);
+    bool ParseIdentifierList(IdList *ids);
+    bool ParseIncompleteTypeDeclaration(void);
+    bool ParseIndexConstraint(void);
+    bool ParseIndexSubtypeDefinition(void);
+    bool ParseIntegerTypeDefinition(const std::string &id);
+    bool ParseLaterDeclarativeItem(void);
+    bool ParseNumberDeclaration(void);
+    bool ParseObjectDeclaration(void);
+    bool ParseProperBody(void);
+    bool ParseRange(void);
+    bool ParseRangeConstraint(void);
+    bool ParseRealTypeDefinition(const std::string &id);
+    bool ParseRecordTypeDefinition(const std::string &id);
+    bool ParseSubtypeDeclaration(void);
+    bool ParseSubtypeIndication(void);
+    bool ParseTypeDeclaration(void);
+    bool ParseTypeDefinition(const std::string &id);
+    bool ParseTypeMark(void);
+    bool ParseUnconstrainedArrayDefinition(const std::string &id);
+    bool ParseVariant(void);
+    bool ParseVariantPart(void);
+    bool _HelpParseConstrainedArrayDefinition(void);
 
 
-    bool ParseAttribute(void);
-    bool ParseBodyStub(void);
+
+
+    bool ParseAggregate(void);                                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseAggregateMore(void);                              // -- Ch 4: in `parse_expr.cc`
+    bool ParseAllocator(void);                                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseAttribute(void);                                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseAttributeDesignator(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseBinaryAddingOperator(void);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseComponentAssociation(void);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseExpression(void);                                 // -- Ch 4: in `parse_expr.cc`
+    bool ParseFactor(void);                                     // -- Ch 4: in `parse_expr.cc`
+    bool ParseIndexedComponent(void);                           // -- Ch 4: in `parse_expr.cc`
+    bool ParseMultiplyingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseNameNonExpr(std::string &id);                     // -- Ch 4: in `parse_expr.cc`
+    bool ParseNameExpr(std::string &id);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_Base(std::string &id);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
+    bool ParsePrefix(void);                                     // -- Ch 4: in `parse_expr.cc`
+    bool ParsePrimary(void);                                    // -- Ch 4: in `parse_expr.cc`
+    bool ParseQualifiedExpression(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseRelation(void);                                   // -- Ch 4: in `parse_expr.cc`
+    bool ParseRelationalOperator(void);                         // -- Ch 4: in `parse_expr.cc`
+    bool ParseSelectedComponent(void);                          // -- Ch 4: in `parse_expr.cc`
+    bool ParseSelector(void);                                   // -- Ch 4: in `parse_expr.cc`
+    bool ParseSimpleExpression(void);                           // -- Ch 4: in `parse_expr.cc`
+    bool ParseSimpleName(std::string &id);                      // -- Ch 4: in `parse_expr.cc`
+    bool ParseSlice(void);                                      // -- Ch 4: in `parse_expr.cc`
+    bool ParseTerm(void);                                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseTypeConversion(void);                             // -- Ch 4: in `parse_expr.cc`
+    bool ParseUnaryAddingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_IndexComponentSuffix(void);                  // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_SliceSuffix(void);                           // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_SelectedComponentSuffix(void);               // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_AttributeSuffix(void);                       // -- Ch 4: in `parse_expr.cc`
+    bool ParseName_IndexOrSliceSuffix(void);                    // -- Ch 4: in `parse_expr.cc`
+
+    bool ParseFunctionCall(void) { return false; }
+    bool ParseOperatorSymbol(void) { return false; }
+    bool ParseBodyStub(void) { return false; }
     bool ParseDeferredConstantDeclaration(void) { return false; }
     bool ParseExceptionDeclaration(void) { return false; }
-    bool ParseExpression(void) { tokens.Advance(); return true; }
     bool ParseGenericDeclaration(void) { return false; }
     bool ParseGenericInstantiation(void) { return false; }
-    bool ParseName(std::string &id);
     bool ParsePackageBody(void) { return false; }
     bool ParsePackageDeclaration(void) { return false; }
     bool ParsePrivateTypeDeclaration(void) { return false; }
     bool ParseRenamingDeclaration(void) { return false; }
     bool ParseRepresentationClause(void) { return false; }
-    bool ParseSimpleExpression(void) { tokens.Advance(); return true; }
-    bool ParseSimpleName(std::string &id) { return ParseName(id); }
     bool ParseSubprogramBody(void) { return false; }
     bool ParseSubprogramDeclaration(void) { return false; }
     bool ParseTaskBody(void) { return false; }
     bool ParseTaskDeclaration(void) { return false; }
     bool ParseUseClause(void) { return false; }
+
+    bool ParseUniversalStaticExpression(void) { return ParseExpression(); }
+    bool ParseRangeAttribute(void) { return ParseAttribute(); }
+    bool ParseStaticSimpleExpression(void) { return ParseSimpleExpression(); }
+    bool ParseDiscriminantSimpleName(std::string &id) { return ParseSimpleName(id); }
+
+
+
+    bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication(); }
+    bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication(); }
+
+
+
+    bool ParseTypeName(void) {
+        std::string id;
+        if (!ParseNameNonExpr(id)) return false;
+        const std::vector<Symbol *> *vec = scopes.Lookup(id);
+        if (!vec || vec->empty()) return false;
+        for (int i = 0; i < vec->size(); i ++) {
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
+        }
+
+        return false;
+    }
+    bool ParseSubtypeName(void) {
+        std::string id;
+        if (!ParseNameNonExpr(id)) return false;
+        const std::vector<Symbol *> *vec = scopes.Lookup(id);
+        if (!vec || vec->empty()) return false;
+        for (int i = 0; i < vec->size(); i ++) {
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
+                TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
+                if (tp->category == TypeSymbol::TypeCategory::Subtype) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
 };
 
