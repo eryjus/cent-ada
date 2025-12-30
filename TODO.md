@@ -17,7 +17,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [x] Split symbols and scopes (and scope manager?) to separate sources
 - [x] Change the unordered map to point 1 name to several symbols
 - [x] MarkScope is a problem -- need to be able to checkout and back out any added symbols
-- [ ] For character enumerations, what value should I store?  Do I need to distinguish between them?
+- [x] For character enumerations, what value should I store?  Do I need to distinguish between them?
 - [ ] Change the ID string for type definitions to ID -- clean up loc reference
 - [ ] Handle adding components into the symbol table
 

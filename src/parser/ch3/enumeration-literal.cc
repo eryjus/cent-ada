@@ -37,7 +37,7 @@ bool Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
     //    -------------------------------------------
     if (Optional(TOK_CHARACTER_LITERAL)) {
         std::unique_ptr<EnumLiteralSymbol> sym;
-        id = *yylval.charLiteral;
+        id = *tokens.Payload().charLiteral;
         sym = std::make_unique<EnumLiteralSymbol>(id, type, type->literals.size(), loc, scopes.CurrentScope());
         type->literals.push_back(sym.get());
         scopes.Declare(std::move(sym));
