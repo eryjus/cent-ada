@@ -33,12 +33,12 @@ bool Parser::ParseTypeDefinition(const std::string &id)
     Production p(*this, "type_definition");
 
     if (ParseEnumerationTypeDefinition(id)) return true;
-    if (ParseIntegerTypeDefinition())       return true;
-    if (ParseRealTypeDefinition())          return true;
+    if (ParseIntegerTypeDefinition(id))     return true;
+    if (ParseRealTypeDefinition(id))        return true;
     if (ParseArrayTypeDefinition(id))       return true;
-    if (ParseRecordTypeDefinition())        return true;
-    if (ParseAccessTypeDefinition())        return true;
-    if (ParseDerivedTypeDefinition())       return true;
+    if (ParseRecordTypeDefinition(id))      return true;
+    if (ParseAccessTypeDefinition(id))      return true;
+    if (ParseDerivedTypeDefinition(id))     return true;
     return false;
 }
 

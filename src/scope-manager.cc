@@ -28,12 +28,20 @@ ScopeManager::ScopeManager(void)
     stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, 0, "standard"));
     declScope = stack.back().get();
 
+
+    //
+    // -- Take care of the internal fundamental types
+    //    -------------------------------------------
     Declare(std::make_unique<Symbol>("integer", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("array", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("real", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("character", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
     Declare(std::make_unique<Symbol>("string", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
 
+
+    //
+    // -- Create the boolean enumeration
+    //    ------------------------------
     std::unique_ptr<EnumTypeSymbol> b = std::make_unique<EnumTypeSymbol>("boolean", tokens->EmptyLocation(), declScope);
     EnumTypeSymbol *bTyp = b.get();
     Declare(std::move(b));
@@ -49,6 +57,56 @@ ScopeManager::ScopeManager(void)
     Declare(std::move(t));
 
 
+
+    //
+    // -- create all the possible attribute names
+    //    ---------------------------------------
+    Declare(std::make_unique<AttributeSymbol>("address", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("aft", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("base", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("callable", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("constrained", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("count", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("delta", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("digits", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("emax", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("epsilon", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("first", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("first_bit", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("fore", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("image", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("large", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("last", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("last_bit", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("length", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_emax", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_emin", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_mastissa", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_overflows", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_radix", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("machine_rounds", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("mantissa", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("pos", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("position", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("pred", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("range", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("safe_emax", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("safe_large", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("safe_small", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("size", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("small", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("storage_size", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("succ", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("terminated", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("val", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("value", TokenStream::EmptyLocation(), declScope));
+    Declare(std::make_unique<AttributeSymbol>("width", TokenStream::EmptyLocation(), declScope));
+
+
+
+    //
+    // -- Finally, create the scope for the global definitions
+    //    ----------------------------------------------------
     stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "GLOBAL"));
 }
 
@@ -108,8 +166,8 @@ void ScopeManager::Print(void) const
 
     // -- Skip the 'standard' scope, which is always the first one
     for (auto it = stack.begin() + 1; it != stack.end(); it ++) {
-        std::cerr << "Scope Name : " << it->get()->Name() << '\n';
-        std::cerr << "Scope Depth: " << it->get()->Level() << '\n';
+        std::cerr << "Scope Name: " << it->get()->Name() << '\n';
+        std::cerr << "Scope ID  : " << it->get()->Level() << '\n';
         std::cerr << "-------------------\n";
 
         it->get()->Print();

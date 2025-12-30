@@ -26,6 +26,7 @@ bool Parser::ParseDiscriminantSpecification(void)
 {
     Production p(*this, "discriminant_specification");
     MarkStream m(tokens, diags);
+    MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t loc;
 
@@ -34,6 +35,11 @@ bool Parser::ParseDiscriminantSpecification(void)
     // -- Get a list of identifiers
     //    -------------------------
     if (!ParseIdentifierList(idList.get())) return false;
+
+
+    for (int i = 0; i < idList->size(); i ++) {
+        scopes.Declare(std::make_unique<DiscriminantSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope()));
+    }
 
 
     //
@@ -62,6 +68,7 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    s.Commit();
     m.Commit();
     return true;
 }

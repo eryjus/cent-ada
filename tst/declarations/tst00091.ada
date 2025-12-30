@@ -1,3 +1,5 @@
+PAGE_SIZE : constant := 66;
+
 type DEVICE is (PRINTER, DISK, DRUM);
 type STATE is (OPEN, CLOSED);
 

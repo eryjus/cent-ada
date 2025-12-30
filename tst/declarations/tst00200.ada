@@ -3,6 +3,8 @@
 --    --------------------------------------------------
 
 
+type BIT_VECTOR is array(INTEGER range <>) of BOOLEAN;
+
 COUNT, SUM : INTEGER;
 SIZE : INTEGER range 0 .. 10_000 := 0;
 SORTED : BOOLEAN := FALSE;

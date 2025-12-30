@@ -30,7 +30,7 @@ bool Parser::ParseRange(void)
 
 
     //
-    // -- If we find a range attribute we'er done
+    // -- If we find a range attribute we're done
     //    ---------------------------------------
     if (ParseRangeAttribute()) {
         m.Commit();

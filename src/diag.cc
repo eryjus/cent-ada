@@ -81,7 +81,7 @@ void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, con
 
     if (parser) msg += parser->UnwindStack();
 
-    Queue(msg);
+    Queue(std::string("\e[31;1m") + msg + std::string("\e[0m"));
 }
 
 

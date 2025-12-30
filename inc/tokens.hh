@@ -29,7 +29,7 @@ enum yytokentype {
     TOK_MULTIPLY = 265,                     /* TOK_MULTIPLY  */
     TOK_PLUS = 266,                         /* TOK_PLUS  */
     TOK_COMMA = 267,                        /* TOK_COMMA  */
-    TOK_HYPHEN = 268,                       /* TOK_HYPHEN  */
+    TOK_HYPHEN = 269,                       /* TOK_HYPHEN  */
     TOK_MINUS = 269,                        /* TOK_MINUS  */
     TOK_DOT = 270,                          /* TOK_DOT  */
     TOK_POINT = 271,                        /* TOK_POINT  */
@@ -59,7 +59,7 @@ enum yytokentype {
     TOK_ARROW = 295,                        /* TOK_ARROW  */
     TOK_DOUBLE_DOT = 296,                   /* TOK_DOUBLE_DOT  */
     TOK_DOUBLE_STAR = 297,                  /* TOK_DOUBLE_STAR  */
-    TOK_EXPONENTIATE = 298,                 /* TOK_EXPONENTIATE  */
+    TOK_EXPONENTIATE = 297,                 /* TOK_EXPONENTIATE  */
     TOK_ASSIGNMENT = 299,                   /* TOK_ASSIGNMENT  */
     TOK_INEQUALITY = 300,                   /* TOK_INEQUALITY  */
     TOK_GREATER_THAN_OR_EQUAL = 301,        /* TOK_GREATER_THAN_OR_EQUAL  */
