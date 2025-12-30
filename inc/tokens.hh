@@ -146,6 +146,7 @@ union YYSTYPE {
     YYSTYPE(void) {}
     ~YYSTYPE() {}
 
+    std::string *charLiteral;
     std::string *errMsg;
     std::string *ident;
 };

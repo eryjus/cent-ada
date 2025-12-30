@@ -266,7 +266,8 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          *    --------------------------
          */
 \'.\'       {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval.charLiteral = new std::string(yytext);
                 return TOK_CHARACTER_LITERAL;
             }
 
