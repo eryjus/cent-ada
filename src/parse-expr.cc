@@ -445,11 +445,13 @@ bool Parser::ParseAttributeDesignator(void)
 //    ------------------
 bool Parser::ParseAggregate(void)
 {
-    Production p(*this, "attribute_designator");
+    Production p(*this, "aggregate");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
+    diags.Debug("Starting to parse an aggregate: " + std::string(tokens.tokenStr(tokens.Current())));
     if (!Require(TOK_LEFT_PARENTHESIS))         return false;
+    diags.Debug("Aggregate component association: " + std::string(tokens.tokenStr(tokens.Current())));
     if (!ParseComponentAssociation())           return false;
 
     loc = tokens.SourceLocation();
@@ -478,10 +480,11 @@ bool Parser::ParseAggregate(void)
 //    -------------------------
 bool Parser::ParseAggregateMore(void)
 {
-    Production p(*this, "attribute_designator(more)");
+    Production p(*this, "aggregate(more)");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
+    diags.Debug("Starting to parse an aggregate: " + std::string(tokens.tokenStr(tokens.Current())));
     loc = tokens.SourceLocation();
     while (Optional(TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
@@ -641,11 +644,20 @@ bool Parser::ParseSimpleExpression(void)
 
     ParseUnaryAddingOperator();
     if (!ParseTerm()) return false;
-    if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW) return false;
+    if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW)  {
+        // -- at this point we already have a good Term
+        m.Commit();
+        return true;
+    }
+
 
     while (ParseBinaryAddingOperator()) {
         if (!ParseTerm()) return false;
-        if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW) return false;
+        if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW) {
+            // -- at this point we already have a good Term
+            m.Commit();
+            return true;
+        }
     }
 
     m.Commit();

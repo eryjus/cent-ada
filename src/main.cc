@@ -235,7 +235,7 @@ static int Compile(std::string filename, ParseType_t type)
     case COMPILE_TYPES:
         while (tokens->Current() != YYEOF) {
             if(!parser->ParseBasicDeclaration()) {
-                std::cerr << "ERROR: Unable to properly parse Basic Declaration\n";
+                std::cerr << "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m\n";
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {

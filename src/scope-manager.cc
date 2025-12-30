@@ -166,8 +166,8 @@ void ScopeManager::Print(void) const
 
     // -- Skip the 'standard' scope, which is always the first one
     for (auto it = stack.begin() + 1; it != stack.end(); it ++) {
-        std::cerr << "Scope Name : " << it->get()->Name() << '\n';
-        std::cerr << "Scope Depth: " << it->get()->Level() << '\n';
+        std::cerr << "Scope Name: " << it->get()->Name() << '\n';
+        std::cerr << "Scope ID  : " << it->get()->Level() << '\n';
         std::cerr << "-------------------\n";
 
         it->get()->Print();

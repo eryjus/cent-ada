@@ -38,7 +38,7 @@ bool Parser::ParseComponentList(void)
     if (Require(TOK_NULL)) {
         loc = tokens.SourceLocation();
         if (!Require(TOK_SEMICOLON)) {
-            diags.Error(loc, DiagID::MissingSemicolon, {"null"});
+            diags.Error(loc, DiagID::MissingSemicolon, { "TOK_NULL" } );
             // -- continue on in hopes that this does not create a cascade of errors
         }
 

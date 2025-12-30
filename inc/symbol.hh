@@ -170,6 +170,32 @@ public:
 
 
 //
+// -- For Record Types
+//    ----------------
+class RecordTypeSymbol : public TypeSymbol {
+    RecordTypeSymbol(void) = delete;
+    RecordTypeSymbol(const RecordTypeSymbol &) = delete;
+    RecordTypeSymbol &operator=(const RecordTypeSymbol &) = delete;
+
+
+public:
+    // -- references to other symbols
+    std::vector<class ComponentSymbol *> components;
+
+
+public:
+    RecordTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Enumeration, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
 // -- For Derived Types
 //    -----------------
 class DerivedTypeSymbol : public TypeSymbol {
@@ -180,6 +206,90 @@ class DerivedTypeSymbol : public TypeSymbol {
 
 public:
     DerivedTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Derived, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- For Access Types
+//    ----------------
+class AccessTypeSymbol : public TypeSymbol {
+    AccessTypeSymbol(void) = delete;
+    AccessTypeSymbol(const AccessTypeSymbol &) = delete;
+    AccessTypeSymbol &operator=(const AccessTypeSymbol &) = delete;
+
+
+public:
+    AccessTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Derived, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- For Integer Types
+//    -----------------
+class IntegerTypeSymbol : public TypeSymbol {
+    IntegerTypeSymbol(void) = delete;
+    IntegerTypeSymbol(const IntegerTypeSymbol &) = delete;
+    IntegerTypeSymbol &operator=(const IntegerTypeSymbol &) = delete;
+
+
+public:
+    IntegerTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Integer, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- For Floating Types
+//    ------------------
+class FloatingTypeSymbol : public TypeSymbol {
+    FloatingTypeSymbol(void) = delete;
+    FloatingTypeSymbol(const FloatingTypeSymbol &) = delete;
+    FloatingTypeSymbol &operator=(const FloatingTypeSymbol &) = delete;
+
+
+public:
+    FloatingTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Floating, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- For Fixed Types
+//    ---------------
+class FixedTypeSymbol : public TypeSymbol {
+    FixedTypeSymbol(void) = delete;
+    FixedTypeSymbol(const FixedTypeSymbol &) = delete;
+    FixedTypeSymbol &operator=(const FixedTypeSymbol &) = delete;
+
+
+public:
+    FixedTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Fixed, l, d) {}
 
 
 public:

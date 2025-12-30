@@ -28,7 +28,6 @@ bool Parser::ParseSubtypeIndication(void)
     MarkStream m(tokens, diags);
 
 
-
     //
     // -- Find a type mark and then optionally a constraint
     //    -------------------------------------------------

@@ -237,7 +237,7 @@ public:
 
 
 public:
-    bool ParseAccessTypeDefinition(void);
+    bool ParseAccessTypeDefinition(const std::string &id);
     bool ParseArrayTypeDefinition(const std::string &id);
     bool ParseBasicDeclaration(void);
     bool ParseBasicDeclarativeItem(void);
@@ -260,23 +260,23 @@ public:
     bool ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
     bool ParseEnumerationTypeDefinition(const std::string &id);
     bool ParseFixedAccuracyDefinition(void);
-    bool ParseFixedPointConstraint(void);
+    bool ParseFixedPointConstraint(const std::string &id);
     bool ParseFloatingAccuracyDefinition(void);
-    bool ParseFloatingPointConstraint(void);
+    bool ParseFloatingPointConstraint(const std::string &id);
     bool ParseFullTypeDeclaration(void);
     bool ParseIdentifierList(IdList *ids);
     bool ParseIncompleteTypeDeclaration(void);
     bool ParseIndexConstraint(void);
     bool ParseIndexSubtypeDefinition(void);
-    bool ParseIntegerTypeDefinition(void);
+    bool ParseIntegerTypeDefinition(const std::string &id);
     bool ParseLaterDeclarativeItem(void);
     bool ParseNumberDeclaration(void);
     bool ParseObjectDeclaration(void);
     bool ParseProperBody(void);
     bool ParseRange(void);
     bool ParseRangeConstraint(void);
-    bool ParseRealTypeDefinition(void);
-    bool ParseRecordTypeDefinition(void);
+    bool ParseRealTypeDefinition(const std::string &id);
+    bool ParseRecordTypeDefinition(const std::string &id);
     bool ParseSubtypeDeclaration(void);
     bool ParseSubtypeIndication(void);
     bool ParseTypeDeclaration(void);

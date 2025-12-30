@@ -22,11 +22,12 @@
 //
 // -- Parse a Record Type Definition
 //    ------------------------------
-bool Parser::ParseRecordTypeDefinition(void)
+bool Parser::ParseRecordTypeDefinition(const std::string &id)
 {
     Production p(*this, "record_type_definition");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    MarkScope s(scopes);
+    SourceLoc_t loc = tokens.SourceLocation();
 
 
 
@@ -34,6 +35,9 @@ bool Parser::ParseRecordTypeDefinition(void)
     // -- this production starts with a TOK_RECORD
     //    ----------------------------------------
     if (!Require(TOK_RECORD)) return false;
+
+
+    scopes.Declare(std::make_unique<RecordTypeSymbol>(id, loc, scopes.CurrentScope()));
 
 
     //
@@ -63,6 +67,7 @@ bool Parser::ParseRecordTypeDefinition(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    s.Commit();
     m.Commit();
     return true;
 }

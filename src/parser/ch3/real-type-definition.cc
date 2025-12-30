@@ -22,12 +22,12 @@
 //
 // -- Parse a Real Type Definition
 //    ----------------------------
-bool Parser::ParseRealTypeDefinition(void)
+bool Parser::ParseRealTypeDefinition(const std::string &id)
 {
     Production p(*this, "real_type_definition");
 
-    if (ParseFloatingPointConstraint())     return true;
-    if (ParseFixedPointConstraint())        return true;
+    if (ParseFloatingPointConstraint(id))   return true;
+    if (ParseFixedPointConstraint(id))      return true;
 
     return false;
 }
