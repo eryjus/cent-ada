@@ -58,8 +58,31 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 
     TokenType_t tok = yylex();
     while (tok) {
-        Token *t = new Token(filename, yylineno, column, tok, yylval);
-        tokStream.push_back(t);
+        int l = yylineno;
+        int c = column;
+        yystype_t v = yylval;
+
+        if (tok == TOK_AND) {
+            TokenType_t tok2 = yylex();
+
+            if (tok2 == TOK_THEN) {
+                tokStream.push_back(new Token(filename, l, c, TOK_AND_THEN, v));
+            } else {
+                tokStream.push_back(new Token(filename, l, c, tok, v));
+                tokStream.push_back(new Token(filename, l, c, tok2, v));
+            }
+        } else if (tok == TOK_OR) {
+            TokenType_t tok2 = yylex();
+
+            if (tok2 == TOK_ELSE) {
+                tokStream.push_back(new Token(filename, l, c, TOK_OR_ELSE, v));
+            } else {
+                tokStream.push_back(new Token(filename, l, c, tok, v));
+                tokStream.push_back(new Token(filename, l, c, tok2, v));
+            }
+        } else {
+            tokStream.push_back(new Token(filename, l, c, tok, v));
+        }
 
         tok = yylex();
     }
@@ -200,7 +223,9 @@ const char *TokenStream::tokenStr(int tok) const
         "TOK_CHARACTER_LITERAL",           // 372
         "TOK_STRING_LITERAL",              // 373
         "TOK_PRAGMA_NAME",                 // 374
-        "TOK_ERROR",                       // 375
+        "TOK_AND_THEN",                    // 375
+        "TOK_OR_ELSE",                     // 376
+        "TOK_ERROR",                       // 377
     };
 
     if ((int)tok >= TOK_ERROR) return "UNKNOWN";
@@ -274,7 +299,7 @@ SourceLoc_t TokenStream::SourceLocation(void)
 //
 // -- Get an empty source location
 //    ----------------------------
-SourceLoc_t TokenStream::EmptyLocation(void) const
+SourceLoc_t TokenStream::EmptyLocation(void)
 {
     SourceLoc_t rv;
 

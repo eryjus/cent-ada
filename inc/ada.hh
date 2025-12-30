@@ -42,13 +42,24 @@ typedef union YYSTYPE yystype_t;
 extern yystype_t yylval;
 
 
+class ASTNode;
+class SymbolVisitor;
+class Symbol;
+class TypeSymbol;
+class EnumTypeSymbol;
+class EnumLiteralSymbol;
+
+
 
 //
 // -- Include the other headers
 //    -------------------------
 #include "tstream.hh"
 #include "diag.hh"
-#include "scopes.hh"
+#include "visitors.hh"
+#include "symbol.hh"
+#include "scope.hh"
+#include "scope-manager.hh"
 #include "parser.hh"
 
 

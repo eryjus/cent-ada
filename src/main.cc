@@ -23,6 +23,7 @@
 typedef enum {
     COMPILE_FULL,
     COMPILE_TYPES,
+    COMPILE_EXPRS,
 } ParseType_t;
 
 
@@ -160,6 +161,8 @@ static int Scan(std::string filename)
         case TOK_WHILE:                 std::cout << "WHILE\n";     break;
         case TOK_WITH:                  std::cout << "WITH\n";      break;
         case TOK_XOR:                   std::cout << "XOR\n";       break;
+        case TOK_AND_THEN:              std::cout << "AND THEN\n";  break;
+        case TOK_OR_ELSE:               std::cout << "OR ELSE\n";   break;
 
         case TOK_IDENTIFIER:
             std::cout << "IDENTIFIER: (" << yytext << ")\n";
@@ -232,10 +235,34 @@ static int Compile(std::string filename, ParseType_t type)
     case COMPILE_TYPES:
         while (tokens->Current() != YYEOF) {
             if(!parser->ParseBasicDeclaration()) {
-                std::cerr << "Unable to properly parse Basic Declaration\n";
+                std::cerr << "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m\n";
                 rv = EXIT_FAILURE;
                 goto exit;
+            } else {
+//                std::cerr << "Completed a Declaration\n";
             }
+        }
+
+        break;
+
+
+    case COMPILE_EXPRS:
+        while (parser->ParseBasicDeclaration()) {}
+        std::cerr << "\n";
+        std::cerr << "********************************\n";
+        std::cerr << "** Starting Expressions Parse **\n";
+        std::cerr << "********************************\n\n";
+        if(!parser->ParseExpression()) {
+            std::cerr << "\nERROR: Unable to properly parse Expression\n";
+            rv = EXIT_FAILURE;
+            goto exit;
+        }
+
+        std::cerr << "next token " << tokens->tokenStr(tokens->Current()) << '\n';
+        if (tokens->Current() != YYEOF) {
+            std::cerr << "\nERROR: Extra input in Expression parse\n";
+            rv = EXIT_FAILURE;
+            goto exit;
         }
 
         break;
@@ -248,6 +275,9 @@ static int Compile(std::string filename, ParseType_t type)
     std::cerr << "Parse Complete.\n";
 
 exit:
+    tokens->Listing();
+    parser->Scopes()->Print();
+
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
     std::cerr << "   Warnings: " << diags.Warnings() << '\n';
     return rv;
@@ -300,6 +330,12 @@ int main(int argc, char *argv[])
         if (arg == "declarations" || arg == "types") {
             action = ACT_COMPILE;
             type = COMPILE_TYPES;
+            continue;
+        }
+
+        if (arg == "expressions" || arg == "expr") {
+            action = ACT_COMPILE;
+            type = COMPILE_EXPRS;
             continue;
         }
 
