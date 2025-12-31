@@ -18,7 +18,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 ### Infrastructure
 - [x] BUG: Change the ID string for type definitions to ID -- clean up loc reference
-- [ ] FEATURE: Handle adding components into the symbol table
+- [x] FEATURE: Handle adding components into the symbol table
 - [ ] REFACTOR: Determine what to do with YYSTYPE
 
 
@@ -28,7 +28,8 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Early Symbol Table
-- [ ] BUG: Remove rederences to `make_unique<Symbol>`
+- [x] BUG: Remove rederences to `make_unique<Symbol>`
+- [ ] BUG: Fix symbol table handling of an incomplete type (`make_unique<Symbol>`)
 
 
 ### Command Line

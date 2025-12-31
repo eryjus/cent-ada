@@ -29,7 +29,7 @@ bool Parser::ParseFloatingPointConstraint(Id &id)
 
 
     if (!id.name.empty()) {
-        scopes.Declare(std::make_unique<FloatingTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+        scopes.Declare(std::make_unique<RealTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
 

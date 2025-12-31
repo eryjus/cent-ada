@@ -32,11 +32,11 @@ ScopeManager::ScopeManager(void)
     //
     // -- Take care of the internal fundamental types
     //    -------------------------------------------
-    Declare(std::make_unique<Symbol>("integer", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<Symbol>("array", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<Symbol>("real", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<Symbol>("character", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<Symbol>("string", Symbol::SymbolKind::Type, tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<IntegerTypeSymbol>("integer", tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<ArrayTypeSymbol>("array", tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<RealTypeSymbol>("real", tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<EnumTypeSymbol>("character", tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<ArrayTypeSymbol>("string", tokens->EmptyLocation(), declScope));
 
 
     //
