@@ -700,7 +700,7 @@ bool Parser::ParseFactor(void)
     if (Require(TOK_ABS)) {
         loc = tokens.SourceLocation();
         if (!ParsePrimary()) {
-            diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
+            diags.Error(loc, DiagID::InvalidPrimaryExpr, { "ABS" } );
         }
 
         m.Commit();
@@ -708,7 +708,7 @@ bool Parser::ParseFactor(void)
     } else if (Require(TOK_NOT)) {
         loc = tokens.SourceLocation();
         if (!ParsePrimary()) {
-            diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
+            diags.Error(loc, DiagID::InvalidPrimaryExpr, { "NOT" } );
         }
 
         m.Commit();
@@ -954,7 +954,7 @@ bool Parser::ParseTypeConversion(void)
     if (!Require(TOK_LEFT_PARENTHESIS))     return false;
     loc = tokens.SourceLocation();
     if (!ParseExpression()) {
-        diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
+        diags.Error(loc, DiagID::InvalidExpression, { "type conversion" } );
     }
     loc = tokens.SourceLocation();
     if (!Require(TOK_RIGHT_PARENTHESIS)) {
@@ -982,7 +982,7 @@ bool Parser::ParseQualifiedExpression(void)
     if (Require(TOK_LEFT_PARENTHESIS)) {
         loc = tokens.SourceLocation();
         if (!ParseExpression()) {
-            diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
+            diags.Error(loc, DiagID::InvalidExpression, { "qualified expression" } );
         }
 
         SourceLoc_t loc = tokens.SourceLocation();
