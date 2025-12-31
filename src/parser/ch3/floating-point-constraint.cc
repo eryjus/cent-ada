@@ -26,11 +26,27 @@ bool Parser::ParseFloatingPointConstraint(Id &id)
 {
     Production p(*this, "floating_point_constraint");
     MarkScope s(scopes);
+    std::vector<Symbol *> *vec;
+    bool updateIncomplete = false;
 
 
+    //
+    // -- Manage the symbol table
+    //    -----------------------
     if (!id.name.empty()) {
+        if (scopes.IsLocalDefined(std::string_view(id.name))) {
+            // -- name is used in this scope is it a singleton and incomplete class?
+            vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+
+            if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+                updateIncomplete = true;
+            } else {
+                diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            }
+        }
         scopes.Declare(std::make_unique<RealTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
+
 
 
     //
@@ -45,9 +61,11 @@ bool Parser::ParseFloatingPointConstraint(Id &id)
     ParseRangeConstraint();
 
 
+
     //
     // -- The parse is good here
     //    ----------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     return true;
 }

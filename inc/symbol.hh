@@ -42,6 +42,8 @@ public:
         Discriminant,
         Attribute,
         Pragma,
+        IncompleteType,
+        Deleted,
     };
 
 
@@ -84,6 +86,8 @@ public:
             "Discriminant",
             "Attribute",
             "Pragma",
+            "IncompleteType",
+            "Deleted",
         };
 
         return s[(int)kind];
@@ -184,7 +188,7 @@ public:
 
 
 public:
-    RecordTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Enumeration, l, d) {}
+    RecordTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Record, l, d) {}
 
 
 public:
@@ -226,7 +230,7 @@ class AccessTypeSymbol : public TypeSymbol {
 
 
 public:
-    AccessTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Derived, l, d) {}
+    AccessTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Access, l, d) {}
 
 
 public:
@@ -289,7 +293,7 @@ class ArrayTypeSymbol : public TypeSymbol {
 
 
 public:
-    ArrayTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Enumeration, l, d) {}
+    ArrayTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Array, l, d) {}
 
 
 public:

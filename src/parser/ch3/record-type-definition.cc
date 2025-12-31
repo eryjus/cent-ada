@@ -28,6 +28,8 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     SourceLoc_t loc;
+    std::vector<Symbol *> *vec;
+    bool updateIncomplete = false;
 
 
 
@@ -37,10 +39,26 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     if (!Require(TOK_RECORD)) return false;
 
 
-    scopes.PushScope(Scope::ScopeKind::Record, id.name);
+
+    //
+    // -- Symbol table management
+    //    -----------------------
     std::unique_ptr<RecordTypeSymbol> recSym = std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope());
     RecordTypeSymbol *rec = recSym.get();
+
+    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        // -- name is used in this scope is it a singleton and incomplete class?
+        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+
+        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+            updateIncomplete = true;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+        }
+    }
+
     scopes.Declare(std::move(recSym));
+    scopes.PushScope(Scope::ScopeKind::Record, id.name);
 
 
     //
@@ -70,8 +88,10 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
+    scopes.PopScope();
     return true;
 }
 

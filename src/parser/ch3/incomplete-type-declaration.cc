@@ -51,7 +51,7 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
         SourceLoc_t loc2 = vec->at(0)->loc;
         diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {
-        scopes.Declare(std::make_unique<Symbol>(id.name, Symbol::SymbolKind::Type, id.loc, scopes.CurrentScope()));
+        scopes.Declare(std::make_unique<Symbol>(id.name, Symbol::SymbolKind::IncompleteType, id.loc, scopes.CurrentScope()));
     }
 
 

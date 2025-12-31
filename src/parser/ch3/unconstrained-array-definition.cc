@@ -29,20 +29,33 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     SourceLoc_t loc;
+    std::vector<Symbol *> *vec;
+    bool updateIncomplete = false;
+
 
 
     //
-    //
-    // -- Start by adding a new Array Type with the name
-    //    ----------------------------------------------
-    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
-
-
-
     // -- Start parse with the first 2 required tokens
     //    --------------------------------------------
     if (!Require(TOK_ARRAY)) return false;
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
+
+
+    //
+    // -- Manage the symbol table
+    //    -----------------------
+    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        // -- name is used in this scope is it a singleton and incomplete class?
+        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+            updateIncomplete = true;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+        }
+    }
+
+    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+
 
 
     //
@@ -90,6 +103,7 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
     return true;

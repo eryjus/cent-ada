@@ -56,7 +56,7 @@ void Scope::Rollback(size_t cp)
 //
 // -- perform a lookup of the symnbol name in this scope
 //    --------------------------------------------------
-const std::vector<Symbol *> *Scope::LocalLookup(std::string_view name) const
+std::vector<Symbol *> *Scope::LocalLookup(std::string_view name)
 {
     auto it = index.find(std::string(name));
     if (it == index.end()) {

@@ -449,9 +449,7 @@ bool Parser::ParseAggregate(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    diags.Debug("Starting to parse an aggregate: " + std::string(tokens.tokenStr(tokens.Current())));
     if (!Require(TOK_LEFT_PARENTHESIS))         return false;
-    diags.Debug("Aggregate component association: " + std::string(tokens.tokenStr(tokens.Current())));
     if (!ParseComponentAssociation())           return false;
 
     loc = tokens.SourceLocation();
@@ -484,7 +482,6 @@ bool Parser::ParseAggregateMore(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    diags.Debug("Starting to parse an aggregate: " + std::string(tokens.tokenStr(tokens.Current())));
     loc = tokens.SourceLocation();
     while (Optional(TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
