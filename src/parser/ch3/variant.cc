@@ -32,11 +32,11 @@ bool Parser::ParseVariant(RecordTypeSymbol *rec)
     //
     // -- start this parse with the required token
     //    ----------------------------------------
-    if (!Require(TOK_WHEN)) return false;
+    if (!Require(TokenType::TOK_WHEN)) return false;
     if (!ParseChoice()) return false;
 
     loc = tokens.SourceLocation();
-    while (Optional(TOK_VERTICAL_BAR)) {
+    while (Optional(TokenType::TOK_VERTICAL_BAR)) {
         if (!ParseChoice()) {
             diags.Error(loc, DiagID::ExtraVertialBar, { "choice" } );
             break;
@@ -49,7 +49,7 @@ bool Parser::ParseVariant(RecordTypeSymbol *rec)
     //
     // -- Complete the parse
     //    ------------------
-    if (!Require(TOK_ARROW)) return false;
+    if (!Require(TokenType::TOK_ARROW)) return false;
     if (!ParseComponentList(rec)) return false;
 
 

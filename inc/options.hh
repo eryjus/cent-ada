@@ -13,11 +13,11 @@
 
 
 
-typedef struct {
+using Options = struct Options {
     bool trace = false;
     bool dumpSymtab = false;
     bool listing = false;
-} Options;
+};
 
 
 extern Options opts;

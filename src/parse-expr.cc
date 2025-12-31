@@ -34,7 +34,7 @@ bool Parser::ParseNameNonExpr(Id &id)
     Production p(*this, "name");
     MarkStream m(tokens, diags);
 
-    if (Optional(TOK_CHARACTER_LITERAL)) {
+    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         m.Commit();
         return true;
     }
@@ -90,7 +90,7 @@ bool Parser::ParseName_Base(Id &id)
     Production p(*this, "name(base)");
     MarkStream m(tokens, diags);
 
-    if (Optional(TOK_CHARACTER_LITERAL)) {
+    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         m.Commit();
         return true;
     }
@@ -115,10 +115,10 @@ bool Parser::ParseName_Postfix(void)
     Production p(*this, "name(postfix)");
     MarkStream m(tokens, diags);
 
-    if (Optional(TOK_LEFT_PARENTHESIS)) {
+    if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         if (ParseName_IndexOrSliceSuffix()) {
             SourceLoc_t loc = tokens.SourceLocation();
-            if (!Require(TOK_RIGHT_PARENTHESIS)) {
+            if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
                 diags.Error(loc, DiagID::MissingRightParen, { "index or selected component" } );
             }
 
@@ -131,17 +131,6 @@ bool Parser::ParseName_Postfix(void)
     if (m.CommitIf(ParseName_AttributeSuffix()))            return true;
 
     return false;
-
-
-
-#if 0
-    if (m.CommitIf(ParseName_IndexComponentSuffix()))       return true;
-    m.Reset();
-    if (m.CommitIf(ParseName_SelectedComponentSuffix()))    return true;
-    m.Reset();
-#endif
-
-
 }
 
 
@@ -182,7 +171,7 @@ bool Parser::ParseName_AttributeSuffix(void)
     Production p(*this, "name(attribute)");
     MarkStream m(tokens, diags);
 
-    if (!Require(TOK_APOSTROPHE))       return false;
+    if (!Require(TokenType::TOK_APOSTROPHE))       return false;
     if (!ParseAttributeDesignator())    return false;
 
     m.Commit();
@@ -203,7 +192,7 @@ bool Parser::ParseName_IndexComponentSuffix(void)
 
     if (!ParseExpression())                     return false;
 
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseExpression())                 return false;
     }
 
@@ -241,7 +230,7 @@ bool Parser::ParseName_SelectedComponentSuffix(void)
     Production p(*this, "name(selected_component)");
     MarkStream m(tokens, diags);
 
-    if (!Require(TOK_DOT))                      return false;
+    if (!Require(TokenType::TOK_DOT))           return false;
     if (!ParseSelector())                       return false;
 
     m.Commit();
@@ -297,15 +286,15 @@ bool Parser::ParseIndexedComponent(void)
     MarkStream m(tokens, diags);
 
     if (!ParsePrefix())                     return false;
-    if (!Require(TOK_LEFT_PARENTHESIS))     return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return false;
     if (!ParseExpression())                 return false;
 
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseExpression())             return false;
     }
 
     SourceLoc_t loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
 
@@ -324,11 +313,11 @@ bool Parser::ParseSlice(void)
     MarkStream m(tokens, diags);
 
     if (!ParsePrefix())                     return false;
-    if (!Require(TOK_LEFT_PARENTHESIS))     return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return false;
     if (!ParseDiscreteRange())              return false;
 
     SourceLoc_t loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discrete_range" } );
     }
 
@@ -348,7 +337,7 @@ bool Parser::ParseSelectedComponent(void)
     std::string discard;
 
     if (!ParsePrefix())                     return false;
-    if (!Require(TOK_DOT))                  return false;
+    if (!Require(TokenType::TOK_DOT))                  return false;
     if (!ParseSelector())                   return false;
 
     m.Commit();
@@ -366,12 +355,12 @@ bool Parser::ParseSelector(void)
     MarkStream m(tokens, diags);
     Id id;
 
-    if (Optional(TOK_ALL)) {
+    if (Optional(TokenType::TOK_ALL)) {
         m.Commit();
         return true;
     }
 
-    if (Optional(TOK_CHARACTER_LITERAL)) {
+    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         m.Commit();
         return true;
     }
@@ -405,7 +394,7 @@ bool Parser::ParseAttribute(void)
     MarkStream m(tokens, diags);
 
     if (!ParsePrefix())                 return false;
-    if (!Require(TOK_APOSTROPHE))       return false;
+    if (!Require(TokenType::TOK_APOSTROPHE))       return false;
     if (!ParseAttributeDesignator())    return false;
 
     m.Commit();
@@ -424,11 +413,11 @@ bool Parser::ParseAttributeDesignator(void)
     Id id;
 
     if (!ParseSimpleName(id))           return false;
-    if (Optional(TOK_LEFT_PARENTHESIS)) {
+    if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         if (!ParseExpression()) return false;
 
         SourceLoc_t loc = tokens.SourceLocation();
-        if (!Require(TOK_RIGHT_PARENTHESIS)) {
+        if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             diags.Error(loc, DiagID::MissingRightParen, { "expression"} );
             // -- allow to continue
         }
@@ -449,11 +438,11 @@ bool Parser::ParseAggregate(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    if (!Require(TOK_LEFT_PARENTHESIS))         return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))         return false;
     if (!ParseComponentAssociation())           return false;
 
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
             diags.Error(loc, DiagID::ExtraComma, { "component association" } );
         }
@@ -462,7 +451,7 @@ bool Parser::ParseAggregate(void)
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "component_association" } );
     }
 
@@ -483,7 +472,7 @@ bool Parser::ParseAggregateMore(void)
     SourceLoc_t loc;
 
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
             diags.Error(loc, DiagID::ExtraComma, { "aggregate" } );
         }
@@ -492,7 +481,7 @@ bool Parser::ParseAggregateMore(void)
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "component_association" } );
     }
 
@@ -513,7 +502,7 @@ bool Parser::ParseComponentAssociation(void)
     SourceLoc_t loc;
 
     if (ParseChoice()) {
-        while (Optional(TOK_VERTICAL_BAR)) {
+        while (Optional(TokenType::TOK_VERTICAL_BAR)) {
             loc = tokens.SourceLocation();
             if (!ParseChoice()) {
                 diags.Error(loc, DiagID::ExtraVertialBar, { "component association" } );
@@ -521,7 +510,7 @@ bool Parser::ParseComponentAssociation(void)
         }
     }
 
-    if (!Require(TOK_ARROW)) return false;
+    if (!Require(TokenType::TOK_ARROW)) return false;
     if (!ParseExpression()) return false;
 
     m.Commit();
@@ -537,17 +526,17 @@ bool Parser::ParseExpression(void)
 {
     Production p(*this, "expression");
     MarkStream m(tokens, diags);
-    TokenType_t tok;
+    TokenType tok;
 
 
     if (!ParseRelation()) return false;
 
     switch (tokens.Current()) {
-    case TOK_AND:
-    case TOK_AND_THEN:
-    case TOK_OR:
-    case TOK_OR_ELSE:
-    case TOK_XOR:
+    case TokenType::TOK_AND:
+    case TokenType::TOK_AND_THEN:
+    case TokenType::TOK_OR:
+    case TokenType::TOK_OR_ELSE:
+    case TokenType::TOK_XOR:
         tok = tokens.Current();
         break;
 
@@ -583,19 +572,19 @@ bool Parser::ParseRelation(void)
     //
     // -- check for some illegal variations which should fail the parse early
     //    -------------------------------------------------------------------
-    if (Illegal(TOK_COMMA)) {
+    if (Illegal(TokenType::TOK_COMMA)) {
         m.Commit();
         return true;
     }
-    if (Illegal(TOK_ARROW)) {
+    if (Illegal(TokenType::TOK_ARROW)) {
         m.Commit();
         return true;
     }
-    if (Illegal(TOK_VERTICAL_BAR)) {
+    if (Illegal(TokenType::TOK_VERTICAL_BAR)) {
         m.Commit();
         return true;
     }
-    if (Illegal(TOK_DOUBLE_DOT)) {
+    if (Illegal(TokenType::TOK_DOUBLE_DOT)) {
         m.Commit();
         return true;
     }
@@ -609,8 +598,8 @@ bool Parser::ParseRelation(void)
     }
 
 
-    if (Optional(TOK_NOT)) hasNot = true;
-    if (!Optional(TOK_IN)) {
+    if (Optional(TokenType::TOK_NOT)) hasNot = true;
+    if (!Optional(TokenType::TOK_IN)) {
         m.Commit();
         return true;
     }
@@ -643,7 +632,7 @@ bool Parser::ParseSimpleExpression(void)
 
     ParseUnaryAddingOperator();
     if (!ParseTerm()) return false;
-    if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW)  {
+    if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
         m.Commit();
         return true;
@@ -652,7 +641,7 @@ bool Parser::ParseSimpleExpression(void)
 
     while (ParseBinaryAddingOperator()) {
         if (!ParseTerm()) return false;
-        if (tokens.Current() == TOK_COMMA || tokens.Current() == TOK_ARROW) {
+        if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term
             m.Commit();
             return true;
@@ -694,7 +683,7 @@ bool Parser::ParseFactor(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    if (Require(TOK_ABS)) {
+    if (Require(TokenType::TOK_ABS)) {
         loc = tokens.SourceLocation();
         if (!ParsePrimary()) {
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "ABS" } );
@@ -702,7 +691,7 @@ bool Parser::ParseFactor(void)
 
         m.Commit();
         return true;
-    } else if (Require(TOK_NOT)) {
+    } else if (Require(TokenType::TOK_NOT)) {
         loc = tokens.SourceLocation();
         if (!ParsePrimary()) {
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "NOT" } );
@@ -713,7 +702,7 @@ bool Parser::ParseFactor(void)
     } else {
         if (!ParsePrimary())    return false;
 
-        if (Optional(TOK_DOUBLE_STAR)) {
+        if (Optional(TokenType::TOK_DOUBLE_STAR)) {
             if (!ParsePrimary())    return false;
         }
 
@@ -740,17 +729,17 @@ bool Parser::ParsePrimary(void)
     // -- The spec calls for a `numeric_literal` here.  I am going to split them out
     //    here rather than in the lexer.
     //    --------------------------------------------------------------------------
-    if (Optional(TOK_UNIVERSAL_INT_LITERAL)) {
+    if (Optional(TokenType::TOK_UNIVERSAL_INT_LITERAL)) {
         m.Commit();
         return true;
     }
 
-    if (Optional(TOK_UNIVERSAL_REAL_LITERAL)) {
+    if (Optional(TokenType::TOK_UNIVERSAL_REAL_LITERAL)) {
         m.Commit();
         return true;
     }
 
-    if (Optional(TOK_NULL)) {
+    if (Optional(TokenType::TOK_NULL)) {
         m.Commit();
         return true;
     }
@@ -761,26 +750,26 @@ bool Parser::ParsePrimary(void)
         return true;
     }
 
-    if (Optional(TOK_LEFT_PARENTHESIS)) {
+    if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         if (!ParseExpression()) return false;
 
-        if (Optional(TOK_RIGHT_PARENTHESIS)) {
+        if (Optional(TokenType::TOK_RIGHT_PARENTHESIS)) {
             m.Commit();
             return true;
         }
 
         switch (tokens.Current()) {
-        case TOK_COMMA:
-        case TOK_WHEN:
-        case TOK_OTHERS:
-        case TOK_DOUBLE_DOT:
-        case TOK_VERTICAL_BAR:
-        case TOK_ARROW:
+        case TokenType::TOK_COMMA:
+        case TokenType::TOK_WHEN:
+        case TokenType::TOK_OTHERS:
+        case TokenType::TOK_DOUBLE_DOT:
+        case TokenType::TOK_VERTICAL_BAR:
+        case TokenType::TOK_ARROW:
             loc = tokens.SourceLocation();
             if (ParseAggregateMore()) {
                 SourceLoc_t loc = tokens.SourceLocation();
 
-                if (!Require(TOK_RIGHT_PARENTHESIS)) {
+                if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
                     diags.Error(loc, DiagID::MissingRightParen, { "aggregate" } );
                     // -- keep going
                 }
@@ -797,7 +786,7 @@ bool Parser::ParsePrimary(void)
     }
 
 
-    if (Optional(TOK_STRING_LITERAL)) {
+    if (Optional(TokenType::TOK_STRING_LITERAL)) {
         m.Commit();
         return true;
     }
@@ -827,19 +816,6 @@ bool Parser::ParsePrimary(void)
         return true;
     }
 
-#if 0
-    if (Require(TOK_LEFT_PARENTHESIS)) {
-        if (!ParseExpression()) return true;
-        SourceLoc_t loc = tokens.SourceLocation();
-        if (!Require(TOK_RIGHT_PARENTHESIS)) {
-            diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
-            // -- continue anyway
-        }
-
-        m.Commit();
-        return true;
-    }
-#endif
 
     return false;
 }
@@ -855,9 +831,9 @@ bool Parser::ParseRelationalOperator(void)
     MarkStream m(tokens, diags);
 
     switch (tokens.Current()) {
-    case TOK_AND:
-    case TOK_OR:
-    case TOK_XOR:
+    case TokenType::TOK_AND:
+    case TokenType::TOK_OR:
+    case TokenType::TOK_XOR:
         tokens.Advance();
         m.Commit();
         return true;
@@ -878,9 +854,9 @@ bool Parser::ParseBinaryAddingOperator(void)
     MarkStream m(tokens, diags);
 
     switch (tokens.Current()) {
-    case TOK_PLUS:
-    case TOK_MINUS:
-    case TOK_AMPERSAND:
+    case TokenType::TOK_PLUS:
+    case TokenType::TOK_MINUS:
+    case TokenType::TOK_AMPERSAND:
         tokens.Advance();
         m.Commit();
         return true;
@@ -901,8 +877,8 @@ bool Parser::ParseUnaryAddingOperator(void)
     MarkStream m(tokens, diags);
 
     switch (tokens.Current()) {
-    case TOK_PLUS:
-    case TOK_MINUS:
+    case TokenType::TOK_PLUS:
+    case TokenType::TOK_MINUS:
         tokens.Advance();
         m.Commit();
         return true;
@@ -923,10 +899,10 @@ bool Parser::ParseMultiplyingOperator(void)
     MarkStream m(tokens, diags);
 
     switch (tokens.Current()) {
-    case TOK_STAR:
-    case TOK_SLASH:
-    case TOK_MOD:
-    case TOK_REM:
+    case TokenType::TOK_STAR:
+    case TokenType::TOK_SLASH:
+    case TokenType::TOK_MOD:
+    case TokenType::TOK_REM:
         tokens.Advance();
         m.Commit();
         return true;
@@ -948,13 +924,13 @@ bool Parser::ParseTypeConversion(void)
     SourceLoc_t loc;
 
     if (!ParseTypeMark())       return false;
-    if (!Require(TOK_LEFT_PARENTHESIS))     return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return false;
     loc = tokens.SourceLocation();
     if (!ParseExpression()) {
         diags.Error(loc, DiagID::InvalidExpression, { "type conversion" } );
     }
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
 
@@ -974,16 +950,16 @@ bool Parser::ParseQualifiedExpression(void)
     SourceLoc_t loc;
 
     if (!ParseTypeMark())       return false;
-    if (!Require(TOK_APOSTROPHE))   return false;
+    if (!Require(TokenType::TOK_APOSTROPHE))   return false;
 
-    if (Require(TOK_LEFT_PARENTHESIS)) {
+    if (Require(TokenType::TOK_LEFT_PARENTHESIS)) {
         loc = tokens.SourceLocation();
         if (!ParseExpression()) {
             diags.Error(loc, DiagID::InvalidExpression, { "qualified expression" } );
         }
 
         SourceLoc_t loc = tokens.SourceLocation();
-        if (!Require(TOK_RIGHT_PARENTHESIS)) {
+        if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
             // -- continue anyway
         }
@@ -1008,7 +984,7 @@ bool Parser::ParseAllocator(void)
     Production p(*this, "allocator");
     MarkStream m(tokens, diags);
 
-    if (!Require(TOK_NEW)) return false;
+    if (!Require(TokenType::TOK_NEW)) return false;
 
     if (ParseSubtypeIndication()) {
         m.Commit();

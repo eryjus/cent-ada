@@ -30,7 +30,7 @@ bool Parser::ParseFixedAccuracyDefinition(void)
     //
     // -- this production starts with a DELTA token
     //    -----------------------------------------
-    if (!Require(TOK_DELTA)) return false;
+    if (!Require(TokenType::TOK_DELTA)) return false;
 
 
     //

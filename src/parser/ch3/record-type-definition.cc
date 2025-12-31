@@ -36,7 +36,7 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     //
     // -- this production starts with a TOK_RECORD
     //    ----------------------------------------
-    if (!Require(TOK_RECORD)) return false;
+    if (!Require(TokenType::TOK_RECORD)) return false;
 
 
 
@@ -72,13 +72,13 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     // -- and then by TOK_END and TOK_RECORD again
     //    ----------------------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_END)) {
+    if (!Require(TokenType::TOK_END)) {
         diags.Error(loc, DiagID::MissingEnd, { "record component list" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RECORD)) {
+    if (!Require(TokenType::TOK_RECORD)) {
         diags.Error(loc, DiagID::MissingEndingTag, { "record" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

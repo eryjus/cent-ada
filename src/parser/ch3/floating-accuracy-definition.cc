@@ -31,7 +31,7 @@ bool Parser::ParseFloatingAccuracyDefinition(void)
     //
     // -- this production starts with a DIGITS token
     //    ------------------------------------------
-    if (!Require(TOK_DIGITS)) return false;
+    if (!Require(TokenType::TOK_DIGITS)) return false;
 
 
     //

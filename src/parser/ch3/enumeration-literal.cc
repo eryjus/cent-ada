@@ -29,15 +29,15 @@ bool Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
     SourceLoc_t loc = tokens.SourceLocation();
     Id id;
     EnumLiteralSymbol *sym;
-    yystype_t yy = yylval;      // in case we have a character liteal
+    YYSTYPE yy = yylval;      // in case we have a character liteal
 
 
     //
     // -- Trivially check if it's a character literal
     //    -------------------------------------------
-    if (Optional(TOK_CHARACTER_LITERAL)) {
+    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         std::unique_ptr<EnumLiteralSymbol> sym;
-        id.name = *tokens.Payload().charLiteral;
+        id.name = std::get<CharLiteral>(tokens.Payload()).lexeme;
         sym = std::make_unique<EnumLiteralSymbol>(id.name, type, type->literals.size(), loc, scopes.CurrentScope());
         type->literals.push_back(sym.get());
         scopes.Declare(std::move(sym));

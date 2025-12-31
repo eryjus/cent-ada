@@ -34,7 +34,7 @@ bool Parser::ParseSubtypeDeclaration(void)
     //
     // -- start with a TOK_SUBTYPE token
     //    ------------------------------
-    if (!Require(TOK_SUBTYPE)) return false;
+    if (!Require(TokenType::TOK_SUBTYPE)) return false;
 
 
     //
@@ -58,7 +58,7 @@ bool Parser::ParseSubtypeDeclaration(void)
     // -- The definition of the subtype; TOK_IS and the subtype_indication
     //    must be present for this production to be valid.
     //    ----------------------------------------------------------------
-    if (!Require(TOK_IS)) return false;
+    if (!Require(TokenType::TOK_IS)) return false;
     if (!ParseSubtypeIndication()) return false;
 
 
@@ -67,7 +67,7 @@ bool Parser::ParseSubtypeDeclaration(void)
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "subtype declaration" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

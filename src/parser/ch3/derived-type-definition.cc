@@ -34,7 +34,7 @@ bool Parser::ParseDerivedTypeDefinition(Id &id)
     //
     // -- This is just a TOK_NEW with a Subtype Indication
     //    ------------------------------------------------
-    if (!Require(TOK_NEW)) return false;
+    if (!Require(TokenType::TOK_NEW)) return false;
 
 
     //

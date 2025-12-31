@@ -24,10 +24,12 @@
 %{
     #include <string>
     #include <iostream>
+    #include <variant>
+
+    #define YY_DECL TokenType yylex(void)
 
     extern int column;
     extern std::string strVal;
-    extern union YYSTYPE yylval;
     std::string ToLower(const char *s);
 
     #include "tokens.hh"
@@ -67,120 +69,120 @@ WS          [ \t]
          *    -----------------------------------
          */
 \"          { column ++; BEGIN(str); strVal = ""; }
-&           { column ++; return TOK_AMPERSAND; }
-\(          { column ++; return TOK_LEFT_PARENTHESIS; }
-\)          { column ++; return TOK_RIGHT_PARENTHESIS; }
-\*          { column ++; return TOK_STAR; }
-\+          { column ++; return TOK_PLUS; }
-,           { column ++; return TOK_COMMA; }
--           { column ++; return TOK_HYPHEN; }
-\.          { column ++; return TOK_DOT; }
-\/          { column ++; return TOK_SLASH; }
-\:          { column ++; return TOK_COLON; }
-;           { column ++; return TOK_SEMICOLON; }
-\<          { column ++; return TOK_LESS_THAN; }
-=           { column ++; return TOK_EQUAL; }
-\>          { column ++; return TOK_GREATER_THAN; }
-_           { column ++; return TOK_UNDERLINE; }
-\|          { column ++; return TOK_VERTICAL_BAR; }
-!           { column ++; return TOK_EXCLAMATION_MARK; }
-\$          { column ++; return TOK_DOLLAR; }
-\%          { column ++; return TOK_PERCENT; }
-\?          { column ++; return TOK_QUESTION_MARK; }
-\@          { column ++; return TOK_COMMERCIAL_AT; }
-\[          { column ++; return TOK_LEFT_SQUARE_BRACKET; }
-\\          { column ++; return TOK_BACK_SLASH; }
-\]          { column ++; return TOK_RIGHT_SQUARE_BRACKET; }
-\^          { column ++; return TOK_CIRCUMFLEX; }
-`           { column ++; return TOK_GRAVE_ACCENT; }
-\{          { column ++; return TOK_LEFT_BRACE; }
-\}          { column ++; return TOK_RIGHT_BRACE; }
-~           { column ++; return TOK_TILDE; }
+&           { column ++; return TokenType::TOK_AMPERSAND; }
+\(          { column ++; return TokenType::TOK_LEFT_PARENTHESIS; }
+\)          { column ++; return TokenType::TOK_RIGHT_PARENTHESIS; }
+\*          { column ++; return TokenType::TOK_STAR; }
+\+          { column ++; return TokenType::TOK_PLUS; }
+,           { column ++; return TokenType::TOK_COMMA; }
+-           { column ++; return TokenType::TOK_HYPHEN; }
+\.          { column ++; return TokenType::TOK_DOT; }
+\/          { column ++; return TokenType::TOK_SLASH; }
+\:          { column ++; return TokenType::TOK_COLON; }
+;           { column ++; return TokenType::TOK_SEMICOLON; }
+\<          { column ++; return TokenType::TOK_LESS_THAN; }
+=           { column ++; return TokenType::TOK_EQUAL; }
+\>          { column ++; return TokenType::TOK_GREATER_THAN; }
+_           { column ++; return TokenType::TOK_UNDERLINE; }
+\|          { column ++; return TokenType::TOK_VERTICAL_BAR; }
+!           { column ++; return TokenType::TOK_EXCLAMATION_MARK; }
+\$          { column ++; return TokenType::TOK_DOLLAR; }
+\%          { column ++; return TokenType::TOK_PERCENT; }
+\?          { column ++; return TokenType::TOK_QUESTION_MARK; }
+\@          { column ++; return TokenType::TOK_COMMERCIAL_AT; }
+\[          { column ++; return TokenType::TOK_LEFT_SQUARE_BRACKET; }
+\\          { column ++; return TokenType::TOK_BACK_SLASH; }
+\]          { column ++; return TokenType::TOK_RIGHT_SQUARE_BRACKET; }
+\^          { column ++; return TokenType::TOK_CIRCUMFLEX; }
+`           { column ++; return TokenType::TOK_GRAVE_ACCENT; }
+\{          { column ++; return TokenType::TOK_LEFT_BRACE; }
+\}          { column ++; return TokenType::TOK_RIGHT_BRACE; }
+~           { column ++; return TokenType::TOK_TILDE; }
 
 
         /*
          * -- handle the compound symbols
          *    ---------------------------
          */
-\=\>        { column += 2; return TOK_ARROW; }
-\.\.        { column += 2; return TOK_DOUBLE_DOT; }
-\*\*        { column += 2; return TOK_DOUBLE_STAR; }
-\:\=        { column += 2; return TOK_ASSIGNMENT; }
-\/\=        { column += 2; return TOK_INEQUALITY; }
-\>\=        { column += 2; return TOK_GREATER_THAN_OR_EQUAL; }
-\<\=        { column += 2; return TOK_LESS_THAN_OR_EQUAL; }
-\<\<        { column += 2; return TOK_LEFT_LABEL_BRACKET; }
-\>\>        { column += 2; return TOK_RIGHT_LABEL_BRACKET; }
-\<\>        { column += 2; return TOK_BOX; }
+\=\>        { column += 2; return TokenType::TOK_ARROW; }
+\.\.        { column += 2; return TokenType::TOK_DOUBLE_DOT; }
+\*\*        { column += 2; return TokenType::TOK_DOUBLE_STAR; }
+\:\=        { column += 2; return TokenType::TOK_ASSIGNMENT; }
+\/\=        { column += 2; return TokenType::TOK_INEQUALITY; }
+\>\=        { column += 2; return TokenType::TOK_GREATER_THAN_OR_EQUAL; }
+\<\=        { column += 2; return TokenType::TOK_LESS_THAN_OR_EQUAL; }
+\<\<        { column += 2; return TokenType::TOK_LEFT_LABEL_BRACKET; }
+\>\>        { column += 2; return TokenType::TOK_RIGHT_LABEL_BRACKET; }
+\<\>        { column += 2; return TokenType::TOK_BOX; }
 
 
         /*
         * -- handle keywords
         *    ---------------
         */
-abort       { column += strlen(yytext); return TOK_ABORT; }
-abs         { column += strlen(yytext); return TOK_ABS; }
-accept      { column += strlen(yytext); return TOK_ACCEPT; }
-access      { column += strlen(yytext); return TOK_ACCESS; }
-all         { column += strlen(yytext); return TOK_ALL; }
-and         { column += strlen(yytext); return TOK_AND; }
-array       { column += strlen(yytext); return TOK_ARRAY; }
-at          { column += strlen(yytext); return TOK_AT; }
-begin       { column += strlen(yytext); return TOK_BEGIN; }
-body        { column += strlen(yytext); return TOK_BODY; }
-case        { column += strlen(yytext); return TOK_CASE; }
-constant    { column += strlen(yytext); return TOK_CONSTANT; }
-declare     { column += strlen(yytext); return TOK_DECLARE; }
-delay       { column += strlen(yytext); return TOK_DELAY; }
-delta       { column += strlen(yytext); return TOK_DELTA; }
-digits      { column += strlen(yytext); return TOK_DIGITS; }
-do          { column += strlen(yytext); return TOK_DO; }
-else        { column += strlen(yytext); return TOK_ELSE; }
-elsif       { column += strlen(yytext); return TOK_ELSIF; }
-end         { column += strlen(yytext); return TOK_END; }
-entry       { column += strlen(yytext); return TOK_ENTRY; }
-exception   { column += strlen(yytext); return TOK_EXCEPTION; }
-exit        { column += strlen(yytext); return TOK_EXIT; }
-for         { column += strlen(yytext); return TOK_FOR; }
-function    { column += strlen(yytext); return TOK_FUNCTION; }
-generic     { column += strlen(yytext); return TOK_GENERIC; }
-goto        { column += strlen(yytext); return TOK_GOTO; }
-if          { column += strlen(yytext); return TOK_IF; }
-in          { column += strlen(yytext); return TOK_IN; }
-is          { column += strlen(yytext); return TOK_IS; }
-limited     { column += strlen(yytext); return TOK_LIMITED; }
-loop        { column += strlen(yytext); return TOK_LOOP; }
-mod         { column += strlen(yytext); return TOK_MOD; }
-new         { column += strlen(yytext); return TOK_NEW; }
-not         { column += strlen(yytext); return TOK_NOT; }
-null        { column += strlen(yytext); return TOK_NULL; }
-of          { column += strlen(yytext); return TOK_OF; }
-or          { column += strlen(yytext); return TOK_OR; }
-others      { column += strlen(yytext); return TOK_OTHERS; }
-out         { column += strlen(yytext); return TOK_OUT; }
-package     { column += strlen(yytext); return TOK_PACKAGE; }
-pragma      { column += strlen(yytext); BEGIN(prg); return TOK_PRAGMA; }
-private     { column += strlen(yytext); return TOK_PRIVATE; }
-procedure   { column += strlen(yytext); return TOK_PROCEDURE; }
-raise       { column += strlen(yytext); return TOK_RAISE; }
-range       { column += strlen(yytext); return TOK_RANGE; }
-record      { column += strlen(yytext); return TOK_RECORD; }
-rem         { column += strlen(yytext); return TOK_REM; }
-renames     { column += strlen(yytext); return TOK_RENAMES; }
-return      { column += strlen(yytext); return TOK_RETURN; }
-reverse     { column += strlen(yytext); return TOK_REVERSE; }
-select      { column += strlen(yytext); return TOK_SELECT; }
-separate    { column += strlen(yytext); return TOK_SEPARATE; }
-subtype     { column += strlen(yytext); return TOK_SUBTYPE; }
-task        { column += strlen(yytext); return TOK_TASK; }
-terminate   { column += strlen(yytext); return TOK_TERMINATE; }
-then        { column += strlen(yytext); return TOK_THEN; }
-type        { column += strlen(yytext); return TOK_TYPE; }
-use         { column += strlen(yytext); return TOK_USE; }
-when        { column += strlen(yytext); return TOK_WHEN; }
-while       { column += strlen(yytext); return TOK_WHILE; }
-with        { column += strlen(yytext); return TOK_WITH; }
-xor         { column += strlen(yytext); return TOK_XOR; }
+abort       { column += strlen(yytext); return TokenType::TOK_ABORT; }
+abs         { column += strlen(yytext); return TokenType::TOK_ABS; }
+accept      { column += strlen(yytext); return TokenType::TOK_ACCEPT; }
+access      { column += strlen(yytext); return TokenType::TOK_ACCESS; }
+all         { column += strlen(yytext); return TokenType::TOK_ALL; }
+and         { column += strlen(yytext); return TokenType::TOK_AND; }
+array       { column += strlen(yytext); return TokenType::TOK_ARRAY; }
+at          { column += strlen(yytext); return TokenType::TOK_AT; }
+begin       { column += strlen(yytext); return TokenType::TOK_BEGIN; }
+body        { column += strlen(yytext); return TokenType::TOK_BODY; }
+case        { column += strlen(yytext); return TokenType::TOK_CASE; }
+constant    { column += strlen(yytext); return TokenType::TOK_CONSTANT; }
+declare     { column += strlen(yytext); return TokenType::TOK_DECLARE; }
+delay       { column += strlen(yytext); return TokenType::TOK_DELAY; }
+delta       { column += strlen(yytext); return TokenType::TOK_DELTA; }
+digits      { column += strlen(yytext); return TokenType::TOK_DIGITS; }
+do          { column += strlen(yytext); return TokenType::TOK_DO; }
+else        { column += strlen(yytext); return TokenType::TOK_ELSE; }
+elsif       { column += strlen(yytext); return TokenType::TOK_ELSIF; }
+end         { column += strlen(yytext); return TokenType::TOK_END; }
+entry       { column += strlen(yytext); return TokenType::TOK_ENTRY; }
+exception   { column += strlen(yytext); return TokenType::TOK_EXCEPTION; }
+exit        { column += strlen(yytext); return TokenType::TOK_EXIT; }
+for         { column += strlen(yytext); return TokenType::TOK_FOR; }
+function    { column += strlen(yytext); return TokenType::TOK_FUNCTION; }
+generic     { column += strlen(yytext); return TokenType::TOK_GENERIC; }
+goto        { column += strlen(yytext); return TokenType::TOK_GOTO; }
+if          { column += strlen(yytext); return TokenType::TOK_IF; }
+in          { column += strlen(yytext); return TokenType::TOK_IN; }
+is          { column += strlen(yytext); return TokenType::TOK_IS; }
+limited     { column += strlen(yytext); return TokenType::TOK_LIMITED; }
+loop        { column += strlen(yytext); return TokenType::TOK_LOOP; }
+mod         { column += strlen(yytext); return TokenType::TOK_MOD; }
+new         { column += strlen(yytext); return TokenType::TOK_NEW; }
+not         { column += strlen(yytext); return TokenType::TOK_NOT; }
+null        { column += strlen(yytext); return TokenType::TOK_NULL; }
+of          { column += strlen(yytext); return TokenType::TOK_OF; }
+or          { column += strlen(yytext); return TokenType::TOK_OR; }
+others      { column += strlen(yytext); return TokenType::TOK_OTHERS; }
+out         { column += strlen(yytext); return TokenType::TOK_OUT; }
+package     { column += strlen(yytext); return TokenType::TOK_PACKAGE; }
+pragma      { column += strlen(yytext); BEGIN(prg); return TokenType::TOK_PRAGMA; }
+private     { column += strlen(yytext); return TokenType::TOK_PRIVATE; }
+procedure   { column += strlen(yytext); return TokenType::TOK_PROCEDURE; }
+raise       { column += strlen(yytext); return TokenType::TOK_RAISE; }
+range       { column += strlen(yytext); return TokenType::TOK_RANGE; }
+record      { column += strlen(yytext); return TokenType::TOK_RECORD; }
+rem         { column += strlen(yytext); return TokenType::TOK_REM; }
+renames     { column += strlen(yytext); return TokenType::TOK_RENAMES; }
+return      { column += strlen(yytext); return TokenType::TOK_RETURN; }
+reverse     { column += strlen(yytext); return TokenType::TOK_REVERSE; }
+select      { column += strlen(yytext); return TokenType::TOK_SELECT; }
+separate    { column += strlen(yytext); return TokenType::TOK_SEPARATE; }
+subtype     { column += strlen(yytext); return TokenType::TOK_SUBTYPE; }
+task        { column += strlen(yytext); return TokenType::TOK_TASK; }
+terminate   { column += strlen(yytext); return TokenType::TOK_TERMINATE; }
+then        { column += strlen(yytext); return TokenType::TOK_THEN; }
+type        { column += strlen(yytext); return TokenType::TOK_TYPE; }
+use         { column += strlen(yytext); return TokenType::TOK_USE; }
+when        { column += strlen(yytext); return TokenType::TOK_WHEN; }
+while       { column += strlen(yytext); return TokenType::TOK_WHILE; }
+with        { column += strlen(yytext); return TokenType::TOK_WITH; }
+xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
 
 
 
@@ -191,8 +193,8 @@ xor         { column += strlen(yytext); return TOK_XOR; }
 {LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
                 column += strlen(yytext);
                 std::string lower = ToLower(yytext);
-                yylval.ident = new std::string(lower);
-                return TOK_IDENTIFIER;
+                yylval = IdentifierLexeme { lower };
+                return TokenType::TOK_IDENTIFIER;
             }
 
 
@@ -203,28 +205,28 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          */
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*# {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_INT_LITERAL;
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_INT_LITERAL;
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e-{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_INT_LITERAL;
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 
 {DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_INT_LITERAL;
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_INT_LITERAL;
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*e-{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_INT_LITERAL;
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 
 
@@ -235,28 +237,28 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          */
 {DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_REAL_LITERAL;
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_REAL_LITERAL;
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*e-{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_REAL_LITERAL;
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*# {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_REAL_LITERAL;
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_REAL_LITERAL;
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e-{DIGIT}({UNDERLINE}|{DIGIT})* {
                  column += strlen(yytext);
-                return TOK_UNIVERSAL_REAL_LITERAL;
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 
 
@@ -267,8 +269,9 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          */
 \'.\'       {
                 column += strlen(yytext);
-                yylval.charLiteral = new std::string(yytext);
-                return TOK_CHARACTER_LITERAL;
+                CharLiteral ch;
+                yylval = CharLiteral { std::string(yytext), yytext[1] };
+                return TokenType::TOK_CHARACTER_LITERAL;
             }
 
 
@@ -277,8 +280,8 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          * -- Handle a string literal
          *    -----------------------
          */
-<str>\"     { column ++; BEGIN(INITIAL); return TOK_STRING_LITERAL; }
-<str>{LF}   { column = 0; BEGIN(INITIAL); return TOK_ERROR; }
+<str>\"     { column ++; BEGIN(INITIAL); return TokenType::TOK_STRING_LITERAL; }
+<str>{LF}   { column = 0; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
 <str>\"\"   { column += 2; strVal += '"'; }
 <str>.      { column ++; strVal += yytext[0]; }
 
@@ -289,27 +292,27 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          *    -------------------------------------------------------
          */
 <prg>{WS}   { column ++; }
-<prg>{LF}   { column = 0; BEGIN(INITIAL); return TOK_ERROR; }
+<prg>{LF}   { column = 0; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
 <prg>{LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
                 column += strlen(yytext);
                 BEGIN(arg);
-                return TOK_PRAGMA_NAME;
+                return TokenType::TOK_PRAGMA_NAME;
             }
-<prg>.      { column ++; BEGIN(INITIAL); return TOK_ERROR; }
+<prg>.      { column ++; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
 
 <arg>{WS}   { column ++; }
-<arg>;      { column ++; BEGIN(INITIAL); return TOK_SEMICOLON; }
-<arg>\(     { column ++; return TOK_LEFT_PARENTHESIS; }
-<arg>\)     { column ++; BEGIN(INITIAL); return TOK_RIGHT_PARENTHESIS; }
-<arg>,      { column ++; return TOK_COMMA; }
-<arg>\=\>   { column += 2; return TOK_ARROW; }
+<arg>;      { column ++; BEGIN(INITIAL); return TokenType::TOK_SEMICOLON; }
+<arg>\(     { column ++; return TokenType::TOK_LEFT_PARENTHESIS; }
+<arg>\)     { column ++; BEGIN(INITIAL); return TokenType::TOK_RIGHT_PARENTHESIS; }
+<arg>,      { column ++; return TokenType::TOK_COMMA; }
+<arg>\=\>   { column += 2; return TokenType::TOK_ARROW; }
 <arg>{LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
                 column += strlen(yytext);
                 std::string lower = ToLower(yytext);
-                yylval.ident = new std::string(lower);
-                return TOK_IDENTIFIER;
+                yylval = IdentifierLexeme { lower };
+                return TokenType::TOK_IDENTIFIER;
             }
-<arg>.      { column ++; BEGIN(INITIAL); return TOK_ERROR; }
+<arg>.      { column ++; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
 
 
 
@@ -317,16 +320,16 @@ xor         { column += strlen(yytext); return TOK_XOR; }
          * -- Handle EOF
          *    ----------
          */
-<*><<EOF>>  { return 0; }
-'           { column ++; return TOK_APOSTROPHE; }
-#           { column ++; return TOK_SHARP; }
-.           { column ++; return TOK_ERROR; }
+<*><<EOF>>  { return TokenType::YYEOF; }
+'           { column ++; return TokenType::TOK_APOSTROPHE; }
+#           { column ++; return TokenType::TOK_SHARP; }
+.           { column ++; return TokenType::TOK_ERROR; }
 
 
 %%
 
 std::string strVal;
-union YYSTYPE yylval;
+YYSTYPE yylval;
 
 
 

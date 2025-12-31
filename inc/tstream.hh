@@ -23,13 +23,13 @@
 //
 // -- This structure is the location of the token in the source file
 //    --------------------------------------------------------------
-typedef struct {
+using SourceLoc_t = struct SourceLoc_t {
     std::string filename;
     long line;
     int col;
     std::string sourceLine;
     bool valid;
-} SourceLoc_t;
+};
 
 
 
@@ -38,18 +38,18 @@ typedef struct {
 //    -------------------------------------------------------------------------------------
 class TokenStream {
 private:
-    typedef struct Token {
+    using Token = struct Token {
     public:
         std::string &filename;
         int yylineno;
         int column;
-        TokenType_t tok;
+        TokenType tok;
         YYSTYPE payload;
 
     public:
-        Token(std::string &f, int l, int c, TokenType_t t, YYSTYPE &p)
+        Token(std::string &f, int l, int c, TokenType t, YYSTYPE &p)
                 : filename(f), yylineno(l), column(c), tok(t), payload(p) {}
-    } Token_t;
+    };
 
 
 private:
@@ -61,20 +61,20 @@ private:
 
 
 public:
-    const char *tokenStr(int tok) const;
+    const char *tokenStr(TokenType tok) const;
 
 public:
     TokenStream(const char *fn);
 
 public:
     void Advance(int n = 1) { loc += n; }
-    TokenType_t Current(void) const { return tokStream[loc]->tok; }
+    TokenType Current(void) const { return tokStream[loc]->tok; }
     YYSTYPE &Payload(void) const { return tokStream[loc]->payload; }
-    TokenType_t Peek(int n = 1) { return tokStream[loc + n]->tok; }
+    TokenType Peek(int n = 1) { return tokStream[loc + n]->tok; }
     std::string FileName(void) const { return filename; }
     long LineNo(void) const { return tokStream[loc]->yylineno; }
     int Column(void) const { return tokStream[loc]->column; }
-    void Recovery(TokenType_t t = TOK_SEMICOLON) { while (Current() != t) { Advance(); } Advance(); }
+    void Recovery(TokenType t = TokenType::TOK_SEMICOLON) { while (Current() != t) { Advance(); } Advance(); }
     void Reset(int nLoc) { loc = nLoc; }
     int Location(void) const { return loc; }
     void Listing(void);

@@ -30,7 +30,7 @@ int column = 1;
 //    -------------------------------------------------------------------------
 TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 {
-    extern int yylex(void);
+    extern TokenType yylex(void);
     extern FILE *yyin;
     extern YYSTYPE yylval;
     extern int yylineno;
@@ -56,26 +56,26 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
         sourceValid = true;
     }
 
-    TokenType_t tok = yylex();
-    while (tok) {
+    TokenType tok = (TokenType)yylex();
+    while ((int)tok) {
         int l = yylineno;
         int c = column;
-        yystype_t v = yylval;
+        YYSTYPE v = yylval;
 
-        if (tok == TOK_AND) {
-            TokenType_t tok2 = yylex();
+        if (tok == TokenType::TOK_AND) {
+            TokenType tok2 = (TokenType)yylex();
 
-            if (tok2 == TOK_THEN) {
-                tokStream.push_back(new Token(filename, l, c, TOK_AND_THEN, v));
+            if (tok2 == TokenType::TOK_THEN) {
+                tokStream.push_back(new Token(filename, l, c, TokenType::TOK_AND_THEN, v));
             } else {
                 tokStream.push_back(new Token(filename, l, c, tok, v));
                 tokStream.push_back(new Token(filename, l, c, tok2, v));
             }
-        } else if (tok == TOK_OR) {
-            TokenType_t tok2 = yylex();
+        } else if (tok == TokenType::TOK_OR) {
+            TokenType tok2 = (TokenType)yylex();
 
-            if (tok2 == TOK_ELSE) {
-                tokStream.push_back(new Token(filename, l, c, TOK_OR_ELSE, v));
+            if (tok2 == TokenType::TOK_ELSE) {
+                tokStream.push_back(new Token(filename, l, c, TokenType::TOK_OR_ELSE, v));
             } else {
                 tokStream.push_back(new Token(filename, l, c, tok, v));
                 tokStream.push_back(new Token(filename, l, c, tok2, v));
@@ -84,14 +84,14 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
             tokStream.push_back(new Token(filename, l, c, tok, v));
         }
 
-        tok = yylex();
+        tok = (TokenType)yylex();
     }
 
 
     //
     // -- add an EOF marker so that we can query it; yylval is irrelevant
     //    ---------------------------------------------------------------
-    tokStream.push_back(new Token(filename, source.size(), 0, YYEOF, yylval));
+    tokStream.push_back(new Token(filename, source.size(), 0, TokenType::YYEOF, yylval));
 
     fclose(yyin);
     Reset(0);
@@ -102,7 +102,7 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 //
 // -- Perform a token lookup for the description
 //    ------------------------------------------
-const char *TokenStream::tokenStr(int tok) const
+const char *TokenStream::tokenStr(TokenType tok) const
 {
     const char *str[] = {
         "YYUNDEF",                         // 257
@@ -228,10 +228,10 @@ const char *TokenStream::tokenStr(int tok) const
         "TOK_ERROR",                       // 377
     };
 
-    if ((int)tok >= TOK_ERROR) return "UNKNOWN";
-    if ((int)tok == YYEOF) return "EOF";
+    if (tok >= TokenType::TOK_ERROR) return "UNKNOWN";
+    if (tok == TokenType::YYEOF) return "EOF";
 
-    return str[tok - 257];
+    return str[(int)tok - 257];
 }
 
 
@@ -266,10 +266,10 @@ void TokenStream::List(void)
     std::cout << std::string(line).substr(0, filename.length() + 18) << '\n';
     Reset(0);
 
-    while (Current() != YYEOF) {
+    while (Current() != TokenType::YYEOF) {
         std::cout << std::setw(8) << loc + 1;
         std::cout << "  (" << std::setw(6) << LineNo() << ',' << std::setw(3) << Column() << ")  ";
-        std::cout << Current() << " : " << tokenStr(Current()) << '\n';
+        std::cout << (int)Current() << " : " << tokenStr(Current()) << '\n';
         Advance();
     }
 

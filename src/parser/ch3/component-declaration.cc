@@ -42,14 +42,14 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
         scopes.Declare(std::move(sym));
     }
 
-    if (!Require(TOK_COLON)) return false;
+    if (!Require(TokenType::TOK_COLON)) return false;
     if (!ParseComponentSubtypeDefinition()) return false;
 
 
     //
     // -- find the optional default initialization value
     //    ----------------------------------------------
-    if (Optional(TOK_ASSIGNMENT)) {
+    if (Optional(TokenType::TOK_ASSIGNMENT)) {
         loc = tokens.SourceLocation();
         if (!ParseExpression()) {
             diags.Error(loc, DiagID::MissingExpression, { "component declaration assignment" } );
@@ -59,7 +59,7 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, { "expression" } );
         // -- continue on in hopes that this does not create a cascade of errors
 

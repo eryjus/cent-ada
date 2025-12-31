@@ -32,7 +32,7 @@ bool Parser::ParseIndexConstraint(void)
     //
     // -- This production start with a paren
     //    ----------------------------------
-    if (!Require(TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
 
 
     //
@@ -45,7 +45,7 @@ bool Parser::ParseIndexConstraint(void)
     // -- followed by any number of additional indices
     //    --------------------------------------------
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseDiscreteRange()) {
             diags.Error(loc, DiagID::ExtraComma, { "discrete_range" } );
 
@@ -61,7 +61,7 @@ bool Parser::ParseIndexConstraint(void)
     // -- The closing paren is required
     //    -----------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"discrete range"});
         // -- continue on in hopes that this does not create a cascade of errors
     }

@@ -16,7 +16,7 @@
 //
 // -- These are the tokens which will be used in scanning and parsing
 //    ---------------------------------------------------------------
-enum yytokentype {
+enum class TokenType {
     YYEOF = 0,                              /* "end of file"  */
     YYUNDEF = 257,                          /* "invalid token"  */
     TOK_QUOTATION = 258,                    /* TOK_QUOTATION  */
@@ -142,14 +142,37 @@ enum yytokentype {
 };
 
 
-union YYSTYPE {
-    YYSTYPE(void) {}
-    ~YYSTYPE() {}
 
-    std::string *charLiteral;
-    std::string *errMsg;
-    std::string *ident;
+//
+// -- Define what a character literal will look like passed from the lexer to the parser
+//    ----------------------------------------------------------------------------------
+struct CharLiteral {
+    std::string lexeme;
+    int value;
 };
+
+
+
+//
+// -- Define what an identifier will look like passed from the lexer to the parser
+//    ----------------------------------------------------------------------------
+struct IdentifierLexeme {
+    std::string name;
+};
+
+
+
+//
+// -- This is the payload for the lexer to communicate extra information to the parser
+//    --------------------------------------------------------------------------------
+using YYSTYPE = std::variant<
+    std::monostate,             // empty token payload
+    struct CharLiteral,         // a character literal
+    struct IdentifierLexeme     // identifier
+>;
+
+
+extern YYSTYPE yylval;
 
 
 

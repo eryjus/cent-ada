@@ -31,7 +31,7 @@ bool Parser::ParseRangeConstraint(void)
     //
     // -- the range starts with the TOK_RANGE token
     //    -----------------------------------------
-    if (!Require(TOK_RANGE)) return false;
+    if (!Require(TokenType::TOK_RANGE)) return false;
     SourceLoc_t loc = tokens.SourceLocation();
     if (!ParseRange()) {
         diags.Error(loc, DiagID::InvalidRangeConstraint);

@@ -33,7 +33,7 @@ bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
     //
     // -- Start this off with a TOK_CASE token
     //    ------------------------------------
-    if (!Require(TOK_CASE)) return false;
+    if (!Require(TokenType::TOK_CASE)) return false;
 
 
     //
@@ -46,7 +46,7 @@ bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
     //
     // -- parse the variants
     //    ------------------
-    if (!Require(TOK_IS)) return false;
+    if (!Require(TokenType::TOK_IS)) return false;
     if (!ParseVariant(rec)) return false;
 
     while (ParseVariant(rec)) {
@@ -54,18 +54,18 @@ bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_END)) {
+    if (!Require(TokenType::TOK_END)) {
         diags.Error(loc, DiagID::MissingEnd, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_CASE)) {
+    if (!Require(TokenType::TOK_CASE)) {
         diags.Error(loc, DiagID::MissingRightParen, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors
 

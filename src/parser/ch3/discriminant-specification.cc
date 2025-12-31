@@ -45,7 +45,7 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Get the TOK_COLON
     //    -----------------
-    if (!Require(TOK_COLON)) return false;
+    if (!Require(TokenType::TOK_COLON)) return false;
 
 
     //
@@ -57,7 +57,7 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Finally an optional assignment
     //    ------------------------------
-    if (Optional(TOK_ASSIGNMENT)) {
+    if (Optional(TokenType::TOK_ASSIGNMENT)) {
         loc = tokens.SourceLocation();
         if (!ParseExpression()) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
