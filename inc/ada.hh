@@ -54,6 +54,7 @@ class EnumLiteralSymbol;
 //
 // -- Include the other headers
 //    -------------------------
+#include "options.hh"
 #include "tstream.hh"
 #include "diag.hh"
 #include "visitors.hh"

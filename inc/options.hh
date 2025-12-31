@@ -1,5 +1,5 @@
 //=================================================================================================================
-//  parser.cc -- Miscellaneous functions and variables for the parser
+//  options.hh -- This structure is a list of static options for the compiler
 //
 //        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
 //
@@ -7,20 +7,16 @@
 //
 //     Date      Tracker  Version  Pgmr  Description
 //  -----------  -------  -------  ----  -------------------------------------------------------------------------
-//  2025-Dec-27  Initial   0.0.0   ADCL  Initial version
+//  2025-Dec-30  Initial   0.0.0   ADCL  Initial version
 //
 //=================================================================================================================
 
 
 
-#include "ada.hh"
+typedef struct {
+    bool trace = false;
+} Options;
 
 
-
-//
-// -- This statically declaraed member in the Mark class needs a physical memory location
-//    -----------------------------------------------------------------------------------
-int Parser::MarkStream::depth = 0;
-
-
+extern Options opts;
 

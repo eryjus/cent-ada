@@ -157,23 +157,19 @@ private:
     class Production {
     private:
         Parser &parser;
-        static bool trace;
 
     public:
-        Production(Parser &parser, std::string p) : parser(parser) {
-            if (trace) std::cerr << "Entering " << p << " from " << parser.Last() << '\n';
+        Production(Parser &parser, std::string p) : parser(parser)
+        {
+            if (opts.trace) std::cerr << "Entering " << p << " from " << parser.Last() << '\n';
             parser.stack.push_back(std::move(p));
             std::cerr.flush();
         }
         ~Production() {
-            if (trace) std::cerr << "Leaving " << parser.Last() << '\n';
+            if (opts.trace) std::cerr << "Leaving " << parser.Last() << '\n';
             parser.stack.pop_back();
             std::cerr.flush();
         }
-
-
-    public:
-        static void SetTrace(bool t) { trace = t; }
     };
 
 
@@ -219,7 +215,6 @@ public:
         return false;
     }
 
-    void SetTrace(bool t) { Production::SetTrace(t); }
     std::string Last(void) { if (stack.size() == 0) return "top level"; return stack[stack.size() - 1]; }
     void Push(std::string p) { stack.push_back(p); }
     void Pop(void) { stack.pop_back(); }
