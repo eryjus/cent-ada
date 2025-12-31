@@ -22,7 +22,7 @@
 //
 // -- Parse a Variant
 //    ---------------
-bool Parser::ParseVariant(void)
+bool Parser::ParseVariant(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant");
     MarkStream m(tokens, diags);
@@ -50,7 +50,7 @@ bool Parser::ParseVariant(void)
     // -- Complete the parse
     //    ------------------
     if (!Require(TOK_ARROW)) return false;
-    if (!ParseComponentList()) return false;
+    if (!ParseComponentList(rec)) return false;
 
 
     //

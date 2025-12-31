@@ -22,7 +22,7 @@
 //
 // -- Parse a Variant Part
 //    --------------------
-bool Parser::ParseVariantPart(void)
+bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant_part");
     MarkStream m(tokens, diags);
@@ -47,9 +47,9 @@ bool Parser::ParseVariantPart(void)
     // -- parse the variants
     //    ------------------
     if (!Require(TOK_IS)) return false;
-    if (!ParseVariant()) return false;
+    if (!ParseVariant(rec)) return false;
 
-    while (ParseVariant()) {
+    while (ParseVariant(rec)) {
         // -- for the moment, nothing is needed here
     }
 

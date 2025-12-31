@@ -24,7 +24,7 @@
 //
 // -- Parse a Component List
 //    ----------------------
-bool Parser::ParseComponentList(void)
+bool Parser::ParseComponentList(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_list");
     MarkStream m(tokens, diags);
@@ -63,7 +63,7 @@ bool Parser::ParseComponentList(void)
     // -- Parse all component declarations
     //    --------------------------------
     loc = tokens.SourceLocation();
-    while (ParseComponentDeclaration()) {
+    while (ParseComponentDeclaration(rec)) {
         declCnt ++;
     }
 
@@ -71,7 +71,7 @@ bool Parser::ParseComponentList(void)
     //
     // -- Check for the optional variant part
     //    -----------------------------------
-    if (ParseVariantPart()) {
+    if (ParseVariantPart(rec)) {
         hasVariant = true;
     }
 

@@ -251,8 +251,8 @@ public:
     bool ParseBasicDeclarativeItem(void);
     bool ParseBody(void);
     bool ParseChoice(void);
-    bool ParseComponentDeclaration(void);
-    bool ParseComponentList(void);
+    bool ParseComponentDeclaration(RecordTypeSymbol *rec);
+    bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
     bool ParseConstrainedArrayDefinition(Id &id);
     bool ParseConstrainedArrayDefinition(IdList *);
@@ -291,8 +291,8 @@ public:
     bool ParseTypeDefinition(Id &id);
     bool ParseTypeMark(void);
     bool ParseUnconstrainedArrayDefinition(Id &id);
-    bool ParseVariant(void);
-    bool ParseVariantPart(void);
+    bool ParseVariant(RecordTypeSymbol *rec);
+    bool ParseVariantPart(RecordTypeSymbol *rec);
     bool _HelpParseConstrainedArrayDefinition(void);
 
 

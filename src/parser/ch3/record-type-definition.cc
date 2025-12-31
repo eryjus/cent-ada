@@ -37,13 +37,16 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     if (!Require(TOK_RECORD)) return false;
 
 
-    scopes.Declare(std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+    scopes.PushScope(Scope::ScopeKind::Record, id.name);
+    std::unique_ptr<RecordTypeSymbol> recSym = std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope());
+    RecordTypeSymbol *rec = recSym.get();
+    scopes.Declare(std::move(recSym));
 
 
     //
     // -- then is followed by a list of components
     //    ----------------------------------------
-    if (!ParseComponentList()) return false;
+    if (!ParseComponentList(rec)) return false;
 
 
 
