@@ -20,11 +20,11 @@
 //
 // -- This enum will be used to control the parse type
 //    ------------------------------------------------
-typedef enum {
+using ParseType_t = enum {
     COMPILE_FULL,
     COMPILE_TYPES,
     COMPILE_EXPRS,
-} ParseType_t;
+};
 
 
 

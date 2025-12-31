@@ -37,7 +37,7 @@
 // -- Inlcude the tokens and then clean up some types
 //    -----------------------------------------------
 #include "tokens.hh"
-typedef int TokenType_t;
+using TokenType_t = int;
 typedef union YYSTYPE yystype_t;
 extern yystype_t yylval;
 

@@ -25,12 +25,12 @@ private:
 
 
 private:
-    typedef struct Id {
+    using Id = struct Id {
         std::string name;
         SourceLoc_t loc;
-    } Id;
+    };
 
-    typedef std::vector<Id> IdList;
+    using IdList = std::vector<Id>;
 
 private:
     class MarkStream {

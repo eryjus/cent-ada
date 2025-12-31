@@ -23,13 +23,13 @@
 //
 // -- This structure is the location of the token in the source file
 //    --------------------------------------------------------------
-typedef struct {
+using SourceLoc_t = struct SourceLoc_t {
     std::string filename;
     long line;
     int col;
     std::string sourceLine;
     bool valid;
-} SourceLoc_t;
+};
 
 
 
@@ -38,7 +38,7 @@ typedef struct {
 //    -------------------------------------------------------------------------------------
 class TokenStream {
 private:
-    typedef struct Token {
+    using Token = struct Token {
     public:
         std::string &filename;
         int yylineno;
@@ -49,7 +49,7 @@ private:
     public:
         Token(std::string &f, int l, int c, TokenType_t t, YYSTYPE &p)
                 : filename(f), yylineno(l), column(c), tok(t), payload(p) {}
-    } Token_t;
+    };
 
 
 private:
