@@ -15,6 +15,8 @@
 
 typedef struct {
     bool trace = false;
+    bool dumpSymtab = false;
+    bool listing = false;
 } Options;
 
 
