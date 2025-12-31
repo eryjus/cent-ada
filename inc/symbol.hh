@@ -105,8 +105,7 @@ public:
     enum class TypeCategory {
         Enumeration,
         Integer,
-        Floating,
-        Fixed,
+        Real,
         Array,
         Record,
         Access,
@@ -123,8 +122,7 @@ public:
         static std::string s[] = {
             "Enumeration",
             "Integer",
-            "Floating",
-            "Fixed",
+            "Real",
             "Array",
             "Record",
             "Access",
@@ -261,37 +259,16 @@ public:
 
 
 //
-// -- For Floating Types
-//    ------------------
-class FloatingTypeSymbol : public TypeSymbol {
-    FloatingTypeSymbol(void) = delete;
-    FloatingTypeSymbol(const FloatingTypeSymbol &) = delete;
-    FloatingTypeSymbol &operator=(const FloatingTypeSymbol &) = delete;
+// -- For Real Types
+//    --------------
+class RealTypeSymbol : public TypeSymbol {
+    RealTypeSymbol(void) = delete;
+    RealTypeSymbol(const RealTypeSymbol &) = delete;
+    RealTypeSymbol &operator=(const RealTypeSymbol &) = delete;
 
 
 public:
-    FloatingTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Floating, l, d) {}
-
-
-public:
-    virtual void Accept(SymbolVisitor &v) override {
-        v.Visit(*this);
-    }
-};
-
-
-
-//
-// -- For Fixed Types
-//    ---------------
-class FixedTypeSymbol : public TypeSymbol {
-    FixedTypeSymbol(void) = delete;
-    FixedTypeSymbol(const FixedTypeSymbol &) = delete;
-    FixedTypeSymbol &operator=(const FixedTypeSymbol &) = delete;
-
-
-public:
-    FixedTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Fixed, l, d) {}
+    RealTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Real, l, d) {}
 
 
 public:
@@ -313,6 +290,27 @@ class ArrayTypeSymbol : public TypeSymbol {
 
 public:
     ArrayTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Enumeration, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- For Subtypes
+//    ------------
+class SubtypeSymbol : public TypeSymbol {
+    SubtypeSymbol(void) = delete;
+    SubtypeSymbol(const SubtypeSymbol &) = delete;
+    SubtypeSymbol &operator=(const SubtypeSymbol &) = delete;
+
+
+public:
+    SubtypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Subtype, l, d) {}
 
 
 public:

@@ -52,7 +52,7 @@ bool Parser::ParseObjectDeclaration(void)
             SourceLoc_t loc2 = vec->at(0)->loc;
             diags.Error(loc, DiagID::DuplicateName2, { } );
         } else {
-            scopes.Declare(std::make_unique<Symbol>(idList->at(i).name, Symbol::SymbolKind::Object, idList->at(i).loc, scopes.CurrentScope()));
+            scopes.Declare(std::make_unique<ObjectSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope()));
         }
     }
 
