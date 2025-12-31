@@ -22,10 +22,11 @@
 //
 // -- Parse a Component Declaration
 //    -----------------------------
-bool Parser::ParseComponentDeclaration(void)
+bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_declaration");
     MarkStream m(tokens, diags);
+    MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t loc;
 
@@ -34,6 +35,13 @@ bool Parser::ParseComponentDeclaration(void)
     // -- Start by getting the list of identifiers
     //    ----------------------------------------
     if (!ParseIdentifierList(idList.get())) return false;
+
+    for (int i = 0; i < idList->size(); i ++) {
+        std::unique_ptr<ComponentSymbol> sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
+        rec->components.push_back(sym.get());
+        scopes.Declare(std::move(sym));
+    }
+
     if (!Require(TOK_COLON)) return false;
     if (!ParseComponentSubtypeDefinition()) return false;
 
@@ -61,6 +69,7 @@ bool Parser::ParseComponentDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    s.Commit();
     m.Commit();
     return true;
 }

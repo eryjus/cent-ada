@@ -23,14 +23,12 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Parsing
-- [ ] BUG: Clean up different type checks (`subtype_indication`)
+- [x] BUG: Clean up different type checks (`subtype_indication`)
 - [ ] BUG: Deal with Choice
-- [ ] BUG: Deal with Aggregate better
-- [ ] BUG: Deal with Attribute better
 
 
 ### Early Symbol Table
-(nothing here)
+- [ ] BUG: Remove rederences to `make_unique<Symbol>`
 
 
 ### Command Line
@@ -41,7 +39,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 ### Debugging
 - [ ] BUG: Solve test #70
 - [ ] BUG: Solve test #95, #96
-- [ ] BUG: Re-execute all Ch3 tests and evaluate the results
+- [x] BUG: Re-execute all Ch3 tests and evaluate the results
 
 
 
@@ -53,5 +51,12 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [ ] REFACTOR: Refactor `parse-expr` into separate files like Ch3
 
 
+### Parsing
+- [ ] BUG: Deal with Aggregate better
+- [ ] BUG: Deal with Attribute better
+
+
 ### Debugging
 - [ ] BUG: Develop and run all Ch4 tests from the book
+
+

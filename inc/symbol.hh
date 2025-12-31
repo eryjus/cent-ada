@@ -36,6 +36,7 @@ public:
         Type,
         Subprogram,
         EnumLiteral,
+        Component,
         Package,
         Label,
         Discriminant,
@@ -77,6 +78,7 @@ public:
             "Type",
             "Subprogram",
             "EnumLiteral",
+            "Component",
             "Package",
             "Label",
             "Discriminant",
@@ -393,6 +395,45 @@ public:
 
 
 
+//
+// -- An Object Symbol
+//    ----------------
+class ObjectSymbol : public Symbol {
+    ObjectSymbol(void) = delete;
+    ObjectSymbol(const ObjectSymbol &) = delete;
+    ObjectSymbol &operator=(const ObjectSymbol &) = delete;
+
+
+public:
+    ObjectSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::Object, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- A Component Symbol
+//    ------------------
+class ComponentSymbol : public Symbol {
+    ComponentSymbol(void) = delete;
+    ComponentSymbol(const ObjectSymbol &) = delete;
+    ComponentSymbol &operator=(const ComponentSymbol &) = delete;
+
+
+public:
+    ComponentSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::Component, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
 
 
 
