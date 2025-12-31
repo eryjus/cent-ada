@@ -40,6 +40,9 @@ enum class DiagID {
     ExtraVertialBar,
     InvalidRangeConstraint,
     InvalidName,
+    InvalidPrimaryExpr,
+    InvalidExpression,
+    UnknownError,
 };
 
 

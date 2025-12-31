@@ -457,7 +457,7 @@ bool Parser::ParseAggregate(void)
     loc = tokens.SourceLocation();
     while (Optional(TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
-            // -- TODO: issue an error about an extra comma
+            diags.Error(loc, DiagID::ExtraComma, { "component association" } );
         }
 
         loc = tokens.SourceLocation();
@@ -488,7 +488,7 @@ bool Parser::ParseAggregateMore(void)
     loc = tokens.SourceLocation();
     while (Optional(TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
-            // -- TODO: issue an error about an extra comma
+            diags.Error(loc, DiagID::ExtraComma, { "aggregate" } );
         }
 
         loc = tokens.SourceLocation();
@@ -513,11 +513,13 @@ bool Parser::ParseComponentAssociation(void)
 {
     Production p(*this, "component_association");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc;
 
     if (ParseChoice()) {
         while (Optional(TOK_VERTICAL_BAR)) {
+            loc = tokens.SourceLocation();
             if (!ParseChoice()) {
-                // -- TODO: issue an error here about an extra vertical bar
+                diags.Error(loc, DiagID::ExtraVertialBar, { "component association" } );
             }
         }
     }
@@ -559,7 +561,7 @@ bool Parser::ParseExpression(void)
 
     while (Optional(tok)) {
         if (!ParseRelation()) {
-            // -- TODO: maybe issue an error about missing a relationand return true instead???
+            // -- TODO: maybe issue an error about missing a relation and return true instead???
             return false;
         }
     }
@@ -693,17 +695,20 @@ bool Parser::ParseFactor(void)
 {
     Production p(*this, "factor");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc;
 
     if (Require(TOK_ABS)) {
+        loc = tokens.SourceLocation();
         if (!ParsePrimary()) {
-            // -- TODO: issue an error here about missing a primary after 'abs'
+            diags.Error(loc, DiagID::InvalidPrimaryExpr, { "ABS" } );
         }
 
         m.Commit();
         return true;
     } else if (Require(TOK_NOT)) {
+        loc = tokens.SourceLocation();
         if (!ParsePrimary()) {
-            // -- TODO: issue an error here about missing a primary after 'not'
+            diags.Error(loc, DiagID::InvalidPrimaryExpr, { "NOT" } );
         }
 
         m.Commit();
@@ -732,6 +737,7 @@ bool Parser::ParsePrimary(void)
     Production p(*this, "primary");
     MarkStream m(tokens, diags);
     std::string id;
+    SourceLoc_t loc;
 
     //
     // -- The spec calls for a `numeric_literal` here.  I am going to split them out
@@ -773,6 +779,7 @@ bool Parser::ParsePrimary(void)
         case TOK_DOUBLE_DOT:
         case TOK_VERTICAL_BAR:
         case TOK_ARROW:
+            loc = tokens.SourceLocation();
             if (ParseAggregateMore()) {
                 SourceLoc_t loc = tokens.SourceLocation();
 
@@ -785,7 +792,7 @@ bool Parser::ParsePrimary(void)
                 return true;
             }
 
-            // -- TODO: issue an error here about an invalid primary in an expression
+            diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
             //    fall through
         default:
             m.Reset();
@@ -941,13 +948,15 @@ bool Parser::ParseTypeConversion(void)
 {
     Production p(*this, "type_conversion");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc;
 
     if (!ParseTypeMark())       return false;
     if (!Require(TOK_LEFT_PARENTHESIS))     return false;
+    loc = tokens.SourceLocation();
     if (!ParseExpression()) {
-        // -- TODO: Issue an error about invalid expressions and continue
+        diags.Error(loc, DiagID::InvalidExpression, { "type conversion" } );
     }
-    SourceLoc_t loc = tokens.SourceLocation();
+    loc = tokens.SourceLocation();
     if (!Require(TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
@@ -965,13 +974,15 @@ bool Parser::ParseQualifiedExpression(void)
 {
     Production p(*this, "qualified_expression");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc;
 
     if (!ParseTypeMark())       return false;
     if (!Require(TOK_APOSTROPHE))   return false;
 
     if (Require(TOK_LEFT_PARENTHESIS)) {
+        loc = tokens.SourceLocation();
         if (!ParseExpression()) {
-            // -- TODO Issue an error for an invalid expression
+            diags.Error(loc, DiagID::InvalidExpression, { "qualified expression" } );
         }
 
         SourceLoc_t loc = tokens.SourceLocation();
