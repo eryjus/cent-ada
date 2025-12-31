@@ -28,12 +28,12 @@ bool Parser::ParseDiscriminantPart(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    if (!Require(TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseDiscriminantSpecification()) return false;
 
 
     loc = tokens.SourceLocation();
-    while (Optional(TOK_SEMICOLON)) {
+    while (Optional(TokenType::TOK_SEMICOLON)) {
         if (!ParseDiscriminantSpecification()) {
         diags.Error(loc, DiagID::ExtraSemicolon, { "discriminant specification" } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -41,7 +41,7 @@ bool Parser::ParseDiscriminantPart(void)
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discriminant specification" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

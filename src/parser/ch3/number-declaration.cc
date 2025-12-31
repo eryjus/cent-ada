@@ -56,9 +56,9 @@ bool Parser::ParseNumberDeclaration(void)
     //
     // -- there are 3 consecutive tokens required
     //    ---------------------------------------
-    if (!Require(TOK_COLON)) return false;
-    if (!Require(TOK_CONSTANT)) return false;
-    if (!Require(TOK_ASSIGNMENT)) return false;
+    if (!Require(TokenType::TOK_COLON)) return false;
+    if (!Require(TokenType::TOK_CONSTANT)) return false;
+    if (!Require(TokenType::TOK_ASSIGNMENT)) return false;
 
 
     //
@@ -74,7 +74,7 @@ bool Parser::ParseNumberDeclaration(void)
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "expression" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

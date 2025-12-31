@@ -30,6 +30,8 @@
 #include <cassert>
 #include <unordered_map>
 #include <memory>
+#include <variant>
+
 
 
 
@@ -37,9 +39,7 @@
 // -- Inlcude the tokens and then clean up some types
 //    -----------------------------------------------
 #include "tokens.hh"
-using TokenType_t = int;
-typedef union YYSTYPE yystype_t;
-extern yystype_t yylval;
+extern YYSTYPE yylval;
 
 
 class ASTNode;

@@ -42,7 +42,7 @@ bool Parser::ParseRange(void)
     // -- otherwise, we have a range expression
     //    -------------------------------------
     if (!ParseSimpleExpression()) return false;
-    if (!Require(TOK_DOUBLE_DOT)) return false;
+    if (!Require(TokenType::TOK_DOUBLE_DOT)) return false;
     if (!ParseSimpleExpression()) return false;
 
 

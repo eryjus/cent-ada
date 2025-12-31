@@ -181,14 +181,14 @@ public:
 
 public:
     // -- a token is illegal and if found is an illegal parse -- check only, never consumes
-    bool Illegal(TokenType_t tok) {
+    bool Illegal(TokenType tok) {
         if (tokens.Current() == tok) {
             return true;
         }
         return false;
     }
     // -- a token is optional and if found advance past it
-    bool Optional(TokenType_t tok) {
+    bool Optional(TokenType tok) {
         if (tokens.Current() == tok) {
             tokens.Advance();
             return true;
@@ -196,7 +196,7 @@ public:
         return false;
     }
     // -- a token is required to be next
-    bool Require(TokenType_t tok) {
+    bool Require(TokenType tok) {
         if (tokens.Current() == tok) {
             tokens.Advance();
             return true;
@@ -207,8 +207,8 @@ public:
     // -- DEPRECATED: An identifier is required to be next
     bool RequireIdent(std::string &id) {
         id = "";
-        if (tokens.Current() == TOK_IDENTIFIER) {
-            id = *(tokens.Payload().ident);
+        if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
+            id = std::get<IdentifierLexeme>(tokens.Payload()).name;
             tokens.Advance();
             return true;
         }
@@ -220,8 +220,8 @@ public:
         id.name = "";
         id.loc = tokens.SourceLocation();
 
-        if (tokens.Current() == TOK_IDENTIFIER) {
-            id.name = *(tokens.Payload().ident);
+        if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
+            id.name = std::get<IdentifierLexeme>(tokens.Payload()).name;
             tokens.Advance();
             return true;
         }

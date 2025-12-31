@@ -32,8 +32,8 @@ bool Parser::ParseIndexSubtypeDefinition(void)
     // -- Get a type mark, and then the 2 required tokens to provide context
     //    ------------------------------------------------------------------
     if (!ParseTypeMark()) return false;
-    if (!Require(TOK_RANGE)) return false;
-    if (!Require(TOK_BOX)) return false;
+    if (!Require(TokenType::TOK_RANGE)) return false;
+    if (!Require(TokenType::TOK_BOX)) return false;
 
 
 

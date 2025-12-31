@@ -40,7 +40,7 @@ bool Parser::ParseDiscriminantAssociation(void)
         // -- This will only work if the next token is a TOK_VERTICAL_BAR or TOK_ARROW
         //    Otherwise it will be an expression as a simple name
         //    ------------------------------------------------------------------------
-        if (tokens.Current() != TOK_VERTICAL_BAR && tokens.Current() != TOK_ARROW) {
+        if (tokens.Current() != TokenType::TOK_VERTICAL_BAR && tokens.Current() != TokenType::TOK_ARROW) {
             // -- not the correct condition, backtrack and parse an expression
             m.Reset();
             goto expr;
@@ -48,46 +48,20 @@ bool Parser::ParseDiscriminantAssociation(void)
 
 
         //
-        // -- The name should be known -- so check
-        //    ------------------------------------
-        // TODO
-#if 0
-        vec = scopes.Lookup(id);
-        if (!vec || vec->empty()) {
-            diags.Error(loc, DiagID::UnknownName, { "discriminant simple name" } );
-        }
-
-        if (sym && sym->kind != Symbol::SymbolKind::Object) {
-            diags.Error(loc, DiagID::InvalidName, { id, "discriminant simple name" } );
-        }
-#endif
-
-
-        //
         // -- Check for optional more
         //    -----------------------
         loc = tokens.SourceLocation();
-        while (Optional(TOK_VERTICAL_BAR)) {
+        while (Optional(TokenType::TOK_VERTICAL_BAR)) {
             if (!ParseDiscriminantSimpleName(id)) {
                 diags.Error(loc, DiagID::ExtraVertialBar, { "discriminant simple name" } );
                 break;
             }
 
-#if 0
-            sym = scopes.Lookup(id);
-            if (sym == nullptr) {
-                diags.Error(loc, DiagID::UnknownName, { "discriminant simple name" } );
-            }
-
-            if (sym && sym->kind != Symbol::SymbolKind::Object) {
-                diags.Error(loc, DiagID::InvalidName, { id, "discriminant simple name" } );
-            }
-#endif
             loc = tokens.SourceLocation();
         }
 
 
-        if (!Require(TOK_ARROW)) return false;
+        if (!Require(TokenType::TOK_ARROW)) return false;
     }
 
 expr:

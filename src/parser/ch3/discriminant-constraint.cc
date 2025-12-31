@@ -32,7 +32,7 @@ bool Parser::ParseDiscriminantConstraint(void)
     //
     // -- Start with the required left paren token and the first association
     //    ------------------------------------------------------------------
-    if (!Require(TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseDiscriminantAssociation()) return false;
 
 
@@ -40,7 +40,7 @@ bool Parser::ParseDiscriminantConstraint(void)
     // -- now get the optionsl additional associations
     //    --------------------------------------------
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseDiscriminantAssociation()) {
             diags.Error(loc, DiagID::ExtraComma, { "discriminant association" } );
             // -- continue on in hopes of competing the parse
@@ -51,7 +51,7 @@ bool Parser::ParseDiscriminantConstraint(void)
     }
 
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discriminant association" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

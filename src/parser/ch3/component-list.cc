@@ -35,9 +35,9 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
     //
     // -- Handle the trivial case first: TOK_NULL;
     //    ----------------------------------------
-    if (Require(TOK_NULL)) {
+    if (Require(TokenType::TOK_NULL)) {
         loc = tokens.SourceLocation();
-        if (!Require(TOK_SEMICOLON)) {
+        if (!Require(TokenType::TOK_SEMICOLON)) {
             diags.Error(loc, DiagID::MissingSemicolon, { "TOK_NULL" } );
             // -- continue on in hopes that this does not create a cascade of errors
         }

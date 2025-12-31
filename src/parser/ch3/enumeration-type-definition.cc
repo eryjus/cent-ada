@@ -53,7 +53,7 @@ bool Parser::ParseEnumerationTypeDefinition(Id &id)
     //
     // -- The enumeration is enclosed in parens
     //    -------------------------------------
-    if (!Require(TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseEnumerationLiteralSpecification(type)) return false;
 
 
@@ -61,7 +61,7 @@ bool Parser::ParseEnumerationTypeDefinition(Id &id)
     // -- there may be any number of enumerations
     //    ---------------------------------------
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseEnumerationLiteralSpecification(type)) {
             diags.Error(loc, DiagID::ExtraComma, { "enumeration type definition" } );
             // -- continue on in hopes that this does not create a cascade of errors
@@ -77,7 +77,7 @@ bool Parser::ParseEnumerationTypeDefinition(Id &id)
     // -- end with a closing paren
     //    ------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "enumeration literal" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

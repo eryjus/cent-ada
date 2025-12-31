@@ -29,9 +29,9 @@ bool Parser::_HelpParseConstrainedArrayDefinition(void)
     //
     // -- Start parse with the TOK_ARRAY and carry right on through
     //    ---------------------------------------------------------
-    if (!Require(TOK_ARRAY)) return false;
+    if (!Require(TokenType::TOK_ARRAY)) return false;
     if (!ParseIndexConstraint()) return false;
-    if (!Require(TOK_OF)) return false;
+    if (!Require(TokenType::TOK_OF)) return false;
     if (!ParseDiscreteSubtypeIndication()) return false;
 
     return true;

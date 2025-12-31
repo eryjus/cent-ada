@@ -37,8 +37,8 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Start parse with the first 2 required tokens
     //    --------------------------------------------
-    if (!Require(TOK_ARRAY)) return false;
-    if (!Require(TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_ARRAY)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
 
 
     //
@@ -69,7 +69,7 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     // -- now, some optional additional indices
     //    -------------------------------------
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseIndexSubtypeDefinition()) {
             diags.Error(loc, DiagID::ExtraComma, { "index_subtype_definition" } );
             // -- continue on in hopes of finding more errors
@@ -85,7 +85,7 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     // -- The closing paren is required
     //    -----------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_RIGHT_PARENTHESIS)) {
+    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"array index subtype definition"});
         // -- continue on in hopes that this does not create a cascade of errors
     }
@@ -95,7 +95,7 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Wrap up the rest of the production
     //    ----------------------------------
-    if (!Require(TOK_OF)) return false;
+    if (!Require(TokenType::TOK_OF)) return false;
     if (!ParseComponentSubtypeIndication()) return false;
 
 

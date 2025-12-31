@@ -37,8 +37,8 @@ bool Parser::ParseObjectDeclaration(void)
     // -- Parse the common prefix
     //    -----------------------
     if (!ParseIdentifierList(idList.get())) return false;
-    if (!Require(TOK_COLON)) return false;
-    isConstant = Optional(TOK_CONSTANT);
+    if (!Require(TokenType::TOK_COLON)) return false;
+    isConstant = Optional(TokenType::TOK_CONSTANT);
 
 
     //
@@ -76,7 +76,7 @@ bool Parser::ParseObjectDeclaration(void)
     // -- Now, check for an optional assignment to an expression
     //    ------------------------------------------------------
     loc = tokens.SourceLocation();
-    if (Optional(TOK_ASSIGNMENT)) {
+    if (Optional(TokenType::TOK_ASSIGNMENT)) {
         if (!ParseExpression()) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
         }
@@ -89,7 +89,7 @@ bool Parser::ParseObjectDeclaration(void)
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

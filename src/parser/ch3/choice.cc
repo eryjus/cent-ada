@@ -44,7 +44,7 @@ bool Parser::ParseChoice(void)
         return true;
     }
 
-    if (Optional(TOK_OTHERS)) {
+    if (Optional(TokenType::TOK_OTHERS)) {
         m.Commit();
         return true;
     }

@@ -35,7 +35,7 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- Start with the definitive tokens
     //    --------------------------------
-    if (!Require(TOK_TYPE)) return false;
+    if (!Require(TokenType::TOK_TYPE)) return false;
     loc = tokens.SourceLocation();
 
 
@@ -65,7 +65,7 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     // -- End with a semicolon
     //    --------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

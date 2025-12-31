@@ -33,7 +33,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     //
     // -- the first consumable is a TOK_TYPE token
     //    ----------------------------------------
-    if (!Require(TOK_TYPE)) return false;
+    if (!Require(TokenType::TOK_TYPE)) return false;
 
 
     //
@@ -55,7 +55,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     // -- The definition of the type; TOK_IS must be present for this
     //    production to be valid.  See incomplete_type_declaration.
     //    -----------------------------------------------------------
-    if (!Require(TOK_IS)) return false;
+    if (!Require(TokenType::TOK_IS)) return false;
     ParseTypeDefinition(id);
 
 
@@ -63,7 +63,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
     loc = tokens.SourceLocation();
-    if (!Require(TOK_SEMICOLON)) {
+    if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "type definition" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }

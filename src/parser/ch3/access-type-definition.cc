@@ -34,7 +34,7 @@ bool Parser::ParseAccessTypeDefinition(Id &id)
     //
     // -- Parse the sequence
     //    ------------------
-    if (!Require(TOK_ACCESS)) return false;
+    if (!Require(TokenType::TOK_ACCESS)) return false;
 
 
 

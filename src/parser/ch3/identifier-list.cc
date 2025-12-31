@@ -40,7 +40,6 @@ bool Parser::ParseIdentifierList(IdList *ids)
     //    -------------------------------------
     SourceLoc_t loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return false;
-//    TODO: ids->push_back( { id.name, id.loc } );
     ids->push_back(id);
 
 
@@ -48,7 +47,7 @@ bool Parser::ParseIdentifierList(IdList *ids)
     // -- Now, as long as we have a TOK_COMMA, expect another identifer
     //    -------------------------------------------------------------
     loc = tokens.SourceLocation();
-    while (Optional(TOK_COMMA)) {
+    while (Optional(TokenType::TOK_COMMA)) {
         if (!RequireIdent(id)) {
             diags.Error(loc, DiagID::ExtraComma, { "identifier_list" } );
 
@@ -57,7 +56,6 @@ bool Parser::ParseIdentifierList(IdList *ids)
             return true;
         }
 
-// TODO:        ids->push_back( { id, loc } );
         ids->push_back(id);
         loc = tokens.SourceLocation();
     }
