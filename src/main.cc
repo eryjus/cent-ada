@@ -36,6 +36,13 @@ TokenStream *tokens = nullptr;
 
 
 //
+// -- Global options
+//    --------------
+Options opts;
+
+
+
+//
 // -- Scan the input for testing purposes
 //    -----------------------------------
 static int Scan(std::string filename)
@@ -227,7 +234,6 @@ static int Compile(std::string filename, ParseType_t type)
     tokens = new TokenStream(filename.c_str());
     Parser *parser = new Parser(*tokens);
     diags.SetParser(parser);
-//    parser->SetTrace(true);
     int cnt = 0;
     int rv = EXIT_SUCCESS;
 
@@ -315,6 +321,11 @@ int main(int argc, char *argv[])
 
         if (arg == "-h" || arg == "--help") {
             Usage(argv[0]);
+        }
+
+        if (arg == "--trace" || arg == "-t") {
+            opts.trace = true;
+            continue;
         }
 
         if (arg == "scan") {
