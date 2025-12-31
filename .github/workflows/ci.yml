@@ -1,0 +1,26 @@
+name: CI (informational)
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tup
+        run: sudo apt install tup
+      - name: Initialize tup
+        run: tup init
+      - name: Build the compiler
+        run: make
+      - name: Run Ch3 tests
+        run: make test-types
+
