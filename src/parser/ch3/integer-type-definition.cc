@@ -22,13 +22,13 @@
 //
 // -- Parse an Integer Type Definition
 //    --------------------------------
-bool Parser::ParseIntegerTypeDefinition(const std::string &id)
+bool Parser::ParseIntegerTypeDefinition(Id &id)
 {
     Production p(*this, "integer_type_definition");
     MarkScope s(scopes);
 
 
-    scopes.Declare(std::make_unique<IntegerTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    scopes.Declare(std::make_unique<IntegerTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
     if (ParseRangeConstraint()) {
         s.Commit();

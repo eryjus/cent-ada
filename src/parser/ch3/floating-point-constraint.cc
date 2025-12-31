@@ -22,14 +22,14 @@
 //
 // -- Parse a Floating Point Constraint
 //    ---------------------------------
-bool Parser::ParseFloatingPointConstraint(const std::string &id)
+bool Parser::ParseFloatingPointConstraint(Id &id)
 {
     Production p(*this, "floating_point_constraint");
     MarkScope s(scopes);
 
 
-    if (!id.empty()) {
-        scopes.Declare(std::make_unique<FloatingTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    if (!id.name.empty()) {
+        scopes.Declare(std::make_unique<FloatingTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
 

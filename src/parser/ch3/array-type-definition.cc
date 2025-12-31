@@ -22,7 +22,7 @@
 //
 // -- Parse an Array Type Definition
 //    ------------------------------
-bool Parser::ParseArrayTypeDefinition(const std::string &id)
+bool Parser::ParseArrayTypeDefinition(Id &id)
 {
     Production p(*this, "array_type_definition");
 

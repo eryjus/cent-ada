@@ -17,7 +17,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Infrastructure
-- [ ] BUG: Change the ID string for type definitions to ID -- clean up loc reference
+- [x] BUG: Change the ID string for type definitions to ID -- clean up loc reference
 - [ ] FEATURE: Handle adding components into the symbol table
 - [ ] REFACTOR: Determine what to do with YYSTYPE
 

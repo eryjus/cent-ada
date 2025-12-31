@@ -286,6 +286,9 @@ exit:
 
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
     std::cerr << "   Warnings: " << diags.Warnings() << '\n';
+
+    if (diags.Errors() > 0) rv = EXIT_FAILURE;
+
     return rv;
 }
 

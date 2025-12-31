@@ -22,14 +22,14 @@
 //
 // -- Parse an Access Type Definition
 //    -------------------------------
-bool Parser::ParseAccessTypeDefinition(const std::string &id)
+bool Parser::ParseAccessTypeDefinition(Id &id)
 {
     Production p(*this, "access_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
 
 
-    scopes.Declare(std::make_unique<AccessTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    scopes.Declare(std::make_unique<AccessTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
     //
     // -- Parse the sequence

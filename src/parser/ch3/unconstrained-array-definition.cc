@@ -23,7 +23,7 @@
 //
 // -- Parse an Unconstrained Array Definition
 //    ---------------------------------------
-bool Parser::ParseUnconstrainedArrayDefinition(const std::string &id)
+bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "unconstrained_array_definition");
     MarkStream m(tokens, diags);
@@ -35,7 +35,7 @@ bool Parser::ParseUnconstrainedArrayDefinition(const std::string &id)
     //
     // -- Start by adding a new Array Type with the name
     //    ----------------------------------------------
-    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
 

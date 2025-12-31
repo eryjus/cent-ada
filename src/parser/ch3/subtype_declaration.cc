@@ -27,7 +27,7 @@ bool Parser::ParseSubtypeDeclaration(void)
     Production p(*this, "subtype_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    std::string id;
+    Id id;
     SourceLoc_t loc;
 
 
@@ -43,14 +43,14 @@ bool Parser::ParseSubtypeDeclaration(void)
     loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return false;
 
-    if (scopes.IsLocalDefined(id)) {
-        diags.Error(loc, DiagID::DuplicateName, { id } );
+    if (scopes.IsLocalDefined(id.name)) {
+        diags.Error(loc, DiagID::DuplicateName, { id.name } );
 
-        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id));
+        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id.name));
         SourceLoc_t loc2 = vec->at(0)->loc;
         diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {
-        scopes.Declare(std::make_unique<Symbol>(id, Symbol::SymbolKind::Type, loc, scopes.CurrentScope()));
+        scopes.Declare(std::make_unique<Symbol>(id.name, Symbol::SymbolKind::Type, id.loc, scopes.CurrentScope()));
     }
 
 

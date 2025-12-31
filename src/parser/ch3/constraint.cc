@@ -29,7 +29,7 @@
 bool Parser::ParseConstraint(void)
 {
     Production p(*this, "constraint");
-    std::string id;
+    Id id;
 
     if (ParseRangeConstraint())             return true;
     if (ParseFloatingPointConstraint(id))   return true;
