@@ -22,7 +22,7 @@
 //
 // -- Parse a Real Type Definition
 //    ----------------------------
-bool Parser::ParseRealTypeDefinition(const std::string &id)
+bool Parser::ParseRealTypeDefinition(Id &id)
 {
     Production p(*this, "real_type_definition");
 

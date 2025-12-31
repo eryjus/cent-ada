@@ -27,7 +27,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     Production p(*this, "full_type_definition");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    std::string id;
+    Id id;
 
 
     //

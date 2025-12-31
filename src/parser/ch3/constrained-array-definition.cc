@@ -42,7 +42,7 @@ bool Parser::_HelpParseConstrainedArrayDefinition(void)
 //
 // -- Parse a Constrained Array Definition
 //    ------------------------------------
-bool Parser::ParseConstrainedArrayDefinition(const std::string &id)
+bool Parser::ParseConstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "constrained_array_definition (id)");
     MarkStream m(tokens, diags);
@@ -53,7 +53,7 @@ bool Parser::ParseConstrainedArrayDefinition(const std::string &id)
     //
     // -- Start by adding a new Array Type with the name
     //    ----------------------------------------------
-    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
     if (!_HelpParseConstrainedArrayDefinition()) return false;

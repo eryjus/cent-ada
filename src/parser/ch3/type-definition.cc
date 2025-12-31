@@ -28,7 +28,7 @@
 //
 // -- Parse a Type Definition
 //    ------------------------
-bool Parser::ParseTypeDefinition(const std::string &id)
+bool Parser::ParseTypeDefinition(Id &id)
 {
     Production p(*this, "type_definition");
 

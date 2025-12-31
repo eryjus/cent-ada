@@ -22,14 +22,14 @@
 //
 // -- Parse a Fixed Point Constraint
 //    ------------------------------
-bool Parser::ParseFixedPointConstraint(const std::string &id)
+bool Parser::ParseFixedPointConstraint(Id &id)
 {
     Production p(*this, "fixed_point_constraint");
     MarkScope s(scopes);
 
 
-    if (!id.empty()) {
-        scopes.Declare(std::make_unique<FixedTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    if (!id.name.empty()) {
+        scopes.Declare(std::make_unique<FixedTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
 

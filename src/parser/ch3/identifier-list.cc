@@ -26,7 +26,7 @@ bool Parser::ParseIdentifierList(IdList *ids)
 {
     Production p(*this, "identifier_list");
     MarkStream m(tokens, diags);
-    std::string id;
+    Id id;
 
 
     //
@@ -40,7 +40,8 @@ bool Parser::ParseIdentifierList(IdList *ids)
     //    -------------------------------------
     SourceLoc_t loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return false;
-    ids->push_back( { id, loc } );
+//    TODO: ids->push_back( { id.name, id.loc } );
+    ids->push_back(id);
 
 
     //
@@ -56,7 +57,8 @@ bool Parser::ParseIdentifierList(IdList *ids)
             return true;
         }
 
-        ids->push_back( { id, loc } );
+// TODO:        ids->push_back( { id, loc } );
+        ids->push_back(id);
         loc = tokens.SourceLocation();
     }
 

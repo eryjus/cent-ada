@@ -28,7 +28,7 @@
 //
 //    This production is used for all things 'name' outside of an expression
 //    ----------------------------------------------------------------------
-bool Parser::ParseNameNonExpr(std::string &id)
+bool Parser::ParseNameNonExpr(Id &id)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name");
@@ -61,7 +61,7 @@ bool Parser::ParseNameNonExpr(std::string &id)
 //    are added here for `ParseName_Base` and `ParseName_Suffix` to handle
 //    all things which are `name` cleanly without left recursion.
 //    ------------------------------------------------------------------------
-bool Parser::ParseNameExpr(std::string &id)
+bool Parser::ParseNameExpr(Id &id)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name");
@@ -85,7 +85,7 @@ bool Parser::ParseNameExpr(std::string &id)
 //    These alternatives are not dependent on `name` and therefore MUST
 //    consume a token from the stream.
 //    -----------------------------------------------------------------
-bool Parser::ParseName_Base(std::string &id)
+bool Parser::ParseName_Base(Id &id)
 {
     Production p(*this, "name(base)");
     MarkStream m(tokens, diags);
@@ -253,7 +253,7 @@ bool Parser::ParseName_SelectedComponentSuffix(void)
 //
 // -- Parse a Simple Name, an identifier with not additional decorations
 //    ------------------------------------------------------------------
-bool Parser::ParseSimpleName(std::string &id)
+bool Parser::ParseSimpleName(Id &id)
 {
     Production p(*this, "simple_name");
     MarkStream m(tokens, diags);
@@ -261,8 +261,8 @@ bool Parser::ParseSimpleName(std::string &id)
 
     if (!RequireIdent(id))  return false;
 
-    if (scopes.Lookup(id) == nullptr) {
-        diags.Error(loc, DiagID::UnknownName, { id } );
+    if (scopes.Lookup(id.name) == nullptr) {
+        diags.Error(loc, DiagID::UnknownName, { id.name } );
         // -- continue anyway
     }
 
@@ -279,7 +279,7 @@ bool Parser::ParsePrefix(void)
 {
     Production p(*this, "prefix");
     MarkStream m(tokens, diags);
-    std::string discard;
+    Id discard;
 
     if (m.CommitIf(ParseNameExpr(discard)))         return true;
     if (m.CommitIf(ParseFunctionCall()))            return true;
@@ -364,7 +364,7 @@ bool Parser::ParseSelector(void)
 {
     Production p(*this, "selector");
     MarkStream m(tokens, diags);
-    std::string id;
+    Id id;
 
     if (Optional(TOK_ALL)) {
         m.Commit();
@@ -378,7 +378,7 @@ bool Parser::ParseSelector(void)
 
     SourceLoc_t loc = tokens.SourceLocation();
     if (m.CommitIf(ParseSimpleName(id))) {
-        if (!scopes.Lookup(id)) {
+        if (!scopes.Lookup(id.name)) {
             diags.Error(loc, DiagID::UnknownName, { "selector"} );
             // -- allow the parse to continue
         }
@@ -421,7 +421,7 @@ bool Parser::ParseAttributeDesignator(void)
 {
     Production p(*this, "attribute_designator");
     MarkStream m(tokens, diags);
-    std::string id;
+    Id id;
 
     if (!ParseSimpleName(id))           return false;
     if (Optional(TOK_LEFT_PARENTHESIS)) {
@@ -736,7 +736,7 @@ bool Parser::ParsePrimary(void)
 {
     Production p(*this, "primary");
     MarkStream m(tokens, diags);
-    std::string id;
+    Id id;
     SourceLoc_t loc;
 
     //

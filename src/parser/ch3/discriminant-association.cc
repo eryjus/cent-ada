@@ -27,7 +27,7 @@ bool Parser::ParseDiscriminantAssociation(void)
     Production p(*this, "disriminant_association");
     MarkStream m(tokens, diags);
     std::vector<Symbol *> *vec = nullptr;
-    std::string id;
+    Id id;
     SourceLoc_t loc;
 
 
@@ -50,6 +50,7 @@ bool Parser::ParseDiscriminantAssociation(void)
         //
         // -- The name should be known -- so check
         //    ------------------------------------
+        // TODO
 #if 0
         vec = scopes.Lookup(id);
         if (!vec || vec->empty()) {

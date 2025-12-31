@@ -32,7 +32,7 @@ bool Parser::ParseChoice(void)
 {
     Production p(*this, "choice");
     MarkStream m(tokens, diags);
-    std::string id;
+    Id id;
 
     if (ParseSimpleExpression()) {
         m.Commit();

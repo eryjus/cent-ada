@@ -26,7 +26,7 @@ bool Parser::ParseVariantPart(void)
 {
     Production p(*this, "variant_part");
     MarkStream m(tokens, diags);
-    std::string id;
+    Id id;
     SourceLoc_t loc;
 
 

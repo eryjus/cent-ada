@@ -22,7 +22,7 @@
 //
 // -- Parse an Enumeration Type Definition
 //    ------------------------------------
-bool Parser::ParseEnumerationTypeDefinition(const std::string &id)
+bool Parser::ParseEnumerationTypeDefinition(Id &id)
 {
     Production p(*this, "enumeration_type_definition");
     MarkStream m(tokens, diags);
@@ -33,7 +33,7 @@ bool Parser::ParseEnumerationTypeDefinition(const std::string &id)
     //
     // -- Start by adding a new Enum Type with the name
     //    ---------------------------------------------
-    EnumTypeSymbol *type = scopes.Declare(std::make_unique<EnumTypeSymbol>(id, tokens.SourceLocation(), scopes.CurrentScope()));
+    EnumTypeSymbol *type = scopes.Declare(std::make_unique<EnumTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
 
