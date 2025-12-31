@@ -20,6 +20,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [x] For character enumerations, what value should I store?  Do I need to distinguish between them?
 - [ ] Change the ID string for type definitions to ID -- clean up loc reference
 - [ ] Handle adding components into the symbol table
+- [ ] Determine what to do with YYSTYPE
 
 
 ### Parsing
@@ -27,7 +28,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 - [ ] Deal with Choice
 - [ ] Deal with Aggregate better
 - [ ] Deal with Attribute better
-- [ ] Make a generic error for places where there is no error written yet
+- [x] Make a generic error for places where there is no error written yet
 
 
 ### Early Symbol Table

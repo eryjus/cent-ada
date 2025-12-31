@@ -47,7 +47,10 @@ bool Parser::ParseObjectDeclaration(void)
     for (int i = 0; i < idList->size(); i ++) {
         if (scopes.IsLocalDefined(idList->at(i).name)) {
             diags.Error(idList->at(i).loc, DiagID::DuplicateName, { idList->at(i).name } );
-            // -- TODO: issue the second part of this error
+
+            const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(idList->at(i).name));
+            SourceLoc_t loc2 = vec->at(0)->loc;
+            diags.Error(loc, DiagID::DuplicateName2, { } );
         } else {
             scopes.Declare(std::make_unique<Symbol>(idList->at(i).name, Symbol::SymbolKind::Object, idList->at(i).loc, scopes.CurrentScope()));
         }

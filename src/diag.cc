@@ -166,6 +166,7 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::ExtraVertialBar, "extra vertical bar (|) in {0}"},
     { DiagID::InvalidRangeConstraint, "invalid range constraint" },
     { DiagID::InvalidName, "invalid name {0} in {1}" },
+    { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
 };
 
 

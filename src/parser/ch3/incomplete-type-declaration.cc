@@ -46,7 +46,10 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
 
     if (scopes.IsLocalDefined(id)) {
         diags.Error(loc, DiagID::DuplicateName, { id } );
-        // -- TODO: issue the second part of this error
+
+        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id));
+        SourceLoc_t loc2 = vec->at(0)->loc;
+        diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {
         scopes.Declare(std::make_unique<Symbol>(id, Symbol::SymbolKind::Type, loc, scopes.CurrentScope()));
     }
