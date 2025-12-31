@@ -110,7 +110,7 @@ The command line to process any of these test cases is:
 | tst00092  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
 | tst00093  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
 | tst00094  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
-| tst00095  |  4  |  ✓  |     |     |     |     |     |      |      |      |      |      |
+| tst00095  |  4  |     |     |     |     |     |     |      |      |      |      |      |
 | tst00096  |  4  |     |     |     |     |     |     |      |      |      |      |      |
 | tst00097  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
 | tst00098  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
@@ -119,6 +119,7 @@ The command line to process any of these test cases is:
 | tst00101  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
 | tst00102  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
 | tst00103  |  ✓  |  ✓  |     |     |     |     |     |      |      |      |      |      |
+| tst00200  |  ✓  |     |     |     |     |     |     |      |      |      |      |      |
 
 
 

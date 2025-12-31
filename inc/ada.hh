@@ -47,8 +47,18 @@ class SymbolVisitor;
 class Symbol;
 class TypeSymbol;
 class EnumTypeSymbol;
+class RecordTypeSymbol;
+class DerivedTypeSymbol;
+class AccessTypeSymbol;
+class IntegerTypeSymbol;
+class RealTypeSymbol;
+class ArrayTypeSymbol;
+class SubtypeSymbol;
 class EnumLiteralSymbol;
-
+class DiscriminantSymbol;
+class AttributeSymbol;
+class ObjectSymbol;
+class ComponentSymbol;
 
 
 //

@@ -65,7 +65,7 @@ public:
     size_t Checkpoint(void) { return ordered.size(); }
 
     void Rollback(size_t cp);
-    const std::vector<Symbol *> *LocalLookup(std::string_view name) const;
+    std::vector<Symbol *> *LocalLookup(std::string_view name);
     void AddType(const std::string name, TypeSymbol *type) { index.find(name)->second.push_back(type); };
     void Print(void) const;
 

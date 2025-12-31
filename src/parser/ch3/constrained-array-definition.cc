@@ -47,21 +47,37 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
     Production p(*this, "constrained_array_definition (id)");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
+    std::vector<Symbol *> *vec;
+    bool updateIncomplete = false;
 
 
 
     //
-    // -- Start by adding a new Array Type with the name
-    //    ----------------------------------------------
+    // -- Manage the symbol table
+    //    -----------------------
+    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        // -- name is used in this scope is it a singleton and incomplete class?
+        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+
+        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+            updateIncomplete = true;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+        }
+    }
+
     ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+
 
 
     if (!_HelpParseConstrainedArrayDefinition()) return false;
 
 
+
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
     return true;
@@ -82,10 +98,10 @@ bool Parser::ParseConstrainedArrayDefinition(IdList *list)
 
 
     //
-    // -- Start by adding a new Array Type with the name
-    //    ----------------------------------------------
+    // -- Manage the symbol table
+    //    -----------------------
     for (auto &id : *list) {
-        ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, tokens.SourceLocation(), scopes.CurrentScope()));
+        ObjectSymbol *type = scopes.Declare(std::make_unique<ObjectSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
 

@@ -28,13 +28,26 @@ bool Parser::ParseEnumerationTypeDefinition(Id &id)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
     MarkScope s(scopes);
+    std::vector<Symbol *> *vec;
+    bool updateIncomplete = false;
 
 
     //
     // -- Start by adding a new Enum Type with the name
     //    ---------------------------------------------
-    EnumTypeSymbol *type = scopes.Declare(std::make_unique<EnumTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        // -- name is used in this scope is it a singleton and incomplete class?
+        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
 
+        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+            updateIncomplete = true;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+        }
+    }
+
+
+    EnumTypeSymbol *type = scopes.Declare(std::make_unique<EnumTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
     //
@@ -42,7 +55,6 @@ bool Parser::ParseEnumerationTypeDefinition(Id &id)
     //    -------------------------------------
     if (!Require(TOK_LEFT_PARENTHESIS)) return false;
     if (!ParseEnumerationLiteralSpecification(type)) return false;
-
 
 
     //
@@ -74,6 +86,7 @@ bool Parser::ParseEnumerationTypeDefinition(Id &id)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
     return true;

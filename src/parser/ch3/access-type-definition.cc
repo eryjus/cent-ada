@@ -27,20 +27,43 @@ bool Parser::ParseAccessTypeDefinition(Id &id)
     Production p(*this, "access_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
+    std::vector<Symbol *> *vec;
+    bool updateIncomplete = false;
 
-
-    scopes.Declare(std::make_unique<AccessTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
     //
     // -- Parse the sequence
     //    ------------------
     if (!Require(TOK_ACCESS)) return false;
+
+
+
+    //
+    // -- Manage the symbol table
+    //    -----------------------
+    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        // -- name is used in this scope is it a singleton and incomplete class?
+        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+
+        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+            updateIncomplete = true;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+        }
+    }
+
+    scopes.Declare(std::make_unique<AccessTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+
+
+
     if (!ParseSubtypeIndication()) return false;
+
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
     return true;

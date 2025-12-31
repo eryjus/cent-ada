@@ -24,12 +24,11 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 ### Parsing
 - [x] BUG: Clean up different type checks (`subtype_indication`)
-- [ ] BUG: Deal with Choice
 
 
 ### Early Symbol Table
 - [x] BUG: Remove rederences to `make_unique<Symbol>`
-- [ ] BUG: Fix symbol table handling of an incomplete type (`make_unique<Symbol>`)
+- [x] BUG: Fix symbol table handling of an incomplete type (`make_unique<Symbol>`)
 
 
 ### Command Line
@@ -38,8 +37,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Debugging
-- [ ] BUG: Solve test #70
-- [ ] BUG: Solve test #95, #96
+- [x] BUG: Solve test #70
 - [x] BUG: Re-execute all Ch3 tests and evaluate the results
 
 
@@ -53,6 +51,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 
 ### Parsing
+- [ ] BUG: Deal with Choice better
 - [ ] BUG: Deal with Aggregate better
 - [ ] BUG: Deal with Attribute better
 
