@@ -281,8 +281,8 @@ static int Compile(std::string filename, ParseType_t type)
     std::cerr << "Parse Complete.\n";
 
 exit:
-    tokens->Listing();
-    parser->Scopes()->Print();
+    if (opts.listing) tokens->Listing();
+    if (opts.dumpSymtab) parser->Scopes()->Print();
 
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
     std::cerr << "   Warnings: " << diags.Warnings() << '\n';
@@ -296,7 +296,23 @@ exit:
 //    -------------------------------
 static void Usage(std::string pgm)
 {
-    std::cout << "Usage:\n";
+    std::cout << "Usage: " << pgm << "  command [options] [file]\n";
+
+    std::cout << "  where 'command' is one of:\n";
+    std::cout << "      scan            scan the file and normalize what is read\n";
+    std::cout << "      tokenize        read the file into a token stream and output\n";
+    std::cout << "                      the token stream and the source listing\n";
+    std::cout << "      declarations, types\n";
+    std::cout << "                      process only declarations parts of the parser\n";
+    std::cout << "      expressions, exprs\n";
+    std::cout << "                      process only expressions/declarations parts of the parser\n";
+    std::cout << "\n";
+    std::cout << "  options:\n";
+    std::cout << "  -h, --help          print this screen and exit\n";
+    std::cout << "  -t, --trace         output production tracing\n";
+    std::cout << "      --dump-symtab   dump the symbol table contents before exiting\n";
+    std::cout << "      --listing       produce a listing before exiting\n";
+    std::cout << "\n";
 
     exit(EXIT_SUCCESS);
 }
@@ -325,6 +341,16 @@ int main(int argc, char *argv[])
 
         if (arg == "--trace" || arg == "-t") {
             opts.trace = true;
+            continue;
+        }
+
+        if (arg == "--dump-symtab") {
+            opts.dumpSymtab = true;
+            continue;
+        }
+
+        if (arg == "--listing") {
+            opts.listing = true;
             continue;
         }
 

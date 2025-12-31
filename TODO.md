@@ -35,7 +35,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 ### Command Line
 - [x] FEATURE: Add trace to the command line parameters
-- [ ] FEATURE: Add symbol table dump to the command line parameters
+- [x] FEATURE: Add symbol table dump to the command line parameters
 
 
 ### Debugging
