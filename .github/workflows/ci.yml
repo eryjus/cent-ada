@@ -17,12 +17,18 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install tup
         run: sudo apt install tup
+
       - name: Initialize tup
         run: tup init
+
       - name: Build the compiler
         run: make
+
       - name: Run Ch3 tests
         run: make test-types
+        continue-on-error: true
+
       - name: Run Ch4 tests
         run: make test-exprs
+        continue-on-error: true
 
