@@ -28,8 +28,8 @@ bool Parser::ParseAggregate(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))         return false;
-    if (!ParseComponentAssociation())           return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))          return false;
+    if (!ParseComponentAssociation())                       return false;
 
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {

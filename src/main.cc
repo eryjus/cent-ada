@@ -377,7 +377,6 @@ int main(int argc, char *argv[])
         if (arg == "expressions" || arg == "expr") {
             action = ACT_COMPILE;
             type = COMPILE_EXPRS;
-            opts.requireBasicDeclaration = true;
             continue;
         }
 

@@ -312,3 +312,24 @@ SourceLoc_t TokenStream::EmptyLocation(void)
     return rv;
 }
 
+
+
+//
+// -- Recover to the desired token, being mindful of YYEOF
+//    ----------------------------------------------------
+void TokenStream::Recovery(TokenType t)
+{
+    std::cerr << "Recovering...\n";
+    while (Current() != t && Current() != TokenType::YYEOF) {
+        Advance();
+    }
+
+    if (Current() != TokenType::YYEOF) {
+        Advance();
+    }
+
+    std::cerr << "... recovered\n";
+}
+
+
+
