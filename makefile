@@ -7,8 +7,8 @@ all:
 
 
 
-.phony: test
-test: all
+.phony: test-scanner
+test-scanner: all
 	for file in tst/scanner/*.ada; do \
 		bin/ada-cc scan $$file ;\
 	done
@@ -16,7 +16,14 @@ test: all
 
 
 .PHONY: test-types
-test-types:
+test-types: all
 	echo "== Running declaration tests =="
-	tup
 	./scripts/run-type-tests.sh
+
+
+.PHONY: test-exprs
+test-exprs: all
+	echo "== Running expression tests =="
+	./scripts/run-expr-tests.sh
+
+

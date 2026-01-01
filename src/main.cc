@@ -259,14 +259,14 @@ static int Compile(std::string filename, ParseType_t type)
         std::cerr << "** Starting Expressions Parse **\n";
         std::cerr << "********************************\n\n";
         if(!parser->ParseExpression()) {
-            std::cerr << "\nERROR: Unable to properly parse Expression\n";
+            std::cerr << "\n\e[31;1mERROR: Unable to properly parse Expression\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
         }
 
         std::cerr << "next token " << tokens->tokenStr(tokens->Current()) << '\n';
         if (tokens->Current() != TokenType::YYEOF) {
-            std::cerr << "\nERROR: Extra input in Expression parse\n";
+            std::cerr << "\n\e[31;1mERROR: Extra input in Expression parse\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
         }
@@ -307,7 +307,7 @@ static void Usage(std::string pgm)
     std::cout << "                      the token stream and the source listing\n";
     std::cout << "      declarations, types\n";
     std::cout << "                      process only declarations parts of the parser\n";
-    std::cout << "      expressions, exprs\n";
+    std::cout << "      expressions, expr\n";
     std::cout << "                      process only expressions/declarations parts of the parser\n";
     std::cout << "\n";
     std::cout << "  options:\n";

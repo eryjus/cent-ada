@@ -23,4 +23,6 @@ jobs:
         run: make
       - name: Run Ch3 tests
         run: make test-types
+      - name: Run Ch4 tests
+        run: make test-exprs
 
