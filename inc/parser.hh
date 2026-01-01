@@ -245,6 +245,9 @@ public:
 
 
 public:
+    //
+    // -- Productions from Declarations and Types
+    //    ---------------------------------------
     bool ParseAccessTypeDefinition(Id &id);
     bool ParseArrayTypeDefinition(Id &id);
     bool ParseBasicDeclaration(void);
@@ -297,7 +300,9 @@ public:
 
 
 
-
+    //
+    // -- Productions from Names and Expressions
+    //    --------------------------------------
     bool ParseAggregate(void);                                  // -- Ch 4: in `parse_expr.cc`
     bool ParseAggregateMore(void);                              // -- Ch 4: in `parse_expr.cc`
     bool ParseAllocator(void);                                  // -- Ch 4: in `parse_expr.cc`
@@ -313,6 +318,8 @@ public:
     bool ParseNameExpr(Id &id);                                 // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Base(Id &id);                                // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
+    bool ParseTypeName(void);
+    bool ParseSubtypeName(void);
     bool ParsePrefix(void);                                     // -- Ch 4: in `parse_expr.cc`
     bool ParsePrimary(void);                                    // -- Ch 4: in `parse_expr.cc`
     bool ParseQualifiedExpression(void);                        // -- Ch 4: in `parse_expr.cc`
@@ -331,6 +338,10 @@ public:
     bool ParseName_SelectedComponentSuffix(void);               // -- Ch 4: in `parse_expr.cc`
     bool ParseName_AttributeSuffix(void);                       // -- Ch 4: in `parse_expr.cc`
     bool ParseName_IndexOrSliceSuffix(void);                    // -- Ch 4: in `parse_expr.cc`
+
+
+
+
 
     bool ParseFunctionCall(void) { return false; }
     bool ParseOperatorSymbol(void) { return false; }
@@ -361,35 +372,6 @@ public:
     bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication(); }
 
 
-
-    bool ParseTypeName(void) {
-        Id id;
-        if (!ParseNameNonExpr(id)) return false;
-        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-        if (!vec || vec->empty()) return false;
-        for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
-            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return true;
-        }
-
-        return false;
-    }
-    bool ParseSubtypeName(void) {
-        Id id;
-        if (!ParseNameNonExpr(id)) return false;
-        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-        if (!vec || vec->empty()) return false;
-        for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
-                TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
-                if (tp->category == TypeSymbol::TypeCategory::Subtype) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
 };
 
