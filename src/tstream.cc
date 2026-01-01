@@ -229,7 +229,7 @@ const char *TokenStream::tokenStr(TokenType tok) const
     };
 
     if (tok >= TokenType::TOK_ERROR) return "UNKNOWN";
-    if (tok == TokenType::YYEOF) return "EOF";
+    if (tok == TokenType::YYEOF) return "YYEOF";
 
     return str[(int)tok - 257];
 }

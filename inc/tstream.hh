@@ -74,6 +74,7 @@ public:
     std::string FileName(void) const { return filename; }
     long LineNo(void) const { return tokStream[loc]->yylineno; }
     int Column(void) const { return tokStream[loc]->column; }
+    std::string SourceLine(void) const { return source[LineNo()]; }
     void Recovery(TokenType t = TokenType::TOK_SEMICOLON) { while (Current() != t) { Advance(); } Advance(); }
     void Reset(int nLoc) { loc = nLoc; }
     int Location(void) const { return loc; }

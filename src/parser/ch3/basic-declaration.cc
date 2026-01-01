@@ -54,20 +54,29 @@
 bool Parser::ParseBasicDeclaration(void)
 {
     // -- This top-level production must Mark its location so it can output diags
+    MarkStream m(tokens, diags);
     Production p(*this, "basic_declaration");
+    SourceLoc_t loc = tokens.SourceLocation();
 
-    if (ParseObjectDeclaration())            return true;
-    if (ParseNumberDeclaration())            return true;
-    if (ParseTypeDeclaration())              return true;
-    if (ParseSubtypeDeclaration())           return true;
-    if (ParseSubprogramDeclaration())        return true;
-    if (ParsePackageDeclaration())           return true;
-    if (ParseTaskDeclaration())              return true;
-    if (ParseGenericDeclaration())           return true;
-    if (ParseExceptionDeclaration())         return true;
-    if (ParseGenericInstantiation())         return true;
-    if (ParseRenamingDeclaration())          return true;
-    if (ParseDeferredConstantDeclaration())  return true;
+    if (ParseObjectDeclaration())            { m.Commit(); return true; }
+    if (ParseNumberDeclaration())            { m.Commit(); return true; }
+    if (ParseTypeDeclaration())              { m.Commit(); return true; }
+    if (ParseSubtypeDeclaration())           { m.Commit(); return true; }
+    if (ParseSubprogramDeclaration())        { m.Commit(); return true; }
+    if (ParsePackageDeclaration())           { m.Commit(); return true; }
+    if (ParseTaskDeclaration())              { m.Commit(); return true; }
+    if (ParseGenericDeclaration())           { m.Commit(); return true; }
+    if (ParseExceptionDeclaration())         { m.Commit(); return true; }
+    if (ParseGenericInstantiation())         { m.Commit(); return true; }
+    if (ParseRenamingDeclaration())          { m.Commit(); return true; }
+    if (ParseDeferredConstantDeclaration())  { m.Commit(); return true; }
+
+    if (opts.requireBasicDeclaration) {
+        diags.Error(loc, DiagID::MissingBasicDeclaration);
+    }
+
+    tokens.Recovery();
+    m.Commit();
 
     return false;
 }

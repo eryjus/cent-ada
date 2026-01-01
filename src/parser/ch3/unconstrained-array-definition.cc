@@ -104,6 +104,7 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     // -- Consider this parse to be good
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
     return true;

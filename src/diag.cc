@@ -168,6 +168,7 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::InvalidName, "invalid name {0} in {1}" },
     { DiagID::InvalidPrimaryExpr, "invalid primary expression after {0}" },
     { DiagID::InvalidPrimaryExpr, "invalid expression in {0}" },
+    { DiagID::MissingBasicDeclaration, "basic declaration is missing when required by command line parameters" },
     { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
 };
 
