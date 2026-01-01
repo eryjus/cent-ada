@@ -8,22 +8,28 @@ type BIT_VECTOR is array(INTEGER range <>) of BOOLEAN;
 COUNT, SUM : INTEGER;
 SIZE : INTEGER range 0 .. 10_000 := 0;
 SORTED : BOOLEAN := FALSE;
+
+N : constant := 3;
+K : constant := 100;
+
+type COLOR is (WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, BROWN, BLACK);
+
 COLOR_TABLE : array(1 .. N) of COLOR;
-OPTION := BIT_VECTOR(1 .. 10) := (others => TRUE);
+--OPTION := BIT_VECTOR(1 .. 10) := (others => TRUE);
 
 LIMIT : constant INTEGER := 10_000;
 LOW_LIMIT : constant INTEGER := LIMIT / 10;
-TOLLERANNCE : constant REAL := DISPERSION(1.15);
+--TOLLERANNCE : constant REAL := DISPERSION(1.15);
 
 PI : constant := 3.14159_26536;
 TWO_PI : constant := 2 * PI;
 MAX : constant := 500;
-POWER_16 : constant 2 ** 16;
+POWER_16 : constant := 2 ** 16;
 ONE, UN, EINS : constant := 1;
 
-type COLOR is (WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, BROWN, BLACK);
 type COLUMN is range 1 .. 72;
 type TABLE is array(1 .. 10) of INTEGER;
+type MATRIX is array(INTEGER range <>, INTEGER range <>) of REAL;
 
 subtype RAINBOW is COLOR range RED .. PURPLE;
 subtype RED_PURPLE is RAINBOW;
@@ -31,14 +37,20 @@ subtype INT is INTEGER;
 subtype SMALL_INT is INTEGER range -10 .. 10;
 subtype UP_TO_K is COLUMN range 1 .. K;
 subtype SQUARE is MATRIX(1 .. 10, 1 .. 10);
-subtype MAKE is PERSON(SEX => M);
+
+type COORDINATE is
+    record
+        LAT : REAL;
+        LONG : REAL;
+    end record;
 
 type LOCAL_COORDINATE is new COORDINATE;
-type MIDWEEK is new DAY range TUE .. THU;
-type COUNTER is new POSITIVE;
-type SPECIAL_KEY is new KEY_MANAGER.KEY;
-
 type DAY is (MON, TUE, WED, THU, FRI, SAT, SUB);
+type MIDWEEK is new DAY range TUE .. THU;
+type POSITIVE is new INTEGER;
+type COUNTER is new POSITIVE;
+--type SPECIAL_KEY is new KEY_MANAGER.KEY;
+
 type SUIT is (CLUBS, DIAMONDS, HEARTS, SPADES);
 type GENDER is (M, F);
 type LEVEL is (LOW, MEDIUM, URGENT);
@@ -53,12 +65,13 @@ subtype MAJOR is SUIT range HEARTS .. SPADES;
 type ROMAN_DIGIT is ('I', 'V', 'X', 'L', 'C', 'D', 'M');
 
 type PAGE_NUM is range 1 .. 2_000;
+MAX_LINE_SIZE : constant := 132;
 type LINE_SIZE is range 1 .. MAX_LINE_SIZE;
 
 subtype COLUMN_PTR is LINE_SIZE range 1 .. 10;
 subtype BUFFER_SIZE is INTEGER range 0 .. MAX;
 
-type COEFFICIENT is digits range -1.0 .. 1.0;
+type COEFFICIENT is digits 4 range -1.0 .. 1.0;
 type MASS is digits 7 range 0.0 .. 1.0E35;
 
 subtype SHORT_COEFF is COEFFICIENT digits 5;
@@ -68,11 +81,12 @@ type VOLT is delta 0.125 range 0.0 .. 255.0;
 
 subtype ROUGH_VOLTAGE is VOLT delta 1.0;
 
+WORD_LENGTH : constant := 8;
+
 DEL : constant := 1.0 / 2 ** (WORD_LENGTH - 1);
 type FRACTION is delta DEL range -1.0 .. 1.0 - DEL;
 
 type VECTOR is array(INTEGER range <>) of REAL;
-type MATRIX is array(INTEGER range <>, INTEGER range <>) of REAL;
 type BIT_VECTOR is array(INTEGER range <>) of BOOLEAN;
 type ROMAN is array(POSITIVE range <>) of ROMAN_DIGIT;
 
@@ -83,6 +97,9 @@ type LINE is array(1 .. MAX_LINE_SIZE) of CHARACTER;
 GRID : array(1 .. 80, 1 .. 100) of BOOLEAN;
 MIX : array(COLOR range RED .. GREEN) of BOOLEAN;
 PAGE : array(1 .. 50) of LINE;
+
+type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN,
+        JUL, AUG, SEP, OCT, NOV, DEC);
 
 type DATE is
     record
@@ -127,9 +144,9 @@ type ITEM(NUMBER : POSITIVE) is
 
 
 type DEVICE is (PRINTER, DISK, DRUM);
-type STAT is (OPEN, CLOSED);
-type CYLINDER_INDEX is INTEGER range (1 .. 50);
-type TRACK_NUMBER is INTEGER range (1 .. 120);
+type STATE is (OPEN, CLOSED);
+type CYLINDER_INDEX is range 1 .. 50;
+type TRACK_NUMBER is range 1 .. 120;
 
 PAGE_SIZE : constant := 55;
 
@@ -147,7 +164,7 @@ type PERIPHERAL(UNIT : DEVICE := DISK) is
 
 
 subtype DRUM_UNIT is PERIPHERAL(DRUM);
-sybtype DISK_UNIT is PERIPHERAL(DISK);
+subtype DISK_UNIT is PERIPHERAL(DISK);
 
 WRITER : PERIPHERAL(UNIT => PRINTER);
 ARCHIVE : DISK_UNIT;
@@ -167,12 +184,14 @@ type CELL is
         PRED : LINK;
     end record;
 
-HEAD : LINK := new CELL'(0, null, null);
+--HEAD : LINK := new CELL'(0, null, null);
+HEAD : LINK := new CELL;
 NEXT : LINK := HEAD.SUCC;
 
 
-type PERSON(SEX : GENDER);
 type CAR;
+
+type PERSON(SEX : GENDER);
 
 type PERSON_NAME is access PERSON;
 type CAR_NAME is access CAR;
@@ -199,3 +218,4 @@ type PERSON(SEX : GENDER) is
 MY_CAR, YOUR_CAR, NEXT_CAR : CAR_NAME;
 
 
+subtype MALE is PERSON(SEX => M);

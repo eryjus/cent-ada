@@ -42,6 +42,7 @@ enum class DiagID {
     InvalidName,
     InvalidPrimaryExpr,
     InvalidExpression,
+    MissingBasicDeclaration,
     UnknownError,
 };
 

@@ -370,12 +370,14 @@ int main(int argc, char *argv[])
         if (arg == "declarations" || arg == "types") {
             action = ACT_COMPILE;
             type = COMPILE_TYPES;
+            opts.requireBasicDeclaration = true;
             continue;
         }
 
         if (arg == "expressions" || arg == "expr") {
             action = ACT_COMPILE;
             type = COMPILE_EXPRS;
+            opts.requireBasicDeclaration = true;
             continue;
         }
 

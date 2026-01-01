@@ -13,10 +13,11 @@
 
 
 
-using Options = struct Options {
+struct Options {
     bool trace = false;
     bool dumpSymtab = false;
     bool listing = false;
+    bool requireBasicDeclaration = false;
 };
 
 
