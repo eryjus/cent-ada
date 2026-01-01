@@ -13,14 +13,52 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Install tup
-        run: sudo apt install tup
+        run: |
+          sudo apt update
+          sudo apt install -y tup
+
       - name: Initialize tup
         run: tup init
+
       - name: Build the compiler
         run: make
-      - name: Run Ch3 tests
-        run: make test-types
 
+      # -------------------------
+      # Tests (allowed to fail)
+      # -------------------------
+
+      - name: Run Ch3 tests (types)
+        id: ch3
+        run: make test-types
+        continue-on-error: true
+
+      - name: Run Ch4 tests (expressions)
+        id: ch4
+        run: make test-exprs
+        continue-on-error: true
+
+      # -------------------------
+      # Final evaluation
+      # -------------------------
+
+      - name: CI summary and final status
+        if: always()
+        run: |
+          echo "================ CI SUMMARY ================"
+          echo "Ch3 tests: ${{ steps.ch3.outcome }}"
+          echo "Ch4 tests: ${{ steps.ch4.outcome }}"
+          echo "============================================"
+
+          if [ "${{ steps.ch3.outcome }}" != "success" ] || \
+             [ "${{ steps.ch4.outcome }}" != "success" ]; then
+            echo "❌ One or more test stages failed (informational)"
+            exit 1
+          else
+            echo "✅ All test stages passed"
+          fi

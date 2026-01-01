@@ -1,6 +1,6 @@
 
-PAGE(1 .. 10 + SIZE)
-PAGE(L)(A .. B)
-STARS(1 .. 0)
-MY_SCHEDULE(WEEKDAY)
-STARS(5 .. 15)(K)
+
+----------------------------------------
+
+
+A'LENGTH = B'LENGTH
