@@ -73,10 +73,9 @@ bool Parser::ParseBasicDeclaration(void)
 
     if (opts.requireBasicDeclaration) {
         diags.Error(loc, DiagID::MissingBasicDeclaration);
+        m.Commit();
+        tokens.Recovery();
     }
-
-    tokens.Recovery();
-    m.Commit();
 
     return false;
 }

@@ -34,17 +34,20 @@ bool Parser::ParseChoice(void)
     MarkStream m(tokens, diags);
     Id id;
 
-    if (ParseSimpleExpression()) {
+
+    //
+    // -- The orders of these have been changed to allow more complicated alternatives
+    //    happen before the simpler ones which may consume fewer tokens -- other than
+    //    the trivial deterministic options, where were placed first.
+    //    ----------------------------------------------------------------------------
+    if (Optional(TokenType::TOK_OTHERS)) {
+        diags.Debug("Choice: OTHERS");
         m.Commit();
         return true;
     }
 
     if (ParseDiscreteRange()) {
-        m.Commit();
-        return true;
-    }
-
-    if (Optional(TokenType::TOK_OTHERS)) {
+        diags.Debug("Choice: discrete_range");
         m.Commit();
         return true;
     }
@@ -55,6 +58,22 @@ bool Parser::ParseChoice(void)
         //
         //    TODO: Check the type of the simple name
         //    ----------------------------------------------
+        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
+        if (vec != nullptr) {
+            for (auto &sym : *vec) {
+                if (sym->kind == Symbol::SymbolKind::Component) {
+                    diags.Debug("Choice: component_simple_name");
+                    m.Commit();
+                    return true;
+                }
+            }
+        }
+
+        m.Reset();
+    }
+
+    if (ParseSimpleExpression()) {
+        diags.Debug("Choice: simple_expression");
         m.Commit();
         return true;
     }
