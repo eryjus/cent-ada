@@ -27,24 +27,21 @@ bool Parser::ParseAttributeDesignator(void)
     Production p(*this, "attribute_designator");
     MarkStream m(tokens, diags);
     Id id;
+    SourceLoc_t loc = tokens.SourceLocation();
 
 
     //
-    // -- handle 2 special cases where the attribute name is not just an ID, but also a token
+    // -- handle 3 special cases where the attribute name is not just an ID, but also a token
     //    -----------------------------------------------------------------------------------
-    if (Optional(TokenType::TOK_DIGITS)) {
-        m.Commit();
-        return true;
-    }
-
-    if (Optional(TokenType::TOK_DELTA)) {
-        m.Commit();
-        return true;
-    }
-
-
     diags.Debug("*** Getting an attribute designator: " + std::string(tokens.tokenStr(tokens.Current())));
-    if (!ParseSimpleName(id))           return false;
+    if (Optional(TokenType::TOK_DIGITS)) {
+        id = { "digits", loc };
+    } else if (Optional(TokenType::TOK_DELTA)) {
+        id = { "delta", loc };
+    } else if (Optional(TokenType::TOK_RANGE)) {
+        id = { "range", loc };
+    } else if (!ParseSimpleName(id))           return false;
+
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         if (!ParseExpression()) return false;
 
