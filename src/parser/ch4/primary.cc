@@ -135,6 +135,7 @@ bool Parser::ParsePrimary(void)
             for (auto &sym : *vec) {
                 if (sym->kind == Symbol::SymbolKind::Deleted) continue;
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
+                    diags.Debug("*** .. ID is a type; " + std::string(tokens.tokenStr(tokens.Current())));
                     if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
                         if (ParseQualifiedExpression()) {
                             m.Commit();
