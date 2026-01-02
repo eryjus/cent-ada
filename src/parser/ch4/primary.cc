@@ -25,7 +25,7 @@
 //  * allocator                 TOK_NEW
 //
 //  * function_call             TOK_IDENTIFIER:subprogram
-//  * name                      TOK_IDENTIFIER:other-non-type
+//  * name                      TOK_IDENTIFIER:other-non-type || TOK_CHARACTER_LITERAL || TOK_STRING_LITERAL
 //  * type_conversion           TOK_IDENTIFIER:type_mark TOK_LEFT_PARENTHESIS
 //  * qualified_expression      TOK_IDENTIFIER:type_mark TOK_APOSTROPHE
 //
@@ -85,6 +85,13 @@ bool Parser::ParsePrimary(void)
     }
 
 
+    if (Optional(TokenType::TOK_STRING_LITERAL)) {
+        diags.Debug("*** .. trivial name (string lit)");
+        m.Commit();
+        return true;
+    }
+
+
     if (tokens.Current() == TokenType::TOK_NEW) {
         diags.Debug("*** .. trivial NEW");
         if (ParseAllocator()) {
@@ -93,6 +100,24 @@ bool Parser::ParsePrimary(void)
         }
 
         m.Reset();
+    }
+
+
+    if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
+        diags.Debug("*** .. trivial name (char lit)");
+        if (ParseNameExpr(id)) {
+            m.Commit();
+            return true;
+        }
+
+        m.Reset();
+    }
+
+
+    if (ParseOperatorSymbol()) {
+        diags.Debug("*** .. near trivial operator symbol");
+        m.Commit();
+        return true;
     }
 
 
@@ -155,14 +180,12 @@ bool Parser::ParsePrimary(void)
             m.Commit();
             return true;
         }
-
-        // -- we want to reset here and try again with an aggregate -- the only thing left
-        m.Reset();
-        diags.Debug("*** .. resetting and trying again; next token: " + std::string(tokens.tokenStr(tokens.Current())));
     }
 
+    // -- we want to reset here and try again with an aggregate -- the only thing left
+    m.Reset();
 
-    diags.Debug("*** .. Falling back on an aggregate...");
+    diags.Debug("*** .. Falling back on an aggregate... " + std::string(tokens.tokenStr(tokens.Current())));
     if (ParseAggregate()) {
         m.Commit();
         return true;
