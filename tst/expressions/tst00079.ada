@@ -1,4 +1,6 @@
-
+N : constant := 1;
+A : array (1 .. 10) of REAL;
+HIT_VALUE : constant := 9.99;
 
 ----------------------------------------
 
