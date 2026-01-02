@@ -11,6 +11,8 @@ type CELL is
 HEAD : LINK := new CELL'(0, null, null);
 NEXT : LINK := HEAD.SUCC;
 
+N : constant := 2;
+
 ---------------------------
 
 (1 .. N => new CELL)

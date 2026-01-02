@@ -35,7 +35,7 @@
 bool Parser::ParseNameNonExpr(Id &id)
 {
     // -- This top-level production must Mark its location so it can output diags
-    Production p(*this, "name");
+    Production p(*this, "name(non-expr)");
     MarkStream m(tokens, diags);
 
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
@@ -68,7 +68,7 @@ bool Parser::ParseNameNonExpr(Id &id)
 bool Parser::ParseNameExpr(Id &id)
 {
     // -- This top-level production must Mark its location so it can output diags
-    Production p(*this, "name");
+    Production p(*this, "name(expr)");
     MarkStream m(tokens, diags);
 
     if (!ParseName_Base(id))        return false;
@@ -147,11 +147,22 @@ bool Parser::ParseName_IndexOrSliceSuffix(void)
     Production p(*this, "name(index_or_selected_component)");
     MarkStream m(tokens, diags);
 
+    diags.Debug("*** Starting to parse an Index, Slice, or Component Suffix: " + std::string(tokens.tokenStr(tokens.Current())));
+
+    m.Reset();
+    if (ParseName_SliceSuffix()) {
+        // -- do something important here
+        m.Commit();
+        return true;
+    }
+
+
     if (ParseName_IndexComponentSuffix()) {
         // -- do something important here
         m.Commit();
         return true;
     }
+
 
     m.Reset();
     if (ParseName_SelectedComponentSuffix()) {

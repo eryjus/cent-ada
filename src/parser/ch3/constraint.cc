@@ -31,6 +31,8 @@ bool Parser::ParseConstraint(void)
     Production p(*this, "constraint");
     Id id;
 
+    diags.Debug("*** Parsing Constraint: " + std::string(tokens.tokenStr(tokens.Current())));
+
     if (ParseRangeConstraint())             return true;
     if (ParseFloatingPointConstraint(id))   return true;
     if (ParseFixedPointConstraint(id))      return true;

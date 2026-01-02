@@ -1,4 +1,4 @@
-
+subtype SMALL_INT is INTEGER range 1 .. 255;
 
 ----------------------------------------
 

@@ -45,7 +45,7 @@ type COORDINATE is
     end record;
 
 type LOCAL_COORDINATE is new COORDINATE;
-type DAY is (MON, TUE, WED, THU, FRI, SAT, SUB);
+type DAY is (MON, TUE, WED, THU, FRI, SAT, SUN);
 type MIDWEEK is new DAY range TUE .. THU;
 type POSITIVE is new INTEGER;
 type COUNTER is new POSITIVE;
