@@ -5,6 +5,18 @@
 //
 //  component_association ::= [ choice {| choice} =>] expression
 //
+//  However, this structure is rough as well, especially when `choice` is taken into account:
+//
+//  choice ::= simple_expression        expression
+//           | discrete_range           expression
+//           | others                   trivial
+//           | component_simple_name    expression
+//
+//  For this production (component_association) to work, the production choice will need to be folded into this
+//  function.  This will allow the correct amount of lookahead to cleanly parse this production.  The good news
+//  here is that component_association is only referenced from aggregate and as such the only 2 delimiting
+//  tokens for a component_association are TOK_COMMA and TOK_RIGHT_PARENTHESIS.
+//
 // ---------------------------------------------------------------------------------------------------------------
 //
 //     Date      Tracker  Version  Pgmr  Description
@@ -28,10 +40,8 @@ bool Parser::ParseComponentAssociation(void)
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
 
-    diags.Debug("Preparing to parse a Component Association: " + std::string(tokens.tokenStr(tokens.Current())));
 
     if (ParseChoice()) {
-        diags.Debug(".. 1 choice found; parsing more...? " + std::string(tokens.tokenStr(tokens.Current())));
         while (Optional(TokenType::TOK_VERTICAL_BAR)) {
             loc = tokens.SourceLocation();
             if (!ParseChoice()) {
@@ -39,13 +49,13 @@ bool Parser::ParseComponentAssociation(void)
             }
         }
 
-        if (!Require(TokenType::TOK_ARROW)) return false;
+        if (!Require(TokenType::TOK_ARROW)) {
+            m.Reset();      // -- may only be a simple expression, which cannot be a choice here
+        }
     }
-    diags.Debug(".. past any possible choices: " + std::string(tokens.tokenStr(tokens.Current())));
 
     if (!ParseExpression()) return false;
 
-    diags.Debug("Done parsing Component Association: " + std::string(tokens.tokenStr(tokens.Current())));
 
     m.Commit();
     return true;

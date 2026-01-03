@@ -1,8 +1,8 @@
 type DEVICE is (PRINTER, DISK, DRUM);
 type STATE is (OPEN, CLOSED);
 
-type CYLINDER_INDEX is INTEGER range (1 .. 50);
-type TRACK_NUMBER is INTEGER range (1 .. 120);
+subtype CYLINDER_INDEX is INTEGER range 1 .. 50;
+subtype TRACK_NUMBER is INTEGER range 1 .. 120;
 
 PAGE_SIZE : constant := 55;
 

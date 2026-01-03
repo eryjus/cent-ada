@@ -147,8 +147,6 @@ bool Parser::ParseName_IndexOrSliceSuffix(void)
     Production p(*this, "name(index_or_selected_component)");
     MarkStream m(tokens, diags);
 
-    diags.Debug("*** Starting to parse an Index, Slice, or Component Suffix: " + std::string(tokens.tokenStr(tokens.Current())));
-
     m.Reset();
     if (ParseName_SliceSuffix()) {
         // -- do something important here
