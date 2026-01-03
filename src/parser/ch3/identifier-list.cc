@@ -52,13 +52,15 @@ bool Parser::ParseIdentifierList(IdList *ids)
             diags.Error(loc, DiagID::ExtraComma, { "identifier_list" } );
 
             // -- continue on as if there was no extra comma
-            m.Commit();
-            return true;
+            goto exit;
         }
 
         ids->push_back(id);
         loc = tokens.SourceLocation();
     }
+
+
+exit:
 
     m.Commit();
     return true;
