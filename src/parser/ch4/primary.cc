@@ -126,7 +126,16 @@ bool Parser::ParsePrimary(void)
                 if (sym->kind == Symbol::SymbolKind::Deleted) continue;
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
                     if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
+                        if (tokens.Peek(2) == TokenType::TOK_DIGITS || tokens.Peek(2) == TokenType::TOK_DELTA) {
+                            if (ParseNameExpr(id)) {
+                                m.Commit();
+                                return true;
+                            }
+                        }
                         if (ParseQualifiedExpression()) {
+                            m.Commit();
+                            return true;
+                        } else if (ParseNameExpr(id)) {
                             m.Commit();
                             return true;
                         }
@@ -183,111 +192,3 @@ bool Parser::ParsePrimary(void)
 }
 
 
-#if 0
-//
-// -- Parse a Primary
-//    ---------------
-bool Parser::ParsePrimary(void)
-{
-    Production p(*this, "primary");
-    MarkStream m(tokens, diags);
-    Id id;
-    SourceLoc_t loc;
-
-    //
-    // -- The spec calls for a `numeric_literal` here.  I am going to split them out
-    //    here rather than in the lexer.
-    //    --------------------------------------------------------------------------
-    if (Optional(TokenType::TOK_UNIVERSAL_INT_LITERAL)) {
-        m.Commit();
-        return true;
-    }
-
-    if (Optional(TokenType::TOK_UNIVERSAL_REAL_LITERAL)) {
-        m.Commit();
-        return true;
-    }
-
-    if (Optional(TokenType::TOK_NULL)) {
-        m.Commit();
-        return true;
-    }
-
-
-    if (ParseAggregate()) {
-        m.Commit();
-        return true;
-    }
-
-    if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
-        if (!ParseExpression()) return false;
-
-        if (Optional(TokenType::TOK_RIGHT_PARENTHESIS)) {
-            m.Commit();
-            return true;
-        }
-
-        switch (tokens.Current()) {
-        case TokenType::TOK_COMMA:
-        case TokenType::TOK_WHEN:
-        case TokenType::TOK_OTHERS:
-        case TokenType::TOK_DOUBLE_DOT:
-        case TokenType::TOK_VERTICAL_BAR:
-        case TokenType::TOK_ARROW:
-            loc = tokens.SourceLocation();
-            if (ParseAggregateMore()) {
-                SourceLoc_t loc = tokens.SourceLocation();
-
-                if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
-                    diags.Error(loc, DiagID::MissingRightParen, { "aggregate" } );
-                    // -- keep going
-                }
-
-                m.Commit();
-                return true;
-            }
-
-            diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
-            //    fall through
-        default:
-            m.Reset();
-        }
-    }
-
-
-    if (Optional(TokenType::TOK_STRING_LITERAL)) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseNameExpr(id)) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseAllocator()) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseFunctionCall()) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseTypeConversion()) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseQualifiedExpression()) {
-        m.Commit();
-        return true;
-    }
-
-
-    return false;
-}
-
-
-#endif
