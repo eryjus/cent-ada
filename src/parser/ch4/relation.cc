@@ -32,52 +32,29 @@ bool Parser::ParseRelation(void)
 
     if (!ParseSimpleExpression())  return false;
 
-    //
-    // -- check for some illegal variations which should fail the parse early
-    //    -------------------------------------------------------------------
-    if (Illegal(TokenType::TOK_COMMA)) {
-        m.Commit();
-        return true;
-    }
-    if (Illegal(TokenType::TOK_ARROW)) {
-        m.Commit();
-        return true;
-    }
-    if (Illegal(TokenType::TOK_VERTICAL_BAR)) {
-        m.Commit();
-        return true;
-    }
-    if (Illegal(TokenType::TOK_DOUBLE_DOT)) {
-        m.Commit();
-        return true;
+    if ((tokens.Current() == TokenType::TOK_NOT && tokens.Peek() == TokenType::TOK_IN)
+            || tokens.Current() == TokenType::TOK_IN) {
+        if (Optional(TokenType::TOK_NOT)) hasNot = true;
+        if (!Require(TokenType::TOK_IN))  return false;
+
+        if (ParseRange()) {
+            m.Commit();
+            return true;
+        }
+
+        if (ParseTypeMark()) {
+            m.Commit();
+            return true;
+        }
+
+        return false;
     }
 
 
     if (ParseRelationalOperator()) {
         if (!ParseSimpleExpression()) return false;
-
-        m.Commit();
-        return true;
     }
 
-
-    if (Optional(TokenType::TOK_NOT)) hasNot = true;
-    if (!Optional(TokenType::TOK_IN)) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseRange()) {
-        m.Commit();
-        return true;
-    }
-
-    if (ParseTypeMark()) {
-        m.Commit();
-        return true;
-    }
-
-    // -- TODO: Is there some form of recovery needed here?
 
     m.Commit();
     return true;
