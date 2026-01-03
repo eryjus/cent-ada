@@ -86,6 +86,10 @@ void SymbolPrinter::Visit(const ComponentSymbol &s) {
     if (s.kind == Symbol::SymbolKind::Deleted) return;
     out << "Component Symbol: " << s.name << " : " << s.KindString() << '\n';
 }
+void SymbolPrinter::Visit(const IncompleteTypeSymbol &s) {
+    if (s.kind == Symbol::SymbolKind::Deleted) return;
+    out << "Incomplete Type: " << s.name << " : " << s.CategoryString() << '\n';
+}
 
 
 

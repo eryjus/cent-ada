@@ -59,6 +59,9 @@ class DiscriminantSymbol;
 class AttributeSymbol;
 class ObjectSymbol;
 class ComponentSymbol;
+class IncompleteTypeSymbol;
+
+
 
 
 //

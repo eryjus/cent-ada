@@ -181,11 +181,13 @@ bool Parser::ParseTypeName(void) {
     Id id;
     if (!ParseNameNonExpr(id)) return false;
     const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-    if (!vec || vec->empty()) return false;
-    for (int i = 0; i < vec->size(); i ++) {
-        if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
-        if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return true;
+    if (vec) {
+        for (int i = 0; i < vec->size(); i ++) {
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
+            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return true;
+        }
     }
+
 
     return false;
 }
