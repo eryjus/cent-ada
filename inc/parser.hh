@@ -24,7 +24,7 @@ private:
     ScopeManager scopes;
 
 
-private:
+public:
     using Id = struct Id {
         std::string name;
         SourceLoc_t loc;

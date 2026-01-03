@@ -42,24 +42,39 @@
 extern YYSTYPE yylval;
 
 
-class ASTNode;
-class SymbolVisitor;
-class Symbol;
-class TypeSymbol;
-class EnumTypeSymbol;
-class RecordTypeSymbol;
-class DerivedTypeSymbol;
+
+//
+// -- Here are quite a few forward declarations
+//    -----------------------------------------
 class AccessTypeSymbol;
-class IntegerTypeSymbol;
-class RealTypeSymbol;
 class ArrayTypeSymbol;
-class SubtypeSymbol;
-class EnumLiteralSymbol;
-class DiscriminantSymbol;
+class ASTNode;
 class AttributeSymbol;
-class ObjectSymbol;
 class ComponentSymbol;
+class Decl;
+class DerivedTypeSymbol;
+class DiscriminantSymbol;
+class EnumLiteralSymbol;
+class EnumTypeSymbol;
+class Expr;
 class IncompleteTypeSymbol;
+class IntegerTypeSymbol;
+class Name;
+class ObjectSymbol;
+class RealTypeSymbol;
+class RecordTypeSymbol;
+class Stmt;
+class SubtypeSymbol;
+class Symbol;
+class SymbolVisitor;
+class TypeSymbol;
+
+
+using DeclPtr = std::unique_ptr<Decl>;
+using ExprPtr = std::unique_ptr<Expr>;
+using StmtPtr = std::unique_ptr<Stmt>;
+using NamePtr = std::unique_ptr<Name>;
+
 
 
 
@@ -75,6 +90,7 @@ class IncompleteTypeSymbol;
 #include "scope.hh"
 #include "scope-manager.hh"
 #include "parser.hh"
+#include "ast.hh"
 
 
 
