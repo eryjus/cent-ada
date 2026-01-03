@@ -16,3 +16,22 @@
 #pragma once
 
 
+
+//
+// -- This is the AST node for a list of identifiers
+//    ----------------------------------------------
+class IdentifierList : public Name {
+    IdentifierList(void) = delete;
+    IdentifierList(const IdentifierList &) = delete;
+    IdentifierList &operator=(const IdentifierList &) = delete;
+
+public:
+    IdListPtr ids;
+
+public:
+    IdentifierList(SourceLoc_t l, IdListPtr list) : Name(loc), ids(std::move(list)) {}
+
+
+public:
+    void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
