@@ -1,6 +1,6 @@
 # Century Ada Compiler
 
-*Copyright (c)  2025-2025 -- Adam Clark*
+*Copyright (c)  2025-2026 -- Adam Clark*
 
 **"THE BEER-WARE LICENSE" (by Poul-Henning Kamp; Revision 42):**
 

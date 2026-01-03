@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/allocator.cc -- An allocator
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  allocator ::= new subtype_indication
 //              | new qualified_expression

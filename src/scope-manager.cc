@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  scope-manager.cc -- This file is the implementation of the scope interface
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 // ---------------------------------------------------------------------------------------------------------------
 //

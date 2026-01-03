@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/index-constraint.cc -- Define an index constraint
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  index_constraint ::= ( discrete_range {, discrete_range} )
 //

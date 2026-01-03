@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  tstream.hh -- This header defines the stream of tokens, and operations which can happen on it.
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 // ---------------------------------------------------------------------------------------------------------------
 //

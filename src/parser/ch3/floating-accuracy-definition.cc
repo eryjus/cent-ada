@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/floating-accuracy-definition.cc -- Parse a floating point accuracy definition
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  floating_accuracy_definition ::= digits static_simple_expression
 //

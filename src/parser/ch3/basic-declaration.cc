@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/basic-declaration.cc -- All the permutations needed to parse a basic declaration
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  Right from the start, this production causes issues.  The productions:
 //

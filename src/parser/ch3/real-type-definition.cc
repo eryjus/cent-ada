@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/real-type-definition.cc -- Parse a real type definition
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  real_type_definition ::= floating_point_constraint | fixed_point_constraint
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/simple-name.cc -- A simple name
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  simple_name ::= identifier
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/object-declaration.cc -- All the permutations needed to parse an object declaration
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  object_declaration ::= identifier_list : [constant] subtype_indication [:= expression] ;
 //                       | identifier_list : [constant] constrained_array_definition [:= expression] ;

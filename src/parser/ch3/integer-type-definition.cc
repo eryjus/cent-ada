@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/integer-type-definition.cc -- Parse an integer type definition
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  integer_type_definition ::= range_constraint
 //

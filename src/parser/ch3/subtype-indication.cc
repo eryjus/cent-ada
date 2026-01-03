@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/subtype-indication.cc -- an indication of a defined type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  subtype_indication ::= type_mark [constraint]
 //

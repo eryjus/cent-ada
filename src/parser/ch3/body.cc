@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/body.cc -- Parse iterations of a body
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  body ::= proper_body | body_stub
 //

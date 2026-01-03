@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/constraint.cc -- All the permutations needed to parse a constraint
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  constraint ::= range_constraint
 //               | floating_point_constraint

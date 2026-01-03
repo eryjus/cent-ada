@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/fixed-accuracy-definition.cc -- Parse a fixed point accuracy definition
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  fixed_accuracy_definition ::= delta static_simple_expression
 //

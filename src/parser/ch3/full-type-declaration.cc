@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/full-type-declaration.cc -- All the permutations needed to parse a full type declaration
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  full_type_declaration ::= type identifier [discriminant_part] is type_definition ;
 //

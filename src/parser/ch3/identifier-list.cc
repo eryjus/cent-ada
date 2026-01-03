@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/identifier-list.cc -- A basic identifier list consisting of 1 or more identifiers
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  identifier_list ::= identifier { , identifier }
 //

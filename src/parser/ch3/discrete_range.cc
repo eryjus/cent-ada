@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/discrete-range.cc -- Define a discrete range
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  discrete_range ::= discrete_subtype_indication | range
 //

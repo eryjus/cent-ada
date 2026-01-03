@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/attribute-designator.cc -- An attribute designator
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  attribute_designator ::= simple_name {( universal_static_expression )}
 //

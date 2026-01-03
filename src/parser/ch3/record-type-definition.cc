@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/record-type-definition.cc -- All the possible definitions for a record type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  record_type_definition ::= record component_list end record
 //

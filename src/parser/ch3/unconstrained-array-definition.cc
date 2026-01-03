@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/unconstrained-array-definition.cc -- Define an unconstrained array
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  unconstrained_array_definition ::= array ( index_subtype_definition {, index_subtype_definition} )
 //                                         of component_subtype_indication

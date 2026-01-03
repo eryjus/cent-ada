@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/qualified-expression.cc -- A qualified expression
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  qualidied_expression ::= type_mark ` ( expression )
 //                         | type_mark ` aggregate

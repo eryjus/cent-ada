@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/later-declarative-part.cc -- Parse a later declarative item
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  later_declarative_item ::= body
 //                           | subprogram_declaration

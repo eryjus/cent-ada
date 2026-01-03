@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/basic-declarative-part.cc -- Parse a basic declarative item
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  basic_declarative_item ::= basic_declaration
 //                           | representation_clause

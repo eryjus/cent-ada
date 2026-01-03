@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/component-declaration.cc -- Parse a component declaration
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  component_declaration ::= identifier_list : component_subtype_definition [:+ expression] ;
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/factor.cc -- A factor
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  factor ::= primary [** primary]
 //           | abs primary

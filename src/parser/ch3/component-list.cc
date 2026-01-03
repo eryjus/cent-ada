@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/component-list.cc -- Any components in the record type definition
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  component_list ::= null ;
 //                   | component_declaration {component_declaration}

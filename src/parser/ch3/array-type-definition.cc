@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/array-type-definition.cc -- All the possible definitions for an array type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  array_type_definition ::= unconstrained_array_definition | constrained_array_definitino
 //
