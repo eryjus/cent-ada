@@ -22,17 +22,27 @@
 //
 // -- Parse a Subtype Indication
 //    --------------------------
-bool Parser::ParseSubtypeIndication(void)
+SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
 {
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc = tokens.SourceLocation();
 
 
     //
     // -- Find a type mark and then optionally a constraint
     //    -------------------------------------------------
-    if (!ParseTypeMark()) return false;
+    if (!ParseTypeMark()) return nullptr;
     ParseConstraint();
+
+
+
+    //
+    // -- Sine this will pass at this point, build the AST here
+    //    -----------------------------------------------------
+    SubtypeIndicationPtr rv = std::make_unique<SubtypeIndication>(loc, nullptr, nullptr);
+    ASTPrinter prt;
+    rv->Accept(prt);
 
 
 
@@ -40,7 +50,7 @@ bool Parser::ParseSubtypeIndication(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

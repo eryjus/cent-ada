@@ -289,7 +289,7 @@ public:
     bool ParseRealTypeDefinition(Id &id);
     bool ParseRecordTypeDefinition(Id &id);
     bool ParseSubtypeDeclaration(void);
-    bool ParseSubtypeIndication(void);
+    SubtypeIndicationPtr ParseSubtypeIndication(void);
     bool ParseTypeDeclaration(void);
     bool ParseTypeDefinition(Id &id);
     bool ParseTypeMark(void);
@@ -368,8 +368,8 @@ public:
 
 
 
-    bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication(); }
-    bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication(); }
+    bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication() != nullptr; }
+    bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication() != nullptr; }
 
 
 

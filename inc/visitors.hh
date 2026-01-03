@@ -71,6 +71,33 @@ public:
 
 
 
-class ASTVisitor {};
+class ASTVisitor {
+public:
+    virtual void Visit(const SubtypeIndication &) = 0;
+    virtual void Visit(const Name &) { std::cout << "Unimplemented\n"; }
+};
 
 
+
+
+
+class ASTPrinter : public ASTVisitor {
+protected:
+    int depth = 0;
+
+
+public:
+    ASTPrinter(void) { std::cout << "PRINTING THE AST STRUCTURE\n==========================\n"; }
+
+protected:
+
+    void PrintDepth(void) {
+        for (int i = 0; i < depth; i ++) std::cout << ' ';
+    }
+
+
+protected:
+    void PrintRequiredChild(std::string label, ASTNode *child);
+    void PrintOptionalChild(std::string label, ASTNode *child);
+    void Visit(const SubtypeIndication &);
+};
