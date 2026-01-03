@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/component-subtype-definition.cc -- Parse a component subtype definition
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  component_subtype_definition ::= subtype_indication
 //

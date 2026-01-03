@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/choice.cc -- Parse a choice
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  choice ::= simple_expression
 //           | discrete_range

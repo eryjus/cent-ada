@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/type-definition.cc -- All the permutations to define a type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  type_definition ::= enumeration_type_definition
 //                    | integer_type_definition

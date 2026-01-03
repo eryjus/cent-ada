@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/relation.cc -- An expressions relations to each side
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  relation ::= simple_expression [relational_operator simple_expression]
 //             | simple_expression [not] in range

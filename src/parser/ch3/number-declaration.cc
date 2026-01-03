@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/number-declaration.cc -- All the permutations needed to parse a number declaration
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  number_declaration ::= identifier_list : constant := universal_static_expression;
 //

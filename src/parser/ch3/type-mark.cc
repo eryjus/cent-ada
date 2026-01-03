@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/type-mark.cc -- a type mark is 2 special cases for name
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  type_mark ::= type_name | subtype_name
 //

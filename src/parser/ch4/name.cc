@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/name.cc -- All the different methods for handling a name production
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  Sample of the complexity here, which will drive some serious left-factoring.
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/proper-body.cc -- Parse iterations of a proper-body
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  proper_body ::= subprogram_body | package_body | task_body
 //

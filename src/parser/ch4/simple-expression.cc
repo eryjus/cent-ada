@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/simple-expression.cc -- A simple expression
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  simple_expression ::= [unary_adding_operator] term {binary_adding_operator term}
 //

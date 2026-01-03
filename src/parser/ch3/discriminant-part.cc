@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/discriminant-part.cc -- Parse a discriminant part
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  discriminant_part ::= ( discriminant_specification {,discriminant_specification} )
 //

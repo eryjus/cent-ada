@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/floating-point-constraint.cc -- Parse a floating point constraint
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  floating_point_constraint ::= floating_accuracy_definition [range_constraint]
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  scope.cc -- This scope stack implementation
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  This file starts from breaking apart `scopes.cc` into separate concerns.
 //

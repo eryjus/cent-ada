@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/enumeration-type-definition.cc -- Parse an enumeration type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  enumeration_type_definition ::= ( enumeration_literal_specification { , enumeration_literal_specification } )
 //

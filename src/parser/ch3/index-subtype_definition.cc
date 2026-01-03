@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/index-subtype-definition.cc -- Define an index subtype
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  index_subtype_definition ::= type_mark range <>
 //

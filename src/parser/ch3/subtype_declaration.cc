@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/subtype-declaration.cc -- All the permutations needed to parse a subtype declaration
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  subtype_declaration ::= subtype identifier is subtype_indication ;
 //

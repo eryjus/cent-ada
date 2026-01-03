@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/variant.cc -- Parse a variant
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  variant ::= when choice {| choice} => component_list
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/attribute.cc -- An attribute denotes a basic operation of an entity given by a prefix.
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  attribute ::= prefix ' attribute_designator
 //

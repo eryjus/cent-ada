@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/discriminant-specification.cc -- Parse a discriminant specification
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  discriminant_specification ::= identifier_list : type _mark [:= expression]
 //

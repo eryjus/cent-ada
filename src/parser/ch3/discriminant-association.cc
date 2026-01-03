@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/discriminant-association.cc -- Parse a discriminant association
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  discriminant_association ::= [discriminant_simple_name {| discriminant_simple_name} => ] expression
 //

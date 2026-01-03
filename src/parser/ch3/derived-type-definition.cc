@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/derived-type-definition.cc -- A derived type from another type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  derived_type_definition ::= new subtype_indication
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  symbol.hh -- This header defines the symbol entries, including the subclasses
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  This file starts from breaking apart `scopes.hh` into separate concerns.
 //

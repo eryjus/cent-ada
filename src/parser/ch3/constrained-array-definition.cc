@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/constrained-array-definition.cc -- Define a constrained array
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  constrained_array_definition ::= array index_constraint of discrete_subtype_indication
 //

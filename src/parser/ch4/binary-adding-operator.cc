@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/binary-adding-operator.cc -- A addition operator
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  binary_adding_operator ::= + | - | &
 //

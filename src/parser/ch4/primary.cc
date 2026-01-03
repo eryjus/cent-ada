@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/primary.cc -- A primary expression
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  primary ::= numeric_literal
 //            | null

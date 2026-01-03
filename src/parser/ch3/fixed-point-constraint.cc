@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/fixed-point-constraint.cc -- Parse a fixed point constraint
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  fixed_point_constraint ::= fixed_accuracy_definition [range_constraint]
 //

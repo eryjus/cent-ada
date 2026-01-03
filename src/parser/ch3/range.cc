@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/range.cc -- Parse a range
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  range ::= range_attribute
 //          | simple_expression .. simple_expression

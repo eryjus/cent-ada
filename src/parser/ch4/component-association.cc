@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/component-association.cc -- An associate a component with a value (positional or by name)
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  component_association ::= [ choice {| choice} =>] expression
 //

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/incomplete-type-declaration.cc -- Declare an incomplete type
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  incomplete_type_declaration ::= type identifier [discriminant_part] ;
 //

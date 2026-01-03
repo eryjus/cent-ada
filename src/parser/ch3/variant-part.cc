@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/variant-part.cc -- Parse a record variant part
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  variant_part ::= case discriminant_simple_name is variant {| variant} end case ;
 //

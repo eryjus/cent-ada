@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/expression.cc -- An expression defined the computation of a value
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  expression ::= relation [and relation]
 //               | relation [and then relation]

@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/range-constraint.cc -- Parse a range constraint
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  range_constraint ::= range range
 //

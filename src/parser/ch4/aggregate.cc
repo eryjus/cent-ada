@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch4/aggregate.cc -- An aggregate combines component values into a composite record or array
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  aggregate ::= ( component_association {, component_association} )
 //

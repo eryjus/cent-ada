@@ -1,7 +1,7 @@
 //=================================================================================================================
 //  parser/ch3/declarative-part.cc -- Parse iterations of a declarative part
 //
-//        Copyright (c)  2025      -- Adam Clark; See LICENSE.md
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
 //  declarative_part ::= {basic_declarative_item} {later_declarative_item}
 //
