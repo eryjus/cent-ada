@@ -41,13 +41,11 @@ bool Parser::ParseChoice(void)
     //    the trivial deterministic options, where were placed first.
     //    ----------------------------------------------------------------------------
     if (Optional(TokenType::TOK_OTHERS)) {
-        diags.Debug("Choice: OTHERS");
         m.Commit();
         return true;
     }
 
     if (ParseDiscreteRange()) {
-        diags.Debug("Choice: discrete_range");
         m.Commit();
         return true;
     }
@@ -62,7 +60,6 @@ bool Parser::ParseChoice(void)
         if (vec != nullptr) {
             for (auto &sym : *vec) {
                 if (sym->kind == Symbol::SymbolKind::Component) {
-                    diags.Debug("Choice: component_simple_name");
                     m.Commit();
                     return true;
                 }
@@ -73,7 +70,6 @@ bool Parser::ParseChoice(void)
     }
 
     if (ParseSimpleExpression()) {
-        diags.Debug("Choice: simple_expression");
         m.Commit();
         return true;
     }

@@ -59,10 +59,7 @@ bool Parser::ParsePrimary(void)
     Id id;
     SourceLoc_t loc = tokens.SourceLocation();
 
-    diags.Debug("*** Starting to parse a 'Primary' " + std::string(tokens.tokenStr(tokens.Current())));
-
     if (Optional(TokenType::TOK_NULL)) {
-        diags.Debug("*** .. trivial NULL");
         m.Commit();
         return true;
     }
@@ -73,27 +70,23 @@ bool Parser::ParsePrimary(void)
     //    here rather than in the lexer.
     //    --------------------------------------------------------------------------
     if (Optional(TokenType::TOK_UNIVERSAL_INT_LITERAL)) {
-        diags.Debug("*** .. trivial INTEGER");
         m.Commit();
         return true;
     }
 
     if (Optional(TokenType::TOK_UNIVERSAL_REAL_LITERAL)) {
-        diags.Debug("*** .. trivial REAL");
         m.Commit();
         return true;
     }
 
 
     if (Optional(TokenType::TOK_STRING_LITERAL)) {
-        diags.Debug("*** .. trivial name (string lit)");
         m.Commit();
         return true;
     }
 
 
     if (tokens.Current() == TokenType::TOK_NEW) {
-        diags.Debug("*** .. trivial NEW");
         if (ParseAllocator()) {
             m.Commit();
             return true;
@@ -104,7 +97,6 @@ bool Parser::ParsePrimary(void)
 
 
     if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
-        diags.Debug("*** .. trivial name (char lit)");
         if (ParseNameExpr(id)) {
             m.Commit();
             return true;
@@ -115,7 +107,6 @@ bool Parser::ParsePrimary(void)
 
 
     if (ParseOperatorSymbol()) {
-        diags.Debug("*** .. near trivial operator symbol");
         m.Commit();
         return true;
     }
@@ -125,7 +116,6 @@ bool Parser::ParsePrimary(void)
     // -- Now, an Identifier can start several different alternatives.  Check here for each.
     //    ----------------------------------------------------------------------------------
     if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-        diags.Debug("*** .. IDENTIFIER");
         IdentifierLexeme idLex = std::get<IdentifierLexeme>(tokens.Payload());
         const std::vector<Symbol *> *vec = scopes.Lookup(idLex.name);
 
@@ -135,7 +125,6 @@ bool Parser::ParsePrimary(void)
             for (auto &sym : *vec) {
                 if (sym->kind == Symbol::SymbolKind::Deleted) continue;
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
-                    diags.Debug("*** .. ID is a type; " + std::string(tokens.tokenStr(tokens.Current())));
                     if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
                         if (ParseQualifiedExpression()) {
                             m.Commit();
@@ -170,7 +159,6 @@ bool Parser::ParsePrimary(void)
     // -- Now, everything else will start with a TOK_LEFT_PAREN
     //    -----------------------------------------------------
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
-    diags.Debug("*** .. Consumed: LEFT PAREN");
 
 
     //
@@ -186,14 +174,10 @@ bool Parser::ParsePrimary(void)
     // -- we want to reset here and try again with an aggregate -- the only thing left
     m.Reset();
 
-    diags.Debug("*** .. Falling back on an aggregate... " + std::string(tokens.tokenStr(tokens.Current())));
     if (ParseAggregate()) {
         m.Commit();
         return true;
     }
-
-
-    diags.Debug("*** NOTHING MATCHED!!!");
 
     return false;
 }

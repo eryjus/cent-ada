@@ -3,5 +3,5 @@ type SCHEDULE is array(DAY) of BOOLEAN;
 
 ----------------------------------------
 
-SCHEDULE(WED | SUN => FALSE, others => TRUE)
+SCHEDULE'(WED | SUN => FALSE, others => TRUE)
 

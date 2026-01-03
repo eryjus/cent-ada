@@ -59,7 +59,6 @@ bool Parser::ParseSubtypeDeclaration(void)
     //    must be present for this production to be valid.
     //    ----------------------------------------------------------------
     if (!Require(TokenType::TOK_IS)) return false;
-    diags.Debug("*** Calling to parse a subtype indication: " + std::string(tokens.tokenStr(tokens.Current())));
     if (!ParseSubtypeIndication()) return false;
 
 

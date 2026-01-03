@@ -33,7 +33,6 @@ bool Parser::ParseAttributeDesignator(void)
     //
     // -- handle 3 special cases where the attribute name is not just an ID, but also a token
     //    -----------------------------------------------------------------------------------
-    diags.Debug("*** Getting an attribute designator: " + std::string(tokens.tokenStr(tokens.Current())));
     if (Optional(TokenType::TOK_DIGITS)) {
         id = { "digits", loc };
     } else if (Optional(TokenType::TOK_DELTA)) {
