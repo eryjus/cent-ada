@@ -128,7 +128,7 @@ using TypeExprPtr = std::unique_ptr<TypeExpr>;
 //
 // -- Some additional aliasing
 //    ------------------------
-using IdList = std::vector<Parser::Id>;
+using IdList = std::vector<Id>;
 
 
 #include "ast/decl.hh"

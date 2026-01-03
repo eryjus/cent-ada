@@ -79,6 +79,8 @@ using NamePtr = std::unique_ptr<Name>;
 using TypeExprPtr = std::unique_ptr<TypeExpr>;
 using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
 
+using IdList = std::vector<struct Id>;
+using IdListPtr = std::unique_ptr<IdList>;
 
 
 
