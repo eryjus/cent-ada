@@ -326,6 +326,29 @@ public:
 
 
 //
+// -- An Incomplete Type symbol
+//    -------------------------
+class IncompleteTypeSymbol : public TypeSymbol {
+    IncompleteTypeSymbol(void) = delete;
+    IncompleteTypeSymbol(const IncompleteTypeSymbol &) = delete;
+    IncompleteTypeSymbol &operator=(const IncompleteTypeSymbol &) = delete;
+
+
+public:
+    IncompleteTypeSymbol(std::string n, SourceLoc_t l, Scope *d) : TypeSymbol(n, TypeCategory::Incomplete, l, d) {
+        kind = SymbolKind::IncompleteType;
+    }
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
 // -- An Enumeration Literal
 //    ----------------------
 class EnumLiteralSymbol : public Symbol {
@@ -436,9 +459,6 @@ public:
         v.Visit(*this);
     }
 };
-
-
-
 
 
 

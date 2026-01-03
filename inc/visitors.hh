@@ -27,12 +27,13 @@ public:
     virtual void Visit(const IntegerTypeSymbol &) = 0;
     virtual void Visit(const RealTypeSymbol &) = 0;
     virtual void Visit(const ArrayTypeSymbol &) = 0;
-    virtual void Visit(const SubtypeSymbol&) = 0;
-    virtual void Visit(const EnumLiteralSymbol &) = 0;
-    virtual void Visit(const DiscriminantSymbol&) = 0;
-    virtual void Visit(const AttributeSymbol&) = 0;
-    virtual void Visit(const ObjectSymbol&) = 0;
-    virtual void Visit(const ComponentSymbol&) = 0;
+    virtual void Visit(const SubtypeSymbol &) = 0;
+    virtual void Visit(const EnumLiteralSymbol  &) = 0;
+    virtual void Visit(const DiscriminantSymbol &) = 0;
+    virtual void Visit(const AttributeSymbol &) = 0;
+    virtual void Visit(const ObjectSymbol &) = 0;
+    virtual void Visit(const ComponentSymbol &) = 0;
+    virtual void Visit(const IncompleteTypeSymbol &) = 0;
 };
 
 
@@ -65,6 +66,7 @@ public:
     virtual void Visit(const AttributeSymbol &s) override;
     virtual void Visit(const ObjectSymbol &s) override;
     virtual void Visit(const ComponentSymbol &s) override;
+    virtual void Visit(const IncompleteTypeSymbol &s) override;
 };
 
 
