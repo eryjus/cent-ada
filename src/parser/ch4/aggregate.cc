@@ -31,8 +31,6 @@ bool Parser::ParseAggregate(void)
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS))          return false;
     if (!ParseComponentAssociation())                       return false;
 
-    diags.Debug("*** Aggregate found 1 component association: " + std::string(tokens.tokenStr(tokens.Current())));
-
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         if (!ParseComponentAssociation()) {
@@ -47,7 +45,6 @@ bool Parser::ParseAggregate(void)
         diags.Error(loc, DiagID::MissingRightParen, { "component_association" } );
     }
 
-    diags.Debug("*** Wrapping up an aggregate: " + std::string(tokens.tokenStr(tokens.Current())));
 
     m.Commit();
     return true;

@@ -30,7 +30,12 @@ bool Parser::ParseQualifiedExpression(void)
     SourceLoc_t loc;
 
     if (!ParseTypeMark())       return false;
-    if (!Require(TokenType::TOK_GRAVE_ACCENT))   return false;
+    if (!Require(TokenType::TOK_APOSTROPHE))   return false;
+
+    if (ParseAggregate()) {
+        m.Commit();
+        return true;
+    }
 
     if (Require(TokenType::TOK_LEFT_PARENTHESIS)) {
         loc = tokens.SourceLocation();
@@ -48,10 +53,8 @@ bool Parser::ParseQualifiedExpression(void)
         return true;
     }
 
-    if (!ParseAggregate()) return false;
-
     m.Commit();
-    return true;
+    return false;
 }
 
 

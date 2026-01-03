@@ -13,6 +13,6 @@ NEXT : LINK := HEAD.SUCC;
 
 ----------------------------
 
-(VALUE => 0, SUCC|PREC => new CELL`(0, null, null))
+(VALUE => 0, SUCC|PRED => new CELL'(0, null, null))
 
 

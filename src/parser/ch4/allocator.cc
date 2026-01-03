@@ -30,10 +30,12 @@ bool Parser::ParseAllocator(void)
 
     if (!Require(TokenType::TOK_NEW)) return false;
 
-    if (ParseSubtypeIndication()) {
+    if (ParseQualifiedExpression()) {
         m.Commit();
         return true;
-    } else if (ParseQualifiedExpression()) {
+    }
+
+    if (ParseSubtypeIndication()) {
         m.Commit();
         return true;
     }

@@ -11,5 +11,5 @@ type CELL is
 
 HEAD : LINK := new CELL'(0, null, null);
 
-NEXT : LINK := HEAD.SECC;
+NEXT : LINK := HEAD.SUCC;
 
