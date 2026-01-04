@@ -120,4 +120,5 @@ using IdList = std::vector<Id>;
 #include "ast/name.hh"
 #include "ast/node.hh"
 #include "ast/typespec.hh"
+#include "ast/constraint.hh"
 

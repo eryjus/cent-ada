@@ -74,6 +74,9 @@ class SymbolVisitor;
 class TypeDecl;
 class TypeSpec;
 class TypeSymbol;
+class DiscreteRangeConstraint;
+class RangeConstraint;
+class AttributeRangeConstraint;
 
 
 using DeclPtr = std::unique_ptr<Decl>;
@@ -86,6 +89,7 @@ using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
 using TypeDeclPtr = std::unique_ptr<TypeDecl>;
 using TypeSpecPtr = std::unique_ptr<TypeSpec>;
 using EnumerationTypeSpecPtr = std::unique_ptr<EnumerationTypeSpec>;
+using RangeConstraintPtr = std::unique_ptr<RangeConstraint>;
 
 
 using IdList = std::vector<struct Id>;

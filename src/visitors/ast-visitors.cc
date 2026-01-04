@@ -181,3 +181,37 @@ void ASTPrinter::Visit(const EnumerationTypeSpec &n)
 }
 
 
+
+//
+// -- Print a Discrete Range Constraint
+//    ---------------------------------
+void ASTPrinter::Visit(const DiscreteRangeConstraint &n)
+{
+    PrintDepth();
+    std::cout << "DiscreteRangeConstraint\n";
+    depth ++;
+
+    PrintRequiredChild("lower", n.lowerBound.get());
+    PrintRequiredChild("upper", n.upperBound.get());
+
+    depth --;
+}
+
+
+//
+// -- Print a Sttribute Range Constraint
+//    ----------------------------------
+void ASTPrinter::Visit(const AttributeRangeConstraint &n)
+{
+    PrintDepth();
+    std::cout << "DiscreteRangeConstraint\n";
+    depth ++;
+
+    PrintRequiredChild("attribute", n.rangeAttribute.get());
+
+    depth --;
+}
+
+
+
+

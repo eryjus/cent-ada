@@ -23,34 +23,39 @@
 //
 // -- Parse a Range
 //    -------------
-bool Parser::ParseRange(void)
+RangeConstraintPtr Parser::ParseRange(void)
 {
     Production p(*this, "range");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
 
     //
     // -- If we find a range attribute we're done
     //    ---------------------------------------
     if (ParseRangeAttribute()) {
+        RangeConstraintPtr rv = std::make_unique<AttributeRangeConstraint>(astLoc, nullptr);
+
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
 
     //
     // -- otherwise, we have a range expression
     //    -------------------------------------
-    if (!ParseSimpleExpression()) return false;
-    if (!Require(TokenType::TOK_DOUBLE_DOT)) return false;
-    if (!ParseSimpleExpression()) return false;
+    if (!ParseSimpleExpression()) return nullptr;
+    if (!Require(TokenType::TOK_DOUBLE_DOT)) return nullptr;
+    if (!ParseSimpleExpression()) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    RangeConstraintPtr rv = std::make_unique<DiscreteRangeConstraint>(astLoc, nullptr, nullptr);
+
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 
