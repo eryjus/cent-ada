@@ -22,7 +22,7 @@
 //
 // -- Parse a Full Type Declaration
 //    -----------------------------
-FullTypeDeclarationPtr Parser::ParseFullTypeDeclaration(void)
+TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
 {
     Production p(*this, "full_type_definition");
     MarkStream m(tokens, diags);
@@ -73,7 +73,7 @@ FullTypeDeclarationPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    FullTypeDeclarationPtr rv = std::make_unique<FullTypeDeclaration>(astLoc, id, nullptr, nullptr);
+    TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, nullptr);
     ASTPrinter prt;
     rv->Accept(prt);
 

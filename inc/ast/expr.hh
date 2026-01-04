@@ -16,3 +16,18 @@
 #pragma once
 
 
+
+//
+// -- The common Expression node
+//    --------------------------
+class Expr : public ASTNode {
+    Expr(void) = delete;
+    Expr(const Expr &) = delete;
+    Expr &operator=(const Expr &) = delete;
+
+public:
+    Expr(SourceLoc_t l) : ASTNode(l) {}
+};
+
+
+

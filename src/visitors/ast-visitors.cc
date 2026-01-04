@@ -151,10 +151,10 @@ void ASTPrinter::Visit(const ObjectDeclaration &n)
 //
 // -- Print an Full Type Declaration AST node
 //    ---------------------------------------
-void ASTPrinter::Visit(const FullTypeDeclaration &n)
+void ASTPrinter::Visit(const TypeDecl &n)
 {
     PrintDepth();
-    std::cout << "FullTypeDeclaration\n";
+    std::cout << "TypeDecl\n";
     depth ++;
 
     PrintField("name", n.name.name);

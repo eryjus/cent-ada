@@ -3,6 +3,73 @@
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
+//  ChatGPT recommends the following structure:
+//
+//  ```
+//    ASTNode : (root)
+//
+//      Decl : ASTNode
+//        ExceptionDecl : Decl
+//        NumberDecl : Decl
+//        ObjectDecl : Decl
+//        PackageDecl : Decl
+//        RenamingDecl : Decl
+//        SubprogramDecl : Decl
+//        SubtypeDecl : Decl
+//        TypeDecl : Decl
+//
+//      TypeSpec : ASTNode
+//        AccessTypeSpec : TypeSpec
+//        ConstrainedArrayType : TypeSpec
+//        EnumerationTypeSpec : TypeSpec
+//        RecordTypeSpec : TypeSpec
+//        SubtypeIndication : TypeSpec
+//
+//      Stmt : ASTNode
+//        AssignmentStmt : Stmt
+//        BlockStmt : Stmt
+//        CaseStmt : Stmt
+//        ExitStmt : Stmt
+//        IfStmt : Stmt
+//        LoopStmt : Stmt
+//        NullStmt : Stmt
+//        ProcedureCallStmt : Stmt
+//        ReturnStmt : Stmt
+//
+//      Expr : ASTNode
+//        AggregateExpr : Expr
+//        BinaryExpr : Expr
+//        LiteralExpr : Expr
+//          CharLiteralExpr : LiteralExpr
+//          IntegerLiteralExpr : LiteralExpr
+//          RealLiteralExpr : LiteralExpr
+//          StringLiteralExpr : LiteralExpr
+//        NameExpr : Expr
+//        QualifiedExpr : Expr
+//        ShortCircuitExpr : Expr
+//        UnaryExpr : Expr
+//
+//      Name : ASTNode
+//        AttributeName : Name
+//        IndexedName : Name
+//        SelectedName : Name
+//        SimpleName : Name
+//        SliceName : Name
+//
+//      Constraint : ASTNode
+//        IndexConstraint : Constraint
+//        RangeConstraint : Constraint
+//
+//      DiscreteRange : ASTNode
+//        Range : DiscreteRange
+//        SubtypeRange : DiscreteRange
+//
+//      Choice : ASTNode
+//        ChoiceExpr : Choice
+//        ChoiceOthers : Choice
+//        ChoiceRange : Choice
+//  ```
+//
 // ---------------------------------------------------------------------------------------------------------------
 //
 //     Date      Tracker  Version  Pgmr  Description
@@ -40,94 +107,7 @@ using NodePtr = std::unique_ptr<ASTNode>;
 
 
 
-//
-// -- Here are some structural node types which need to be defined, starting with a Declaration
-//    -----------------------------------------------------------------------------------------
-class Decl : public ASTNode {
-    Decl(void) = delete;
-    Decl(const Decl &) = delete;
-    Decl &operator=(const Decl &) = delete;
-
-public:
-    Decl(SourceLoc_t l) : ASTNode(l) {}
-};
-
-
-
-//
-// -- The common Expression node
-//    --------------------------
-class Expr : public ASTNode {
-    Expr(void) = delete;
-    Expr(const Expr &) = delete;
-    Expr &operator=(const Expr &) = delete;
-
-public:
-    Expr(SourceLoc_t l) : ASTNode(l) {}
-};
-
-
-
-//
-// -- The common Statement node
-//    -------------------------
-class Stmt : public ASTNode {
-    Stmt(void) = delete;
-    Stmt(const Stmt &) = delete;
-    Stmt &operator=(const Stmt &) = delete;
-
-public:
-    Stmt(SourceLoc_t l) : ASTNode(l) {}
-};
-
-
-
-//
-// -- The common Name node
-//    --------------------
-class Name : public ASTNode {
-    Name(void) = delete;
-    Name(const Name &) = delete;
-    Name &operator=(const Name &) = delete;
-
-public:
-    Name(SourceLoc_t l) : ASTNode(l) {}
-
-
-public:
-    virtual void Accept(ASTVisitor &) override {}
-};
-
-
-
-//
-// -- The common Type Declaration node (Creating a type)
-//    --------------------------------------------------
-class TypeDecl : public ASTNode {
-    TypeDecl(void) = delete;
-    TypeDecl(const TypeDecl &) = delete;
-    TypeDecl &operator=(const TypeDecl &) = delete;
-
-public:
-    TypeDecl(SourceLoc_t l) : ASTNode(l) {}
-};
-
-
-
-//
-// -- The common Type Specifications node (describing a type)
-//    -------------------------------------------------------
-class TypeSpec : public ASTNode {
-    TypeSpec(void) = delete;
-    TypeSpec(const TypeSpec &) = delete;
-    TypeSpec &operator=(const TypeSpec &) = delete;
-
-public:
-    TypeSpec(SourceLoc_t l) : ASTNode(l) {}
-};
-
-
-
+#if 0
 //
 // -- Finally, some aliasing for readability
 //    --------------------------------------
@@ -138,7 +118,7 @@ using NamePtr = std::unique_ptr<Name>;
 using TypeDeclPtr = std::unique_ptr<TypeDecl>;
 using TypeSpecPtr = std::unique_ptr<TypeSpec>;
 
-
+#endif
 
 //
 // -- Some additional aliasing
@@ -151,6 +131,5 @@ using IdList = std::vector<Id>;
 #include "ast/stmt.hh"
 #include "ast/name.hh"
 #include "ast/node.hh"
-#include "ast/typedecl.hh"
 #include "ast/typespec.hh"
 

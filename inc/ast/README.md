@@ -94,3 +94,75 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 | unconstrained-array-definition    |                  |                      |                        |
 | variant                           |                  |                      |                        |
 | variant-part                      |                  |                      |                        |
+
+
+## Class hierarchy:
+
+ChatGPT recommends:
+
+
+```
+ASTNode : (root)
+
+Decl : ASTNode
+  ObjectDecl : Decl
+  TypeDecl : Decl
+  SubtypeDecl : Decl
+  NumberDecl : Decl
+  ExceptionDecl : Decl
+  RenamingDecl : Decl
+  PackageDecl : Decl
+  SubprogramDecl : Decl
+
+TypeSpec : ASTNode
+  SubtypeIndication : TypeSpec
+  ConstrainedArrayType : TypeSpec
+  EnumerationTypeSpec : TypeSpec
+  RecordTypeSpec : TypeSpec
+  AccessTypeSpec : TypeSpec
+
+Stmt : ASTNode
+  NullStmt : Stmt
+  AssignmentStmt : Stmt
+  IfStmt : Stmt
+  CaseStmt : Stmt
+  LoopStmt : Stmt
+  ExitStmt : Stmt
+  ReturnStmt : Stmt
+  ProcedureCallStmt : Stmt
+  BlockStmt : Stmt
+
+Expr : ASTNode
+  LiteralExpr : Expr
+    IntegerLiteralExpr : LiteralExpr
+    RealLiteralExpr : LiteralExpr
+    CharLiteralExpr : LiteralExpr
+    StringLiteralExpr : LiteralExpr
+  NameExpr : Expr
+  UnaryExpr : Expr
+  BinaryExpr : Expr
+  ShortCircuitExpr : Expr
+  AggregateExpr : Expr
+  QualifiedExpr : Expr
+
+Name : ASTNode
+  SimpleName : Name
+  SelectedName : Name
+  IndexedName : Name
+  SliceName : Name
+  AttributeName : Name
+
+Constraint : ASTNode
+  RangeConstraint : Constraint
+  IndexConstraint : Constraint
+
+DiscreteRange : ASTNode
+  Range : DiscreteRange
+  SubtypeRange : DiscreteRange
+
+Choice : ASTNode
+  ChoiceExpr : Choice
+  ChoiceRange : Choice
+  ChoiceOthers : Choice
+```
+

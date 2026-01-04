@@ -25,7 +25,7 @@ public:
     virtual void Visit(const SubtypeIndication &) = 0;
     virtual void Visit(const NumberDeclaration &) = 0;
     virtual void Visit(const ObjectDeclaration &) = 0;
-    virtual void Visit(const FullTypeDeclaration &) = 0;
+    virtual void Visit(const TypeDecl &) = 0;
 
     virtual void Visit(const Name &) { std::cout << "Unimplemented\n"; }
 };
@@ -61,6 +61,6 @@ protected:
     void Visit(const SubtypeIndication &);
     void Visit(const NumberDeclaration &);
     void Visit(const ObjectDeclaration &);
-    void Visit(const FullTypeDeclaration &);
+    void Visit(const TypeDecl &);
 };
 

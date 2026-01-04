@@ -18,6 +18,24 @@
 
 
 //
+// -- The common Name node
+//    --------------------
+class Name : public ASTNode {
+    Name(void) = delete;
+    Name(const Name &) = delete;
+    Name &operator=(const Name &) = delete;
+
+public:
+    Name(SourceLoc_t l) : ASTNode(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &) override {}
+};
+
+
+
+//
 // -- This is the AST node for a list of identifiers
 //    ----------------------------------------------
 class IdentifierList : public Name {

@@ -16,3 +16,18 @@
 #pragma once
 
 
+
+//
+// -- The common Statement node
+//    -------------------------
+class Stmt : public ASTNode {
+    Stmt(void) = delete;
+    Stmt(const Stmt &) = delete;
+    Stmt &operator=(const Stmt &) = delete;
+
+public:
+    Stmt(SourceLoc_t l) : ASTNode(l) {}
+};
+
+
+

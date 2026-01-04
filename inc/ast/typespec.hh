@@ -18,6 +18,20 @@
 
 
 //
+// -- The common Type Specifications node (describing a type)
+//    -------------------------------------------------------
+class TypeSpec : public ASTNode {
+    TypeSpec(void) = delete;
+    TypeSpec(const TypeSpec &) = delete;
+    TypeSpec &operator=(const TypeSpec &) = delete;
+
+public:
+    TypeSpec(SourceLoc_t l) : ASTNode(l) {}
+};
+
+
+
+//
 // -- A Subtype Indication
 //    --------------------
 class SubtypeIndication : public TypeSpec {
