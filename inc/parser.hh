@@ -21,6 +21,24 @@ struct Id {
     SourceLoc_t loc;
 };
 
+
+//
+// -- This is the definition of an Id in the Parser
+//    ---------------------------------------------
+struct Id {
+    std::string name;
+    SourceLoc_t loc;
+};
+
+
+//
+// -- This is the definition of an Id in the Parser
+//    ---------------------------------------------
+struct Id {
+    std::string name;
+    SourceLoc_t loc;
+};
+
 using IdList = std::vector<Id>;
 
 
@@ -33,6 +51,14 @@ private:
     std::vector<std::string> stack;
     ScopeManager scopes;
 
+
+public:
+    using Id = struct Id {
+        std::string name;
+        SourceLoc_t loc;
+    };
+
+    using IdList = std::vector<Id>;
 
 private:
     class MarkStream {
@@ -277,7 +303,7 @@ public:
     bool ParseFloatingAccuracyDefinition(void);
     bool ParseFloatingPointConstraint(Id &id);
     bool ParseFullTypeDeclaration(void);
-    bool ParseIdentifierList(IdList *ids);
+    IdListPtr ParseIdentifierList(void);
     bool ParseIncompleteTypeDeclaration(void);
     bool ParseIndexConstraint(void);
     bool ParseIndexSubtypeDefinition(void);
@@ -379,4 +405,6 @@ public:
 
 
 
+using IdList = std::vector<Id>;
+using IdListPtr = std::unique_ptr<IdList>;
 

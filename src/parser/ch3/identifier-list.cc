@@ -22,10 +22,12 @@
 //
 // -- Parse an Identifier List
 //    ------------------------
-bool Parser::ParseIdentifierList(IdList *ids)
+IdListPtr Parser::ParseIdentifierList(void)
 {
     Production p(*this, "identifier_list");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    IdListPtr ids = std::make_unique<IdList>();
     Id id;
 
 
@@ -39,7 +41,7 @@ bool Parser::ParseIdentifierList(IdList *ids)
     // -- Read the first identifier in the list
     //    -------------------------------------
     SourceLoc_t loc = tokens.SourceLocation();
-    if (!RequireIdent(id)) return false;
+    if (!RequireIdent(id)) return nullptr;
     ids->push_back(id);
 
 
@@ -50,7 +52,6 @@ bool Parser::ParseIdentifierList(IdList *ids)
     while (Optional(TokenType::TOK_COMMA)) {
         if (!RequireIdent(id)) {
             diags.Error(loc, DiagID::ExtraComma, { "identifier_list" } );
-
             // -- continue on as if there was no extra comma
             goto exit;
         }
@@ -59,11 +60,8 @@ bool Parser::ParseIdentifierList(IdList *ids)
         loc = tokens.SourceLocation();
     }
 
-
-exit:
-
     m.Commit();
-    return true;
+    return ids;
 }
 
 

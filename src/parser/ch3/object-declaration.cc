@@ -36,7 +36,8 @@ bool Parser::ParseObjectDeclaration(void)
     //
     // -- Parse the common prefix
     //    -----------------------
-    if (!ParseIdentifierList(idList.get())) return false;
+    idList = ParseIdentifierList();
+    if (!idList) return false;
     if (!Require(TokenType::TOK_COLON)) return false;
     isConstant = Optional(TokenType::TOK_CONSTANT);
 
