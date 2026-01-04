@@ -63,6 +63,20 @@ void ASTPrinter::PrintOptionalChild(std::string label, ASTNode *child) {
 
 
 //
+// -- Print a field
+//    -------------
+void ASTPrinter::PrintField(std::string label, std::string value) {
+    PrintDepth();
+    std::cout << label << '\n';
+    depth ++;
+    PrintDepth();
+    std::cout << "- " << value << '\n';
+    depth --;
+}
+
+
+
+//
 // -- Print an Identifier List
 //    ------------------------
 void ASTPrinter::PrintIdList(std::string label, IdList *child) {
@@ -108,8 +122,25 @@ void ASTPrinter::Visit(const NumberDeclaration &n)
     depth ++;
 
     PrintIdList("names", n.names.get());
+    PrintRequiredChild("initializer", n.initializer.get());
 
+    depth --;
+}
+
+
+
+//
+// -- Print an Object Declaration AST node
+//    ------------------------------------
+void ASTPrinter::Visit(const ObjectDeclaration &n)
+{
     PrintDepth();
+    std::cout << "ObjectDeclaration\n";
+    depth ++;
+
+    PrintIdList("names", n.names.get());
+    PrintField("constant", (n.isConstant?"true":"false"));
+    PrintRequiredChild("typeSpec", n.typeSpec.get());
     PrintRequiredChild("initializer", n.initializer.get());
 
     depth --;

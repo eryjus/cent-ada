@@ -23,22 +23,24 @@
 //
 // -- Parse an Object Declaration
 //    ---------------------------
-bool Parser::ParseObjectDeclaration(void)
+ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
 {
     Production p(*this, "object_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    std::unique_ptr<IdList> idList = std::make_unique<IdList>();
+    std::unique_ptr<IdList> idList;
     bool isConstant = false;
     std::string where;
+    SourceLoc_t astLoc = tokens.SourceLocation();
     SourceLoc_t loc;
+    TypeSpecPtr typeSpec;
 
     //
     // -- Parse the common prefix
     //    -----------------------
     idList = ParseIdentifierList();
-    if (!idList) return false;
-    if (!Require(TokenType::TOK_COLON)) return false;
+    if (!idList) return nullptr;
+    if (!Require(TokenType::TOK_COLON)) return nullptr;
     isConstant = Optional(TokenType::TOK_CONSTANT);
 
 
@@ -61,21 +63,27 @@ bool Parser::ParseObjectDeclaration(void)
     //
     // -- Here is where the rules differ
     //    ------------------------------
-    if (ParseSubtypeIndication()) {
+    typeSpec = ParseSubtypeIndication();
+    if (typeSpec != nullptr) {
         where = "subtype_indication";
-        // -- do something important here
-    } else if (ParseConstrainedArrayDefinition(idList.get())) {
-        where = "constrained_array_definition";
-        // -- do something important here
-    } else {
-        // -- These are not the tokens we are looking for
-        return false;
+        goto assign;
     }
+
+    if (ParseConstrainedArrayDefinition(idList.get())) {
+        where = "constrained_array_definition";
+        goto assign;
+    }
+
+
+    // -- These are not the tokens we are looking for
+    return nullptr;
+
 
 
     //
     // -- Now, check for an optional assignment to an expression
     //    ------------------------------------------------------
+assign:
     loc = tokens.SourceLocation();
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         if (!ParseExpression()) {
@@ -99,9 +107,13 @@ bool Parser::ParseObjectDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+
+    ObjectDeclarationPtr rv = std::make_unique<ObjectDeclaration>(loc, std::move(idList), isConstant, nullptr, nullptr);
+
+
     s.Commit();
     m.Commit();
-    return true;
+    return rv;
 }
 
 

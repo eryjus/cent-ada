@@ -27,15 +27,19 @@ class ObjectDeclaration : public Decl {
 
 
 public:
-    IdList names;
+    IdListPtr names;
     bool isConstant;
-    SubtypeIndicationPtr subtype;
+    TypeSpecPtr typeSpec;
     ExprPtr initializer;                // may be nullptr
 
 
 public:
-    ObjectDeclaration(SourceLoc_t l, IdList ids, bool c, SubtypeIndicationPtr s, ExprPtr i) :
-            Decl(l), names(ids), isConstant(c), subtype(std::move(s)), initializer(std::move(i)) {}
+    ObjectDeclaration(SourceLoc_t l, IdListPtr ids, bool c, TypeSpecPtr s, ExprPtr i) :
+            Decl(l), names(std::move(ids)), isConstant(c), typeSpec(std::move(s)), initializer(std::move(i)) {}
+
+
+public:
+    void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
