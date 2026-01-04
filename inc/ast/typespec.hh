@@ -32,6 +32,29 @@ public:
 
 
 //
+// -- An Enumeration Type Spec
+//    ------------------------
+class EnumerationTypeSpec : public TypeSpec {
+    EnumerationTypeSpec(void) = delete;
+    EnumerationTypeSpec(const EnumerationTypeSpec &) = delete;
+    EnumerationTypeSpec &operator=(const EnumerationTypeSpec &) = delete;
+
+public:
+    IdListPtr literals;
+
+
+public:
+    EnumerationTypeSpec(SourceLoc_t l, IdListPtr lits)
+            : TypeSpec(l), literals(std::move(lits)) {}
+
+
+public:
+    void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
 // -- A Subtype Indication
 //    --------------------
 class SubtypeIndication : public TypeSpec {

@@ -22,12 +22,13 @@
 //    ----------------------------------------------
 class ASTVisitor {
 public:
+    virtual void Visit(const Name &) { std::cout << "Unimplemented\n"; }
+
     virtual void Visit(const SubtypeIndication &) = 0;
     virtual void Visit(const NumberDeclaration &) = 0;
     virtual void Visit(const ObjectDeclaration &) = 0;
     virtual void Visit(const TypeDecl &) = 0;
-
-    virtual void Visit(const Name &) { std::cout << "Unimplemented\n"; }
+    virtual void Visit(const EnumerationTypeSpec &) = 0;
 };
 
 
@@ -58,9 +59,10 @@ protected:
     void PrintIdList(std::string label, IdList *child);
 
 
-    void Visit(const SubtypeIndication &);
-    void Visit(const NumberDeclaration &);
-    void Visit(const ObjectDeclaration &);
-    void Visit(const TypeDecl &);
+    virtual void Visit(const SubtypeIndication &) override;
+    virtual void Visit(const NumberDeclaration &) override;
+    virtual void Visit(const ObjectDeclaration &) override;
+    virtual void Visit(const TypeDecl &) override;
+    virtual void Visit(const EnumerationTypeSpec &) override;
 };
 

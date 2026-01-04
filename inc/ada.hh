@@ -54,36 +54,39 @@ class ComponentSymbol;
 class Decl;
 class DerivedTypeSymbol;
 class DiscriminantSymbol;
+class EnumerationTypeSpec;
 class EnumLiteralSymbol;
 class EnumTypeSymbol;
 class Expr;
 class IncompleteTypeSymbol;
 class IntegerTypeSymbol;
 class Name;
+class NumberDeclaration;
+class ObjectDeclaration;
 class ObjectSymbol;
 class RealTypeSymbol;
 class RecordTypeSymbol;
 class Stmt;
+class SubtypeIndication;
 class SubtypeSymbol;
 class Symbol;
 class SymbolVisitor;
-class TypeSymbol;
-class TypeSpec;
-class SubtypeIndication;
-class NumberDeclaration;
-class ObjectDeclaration;
 class TypeDecl;
+class TypeSpec;
+class TypeSymbol;
 
 
 using DeclPtr = std::unique_ptr<Decl>;
 using ExprPtr = std::unique_ptr<Expr>;
-using StmtPtr = std::unique_ptr<Stmt>;
 using NamePtr = std::unique_ptr<Name>;
-using TypeSpecPtr = std::unique_ptr<TypeSpec>;
-using TypeDeclPtr = std::unique_ptr<TypeDecl>;
-using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
 using NumberDeclarationPtr = std::unique_ptr<NumberDeclaration>;
 using ObjectDeclarationPtr = std::unique_ptr<ObjectDeclaration>;
+using StmtPtr = std::unique_ptr<Stmt>;
+using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
+using TypeDeclPtr = std::unique_ptr<TypeDecl>;
+using TypeSpecPtr = std::unique_ptr<TypeSpec>;
+using EnumerationTypeSpecPtr = std::unique_ptr<EnumerationTypeSpec>;
+
 
 using IdList = std::vector<struct Id>;
 using IdListPtr = std::unique_ptr<IdList>;

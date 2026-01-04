@@ -165,3 +165,19 @@ void ASTPrinter::Visit(const TypeDecl &n)
 }
 
 
+
+//
+// -- Print an Enumeration Type Specification
+//    ---------------------------------------
+void ASTPrinter::Visit(const EnumerationTypeSpec &n)
+{
+    PrintDepth();
+    std::cout << "EnumerationTypeSpec\n";
+    depth ++;
+
+    PrintIdList("literals", n.literals.get());
+
+    depth --;
+}
+
+

@@ -22,13 +22,11 @@
 //
 // -- Parse an Enumeration Literal Specification
 //    ------------------------------------------
-bool Parser::ParseEnumerationLiteralSpecification(EnumTypeSymbol *type)
+Id Parser::ParseEnumerationLiteralSpecification(EnumTypeSymbol *type)
 {
     Production p(*this, "enumeration_literal_specification");
 
-    if (ParseEnumerationLiteral(type)) return true;
-
-    return false;
+    return ParseEnumerationLiteral(type);
 }
 
 

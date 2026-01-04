@@ -270,9 +270,9 @@ public:
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
-    bool ParseEnumerationLiteral(EnumTypeSymbol *type);
-    bool ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
-    bool ParseEnumerationTypeDefinition(Id &id);
+    Id ParseEnumerationLiteral(EnumTypeSymbol *type);
+    Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
+    TypeSpecPtr ParseEnumerationTypeDefinition(Id &id);
     bool ParseFixedAccuracyDefinition(void);
     bool ParseFixedPointConstraint(Id &id);
     bool ParseFloatingAccuracyDefinition(void);

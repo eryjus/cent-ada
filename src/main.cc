@@ -278,7 +278,7 @@ static int Compile(std::string filename, ParseType_t type)
         break;
     }
 
-    std::cerr << "Parse Complete.\n";
+    std::cerr << "\nParse Complete.\n\n";
 
 exit:
     if (opts.listing) tokens->Listing();

@@ -107,18 +107,6 @@ using NodePtr = std::unique_ptr<ASTNode>;
 
 
 
-#if 0
-//
-// -- Finally, some aliasing for readability
-//    --------------------------------------
-using DeclPtr = std::unique_ptr<Decl>;
-using ExprPtr = std::unique_ptr<Expr>;
-using StmtPtr = std::unique_ptr<Stmt>;
-using NamePtr = std::unique_ptr<Name>;
-using TypeDeclPtr = std::unique_ptr<TypeDecl>;
-using TypeSpecPtr = std::unique_ptr<TypeSpec>;
-
-#endif
 
 //
 // -- Some additional aliasing

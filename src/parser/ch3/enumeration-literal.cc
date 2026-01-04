@@ -22,7 +22,7 @@
 //
 // -- Parse an Enumeration Literal
 //    ----------------------------
-bool Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
+Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
 {
     Production p(*this, "enumeration_literal");
     MarkStream m(tokens, diags);
@@ -47,7 +47,7 @@ bool Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
         // -- Consider this parse to be good
         //    ------------------------------
         m.Commit();
-        return true;
+        return id;
     }
 
 
@@ -65,10 +65,10 @@ bool Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
         // -- Consider this parse to be good
         //    ------------------------------
         m.Commit();
-        return true;
+        return id;
     }
 
-    return false;
+    return { "", tokens.EmptyLocation() };
 }
 
 

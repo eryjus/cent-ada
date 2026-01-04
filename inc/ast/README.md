@@ -47,9 +47,9 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 | discriminant-constraint           |                  |                      |                        |
 | discriminant-part                 |                  |                      |                        |
 | discriminant-specification        |                  |                      |                        |
-| enumeration-literal               |                  |                      |                        |
-| enumeration-literal-specification |                  |                      |                        |
-| enumeration-type-definition       |                  |                      |                        |
+| enumeration-literal               |        ✓         |          ✓           |                        |
+| enumeration-literal-specification |        ✓         |          ✓           |                        |
+| enumeration-type-definition       |        ✓         |                      |                        |
 | expression                        |                  |                      |                        |
 | factor                            |                  |                      |                        |
 | fixed-accuracy-definition         |                  |                      |                        |
