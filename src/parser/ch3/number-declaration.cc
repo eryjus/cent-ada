@@ -22,20 +22,22 @@
 //
 // -- Parse a Number Declaration
 //    --------------------------
-bool Parser::ParseNumberDeclaration(void)
+NumberDeclarationPtr Parser::ParseNumberDeclaration(void)
 {
     Production p(*this, "number_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    std::unique_ptr<IdList> idList = std::make_unique<IdList>();
+    std::unique_ptr<IdList> idList;
+    SourceLoc_t astLoc = tokens.SourceLocation();
     SourceLoc_t loc;
+    bool isConst = false;
 
 
     //
     // -- Get the list of identifiers
     //    ---------------------------
     idList = ParseIdentifierList();
-    if (!idList) return false;
+    if (!idList) return nullptr;
 
 
     //
@@ -57,9 +59,9 @@ bool Parser::ParseNumberDeclaration(void)
     //
     // -- there are 3 consecutive tokens required
     //    ---------------------------------------
-    if (!Require(TokenType::TOK_COLON)) return false;
-    if (!Require(TokenType::TOK_CONSTANT)) return false;
-    if (!Require(TokenType::TOK_ASSIGNMENT)) return false;
+    if (!Require(TokenType::TOK_COLON)) return nullptr;
+    if (Optional(TokenType::TOK_CONSTANT)) isConst = true;
+    if (!Require(TokenType::TOK_ASSIGNMENT)) return nullptr;
 
 
     //
@@ -84,9 +86,11 @@ bool Parser::ParseNumberDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    NumberDeclarationPtr rv = std::make_unique<NumberDeclaration>(astLoc, std::move(idList), isConst, nullptr);
+
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

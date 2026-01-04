@@ -284,7 +284,7 @@ public:
     bool ParseIndexSubtypeDefinition(void);
     bool ParseIntegerTypeDefinition(Id &id);
     bool ParseLaterDeclarativeItem(void);
-    bool ParseNumberDeclaration(void);
+    NumberDeclarationPtr ParseNumberDeclaration(void);
     bool ParseObjectDeclaration(void);
     bool ParseProperBody(void);
     bool ParseRange(void);

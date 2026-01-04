@@ -23,6 +23,7 @@
 class ASTVisitor {
 public:
     virtual void Visit(const SubtypeIndication &) = 0;
+    virtual void Visit(const NumberDeclaration &) = 0;
     virtual void Visit(const Name &) { std::cout << "Unimplemented\n"; }
 };
 
@@ -50,6 +51,10 @@ protected:
 protected:
     void PrintRequiredChild(std::string label, ASTNode *child);
     void PrintOptionalChild(std::string label, ASTNode *child);
+    void PrintIdList(std::string label, IdList *child);
+
+
     void Visit(const SubtypeIndication &);
+    void Visit(const NumberDeclaration &);
 };
 

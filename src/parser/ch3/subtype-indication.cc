@@ -41,8 +41,6 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     // -- Sine this will pass at this point, build the AST here
     //    -----------------------------------------------------
     SubtypeIndicationPtr rv = std::make_unique<SubtypeIndication>(loc, nullptr, nullptr);
-    ASTPrinter prt;
-    rv->Accept(prt);
 
 
 

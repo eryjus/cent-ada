@@ -70,6 +70,7 @@ class SymbolVisitor;
 class TypeSymbol;
 class TypeExpr;
 class SubtypeIndication;
+class NumberDeclaration;
 
 
 using DeclPtr = std::unique_ptr<Decl>;
@@ -78,6 +79,7 @@ using StmtPtr = std::unique_ptr<Stmt>;
 using NamePtr = std::unique_ptr<Name>;
 using TypeExprPtr = std::unique_ptr<TypeExpr>;
 using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
+using NumberDeclarationPtr = std::unique_ptr<NumberDeclaration>;
 
 using IdList = std::vector<struct Id>;
 using IdListPtr = std::unique_ptr<IdList>;

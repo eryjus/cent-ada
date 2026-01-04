@@ -63,6 +63,25 @@ void ASTPrinter::PrintOptionalChild(std::string label, ASTNode *child) {
 
 
 //
+// -- Print an Identifier List
+//    ------------------------
+void ASTPrinter::PrintIdList(std::string label, IdList *child) {
+    assert(child);
+
+    PrintDepth();
+    std::cout << label << '\n';
+
+    depth ++;
+    for (auto &id : *child) {
+        PrintDepth();
+        std::cout << "- " << id.name << '\n';
+    }
+    depth --;
+}
+
+
+
+//
 // -- Print a SubtypeInciation AST node
 //    ---------------------------------
 void ASTPrinter::Visit(const SubtypeIndication &n)
@@ -73,6 +92,26 @@ void ASTPrinter::Visit(const SubtypeIndication &n)
 
     PrintRequiredChild("type mark", n.name.get());
     PrintOptionalChild("constraint", n.constraint.get());
+
+    depth --;
+}
+
+
+
+//
+// -- Print a Number Declaration AST node
+//    -----------------------------------
+void ASTPrinter::Visit(const NumberDeclaration &n)
+{
+    PrintDepth();
+    std::cout << "NumberDeclaration\n";
+    depth ++;
+
+    PrintIdList("names", n.names.get());
+
+    PrintDepth();
+    std::cout << "- constant " << (n.isConstant ? "true\n" : "false\n");
+    PrintRequiredChild("initializer", n.initializer.get());
 
     depth --;
 }

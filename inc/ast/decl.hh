@@ -40,3 +40,29 @@ public:
 
 
 
+//
+// -- Number declaration
+//    ------------------
+class NumberDeclaration : public Decl {
+    NumberDeclaration(void) = delete;
+    NumberDeclaration(const NumberDeclaration &) = delete;
+    NumberDeclaration &operator=(const NumberDeclaration &) = delete;
+
+
+public:
+    IdListPtr names;
+    bool isConstant;
+    ExprPtr initializer;
+
+
+public:
+    NumberDeclaration(SourceLoc_t l, IdListPtr ids, bool c, ExprPtr i) :
+            Decl(l), names(std::move(ids)), isConstant(c), initializer(std::move(i)) {}
+
+
+public:
+    void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+

@@ -66,7 +66,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 | later-declarative-item            |                  |                      |                        |
 | multiplying-operator              |                  |                      |                        |
 | name                              |                  |                      |                        |
-| number-declaration                |                  |                      |                        |
+| number-declaration                |        ✓         |                      |                        |
 | object-declaration                |                  |                      |                        |
 | prefix                            |                  |                      |                        |
 | primary                           |                  |                      |                        |
