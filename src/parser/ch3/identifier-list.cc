@@ -22,7 +22,7 @@
 //
 // -- Parse an Identifier List
 //    ------------------------
-IdListPtr Parser::ParseIdentifierList(IdList *out)
+IdListPtr Parser::ParseIdentifierList(void)
 {
     Production p(*this, "identifier_list");
     MarkStream m(tokens, diags);
@@ -65,12 +65,9 @@ IdListPtr Parser::ParseIdentifierList(IdList *out)
     // -- At this point, we are going to create the AST node
     //    --------------------------------------------------
 exit:
-    out = ids.get();
-    IdListPtr rv = std::move(ids);
-
 
     m.Commit();
-    return rv;
+    return ids;
 }
 
 
