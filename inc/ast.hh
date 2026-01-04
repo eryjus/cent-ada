@@ -103,13 +103,13 @@ public:
 //
 // -- The common Type Expressions node (describing a type)
 //    ----------------------------------------------------
-class TypeExpr : public ASTNode {
-    TypeExpr(void) = delete;
-    TypeExpr(const TypeExpr &) = delete;
-    TypeExpr &operator=(const TypeExpr &) = delete;
+class TypeSpec : public ASTNode {
+    TypeSpec(void) = delete;
+    TypeSpec(const TypeSpec &) = delete;
+    TypeSpec &operator=(const TypeSpec &) = delete;
 
 public:
-    TypeExpr(SourceLoc_t l) : ASTNode(l) {}
+    TypeSpec(SourceLoc_t l) : ASTNode(l) {}
 };
 
 
@@ -121,7 +121,7 @@ using DeclPtr = std::unique_ptr<Decl>;
 using ExprPtr = std::unique_ptr<Expr>;
 using StmtPtr = std::unique_ptr<Stmt>;
 using NamePtr = std::unique_ptr<Name>;
-using TypeExprPtr = std::unique_ptr<TypeExpr>;
+using TypeSpecPtr = std::unique_ptr<TypeSpec>;
 
 
 
@@ -136,4 +136,4 @@ using IdList = std::vector<Id>;
 #include "ast/stmt.hh"
 #include "ast/name.hh"
 #include "ast/node.hh"
-#include "ast/typeexpr.hh"
+#include "ast/typespec.hh"

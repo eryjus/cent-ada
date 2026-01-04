@@ -68,7 +68,7 @@ class SubtypeSymbol;
 class Symbol;
 class SymbolVisitor;
 class TypeSymbol;
-class TypeExpr;
+class TypeSpec;
 class SubtypeIndication;
 class NumberDeclaration;
 
@@ -77,7 +77,7 @@ using DeclPtr = std::unique_ptr<Decl>;
 using ExprPtr = std::unique_ptr<Expr>;
 using StmtPtr = std::unique_ptr<Stmt>;
 using NamePtr = std::unique_ptr<Name>;
-using TypeExprPtr = std::unique_ptr<TypeExpr>;
+using TypeSpecPtr = std::unique_ptr<TypeSpec>;
 using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
 using NumberDeclarationPtr = std::unique_ptr<NumberDeclaration>;
 

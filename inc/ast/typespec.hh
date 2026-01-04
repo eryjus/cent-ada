@@ -1,5 +1,5 @@
 //=================================================================================================================
-//  ast/typeexpr.hh -- This header is used for defining the classes which type expressions (not type declarations)
+//  ast/typespec.hh -- This header is used for defining the classes which type specifications
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
@@ -20,7 +20,7 @@
 //
 // -- A Subtype Indication
 //    --------------------
-class SubtypeIndication : public TypeExpr {
+class SubtypeIndication : public TypeSpec {
     SubtypeIndication(void) = delete;
     SubtypeIndication(const SubtypeIndication &) = delete;
     SubtypeIndication &operator=(const SubtypeIndication &) = delete;
@@ -32,7 +32,7 @@ public:
 
 public:
     SubtypeIndication(SourceLoc_t l, NamePtr n, ExprPtr c)
-            : TypeExpr(l), name(std::move(n)), constraint(std::move(c)) {}
+            : TypeSpec(l), name(std::move(n)), constraint(std::move(c)) {}
 
 
 public:
