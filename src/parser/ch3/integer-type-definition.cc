@@ -22,19 +22,20 @@
 //
 // -- Parse an Integer Type Definition
 //    --------------------------------
-bool Parser::ParseIntegerTypeDefinition(Id &id)
+TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
 {
     Production p(*this, "integer_type_definition");
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     RangeConstraintPtr con;
+    SourceLoc_t astLoc;
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if ((con = ParseRangeConstraint()) == nullptr) return false;
+    if ((con = ParseRangeConstraint()) == nullptr) return nullptr;
 
 
     if (scopes.IsLocalDefined(std::string_view(id.name))) {
@@ -54,10 +55,11 @@ bool Parser::ParseIntegerTypeDefinition(Id &id)
     //
     // -- Consider this parse complete
     //    ----------------------------
+    TypeSpecPtr rv = std::make_unique<IntegerTypeSpec>(astLoc, std::move(con));
 
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

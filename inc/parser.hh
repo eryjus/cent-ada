@@ -282,7 +282,7 @@ public:
     bool ParseIncompleteTypeDeclaration(void);
     bool ParseIndexConstraint(void);
     bool ParseIndexSubtypeDefinition(void);
-    bool ParseIntegerTypeDefinition(Id &id);
+    TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
     bool ParseLaterDeclarativeItem(void);
     NumberDeclarationPtr ParseNumberDeclaration(void);
     ObjectDeclarationPtr ParseObjectDeclaration(void);
