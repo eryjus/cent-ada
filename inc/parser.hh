@@ -22,23 +22,6 @@ struct Id {
 };
 
 
-//
-// -- This is the definition of an Id in the Parser
-//    ---------------------------------------------
-struct Id {
-    std::string name;
-    SourceLoc_t loc;
-};
-
-
-//
-// -- This is the definition of an Id in the Parser
-//    ---------------------------------------------
-struct Id {
-    std::string name;
-    SourceLoc_t loc;
-};
-
 using IdList = std::vector<Id>;
 
 
@@ -51,14 +34,6 @@ private:
     std::vector<std::string> stack;
     ScopeManager scopes;
 
-
-public:
-    using Id = struct Id {
-        std::string name;
-        SourceLoc_t loc;
-    };
-
-    using IdList = std::vector<Id>;
 
 private:
     class MarkStream {

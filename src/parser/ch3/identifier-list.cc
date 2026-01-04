@@ -60,8 +60,13 @@ IdListPtr Parser::ParseIdentifierList(void)
         loc = tokens.SourceLocation();
     }
 
+
+    //
+    // -- At this point, we are going to create the AST node
+    //    --------------------------------------------------
+exit:
     m.Commit();
-    return ids;
+    return std::move(ids);
 }
 
 
