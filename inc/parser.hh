@@ -378,4 +378,6 @@ public:
 
 
 
+using IdList = std::vector<Id>;
+using IdListPtr = std::unique_ptr<IdList>;
 

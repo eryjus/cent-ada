@@ -50,7 +50,6 @@ bool Parser::ParseIdentifierList(IdList *ids)
     while (Optional(TokenType::TOK_COMMA)) {
         if (!RequireIdent(id)) {
             diags.Error(loc, DiagID::ExtraComma, { "identifier_list" } );
-
             // -- continue on as if there was no extra comma
             goto exit;
         }
