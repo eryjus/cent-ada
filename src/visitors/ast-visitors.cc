@@ -147,3 +147,21 @@ void ASTPrinter::Visit(const ObjectDeclaration &n)
 }
 
 
+
+//
+// -- Print an Full Type Declaration AST node
+//    ---------------------------------------
+void ASTPrinter::Visit(const FullTypeDeclaration &n)
+{
+    PrintDepth();
+    std::cout << "FullTypeDeclaration\n";
+    depth ++;
+
+    PrintField("name", n.name.name);
+    PrintOptionalChild("discriminantPart", n.discriminantPart.get());
+    PrintRequiredChild("definition", n.definition.get());
+
+    depth --;
+}
+
+

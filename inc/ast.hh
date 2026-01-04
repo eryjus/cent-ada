@@ -101,8 +101,22 @@ public:
 
 
 //
-// -- The common Type Expressions node (describing a type)
-//    ----------------------------------------------------
+// -- The common Type Declaration node (Creating a type)
+//    --------------------------------------------------
+class TypeDecl : public ASTNode {
+    TypeDecl(void) = delete;
+    TypeDecl(const TypeDecl &) = delete;
+    TypeDecl &operator=(const TypeDecl &) = delete;
+
+public:
+    TypeDecl(SourceLoc_t l) : ASTNode(l) {}
+};
+
+
+
+//
+// -- The common Type Specifications node (describing a type)
+//    -------------------------------------------------------
 class TypeSpec : public ASTNode {
     TypeSpec(void) = delete;
     TypeSpec(const TypeSpec &) = delete;
@@ -121,6 +135,7 @@ using DeclPtr = std::unique_ptr<Decl>;
 using ExprPtr = std::unique_ptr<Expr>;
 using StmtPtr = std::unique_ptr<Stmt>;
 using NamePtr = std::unique_ptr<Name>;
+using TypeDeclPtr = std::unique_ptr<TypeDecl>;
 using TypeSpecPtr = std::unique_ptr<TypeSpec>;
 
 
@@ -136,4 +151,6 @@ using IdList = std::vector<Id>;
 #include "ast/stmt.hh"
 #include "ast/name.hh"
 #include "ast/node.hh"
+#include "ast/typedecl.hh"
 #include "ast/typespec.hh"
+

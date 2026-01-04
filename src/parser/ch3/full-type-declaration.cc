@@ -22,25 +22,26 @@
 //
 // -- Parse a Full Type Declaration
 //    -----------------------------
-bool Parser::ParseFullTypeDeclaration(void)
+FullTypeDeclarationPtr Parser::ParseFullTypeDeclaration(void)
 {
     Production p(*this, "full_type_definition");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
     Id id;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
 
     //
     // -- the first consumable is a TOK_TYPE token
     //    ----------------------------------------
-    if (!Require(TokenType::TOK_TYPE)) return false;
+    if (!Require(TokenType::TOK_TYPE)) return nullptr;
 
 
     //
     // -- Now we get the type name and check it for duplicates
     //    ----------------------------------------------------
     SourceLoc_t loc = tokens.SourceLocation();
-    if (!RequireIdent(id)) return false;
+    if (!RequireIdent(id)) return nullptr;
 
 
 
@@ -55,7 +56,7 @@ bool Parser::ParseFullTypeDeclaration(void)
     // -- The definition of the type; TOK_IS must be present for this
     //    production to be valid.  See incomplete_type_declaration.
     //    -----------------------------------------------------------
-    if (!Require(TokenType::TOK_IS)) return false;
+    if (!Require(TokenType::TOK_IS)) return nullptr;
     ParseTypeDefinition(id);
 
 
@@ -72,9 +73,13 @@ bool Parser::ParseFullTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    FullTypeDeclarationPtr rv = std::make_unique<FullTypeDeclaration>(astLoc, id, nullptr, nullptr);
+    ASTPrinter prt;
+    rv->Accept(prt);
+
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

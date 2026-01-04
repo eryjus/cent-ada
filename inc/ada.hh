@@ -72,6 +72,8 @@ class TypeSpec;
 class SubtypeIndication;
 class NumberDeclaration;
 class ObjectDeclaration;
+class TypeDecl;
+class FullTypeDeclaration;
 
 
 using DeclPtr = std::unique_ptr<Decl>;
@@ -79,9 +81,11 @@ using ExprPtr = std::unique_ptr<Expr>;
 using StmtPtr = std::unique_ptr<Stmt>;
 using NamePtr = std::unique_ptr<Name>;
 using TypeSpecPtr = std::unique_ptr<TypeSpec>;
+using TypeDeclPtr = std::unique_ptr<TypeDecl>;
 using SubtypeIndicationPtr = std::unique_ptr<SubtypeIndication>;
 using NumberDeclarationPtr = std::unique_ptr<NumberDeclaration>;
 using ObjectDeclarationPtr = std::unique_ptr<ObjectDeclaration>;
+using FullTypeDeclarationPtr = std::unique_ptr<FullTypeDeclaration>;
 
 using IdList = std::vector<struct Id>;
 using IdListPtr = std::unique_ptr<IdList>;

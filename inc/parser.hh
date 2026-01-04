@@ -277,7 +277,7 @@ public:
     bool ParseFixedPointConstraint(Id &id);
     bool ParseFloatingAccuracyDefinition(void);
     bool ParseFloatingPointConstraint(Id &id);
-    bool ParseFullTypeDeclaration(void);
+    FullTypeDeclarationPtr ParseFullTypeDeclaration(void);
     IdListPtr ParseIdentifierList(void);
     bool ParseIncompleteTypeDeclaration(void);
     bool ParseIndexConstraint(void);

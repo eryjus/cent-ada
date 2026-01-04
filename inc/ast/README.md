@@ -56,7 +56,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 | fixed-point-constraint            |                  |                      |                        |
 | floating-accuracy-definition      |                  |                      |                        |
 | floating-point-constraint         |                  |                      |                        |
-| full-type-declaration             |                  |                      |                        |
+| full-type-declaration             |        ✓         |                      |                        |
 | identifier-list                   |        ✓         |          ✓           |                        |
 | incomplete-type-declaration       |                  |                      |                        |
 | index-constraint                  |                  |                      |                        |
