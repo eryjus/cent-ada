@@ -26,6 +26,8 @@ bool Parser::ParseIdentifierList(IdList *ids)
 {
     Production p(*this, "identifier_list");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    IdListPtr wrk = std::make_unique<IdList>();
     Id id;
 
 
@@ -63,6 +65,9 @@ bool Parser::ParseIdentifierList(IdList *ids)
     // -- At this point, we are going to create the AST node
     //    --------------------------------------------------
 exit:
+//    ids = wrk.get();
+    IdListPtr rv = std::move(wrk);
+
 
     m.Commit();
     return true;
