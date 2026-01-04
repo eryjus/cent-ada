@@ -29,8 +29,10 @@ public:
     virtual void Visit(const ObjectDeclaration &) = 0;
     virtual void Visit(const TypeDecl &) = 0;
     virtual void Visit(const EnumerationTypeSpec &) = 0;
-    virtual void Visit(const DiscreteRangeConstraint &) = 0;
-    virtual void Visit(const AttributeRangeConstraint &) = 0;
+    virtual void Visit(const RangeConstraint &) = 0;
+    virtual void Visit(const IntegerTypeSpec &) = 0;
+    virtual void Visit(const Range &) = 0;
+    virtual void Visit(const SubtypeRange &) = 0;
 };
 
 
@@ -66,7 +68,9 @@ protected:
     virtual void Visit(const ObjectDeclaration &) override;
     virtual void Visit(const TypeDecl &) override;
     virtual void Visit(const EnumerationTypeSpec &) override;
-    virtual void Visit(const DiscreteRangeConstraint &) override;
-    virtual void Visit(const AttributeRangeConstraint &) override;
+    virtual void Visit(const RangeConstraint &) override;
+    virtual void Visit(const IntegerTypeSpec &) override;
+    virtual void Visit(const Range &) override;
+    virtual void Visit(const SubtypeRange &) override;
 };
 

@@ -55,6 +55,30 @@ public:
 
 
 //
+// -- An integer type specification
+//    -----------------------------
+class IntegerTypeSpec : public TypeSpec {
+    IntegerTypeSpec(void) = delete;
+    IntegerTypeSpec(const IntegerTypeSpec &) = delete;
+    IntegerTypeSpec &operator=(const IntegerTypeSpec &) = delete;
+
+
+public:
+    RangeConstraintPtr range;
+
+
+public:
+    IntegerTypeSpec(SourceLoc_t l, RangeConstraintPtr c)
+            : TypeSpec(l), range(std::move(c)) {}
+
+
+public:
+    void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
 // -- A Subtype Indication
 //    --------------------
 class SubtypeIndication : public TypeSpec {

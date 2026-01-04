@@ -287,7 +287,7 @@ public:
     NumberDeclarationPtr ParseNumberDeclaration(void);
     ObjectDeclarationPtr ParseObjectDeclaration(void);
     bool ParseProperBody(void);
-    RangeConstraintPtr ParseRange(void);
+    DiscreteRangePtr ParseRange(void);
     RangeConstraintPtr ParseRangeConstraint(void);
     bool ParseRealTypeDefinition(Id &id);
     bool ParseRecordTypeDefinition(Id &id);

@@ -73,7 +73,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 | proper-body                       |                  |                      |                        |
 | qualified-expression              |                  |                      |                        |
 | range                             |        ✓         |                      |                        |
-| range-constraint                  |                  |                      |                        |
+| range-constraint                  |        ✓         |          ✓           |                        |
 | real-type-definition              |                  |                      |                        |
 | record-type-definition            |                  |                      |                        |
 | relation                          |                  |                      |                        |

@@ -183,12 +183,28 @@ void ASTPrinter::Visit(const EnumerationTypeSpec &n)
 
 
 //
-// -- Print a Discrete Range Constraint
-//    ---------------------------------
-void ASTPrinter::Visit(const DiscreteRangeConstraint &n)
+// -- Print a Range Constraint
+//    ------------------------
+void ASTPrinter::Visit(const RangeConstraint &n)
 {
     PrintDepth();
-    std::cout << "DiscreteRangeConstraint\n";
+    std::cout << "RangeConstraint\n";
+    depth ++;
+
+    PrintRequiredChild("range", n.range.get());
+
+    depth --;
+}
+
+
+
+//
+// -- Print a Range
+//    -------------
+void ASTPrinter::Visit(const Range &n)
+{
+    PrintDepth();
+    std::cout << "Range\n";
     depth ++;
 
     PrintRequiredChild("lower", n.lowerBound.get());
@@ -199,15 +215,32 @@ void ASTPrinter::Visit(const DiscreteRangeConstraint &n)
 
 
 //
-// -- Print a Sttribute Range Constraint
-//    ----------------------------------
-void ASTPrinter::Visit(const AttributeRangeConstraint &n)
+// -- Print a Subtype Range
+//    ---------------------
+void ASTPrinter::Visit(const SubtypeRange &n)
 {
     PrintDepth();
-    std::cout << "DiscreteRangeConstraint\n";
+    std::cout << "SubtypeRange\n";
     depth ++;
 
     PrintRequiredChild("attribute", n.rangeAttribute.get());
+
+    depth --;
+}
+
+
+
+
+//
+// -- Print an Integer Type
+//    ------------------------
+void ASTPrinter::Visit(const IntegerTypeSpec &n)
+{
+    PrintDepth();
+    std::cout << "IntegerTypeSpec\n";
+    depth ++;
+
+    PrintRequiredChild("range", n.range.get());
 
     depth --;
 }

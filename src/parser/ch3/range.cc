@@ -23,7 +23,7 @@
 //
 // -- Parse a Range
 //    -------------
-RangeConstraintPtr Parser::ParseRange(void)
+DiscreteRangePtr Parser::ParseRange(void)
 {
     Production p(*this, "range");
     MarkStream m(tokens, diags);
@@ -34,7 +34,7 @@ RangeConstraintPtr Parser::ParseRange(void)
     // -- If we find a range attribute we're done
     //    ---------------------------------------
     if (ParseRangeAttribute()) {
-        RangeConstraintPtr rv = std::make_unique<AttributeRangeConstraint>(astLoc, nullptr);
+        DiscreteRangePtr rv = std::make_unique<SubtypeRange>(astLoc, nullptr);
 
         m.Commit();
         return std::move(rv);
@@ -52,7 +52,7 @@ RangeConstraintPtr Parser::ParseRange(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    RangeConstraintPtr rv = std::make_unique<DiscreteRangeConstraint>(astLoc, nullptr, nullptr);
+    DiscreteRangePtr rv = std::make_unique<Range>(astLoc, nullptr, nullptr);
 
     m.Commit();
     return std::move(rv);

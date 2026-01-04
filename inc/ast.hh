@@ -22,6 +22,7 @@
 //        AccessTypeSpec : TypeSpec
 //        ConstrainedArrayType : TypeSpec
 //        EnumerationTypeSpec : TypeSpec
+//        IntegerTypeSpec : TypeSpec                        -- added by me
 //        RecordTypeSpec : TypeSpec
 //        SubtypeIndication : TypeSpec
 //
@@ -121,4 +122,5 @@ using IdList = std::vector<Id>;
 #include "ast/node.hh"
 #include "ast/typespec.hh"
 #include "ast/constraint.hh"
+#include "ast/discrete-range.hh"
 
