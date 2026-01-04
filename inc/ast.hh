@@ -22,7 +22,7 @@
 //        AccessTypeSpec : TypeSpec
 //        ConstrainedArrayType : TypeSpec
 //        EnumerationTypeSpec : TypeSpec
-//        IntegerTypeSpec : TypeSpec                        -- added by me
+//        NumericTypeSpec : TypeSpec                        -- added by me
 //        RecordTypeSpec : TypeSpec
 //        SubtypeIndication : TypeSpec
 //

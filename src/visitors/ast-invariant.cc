@@ -79,9 +79,12 @@ void ASTInvariant::Visit(const RangeConstraint &n)
 //
 // -- Check invariants for the AST class type
 //    ---------------------------------------
-void ASTInvariant::Visit(const IntegerTypeSpec &n)
+void ASTInvariant::Visit(const NumericTypeSpec &n)
 {
     assert(n.range);
+    if (n.kind != NumericTypeSpec::Kind::Integer) {
+        assert(n.size);
+    }
 }
 
 

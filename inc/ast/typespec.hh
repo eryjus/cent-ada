@@ -55,21 +55,31 @@ public:
 
 
 //
-// -- An integer type specification
-//    -----------------------------
-class IntegerTypeSpec : public TypeSpec {
-    IntegerTypeSpec(void) = delete;
-    IntegerTypeSpec(const IntegerTypeSpec &) = delete;
-    IntegerTypeSpec &operator=(const IntegerTypeSpec &) = delete;
+// -- A numeric Type Specification
+//    ----------------------------
+class NumericTypeSpec : public TypeSpec {
+    NumericTypeSpec(void) = delete;
+    NumericTypeSpec(const NumericTypeSpec &) = delete;
+    NumericTypeSpec &operator=(const NumericTypeSpec &) = delete;
 
 
 public:
+    enum class Kind {
+        Integer,
+        FixedPoint,
+        FloatingPoint,
+    };
+
+
+public:
+    Kind kind;
+    ExprPtr size;                   // nullptr for Kind::Integer; ::FixedPoint = Delta; ::FloatingPoint = Digits
     RangeConstraintPtr range;
 
 
 public:
-    IntegerTypeSpec(SourceLoc_t l, RangeConstraintPtr c)
-            : TypeSpec(l), range(std::move(c)) {}
+    NumericTypeSpec(SourceLoc_t l, Kind k, ExprPtr s, RangeConstraintPtr c)
+            : TypeSpec(l), kind(k), size(std::move(s)), range(std::move(c)) {}
 
 
 public:

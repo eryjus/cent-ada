@@ -76,7 +76,7 @@ class TypeSpec;
 class TypeSymbol;
 class RangeConstraint;
 class DiscreteRange;
-class IntegerTypeSpec;
+class NumericTypeSpec;
 class Range;
 class SubtypeRange;
 

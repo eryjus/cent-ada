@@ -55,7 +55,7 @@ TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
     //
     // -- Consider this parse complete
     //    ----------------------------
-    TypeSpecPtr rv = std::make_unique<IntegerTypeSpec>(astLoc, std::move(con));
+    TypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::Integer, nullptr, std::move(con));
 
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();

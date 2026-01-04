@@ -234,10 +234,10 @@ void ASTPrinter::Visit(const SubtypeRange &n)
 //
 // -- Print an Integer Type
 //    ------------------------
-void ASTPrinter::Visit(const IntegerTypeSpec &n)
+void ASTPrinter::Visit(const NumericTypeSpec &n)
 {
     PrintDepth();
-    std::cout << "IntegerTypeSpec\n";
+    std::cout << "NumericTypeSpec\n";
     depth ++;
 
     PrintRequiredChild("range", n.range.get());
