@@ -34,7 +34,8 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Get a list of identifiers
     //    -------------------------
-    if (!ParseIdentifierList(idList.get())) return false;
+    idList = ParseIdentifierList();
+    if (!idList) return false;
 
 
     for (int i = 0; i < idList->size(); i ++) {

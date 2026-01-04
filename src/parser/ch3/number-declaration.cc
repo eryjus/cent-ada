@@ -34,7 +34,8 @@ bool Parser::ParseNumberDeclaration(void)
     //
     // -- Get the list of identifiers
     //    ---------------------------
-    if (!ParseIdentifierList(idList.get())) return false;
+    idList = ParseIdentifierList();
+    if (!idList) return false;
 
 
     //

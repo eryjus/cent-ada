@@ -22,12 +22,12 @@
 //
 // -- Parse an Identifier List
 //    ------------------------
-bool Parser::ParseIdentifierList(IdList *ids)
+IdListPtr Parser::ParseIdentifierList(void)
 {
     Production p(*this, "identifier_list");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = tokens.SourceLocation();
-    IdListPtr wrk = std::make_unique<IdList>();
+    IdListPtr ids = std::make_unique<IdList>();
     Id id;
 
 
@@ -41,7 +41,7 @@ bool Parser::ParseIdentifierList(IdList *ids)
     // -- Read the first identifier in the list
     //    -------------------------------------
     SourceLoc_t loc = tokens.SourceLocation();
-    if (!RequireIdent(id)) return false;
+    if (!RequireIdent(id)) return nullptr;
     ids->push_back(id);
 
 
@@ -65,12 +65,8 @@ bool Parser::ParseIdentifierList(IdList *ids)
     // -- At this point, we are going to create the AST node
     //    --------------------------------------------------
 exit:
-//    ids = wrk.get();
-    IdListPtr rv = std::move(wrk);
-
-
     m.Commit();
-    return true;
+    return std::move(ids);
 }
 
 
