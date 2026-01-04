@@ -110,7 +110,6 @@ void ASTPrinter::Visit(const NumberDeclaration &n)
     PrintIdList("names", n.names.get());
 
     PrintDepth();
-    std::cout << "- constant " << (n.isConstant ? "true\n" : "false\n");
     PrintRequiredChild("initializer", n.initializer.get());
 
     depth --;

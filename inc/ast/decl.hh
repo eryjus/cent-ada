@@ -51,13 +51,12 @@ class NumberDeclaration : public Decl {
 
 public:
     IdListPtr names;
-    bool isConstant;
     ExprPtr initializer;
 
 
 public:
-    NumberDeclaration(SourceLoc_t l, IdListPtr ids, bool c, ExprPtr i) :
-            Decl(l), names(std::move(ids)), isConstant(c), initializer(std::move(i)) {}
+    NumberDeclaration(SourceLoc_t l, IdListPtr ids, ExprPtr i) :
+            Decl(l), names(std::move(ids)), initializer(std::move(i)) {}
 
 
 public:
