@@ -1,5 +1,5 @@
 //=================================================================================================================
-//  sym-visitors.cc -- Implement the classes which will visit the different symbol structures
+//  sym-printer.cc -- Implement the classes which will print the different symbol structures
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //

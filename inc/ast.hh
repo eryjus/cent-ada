@@ -96,7 +96,7 @@ class ASTNode {
 public:
     SourceLoc_t loc;
     virtual ~ASTNode() = default;
-    virtual void Accept(ASTVisitor &) = 0;
+    virtual void Accept(ASTVisitor &) {};
 
 
 public:

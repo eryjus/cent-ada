@@ -21,79 +21,79 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 ##
 
 
-| Production                        | AST Node Defined | AST Node Constructed | Final Output Confirmed |
-|:----------------------------------|:----------------:|:--------------------:|:----------------------:|
-| access-type-definition            |                  |                      |                        |
-| aggregate                         |                  |                      |                        |
-| allocator                         |                  |                      |                        |
-| array-type-definition             |                  |                      |                        |
-| attribute                         |                  |                      |                        |
-| attribute-designator              |                  |                      |                        |
-| basic-declaration                 |                  |                      |                        |
-| basic-declarative-item            |                  |                      |                        |
-| binary-adding-operator            |                  |                      |                        |
-| body                              |                  |                      |                        |
-| choice                            |                  |                      |                        |
-| component-association             |                  |                      |                        |
-| component-declaration             |                  |                      |                        |
-| component-list                    |                  |                      |                        |
-| component-subtype-definition      |                  |                      |                        |
-| constrained-array-definition      |                  |                      |                        |
-| constraint                        |                  |                      |                        |
-| declarative-part                  |                  |                      |                        |
-| derived-type-definition           |                  |                      |                        |
-| discrete_range                    |                  |                      |                        |
-| discriminant-association          |                  |                      |                        |
-| discriminant-constraint           |                  |                      |                        |
-| discriminant-part                 |                  |                      |                        |
-| discriminant-specification        |                  |                      |                        |
-| enumeration-literal               |        ✓         |          ✓           |                        |
-| enumeration-literal-specification |        ✓         |          ✓           |                        |
-| enumeration-type-definition       |        ✓         |                      |                        |
-| expression                        |                  |                      |                        |
-| factor                            |                  |                      |                        |
-| fixed-accuracy-definition         |                  |                      |                        |
-| fixed-point-constraint            |                  |                      |                        |
-| floating-accuracy-definition      |                  |                      |                        |
-| floating-point-constraint         |                  |                      |                        |
-| full-type-declaration             |        ✓         |                      |                        |
-| identifier-list                   |        ✓         |          ✓           |                        |
-| incomplete-type-declaration       |                  |                      |                        |
-| index-constraint                  |                  |                      |                        |
-| indexed-component                 |                  |                      |                        |
-| index-subtype_definition          |                  |                      |                        |
-| integer-type-definition           |                  |                      |                        |
-| later-declarative-item            |                  |                      |                        |
-| multiplying-operator              |                  |                      |                        |
-| name                              |                  |                      |                        |
-| number-declaration                |        ✓         |                      |                        |
-| object-declaration                |        ✓         |                      |                        |
-| prefix                            |                  |                      |                        |
-| primary                           |                  |                      |                        |
-| proper-body                       |                  |                      |                        |
-| qualified-expression              |                  |                      |                        |
-| range                             |        ✓         |                      |                        |
-| range-constraint                  |        ✓         |          ✓           |                        |
-| real-type-definition              |                  |                      |                        |
-| record-type-definition            |                  |                      |                        |
-| relation                          |                  |                      |                        |
-| relational-operator               |                  |                      |                        |
-| selected-component                |                  |                      |                        |
-| selector                          |                  |                      |                        |
-| simple-expression                 |                  |                      |                        |
-| simple-name                       |                  |                      |                        |
-| slice                             |                  |                      |                        |
-| subtype_declaration               |                  |                      |                        |
-| subtype-indication                |         ✓        |                      |                        |
-| term                              |                  |                      |                        |
-| type-conversion                   |                  |                      |                        |
-| type-declaration                  |                  |                      |                        |
-| type-definition                   |                  |                      |                        |
-| type-mark                         |                  |                      |                        |
-| unary-adding-operator             |                  |                      |                        |
-| unconstrained-array-definition    |                  |                      |                        |
-| variant                           |                  |                      |                        |
-| variant-part                      |                  |                      |                        |
+| Ch | Production                        | AST Node Class | No `nullptr` | DeskCheck Output |
+|:--:|:----------------------------------|:--------------:|:------------:|:----------------:|
+|  3 | access-type-definition            |                |              |                  |
+|  4 | aggregate                         |                |              |                  |
+|  4 | allocator                         |                |              |                  |
+|  3 | array-type-definition             |                |              |                  |
+|  4 | attribute                         |                |              |                  |
+|  4 | attribute-designator              |                |              |                  |
+|  3 | basic-declaration                 |                |              |                  |
+|  3 | basic-declarative-item            |                |              |                  |
+|  4 | binary-adding-operator            |                |              |                  |
+|  3 | body                              |                |              |                  |
+|  3 | choice                            |                |              |                  |
+|  4 | component-association             |                |              |                  |
+|  3 | component-declaration             |                |              |                  |
+|  3 | component-list                    |                |              |                  |
+|  3 | component-subtype-definition      |                |              |                  |
+|  3 | constrained-array-definition      |                |              |                  |
+|  3 | constraint                        |                |              |                  |
+|  3 | declarative-part                  |                |              |                  |
+|  3 | derived-type-definition           |                |              |                  |
+|  3 | discrete_range                    |                |              |                  |
+|  3 | discriminant-association          |                |              |                  |
+|  3 | discriminant-constraint           |                |              |                  |
+|  3 | discriminant-part                 |                |              |                  |
+|  3 | discriminant-specification        |                |              |                  |
+|  3 | enumeration-literal               |       ✓        |      ✓       |                  |
+|  3 | enumeration-literal-specification |       ✓        |      ✓       |                  |
+|  3 | enumeration-type-definition       |       ✓        |              |                  |
+|  4 | expression                        |                |              |                  |
+|  4 | factor                            |                |              |                  |
+|  3 | fixed-accuracy-definition         |                |              |                  |
+|  3 | fixed-point-constraint            |                |              |                  |
+|  3 | floating-accuracy-definition      |                |              |                  |
+|  3 | floating-point-constraint         |                |              |                  |
+|  3 | full-type-declaration             |       ✓        |              |                  |
+|  3 | identifier-list                   |       ✓        |      ✓       |                  |
+|  3 | incomplete-type-declaration       |                |              |                  |
+|  3 | index-constraint                  |                |              |                  |
+|  4 | indexed-component                 |                |              |                  |
+|  3 | index-subtype_definition          |                |              |                  |
+|  3 | integer-type-definition           |       ✓        |              |                  |
+|  3 | later-declarative-item            |                |              |                  |
+|  4 | multiplying-operator              |                |              |                  |
+|  4 | name                              |                |              |                  |
+|  3 | number-declaration                |       ✓        |              |                  |
+|  3 | object-declaration                |       ✓        |              |                  |
+|  4 | prefix                            |                |              |                  |
+|  4 | primary                           |                |              |                  |
+|  3 | proper-body                       |                |              |                  |
+|  4 | qualified-expression              |                |              |                  |
+|  3 | range                             |       ✓        |              |                  |
+|  3 | range-constraint                  |       ✓        |      ✓       |                  |
+|  3 | real-type-definition              |                |              |                  |
+|  3 | record-type-definition            |                |              |                  |
+|  4 | relation                          |                |              |                  |
+|  4 | relational-operator               |                |              |                  |
+|  4 | selected-component                |                |              |                  |
+|  4 | selector                          |                |              |                  |
+|  4 | simple-expression                 |                |              |                  |
+|  4 | simple-name                       |                |              |                  |
+|  4 | slice                             |                |              |                  |
+|  3 | subtype_declaration               |                |              |                  |
+|  3 | subtype-indication                |        ✓       |              |                  |
+|  4 | term                              |                |              |                  |
+|  4 | type-conversion                   |                |              |                  |
+|  3 | type-declaration                  |                |              |                  |
+|  3 | type-definition                   |                |              |                  |
+|  3 | type-mark                         |                |              |                  |
+|  4 | unary-adding-operator             |                |              |                  |
+|  3 | unconstrained-array-definition    |                |              |                  |
+|  3 | variant                           |                |              |                  |
+|  3 | variant-part                      |                |              |                  |
 
 
 ## Class hierarchy:

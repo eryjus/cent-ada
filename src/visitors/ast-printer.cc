@@ -1,5 +1,5 @@
 //=================================================================================================================
-//  ast-visitors.cc -- Implement the classes which will visit the different AST structures
+//  ast-printer.cc -- Implement the classes which will print the different AST structures
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //

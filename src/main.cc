@@ -253,7 +253,18 @@ static int Compile(std::string filename, ParseType_t type)
 
 
     case COMPILE_EXPRS:
-        while (parser->ParseBasicDeclaration()) {}
+        {
+            NodePtr ast;
+
+            while ((ast = std::move(parser->ParseBasicDeclaration())) != nullptr) {
+                if (opts.checkAstInvariants) {
+                    assert(ast);
+                    ASTInvariant check;
+                    ast->Accept(check);
+                }
+            }
+        }
+
         std::cerr << "\n";
         std::cerr << "********************************\n";
         std::cerr << "** Starting Expressions Parse **\n";
@@ -309,6 +320,8 @@ static void Usage(std::string pgm)
     std::cout << "                      process only declarations parts of the parser\n";
     std::cout << "      expressions, expr\n";
     std::cout << "                      process only expressions/declarations parts of the parser\n";
+    std::cout << "      invariants, invar\n";
+    std::cout << "                      same as 'expressions' but also check AST invariants\n";
     std::cout << "\n";
     std::cout << "  options:\n";
     std::cout << "  -h, --help          print this screen and exit\n";
@@ -377,6 +390,13 @@ int main(int argc, char *argv[])
         if (arg == "expressions" || arg == "expr") {
             action = ACT_COMPILE;
             type = COMPILE_EXPRS;
+            continue;
+        }
+
+        if (arg == "invariants" || arg == "invar") {
+            action = ACT_COMPILE;
+            type = COMPILE_EXPRS;
+            opts.checkAstInvariants = true;
             continue;
         }
 

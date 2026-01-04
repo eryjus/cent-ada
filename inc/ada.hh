@@ -81,6 +81,7 @@ class Range;
 class SubtypeRange;
 
 
+using NodePtr = std::unique_ptr<ASTNode>;
 using DeclPtr = std::unique_ptr<Decl>;
 using ExprPtr = std::unique_ptr<Expr>;
 using NamePtr = std::unique_ptr<Name>;
@@ -113,6 +114,7 @@ using IdListPtr = std::unique_ptr<IdList>;
 #include "scope-manager.hh"
 #include "parser.hh"
 #include "ast.hh"
+
 
 
 

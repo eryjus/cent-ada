@@ -253,7 +253,7 @@ public:
     //    ---------------------------------------
     bool ParseAccessTypeDefinition(Id &id);
     bool ParseArrayTypeDefinition(Id &id);
-    bool ParseBasicDeclaration(void);
+    NodePtr ParseBasicDeclaration(void);
     bool ParseBasicDeclarativeItem(void);
     bool ParseBody(void);
     bool ParseChoice(void);

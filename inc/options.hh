@@ -18,6 +18,7 @@ struct Options {
     bool dumpSymtab = false;
     bool listing = false;
     bool requireBasicDeclaration = false;
+    bool checkAstInvariants = false;
 };
 
 

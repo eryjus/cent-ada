@@ -74,3 +74,30 @@ protected:
     virtual void Visit(const SubtypeRange &) override;
 };
 
+
+
+//
+// -- AST Invariant checker
+//    ---------------------
+class ASTInvariant : public ASTVisitor {
+protected:
+    int depth = 0;
+
+
+public:
+    ASTInvariant(void) {}
+
+
+protected:
+    virtual void Visit(const SubtypeIndication &n) override;
+    virtual void Visit(const NumberDeclaration &n) override;
+    virtual void Visit(const ObjectDeclaration &n) override;
+    virtual void Visit(const TypeDecl &n) override;
+    virtual void Visit(const EnumerationTypeSpec &n) override;
+    virtual void Visit(const RangeConstraint &n) override;
+    virtual void Visit(const IntegerTypeSpec &n) override;
+    virtual void Visit(const Range &n) override;
+    virtual void Visit(const SubtypeRange &n) override;
+};
+
+

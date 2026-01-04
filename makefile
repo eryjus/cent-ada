@@ -16,14 +16,20 @@ test-scanner: all
 
 .PHONY: test-types
 test-types: all
-	echo "== Running declaration tests =="
+	echo "== Running Declaration tests =="
 	./scripts/run-type-tests.sh
 
 
 .PHONY: test-exprs
 test-exprs: all
-	echo "== Running expression tests =="
+	echo "== Running Expression tests =="
 	./scripts/run-expr-tests.sh
+
+
+.PHONY: test-invar
+test-invar: all
+	echo "== Running AST Invariant tests =="
+	./scripts/run-invar-tests.sh
 
 
 ## The following is built to always pass each test group!
@@ -31,9 +37,11 @@ test-exprs: all
 .PHONY: test
 test: all
 	echo "== Running ALL tests =="
-	echo "types:"
+	echo "Types:"
 	./scripts/run-type-tests.sh | grep FAILED || true
-	echo "exprs:"
+	echo "Exprs:"
 	./scripts/run-expr-tests.sh | grep FAILED || true
+	echo "Invar:"
+	./scripts/run-invar-tests.sh | grep FAILED || true
 
 

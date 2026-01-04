@@ -51,25 +51,25 @@
 //
 // -- For Chapter 3, a `basic_declaration` is the top-level production
 //    ----------------------------------------------------------------
-bool Parser::ParseBasicDeclaration(void)
+NodePtr Parser::ParseBasicDeclaration(void)
 {
     // -- This top-level production must Mark its location so it can output diags
     MarkStream m(tokens, diags);
     Production p(*this, "basic_declaration");
     SourceLoc_t loc = tokens.SourceLocation();
 
-    if (ParseObjectDeclaration())            { m.Commit(); return true; }
-    if (ParseNumberDeclaration())            { m.Commit(); return true; }
-    if (ParseTypeDeclaration())              { m.Commit(); return true; }
-    if (ParseSubtypeDeclaration())           { m.Commit(); return true; }
-    if (ParseSubprogramDeclaration())        { m.Commit(); return true; }
-    if (ParsePackageDeclaration())           { m.Commit(); return true; }
-    if (ParseTaskDeclaration())              { m.Commit(); return true; }
-    if (ParseGenericDeclaration())           { m.Commit(); return true; }
-    if (ParseExceptionDeclaration())         { m.Commit(); return true; }
-    if (ParseGenericInstantiation())         { m.Commit(); return true; }
-    if (ParseRenamingDeclaration())          { m.Commit(); return true; }
-    if (ParseDeferredConstantDeclaration())  { m.Commit(); return true; }
+    if (ParseObjectDeclaration())            { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseNumberDeclaration())            { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseTypeDeclaration())              { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseSubtypeDeclaration())           { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseSubprogramDeclaration())        { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParsePackageDeclaration())           { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseTaskDeclaration())              { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseGenericDeclaration())           { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseExceptionDeclaration())         { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseGenericInstantiation())         { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseRenamingDeclaration())          { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseDeferredConstantDeclaration())  { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
 
     if (opts.requireBasicDeclaration) {
         diags.Error(loc, DiagID::MissingBasicDeclaration);
@@ -77,7 +77,7 @@ bool Parser::ParseBasicDeclaration(void)
         tokens.Recovery();
     }
 
-    return false;
+    return nullptr;
 }
 
 
