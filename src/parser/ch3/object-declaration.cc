@@ -63,27 +63,21 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Here is where the rules differ
     //    ------------------------------
-    typeSpec = ParseSubtypeIndication();
-    if (typeSpec != nullptr) {
+    ;
+    if ((typeSpec = ParseSubtypeIndication()) != nullptr) {
         where = "subtype_indication";
-        goto assign;
-    }
-
-    if (ParseConstrainedArrayDefinition(idList.get())) {
+    } else if (ParseConstrainedArrayDefinition(idList.get())) {
         where = "constrained_array_definition";
-        goto assign;
+    } else {
+        // -- These are not the tokens we are looking for
+        return nullptr;
     }
-
-
-    // -- These are not the tokens we are looking for
-    return nullptr;
 
 
 
     //
     // -- Now, check for an optional assignment to an expression
     //    ------------------------------------------------------
-assign:
     loc = tokens.SourceLocation();
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         if (!ParseExpression()) {
