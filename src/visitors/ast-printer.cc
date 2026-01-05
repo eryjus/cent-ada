@@ -240,6 +240,22 @@ void ASTPrinter::Visit(const NumericTypeSpec &n)
     std::cout << "NumericTypeSpec\n";
     depth ++;
 
+    switch (n.kind) {
+    case NumericTypeSpec::Kind::Integer:
+        PrintField("kind", "Integer");
+        break;
+
+    case NumericTypeSpec::Kind::FixedPoint:
+        PrintField("kind", "Fixed Point");
+        PrintRequiredChild("delta", n.size.get());
+        break;
+
+    case NumericTypeSpec::Kind::FloatingPoint:
+        PrintField("kind", "Floating Point");
+        PrintRequiredChild("digits", n.size.get());
+        break;
+    }
+
     PrintRequiredChild("range", n.range.get());
 
     depth --;
