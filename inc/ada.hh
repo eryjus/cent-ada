@@ -95,6 +95,8 @@ using EnumerationTypeSpecPtr = std::unique_ptr<EnumerationTypeSpec>;
 using RangeConstraintPtr = std::unique_ptr<RangeConstraint>;
 using DiscreteRangePtr = std::unique_ptr<DiscreteRange>;
 using RangePtr = std::unique_ptr<Range>;
+using NumericTypeSpecPtr = std::unique_ptr<NumericTypeSpec>;
+
 
 using IdList = std::vector<struct Id>;
 using IdListPtr = std::unique_ptr<IdList>;
