@@ -22,12 +22,13 @@
 //
 // -- Parse a Fixed Point Constraint
 //    ------------------------------
-bool Parser::ParseFixedPointConstraint(Id &id)
+NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
 {
     Production p(*this, "fixed_point_constraint");
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc;
 
 
 
@@ -53,22 +54,23 @@ bool Parser::ParseFixedPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if (!ParseFixedAccuracyDefinition()) return false;
+    if (!ParseFixedAccuracyDefinition()) return nullptr;
 
 
     //
     // -- and then check on the optional Range Constraint
     //    -----------------------------------------------
-    ParseRangeConstraint();
+    RangeConstraintPtr range = std::move(ParseRangeConstraint());
 
 
 
     //
     // -- The parse is good here
     //    ----------------------
+    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, nullptr, std::move(range));
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

@@ -274,7 +274,7 @@ public:
     Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
     TypeSpecPtr ParseEnumerationTypeDefinition(Id &id);
     bool ParseFixedAccuracyDefinition(void);
-    bool ParseFixedPointConstraint(Id &id);
+    NumericTypeSpecPtr ParseFixedPointConstraint(Id &id);
     bool ParseFloatingAccuracyDefinition(void);
     NumericTypeSpecPtr ParseFloatingPointConstraint(Id &id);
     TypeDeclPtr ParseFullTypeDeclaration(void);
