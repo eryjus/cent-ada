@@ -104,8 +104,30 @@ void ASTInvariant::Visit(const Range &n)
 //    ---------------------------------------
 void ASTInvariant::Visit(const SubtypeRange &n)
 {
+    assert(n.subtype);
+}
+
+
+
+//
+// -- Check invariants for the AST class type
+//    ---------------------------------------
+void ASTInvariant::Visit(const IndexConstraint &n)
+{
+    assert(n.index);
+}
+
+
+
+
+//
+// -- Check invariants for the AST class type
+//    ---------------------------------------
+void ASTInvariant::Visit(const AttributeRange &n)
+{
     assert(n.rangeAttribute);
 }
+
 
 
 

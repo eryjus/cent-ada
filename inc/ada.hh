@@ -79,6 +79,8 @@ class DiscreteRange;
 class NumericTypeSpec;
 class Range;
 class SubtypeRange;
+class IndexConstraint;
+class AttributeRange;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -96,6 +98,8 @@ using RangeConstraintPtr = std::unique_ptr<RangeConstraint>;
 using DiscreteRangePtr = std::unique_ptr<DiscreteRange>;
 using RangePtr = std::unique_ptr<Range>;
 using NumericTypeSpecPtr = std::unique_ptr<NumericTypeSpec>;
+using IndexConstraintPtr = std::unique_ptr<IndexConstraint>;
+using SubtypeRangePtr = std::unique_ptr<SubtypeRange>;
 
 
 using IdList = std::vector<struct Id>;

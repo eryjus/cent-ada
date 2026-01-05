@@ -63,10 +63,32 @@ class SubtypeRange : public DiscreteRange {
     SubtypeRange &operator=(const SubtypeRange &) = delete;
 
 public:
+    SubtypeIndicationPtr subtype;
+
+public:
+    SubtypeRange(SourceLoc_t loc, SubtypeIndicationPtr r)
+            : DiscreteRange(loc), subtype(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) override { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is an attribute range
+//    --------------------------
+class AttributeRange : public DiscreteRange {
+    AttributeRange(void) = delete;
+    AttributeRange(const AttributeRange &) = delete;
+    AttributeRange &operator=(const AttributeRange &) = delete;
+
+public:
     NamePtr rangeAttribute;
 
 public:
-    SubtypeRange(SourceLoc_t loc, NamePtr r)
+    AttributeRange(SourceLoc_t loc, NamePtr r)
             : DiscreteRange(loc), rangeAttribute(std::move(r)) {}
 
 

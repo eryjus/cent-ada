@@ -53,5 +53,20 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
 
 
 
+DiscreteRangePtr Parser::ParseDiscreteSubtypeIndication(void)
+{
+    Production p(*this, "subtype_indication(discrete)");
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    SubtypeRangePtr rv;
+    SubtypeIndicationPtr node;
+
+    node = ParseSubtypeIndication();
+    if (node == nullptr) return nullptr;
+
+    rv = std::make_unique<SubtypeRange>(astLoc, std::move(node));
+    return std::move(rv);
+}
+
+
 
 

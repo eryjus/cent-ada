@@ -265,7 +265,7 @@ public:
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
     bool ParseDerivedTypeDefinition(Id &id);
-    bool ParseDiscreteRange(void);
+    DiscreteRangePtr ParseDiscreteRange(void);
     bool ParseDiscriminantAssociation(void);
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
@@ -372,7 +372,7 @@ public:
 
 
     bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication() != nullptr; }
-    bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication() != nullptr; }
+    DiscreteRangePtr ParseDiscreteSubtypeIndication(void);
 
 
 

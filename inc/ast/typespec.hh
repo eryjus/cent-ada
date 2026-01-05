@@ -31,6 +31,13 @@ public:
 
 
 
+class ArrayTypeSpec : public TypeSpec {
+//    std::vector<IndexConstraintPtr> indexes;
+    SubtypeIndicationPtr type;
+};
+
+
+
 //
 // -- An Enumeration Type Spec
 //    ------------------------

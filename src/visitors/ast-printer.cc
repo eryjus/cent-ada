@@ -223,7 +223,7 @@ void ASTPrinter::Visit(const SubtypeRange &n)
     std::cout << "SubtypeRange\n";
     depth ++;
 
-    PrintRequiredChild("attribute", n.rangeAttribute.get());
+    PrintRequiredChild("attribute", n.subtype.get());
 
     depth --;
 }
@@ -260,6 +260,40 @@ void ASTPrinter::Visit(const NumericTypeSpec &n)
 
     depth --;
 }
+
+
+
+//
+// -- Print an Index Range
+//    --------------------
+void ASTPrinter::Visit(const IndexConstraint &n)
+{
+    PrintDepth();
+    std::cout << "IndexConstraint\n";
+    depth ++;
+
+    PrintRequiredChild("index", n.index.get());
+
+    depth --;
+}
+
+
+
+//
+// -- Print an Attribute Range
+//    ------------------------
+void ASTPrinter::Visit(const AttributeRange &n)
+{
+    PrintDepth();
+    std::cout << "AttributeRange\n";
+    depth ++;
+
+    PrintRequiredChild("attribute", n.rangeAttribute.get());
+
+    depth --;
+}
+
+
 
 
 

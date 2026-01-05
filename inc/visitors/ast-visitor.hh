@@ -33,6 +33,8 @@ public:
     virtual void Visit(const NumericTypeSpec &) = 0;
     virtual void Visit(const Range &) = 0;
     virtual void Visit(const SubtypeRange &) = 0;
+    virtual void Visit(const IndexConstraint &) = 0;
+    virtual void Visit(const AttributeRange &) = 0;
 };
 
 
@@ -72,6 +74,8 @@ protected:
     virtual void Visit(const NumericTypeSpec &) override;
     virtual void Visit(const Range &) override;
     virtual void Visit(const SubtypeRange &) override;
+    virtual void Visit(const IndexConstraint &) override;
+    virtual void Visit(const AttributeRange &) override;
 };
 
 
@@ -98,6 +102,8 @@ protected:
     virtual void Visit(const NumericTypeSpec &n) override;
     virtual void Visit(const Range &n) override;
     virtual void Visit(const SubtypeRange &n) override;
+    virtual void Visit(const IndexConstraint &n) override;
+    virtual void Visit(const AttributeRange &) override;
 };
 
 

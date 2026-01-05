@@ -53,3 +53,24 @@ public:
 
 
 
+//
+// -- This class identifies an index constraint on an array
+//    -----------------------------------------------------
+class IndexConstraint : public Constraint {
+    IndexConstraint(void) = delete;
+    IndexConstraint(const IndexConstraint &) = delete;
+    IndexConstraint &operator=(const IndexConstraint &) = delete;
+
+
+public:
+    bool unconstrained;
+    DiscreteRangePtr index;
+
+
+public:
+    IndexConstraint(SourceLoc_t loc, bool u, DiscreteRangePtr r) : Constraint(loc), unconstrained(u), index(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};

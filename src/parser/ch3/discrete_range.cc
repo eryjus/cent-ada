@@ -22,14 +22,15 @@
 //
 // -- Parse Discrete Range
 //    --------------------
-bool Parser::ParseDiscreteRange(void)
+DiscreteRangePtr Parser::ParseDiscreteRange(void)
 {
     Production p(*this, "discrete_range");
+    DiscreteRangePtr rv;
 
-    if (ParseDiscreteSubtypeIndication())   return true;
-    if (ParseRange())                       return true;
+    if ((rv = std::move(ParseDiscreteSubtypeIndication())) != nullptr)   return rv;
+    if ((rv = std::move(ParseRange())) != nullptr)                       return rv;
 
-    return false;
+    return nullptr;
 }
 
 

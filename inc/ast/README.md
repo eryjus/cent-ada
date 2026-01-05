@@ -42,7 +42,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | constraint                        |                |              |                  |
 |  3 | declarative-part                  |                |              |                  |
 |  3 | derived-type-definition           |                |              |                  |
-|  3 | discrete_range                    |                |              |                  |
+|  3 | discrete_range                    |       ✓        |              |                  |
 |  3 | discriminant-association          |                |              |                  |
 |  3 | discriminant-constraint           |                |              |                  |
 |  3 | discriminant-part                 |                |              |                  |
@@ -53,7 +53,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  4 | expression                        |                |              |                  |
 |  4 | factor                            |                |              |                  |
 |  3 | fixed-accuracy-definition         |                |              |                  |
-|  3 | fixed-point-constraint            |                |              |                  |
+|  3 | fixed-point-constraint            |       ✓        |              |                  |
 |  3 | floating-accuracy-definition      |                |              |                  |
 |  3 | floating-point-constraint         |       ✓        |              |                  |
 |  3 | full-type-declaration             |       ✓        |              |                  |
