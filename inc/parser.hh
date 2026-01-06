@@ -280,7 +280,7 @@ public:
     TypeDeclPtr ParseFullTypeDeclaration(void);
     IdListPtr ParseIdentifierList(void);
     bool ParseIncompleteTypeDeclaration(void);
-    bool ParseIndexConstraint(void);
+    std::unique_ptr<std::vector<DiscreteRangePtr>> ParseIndexConstraint(void);
     bool ParseIndexSubtypeDefinition(void);
     TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
     bool ParseLaterDeclarativeItem(void);
@@ -295,7 +295,7 @@ public:
     SubtypeIndicationPtr ParseSubtypeIndication(void);
     bool ParseTypeDeclaration(void);
     bool ParseTypeDefinition(Id &id);
-    bool ParseTypeMark(void);
+    Id ParseTypeMark(void);
     bool ParseUnconstrainedArrayDefinition(Id &id);
     bool ParseVariant(RecordTypeSymbol *rec);
     bool ParseVariantPart(RecordTypeSymbol *rec);
@@ -321,8 +321,8 @@ public:
     bool ParseNameExpr(Id &id);                                 // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Base(Id &id);                                // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
-    bool ParseTypeName(void);
-    bool ParseSubtypeName(void);
+    Id ParseTypeName(void);
+    Id ParseSubtypeName(void);
     bool ParsePrefix(void);                                     // -- Ch 4: in `parse_expr.cc`
     bool ParsePrimary(void);                                    // -- Ch 4: in `parse_expr.cc`
     bool ParseQualifiedExpression(void);                        // -- Ch 4: in `parse_expr.cc`

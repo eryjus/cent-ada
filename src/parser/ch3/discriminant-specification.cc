@@ -29,6 +29,7 @@ bool Parser::ParseDiscriminantSpecification(void)
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t loc;
+    Id id;
 
 
     //
@@ -52,7 +53,7 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Now get the type
     //    ----------------
-    if (!ParseTypeMark()) return false;
+    if ((id = ParseTypeMark()).name == "") return false;
 
 
     //

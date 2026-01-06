@@ -177,19 +177,19 @@ bool Parser::ParseName_IndexOrSliceSuffix(void)
 //
 // -- Parse a name which will be a Type name (maybe incomplete)
 //    ---------------------------------------------------------
-bool Parser::ParseTypeName(void) {
+Id Parser::ParseTypeName(void) {
     Id id;
-    if (!ParseNameNonExpr(id)) return false;
+    if (!ParseNameNonExpr(id)) return { "", tokens.EmptyLocation() };
     const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
     if (vec) {
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return true;
-            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return true;
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return id;
+            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return id;
         }
     }
 
 
-    return false;
+    return { "", tokens.EmptyLocation() };
 }
 
 
@@ -198,18 +198,18 @@ bool Parser::ParseTypeName(void) {
 //
 // -- Parse a name which will be a subtype name
 //    -----------------------------------------
-bool Parser::ParseSubtypeName(void) {
+Id Parser::ParseSubtypeName(void) {
     Id id;
-    if (!ParseNameNonExpr(id)) return false;
+    if (!ParseNameNonExpr(id)) return { "", tokens.EmptyLocation() };
     const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-    if (!vec || vec->empty()) return false;
+    if (!vec || vec->empty()) return { "", tokens.EmptyLocation() };
     for (int i = 0; i < vec->size(); i ++) {
         if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
             TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
-            if (tp->category == TypeSymbol::TypeCategory::Subtype) return true;
+            if (tp->category == TypeSymbol::TypeCategory::Subtype) return id;
         }
     }
 
-    return false;
+    return { "", tokens.EmptyLocation() };
 }
 

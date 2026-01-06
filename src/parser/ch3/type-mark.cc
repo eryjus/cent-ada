@@ -21,14 +21,15 @@
 //
 // -- Parse a Type Mark
 //    -----------------
-bool Parser::ParseTypeMark(void)
+Id Parser::ParseTypeMark(void)
 {
     Production p(*this, "type_mark");
+    Id rv;
 
-    if (ParseTypeName())        return true;
-    if (ParseSubtypeName())     return true;
+    if ((rv = ParseTypeName()).name != "")        return rv;
+    if ((rv = ParseSubtypeName()).name != "")     return rv;
 
-    return false;
+    return { "", tokens.EmptyLocation() };
 }
 
 

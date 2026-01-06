@@ -26,12 +26,13 @@ bool Parser::ParseIndexSubtypeDefinition(void)
 {
     Production p(*this, "index_subtype_definition");
     MarkStream m(tokens, diags);
+    Id id;
 
 
     //
     // -- Get a type mark, and then the 2 required tokens to provide context
     //    ------------------------------------------------------------------
-    if (!ParseTypeMark()) return false;
+    if ((id = ParseTypeMark()).name == "") return false;
     if (!Require(TokenType::TOK_RANGE)) return false;
     if (!Require(TokenType::TOK_BOX)) return false;
 

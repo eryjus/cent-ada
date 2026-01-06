@@ -29,6 +29,7 @@ bool Parser::ParseRelation(void)
     Production p(*this, "relation");
     MarkStream m(tokens, diags);
     bool hasNot = false;
+    Id id;
 
     if (!ParseSimpleExpression())  return false;
 
@@ -42,7 +43,7 @@ bool Parser::ParseRelation(void)
             return true;
         }
 
-        if (ParseTypeMark()) {
+        if ((id = ParseTypeMark()).name != "") {
             m.Commit();
             return true;
         }

@@ -27,8 +27,9 @@ bool Parser::ParseTypeConversion(void)
     Production p(*this, "type_conversion");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    Id id;
 
-    if (!ParseTypeMark())       return false;
+    if ((id = ParseTypeMark()).name == "")       return false;
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return false;
     loc = tokens.SourceLocation();
     if (!ParseExpression()) {

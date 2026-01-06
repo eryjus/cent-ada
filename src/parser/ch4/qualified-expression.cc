@@ -28,8 +28,9 @@ bool Parser::ParseQualifiedExpression(void)
     Production p(*this, "qualified_expression");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    Id id;
 
-    if (!ParseTypeMark())       return false;
+    if ((id = ParseTypeMark()).name == "")       return false;
     if (!Require(TokenType::TOK_APOSTROPHE))   return false;
 
     if (ParseAggregate()) {

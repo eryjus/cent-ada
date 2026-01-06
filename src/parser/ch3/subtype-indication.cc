@@ -27,12 +27,13 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
     SourceLoc_t loc = tokens.SourceLocation();
+    Id id;
 
 
     //
     // -- Find a type mark and then optionally a constraint
     //    -------------------------------------------------
-    if (!ParseTypeMark()) return nullptr;
+    if ((id = ParseTypeMark()).name == "") return nullptr;
     ParseConstraint();
 
 
