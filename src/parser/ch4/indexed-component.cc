@@ -22,17 +22,20 @@
 //
 // -- Parse an Indexed Copmonent
 //    --------------------------
-bool Parser::ParseIndexedComponent(void)
+IndexedNamePtr Parser::ParseIndexedComponent(void)
 {
     Production p(*this, "indexed_component");
     MarkStream m(tokens, diags);
+    NamePtr pre = nullptr;
+    ExprListPtr idx = std::make_unique<ExprList>();
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if (!ParsePrefix())                                 return false;
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))      return false;
-    if (!ParseExpression())                             return false;
+    if (!ParsePrefix())                                 return nullptr;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))      return nullptr;
+    if (!ParseExpression())                             return nullptr;
 
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseExpression())                         return false;
+        if (!ParseExpression())                         return nullptr;
     }
 
     SourceLoc_t loc = tokens.SourceLocation();
@@ -40,8 +43,11 @@ bool Parser::ParseIndexedComponent(void)
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
 
+
+    IndexedNamePtr rv = std::make_unique<IndexedName>(astLoc, std::move(pre), std::move(idx));
+
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

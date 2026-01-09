@@ -22,17 +22,22 @@
 //
 // -- Parse an Attribute
 //    ------------------
-bool Parser::ParseAttribute(void)
+AttributeNamePtr Parser::ParseAttribute(void)
 {
     Production p(*this, "attribute");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if (!ParsePrefix())                             return false;
-    if (!Require(TokenType::TOK_APOSTROPHE))        return false;
-    if (!ParseAttributeDesignator())                return false;
+    if (!ParsePrefix())                             return nullptr;
+    if (!Require(TokenType::TOK_APOSTROPHE))        return nullptr;
+    if (!ParseAttributeDesignator())                return nullptr;
+
+
+    AttributeNamePtr rv = std::make_unique<AttributeName>(astLoc, nullptr, nullptr, nullptr);
+
 
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

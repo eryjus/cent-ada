@@ -39,7 +39,7 @@ bool Parser::ParseAttributeDesignator(void)
         id = { "delta", loc };
     } else if (Optional(TokenType::TOK_RANGE)) {
         id = { "range", loc };
-    } else if (!ParseSimpleName(id))           return false;
+    } else if (ParseSimpleName() == nullptr)           return false;
 
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         if (!ParseExpression()) return false;

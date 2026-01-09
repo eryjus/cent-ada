@@ -38,10 +38,10 @@ test-invar: all
 test: all
 	echo "== Running ALL tests =="
 	echo "Types:"
-	./scripts/run-type-tests.sh | grep FAILED || true
+	./scripts/run-type-tests.sh | grep FAILED --color=always || true
 	echo "Exprs:"
-	./scripts/run-expr-tests.sh | grep FAILED || true
+	./scripts/run-expr-tests.sh | grep FAILED --color=always || true
 	echo "Invar:"
-	./scripts/run-invar-tests.sh | grep FAILED || true
+	./scripts/run-invar-tests.sh | grep FAILED --color=always || true
 
 

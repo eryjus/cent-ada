@@ -81,6 +81,13 @@ class Range;
 class SubtypeRange;
 class IndexConstraint;
 class AttributeRange;
+class CharacterLiteralName;
+class SimpleName;
+class IndexedName;
+class SliceName;
+class SelectedName;
+class AttributeName;
+
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -100,10 +107,19 @@ using RangePtr = std::unique_ptr<Range>;
 using NumericTypeSpecPtr = std::unique_ptr<NumericTypeSpec>;
 using IndexConstraintPtr = std::unique_ptr<IndexConstraint>;
 using SubtypeRangePtr = std::unique_ptr<SubtypeRange>;
+using CharacterLiteralNamePtr = std::unique_ptr<CharacterLiteralName>;
+using SimpleNamePtr = std::unique_ptr<SimpleName>;
+using IndexedNamePtr = std::unique_ptr<IndexedName>;
+using SliceNamePtr = std::unique_ptr<SliceName>;
+using SelectedNamePtr = std::unique_ptr<SelectedName>;
+using AttributeNamePtr = std::unique_ptr<AttributeName>;
+
 
 
 using IdList = std::vector<struct Id>;
 using IdListPtr = std::unique_ptr<IdList>;
+using ExprList = std::vector<ExprPtr>;
+using ExprListPtr = std::unique_ptr<ExprList>;
 
 
 

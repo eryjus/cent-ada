@@ -40,7 +40,7 @@ bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
     // -- Check for a simple name
     //    -----------------------
     loc = tokens.SourceLocation();
-    if (!ParseDiscriminantSimpleName(id)) return false;
+    if (ParseDiscriminantSimpleName() == nullptr) return false;
 
 
     //

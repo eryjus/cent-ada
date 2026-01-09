@@ -39,7 +39,7 @@ bool Parser::ParseSelector(void)
     }
 
     SourceLoc_t loc = tokens.SourceLocation();
-    if (m.CommitIf(ParseSimpleName(id))) {
+    if (m.CommitIf(ParseSimpleName() != nullptr)) {
         if (!scopes.Lookup(id.name)) {
             diags.Error(loc, DiagID::UnknownName, { "selector"} );
             // -- allow the parse to continue

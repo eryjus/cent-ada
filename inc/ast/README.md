@@ -27,7 +27,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  4 | aggregate                         |                |              |                  |
 |  4 | allocator                         |                |              |                  |
 |  3 | array-type-definition             |                |              |                  |
-|  4 | attribute                         |                |              |                  |
+|  4 | attribute                         |       ✓        |              |                  |
 |  4 | attribute-designator              |                |              |                  |
 |  3 | basic-declaration                 |                |              |                  |
 |  3 | basic-declarative-item            |                |              |                  |
@@ -60,12 +60,12 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | identifier-list                   |       ✓        |      ✓       |                  |
 |  3 | incomplete-type-declaration       |                |              |                  |
 |  3 | index-constraint                  |                |              |                  |
-|  4 | indexed-component                 |                |              |                  |
+|  4 | indexed-component                 |       ✓        |              |                  |
 |  3 | index-subtype_definition          |                |              |                  |
 |  3 | integer-type-definition           |       ✓        |              |                  |
 |  3 | later-declarative-item            |                |              |                  |
 |  4 | multiplying-operator              |                |              |                  |
-|  4 | name                              |                |              |                  |
+|  4 | name                              |       ✓        |              |                  |
 |  3 | number-declaration                |       ✓        |              |                  |
 |  3 | object-declaration                |       ✓        |              |                  |
 |  4 | prefix                            |                |              |                  |
@@ -78,13 +78,13 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | record-type-definition            |                |              |                  |
 |  4 | relation                          |                |              |                  |
 |  4 | relational-operator               |                |              |                  |
-|  4 | selected-component                |                |              |                  |
+|  4 | selected-component                |       ✓        |              |                  |
 |  4 | selector                          |                |              |                  |
 |  4 | simple-expression                 |                |              |                  |
-|  4 | simple-name                       |                |              |                  |
-|  4 | slice                             |                |              |                  |
+|  4 | simple-name                       |       ✓        |              |                  |
+|  4 | slice                             |       ✓        |              |                  |
 |  3 | subtype_declaration               |                |              |                  |
-|  3 | subtype-indication                |        ✓       |              |                  |
+|  3 | subtype-indication                |       ✓        |              |                  |
 |  4 | term                              |                |              |                  |
 |  4 | type-conversion                   |                |              |                  |
 |  3 | type-declaration                  |                |              |                  |

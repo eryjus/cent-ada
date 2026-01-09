@@ -35,7 +35,7 @@ bool Parser::ParseDiscriminantAssociation(void)
     // -- Start by checking if there is a discriminant simple name
     //    --------------------------------------------------------
     loc = tokens.SourceLocation();
-    if (ParseDiscriminantSimpleName(id)) {
+    if (ParseDiscriminantSimpleName() != nullptr) {
         //
         // -- This will only work if the next token is a TOK_VERTICAL_BAR or TOK_ARROW
         //    Otherwise it will be an expression as a simple name
@@ -52,7 +52,7 @@ bool Parser::ParseDiscriminantAssociation(void)
         //    -----------------------
         loc = tokens.SourceLocation();
         while (Optional(TokenType::TOK_VERTICAL_BAR)) {
-            if (!ParseDiscriminantSimpleName(id)) {
+            if (ParseDiscriminantSimpleName() == nullptr) {
                 diags.Error(loc, DiagID::ExtraVertialBar, { "discriminant simple name" } );
                 break;
             }

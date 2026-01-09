@@ -32,25 +32,29 @@
 //
 //    This production is used for all things 'name' outside of an expression
 //    ----------------------------------------------------------------------
-bool Parser::ParseNameNonExpr(Id &id)
+NamePtr Parser::ParseNameNonExpr(Id &id)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(non-expr)");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc;
 
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
+        CharacterLiteralNamePtr rv = std::move(std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload())));
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
-    if (m.CommitIf(ParseSimpleName(id)))                return true;
-    if (m.CommitIf(ParseOperatorSymbol()))              return true;
-    if (m.CommitIf(ParseIndexedComponent()))            return true;
-    if (m.CommitIf(ParseSlice()))                       return true;
-    if (m.CommitIf(ParseSelectedComponent()))           return true;
-    if (m.CommitIf(ParseAttribute()))                   return true;
+    NamePtr rv = nullptr;
 
-    return false;
+    if ((rv = std::move(ParseSimpleName())) != nullptr)             return rv;
+    if ((rv = std::move(ParseOperatorSymbol())) != nullptr)         return rv;
+    if ((rv = std::move(ParseIndexedComponent())) != nullptr)       return rv;
+    if ((rv = std::move(ParseSlice())) != nullptr)                  return rv;
+    if ((rv = std::move(ParseSelectedComponent())) != nullptr)      return rv;
+    if ((rv = std::move(ParseAttribute())) != nullptr)              return rv;
+
+    return nullptr;
 }
 
 
@@ -99,8 +103,8 @@ bool Parser::ParseName_Base(Id &id)
         return true;
     }
 
-    if (m.CommitIf(ParseSimpleName(id)))                return true;
-    if (m.CommitIf(ParseOperatorSymbol()))              return true;
+    if (m.CommitIf(ParseSimpleName() != nullptr))                return true;
+    if (ParseOperatorSymbol() != nullptr)              return true;
 
     return false;
 }

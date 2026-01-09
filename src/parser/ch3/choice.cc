@@ -50,7 +50,7 @@ bool Parser::ParseChoice(void)
         return true;
     }
 
-    if (ParseSimpleName(id)) {
+    if (ParseSimpleName() != nullptr) {
         //
         // -- This is required to be a component simple name
         //

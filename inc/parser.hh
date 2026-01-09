@@ -309,15 +309,15 @@ public:
     bool ParseAggregate(void);                                  // -- Ch 4: in `parse_expr.cc`
     bool ParseAggregateMore(void);                              // -- Ch 4: in `parse_expr.cc`
     bool ParseAllocator(void);                                  // -- Ch 4: in `parse_expr.cc`
-    bool ParseAttribute(void);                                  // -- Ch 4: in `parse_expr.cc`
+    AttributeNamePtr ParseAttribute(void);                                  // -- Ch 4: in `parse_expr.cc`
     bool ParseAttributeDesignator(void);                        // -- Ch 4: in `parse_expr.cc`
     bool ParseBinaryAddingOperator(void);                       // -- Ch 4: in `parse_expr.cc`
     bool ParseComponentAssociation(void);                       // -- Ch 4: in `parse_expr.cc`
     bool ParseExpression(void);                                 // -- Ch 4: in `parse_expr.cc`
     bool ParseFactor(void);                                     // -- Ch 4: in `parse_expr.cc`
-    bool ParseIndexedComponent(void);                           // -- Ch 4: in `parse_expr.cc`
+    IndexedNamePtr ParseIndexedComponent(void);                           // -- Ch 4: in `parse_expr.cc`
     bool ParseMultiplyingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
-    bool ParseNameNonExpr(Id &id);                              // -- Ch 4: in `parse_expr.cc`
+    NamePtr ParseNameNonExpr(Id &id);                              // -- Ch 4: in `parse_expr.cc`
     bool ParseNameExpr(Id &id);                                 // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Base(Id &id);                                // -- Ch 4: in `parse_expr.cc`
     bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
@@ -328,11 +328,11 @@ public:
     bool ParseQualifiedExpression(void);                        // -- Ch 4: in `parse_expr.cc`
     bool ParseRelation(void);                                   // -- Ch 4: in `parse_expr.cc`
     bool ParseRelationalOperator(void);                         // -- Ch 4: in `parse_expr.cc`
-    bool ParseSelectedComponent(void);                          // -- Ch 4: in `parse_expr.cc`
+    SelectedNamePtr ParseSelectedComponent(void);                          // -- Ch 4: in `parse_expr.cc`
     bool ParseSelector(void);                                   // -- Ch 4: in `parse_expr.cc`
     bool ParseSimpleExpression(void);                           // -- Ch 4: in `parse_expr.cc`
-    bool ParseSimpleName(Id &id);                               // -- Ch 4: in `parse_expr.cc`
-    bool ParseSlice(void);                                      // -- Ch 4: in `parse_expr.cc`
+    NamePtr ParseSimpleName(void);                               // -- Ch 4: in `parse_expr.cc`
+    SliceNamePtr ParseSlice(void);                                      // -- Ch 4: in `parse_expr.cc`
     bool ParseTerm(void);                                       // -- Ch 4: in `parse_expr.cc`
     bool ParseTypeConversion(void);                             // -- Ch 4: in `parse_expr.cc`
     bool ParseUnaryAddingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
@@ -347,7 +347,7 @@ public:
 
 
     bool ParseFunctionCall(void) { return false; }
-    bool ParseOperatorSymbol(void) { return false; }
+    NamePtr ParseOperatorSymbol(void) { return nullptr; }
     bool ParseBodyStub(void) { return false; }
     bool ParseDeferredConstantDeclaration(void) { return false; }
     bool ParseExceptionDeclaration(void) { return false; }
@@ -365,9 +365,9 @@ public:
     bool ParseUseClause(void) { return false; }
 
     bool ParseUniversalStaticExpression(void) { return ParseExpression(); }
-    bool ParseRangeAttribute(void) { return ParseAttribute(); }
+    AttributeNamePtr ParseRangeAttribute(void) { return ParseAttribute(); }
     bool ParseStaticSimpleExpression(void) { return ParseSimpleExpression(); }
-    bool ParseDiscriminantSimpleName(Id &id) { return ParseSimpleName(id); }
+    NamePtr ParseDiscriminantSimpleName(void) { return ParseSimpleName(); }
 
 
 

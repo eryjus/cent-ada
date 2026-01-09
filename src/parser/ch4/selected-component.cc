@@ -22,18 +22,22 @@
 //
 // -- Parse a Selected Component
 //    --------------------------
-bool Parser::ParseSelectedComponent(void)
+SelectedNamePtr Parser::ParseSelectedComponent(void)
 {
     Production p(*this, "selected_component");
     MarkStream m(tokens, diags);
     std::string discard;
+    SourceLoc_t astLoc;
 
-    if (!ParsePrefix())                     return false;
-    if (!Require(TokenType::TOK_DOT))                  return false;
-    if (!ParseSelector())                   return false;
+    if (!ParsePrefix())                     return nullptr;
+    if (!Require(TokenType::TOK_DOT))                  return nullptr;
+    if (!ParseSelector())                   return nullptr;
+
+
+    SelectedNamePtr rv = std::make_unique<SelectedName>(astLoc, nullptr, nullptr);
 
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

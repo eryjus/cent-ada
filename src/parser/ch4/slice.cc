@@ -22,22 +22,30 @@
 //
 // -- Parse an Slice
 //    --------------
-bool Parser::ParseSlice(void)
+SliceNamePtr Parser::ParseSlice(void)
 {
     Production p(*this, "slice");
     MarkStream m(tokens, diags);
+    NamePtr pre = nullptr;
+    DiscreteRangePtr range = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if (!ParsePrefix())                     return false;
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return false;
-    if (!ParseDiscreteRange())              return false;
+
+    if (!ParsePrefix())                                 return nullptr;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))      return nullptr;
+    if ((range = ParseDiscreteRange()) == nullptr)      return nullptr;
 
     SourceLoc_t loc = tokens.SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discrete_range" } );
     }
 
+
+    SliceNamePtr rv = std::make_unique<SliceName>(astLoc, std::move(pre), std::move(range));
+
+
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 
