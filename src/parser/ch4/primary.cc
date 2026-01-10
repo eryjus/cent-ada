@@ -56,7 +56,6 @@ bool Parser::ParsePrimary(void)
 {
     Production p(*this, "primary");
     MarkStream m(tokens, diags);
-    Id id;
     SourceLoc_t loc = tokens.SourceLocation();
 
     if (Optional(TokenType::TOK_NULL)) {
@@ -97,7 +96,7 @@ bool Parser::ParsePrimary(void)
 
 
     if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
-        if (ParseNameExpr(id)) {
+        if (ParseNameExpr()) {
             m.Commit();
             return true;
         }
@@ -127,7 +126,7 @@ bool Parser::ParsePrimary(void)
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
                     if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
                         if (tokens.Peek(2) == TokenType::TOK_DIGITS || tokens.Peek(2) == TokenType::TOK_DELTA) {
-                            if (ParseNameExpr(id)) {
+                            if (ParseNameExpr()) {
                                 m.Commit();
                                 return true;
                             }
@@ -135,7 +134,7 @@ bool Parser::ParsePrimary(void)
                         if (ParseQualifiedExpression()) {
                             m.Commit();
                             return true;
-                        } else if (ParseNameExpr(id)) {
+                        } else if (ParseNameExpr()) {
                             m.Commit();
                             return true;
                         }
@@ -153,7 +152,7 @@ bool Parser::ParsePrimary(void)
                         return true;
                     }
                 }
-                if (ParseNameExpr(id)) {
+                if (ParseNameExpr()) {
                     m.Commit();
                     return true;
                 }

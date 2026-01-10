@@ -315,17 +315,11 @@ public:
     bool ParseExpression(void);
     bool ParseFactor(void);
     bool ParseMultiplyingOperator(void);
-    bool ParseName_IndexComponentSuffix(void);
-    bool ParseName_IndexOrSliceSuffix(void);
-    bool ParseName_Postfix(NamePtr &prefix);
-    bool ParseName_SelectedComponentSuffix(void);
-    bool ParseName_SliceSuffix(void);
-    bool ParsePrefix(void);
+    NamePtr ParsePrefix(void);
     bool ParsePrimary(void);
     bool ParseQualifiedExpression(void);
     bool ParseRelation(void);
     bool ParseRelationalOperator(void);
-    bool ParseSelector(void);
     bool ParseSimpleExpression(void);
     bool ParseTerm(void);
     bool ParseTypeConversion(void);
@@ -335,18 +329,24 @@ public:
     IndexedNamePtr ParseIndexedComponent(void);
     NamePtr ParseAttributeDesignator(NamePtr &);
     NamePtr ParseName_AttributeSuffix(NamePtr &);
-    NamePtr ParseName_Base(Id &id);
-    NamePtr ParseNameExpr(Id &id);
+    NamePtr ParseName_Base(void);
+    NamePtr ParseName_IndexComponentSuffix(NamePtr &prefix);
+    NamePtr ParseName_IndexOrSliceSuffix(NamePtr &prefix);
+    NamePtr ParseName_Postfix(NamePtr &prefix);
+    NamePtr ParseName_SelectedComponentSuffix(NamePtr &prefix);
+    NamePtr ParseName_SliceSuffix(NamePtr &prefix);
+    NamePtr ParseNameExpr(void);
     NamePtr ParseNameNonExpr(void);
     NamePtr ParseSimpleName(void);
     SelectedNamePtr ParseSelectedComponent(void);
+    SelectedNamePtr ParseSelector(NamePtr &prefix);
     SliceNamePtr ParseSlice(void);
 
 
 
 
 
-    bool ParseFunctionCall(void) { return false; }
+    NamePtr ParseFunctionCall(void) { return nullptr; }
     NamePtr ParseOperatorSymbol(void) { return nullptr; }
     bool ParseBodyStub(void) { return false; }
     bool ParseDeferredConstantDeclaration(void) { return false; }

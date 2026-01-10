@@ -69,14 +69,14 @@ NamePtr Parser::ParseNameNonExpr(void)
 //    are added here for `ParseName_Base` and `ParseName_Suffix` to handle
 //    all things which are `name` cleanly without left recursion.
 //    ------------------------------------------------------------------------
-NamePtr Parser::ParseNameExpr(Id &id)
+NamePtr Parser::ParseNameExpr(void)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(expr)");
     MarkStream m(tokens, diags);
     NamePtr rv = nullptr;
 
-    if ((rv = ParseName_Base(id)) == nullptr)        return nullptr;
+    if ((rv = ParseName_Base()) == nullptr)        return nullptr;
 
     while (ParseName_Postfix(rv)) {
         // -- Do something important here
@@ -94,7 +94,7 @@ NamePtr Parser::ParseNameExpr(Id &id)
 //    These alternatives are not dependent on `name` and therefore MUST
 //    consume a token from the stream.
 //    -----------------------------------------------------------------
-NamePtr Parser::ParseName_Base(Id &id)
+NamePtr Parser::ParseName_Base(void)
 {
     Production p(*this, "name(base)");
     MarkStream m(tokens, diags);
@@ -122,7 +122,7 @@ NamePtr Parser::ParseName_Base(Id &id)
 //    aready been factored out.  These alternatives are anything which
 //    can legally follow a base.
 //    ----------------------------------------------------------------
-bool Parser::ParseName_Postfix(NamePtr &prefix)
+NamePtr Parser::ParseName_Postfix(NamePtr &prefix)
 {
     Production p(*this, "name(postfix)");
     MarkStream m(tokens, diags);
@@ -130,25 +130,28 @@ bool Parser::ParseName_Postfix(NamePtr &prefix)
     NamePtr rv = nullptr;
 
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
-        if (ParseName_IndexOrSliceSuffix()) {
+        if ((rv = std::move(ParseName_IndexOrSliceSuffix(prefix))) != nullptr) {
             SourceLoc_t loc = tokens.SourceLocation();
             if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
                 diags.Error(loc, DiagID::MissingRightParen, { "index or selected component" } );
             }
 
             m.Commit();
-            return true;
+            return std::move(rv);
         }
     }
 
-    if (m.CommitIf(ParseName_SelectedComponentSuffix()))    return true;
+    if (ParseName_SelectedComponentSuffix(prefix) != nullptr) {
+        m.Commit();
+        return rv;
+    }
 
     if ((rv = ParseName_AttributeSuffix(prefix)) != nullptr) {
         m.Commit();
-        return true;
+        return rv;
     }
 
-    return false;
+    return nullptr;
 }
 
 
@@ -156,35 +159,36 @@ bool Parser::ParseName_Postfix(NamePtr &prefix)
 //
 // -- Parse either a Indexed or Selected component
 //    --------------------------------------------
-bool Parser::ParseName_IndexOrSliceSuffix(void)
+NamePtr Parser::ParseName_IndexOrSliceSuffix(NamePtr &prefix)
 {
     Production p(*this, "name(index_or_selected_component)");
     MarkStream m(tokens, diags);
+    NamePtr rv = nullptr;
 
     m.Reset();
-    if (ParseName_SliceSuffix()) {
+    if (ParseName_SliceSuffix(prefix)) {
         // -- do something important here
         m.Commit();
-        return true;
+        return rv;
     }
 
 
     m.Reset();
-    if (ParseName_IndexComponentSuffix()) {
-        // -- do something important here
+    if ((rv = std::move(ParseName_IndexComponentSuffix(prefix))) != nullptr) {
         m.Commit();
-        return true;
+        return rv;
     }
 
 
     m.Reset();
-    if (ParseName_SelectedComponentSuffix()) {
+    if (ParseName_SelectedComponentSuffix(prefix) != nullptr) {
         // -- do something important here
         m.Commit();
-        return true;
+        return rv;
     }
 
-    return false;
+
+    return nullptr;
 }
 
 

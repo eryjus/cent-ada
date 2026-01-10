@@ -55,15 +55,20 @@ SliceNamePtr Parser::ParseSlice(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-bool Parser::ParseName_SliceSuffix(void)
+NamePtr Parser::ParseName_SliceSuffix(NamePtr &prefix)
 {
     Production p(*this, "slice(suffix)");
     MarkStream m(tokens, diags);
+    DiscreteRangePtr range = nullptr;
+    NamePtr rv = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if (!ParseDiscreteRange())                  return false;
+    if ((range = std::move(ParseDiscreteRange())) == nullptr)       return nullptr;
+
+    rv = std::make_unique<SliceName>(astLoc, std::move(prefix), std::move(range));
 
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

@@ -57,19 +57,32 @@ IndexedNamePtr Parser::ParseIndexedComponent(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-bool Parser::ParseName_IndexComponentSuffix(void)
+NamePtr Parser::ParseName_IndexComponentSuffix(NamePtr &prefix)
 {
     Production p(*this, "indexed_component(suffix)");
     MarkStream m(tokens, diags);
+    ExprListPtr exprs = std::make_unique<ExprList>();
+    ExprPtr expr = nullptr;
+    SourceLoc_t loc = tokens.SourceLocation(), astLoc = loc;
 
-    if (!ParseExpression())                     return false;
+    if (!ParseExpression())          return nullptr;
+    exprs->push_back(std::move(expr));
 
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseExpression())                 return false;
+        loc = tokens.SourceLocation();
+        if (ParseExpression()) {
+            exprs->push_back(std::move(expr));
+        } else {
+            diags.Error(loc, DiagID::ExtraComma, { "Index Expression" } );
+        }
+
+        // -- continue anyway
     }
 
+    IndexedNamePtr rv = std::make_unique<IndexedName>(astLoc, std::move(prefix), std::move(exprs));
+
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

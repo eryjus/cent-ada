@@ -23,15 +23,15 @@
 //
 // -- Parse a Prefix
 //    --------------
-bool Parser::ParsePrefix(void)
+NamePtr Parser::ParsePrefix(void)
 {
     Production p(*this, "prefix");
-    Id discard;
+    NamePtr rv = nullptr;
 
-    if (ParseNameExpr(discard))     return true;
-    if (ParseFunctionCall())        return true;
+    if ((rv = std::move(ParseNameExpr())) != nullptr)       return rv;
+    if ((rv = std::move(ParseFunctionCall())) != nullptr)   return rv;
 
-    return false;
+    return nullptr;
 }
 
 

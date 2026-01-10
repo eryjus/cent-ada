@@ -28,13 +28,16 @@ SelectedNamePtr Parser::ParseSelectedComponent(void)
     MarkStream m(tokens, diags);
     std::string discard;
     SourceLoc_t astLoc;
-
-    if (!ParsePrefix())                     return nullptr;
-    if (!Require(TokenType::TOK_DOT))                  return nullptr;
-    if (!ParseSelector())                   return nullptr;
+    NamePtr prefix = nullptr;
+    NamePtr selector = nullptr;
 
 
-    SelectedNamePtr rv = std::make_unique<SelectedName>(astLoc, nullptr, nullptr);
+    if (!ParsePrefix())                                             return nullptr;
+    if (!Require(TokenType::TOK_DOT))                               return nullptr;
+    if ((selector = std::move(ParseSelector(prefix))) == nullptr)         return nullptr;
+
+
+    SelectedNamePtr rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
 
     m.Commit();
     return std::move(rv);
@@ -47,16 +50,20 @@ SelectedNamePtr Parser::ParseSelectedComponent(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-bool Parser::ParseName_SelectedComponentSuffix(void)
+NamePtr Parser::ParseName_SelectedComponentSuffix(NamePtr &prefix)
 {
     Production p(*this, "selected_component(suffix)");
     MarkStream m(tokens, diags);
+    NamePtr selector = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if (!Require(TokenType::TOK_DOT))           return false;
-    if (!ParseSelector())                       return false;
+    if (!Require(TokenType::TOK_DOT))                                   return nullptr;
+    if ((selector = std::move(ParseSelector(prefix))) == nullptr)       return nullptr;
+
+    SelectedNamePtr rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
 
     m.Commit();
-    return true;
+    return rv;
 }
 
 
