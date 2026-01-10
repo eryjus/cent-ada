@@ -26,9 +26,15 @@ bool Parser::ParseSimpleExpression(void)
 {
     Production p(*this, "simple_expression");
     MarkStream m(tokens, diags);
+    UnaryOper uop;
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    ParseUnaryAddingOperator();
+    uop = ParseUnaryAddingOperator();           // -- not required
     if (!ParseTerm()) return false;
+    if (uop != UnaryOper::Unspecified) lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
+
     if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
         m.Commit();
@@ -36,7 +42,7 @@ bool Parser::ParseSimpleExpression(void)
     }
 
 
-    while (ParseBinaryAddingOperator()) {
+    while (ParseBinaryAddingOperator() != BinaryOper::Unspecified) {
         if (!ParseTerm()) return false;
         if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term

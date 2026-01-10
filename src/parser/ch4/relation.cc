@@ -52,7 +52,7 @@ bool Parser::ParseRelation(void)
     }
 
 
-    if (ParseRelationalOperator()) {
+    if (ParseRelationalOperator() == BinaryOper::Unspecified) {
         if (!ParseSimpleExpression()) return false;
     }
 

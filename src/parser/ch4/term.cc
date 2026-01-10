@@ -29,7 +29,7 @@ bool Parser::ParseTerm(void)
 
     if (!ParseFactor()) return false;
 
-    while (ParseMultiplyingOperator()) {
+    while (ParseMultiplyingOperator() != BinaryOper::Unspecified) {
         if (!ParseFactor()) return false;
     }
 

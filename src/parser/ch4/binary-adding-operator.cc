@@ -22,21 +22,16 @@
 //
 // -- Parse a Binary Adding Operator
 //    ------------------------------
-bool Parser::ParseBinaryAddingOperator(void)
+BinaryOper Parser::ParseBinaryAddingOperator(void)
 {
     Production p(*this, "binary_adding_operator");
     MarkStream m(tokens, diags);
 
     switch (tokens.Current()) {
-    case TokenType::TOK_PLUS:
-    case TokenType::TOK_MINUS:
-    case TokenType::TOK_AMPERSAND:
-        tokens.Advance();
-        m.Commit();
-        return true;
-
-    default:
-        return false;
+    case TokenType::TOK_PLUS:       tokens.Advance();  m.Commit();  return BinaryOper::Plus;
+    case TokenType::TOK_MINUS:      tokens.Advance();  m.Commit();  return BinaryOper::Minus;
+    case TokenType::TOK_AMPERSAND:  tokens.Advance();  m.Commit();  return BinaryOper::Concatenate;
+    default:                                                        return BinaryOper::Unspecified;
     }
 }
 

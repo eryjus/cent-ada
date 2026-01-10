@@ -87,7 +87,40 @@ class IndexedName;
 class SliceName;
 class SelectedName;
 class AttributeName;
+class UnaryExpr;
 
+
+enum class UnaryOper {
+    Unspecified,
+    Plus,
+    Minus,
+    Abs,
+    Not,
+};
+
+
+enum class BinaryOper {
+    Unspecified,
+    And,
+    AndThen,
+    Or,
+    OrElse,
+    Xor,
+    Equal,
+    NotEqual,
+    LessThan,
+    LessEqual,
+    GreaterThan,
+    GreaterEqual,
+    Plus,
+    Minus,
+    Concatenate,
+    Times,
+    Divide,
+    Mod,
+    Rem,
+    Power,
+};
 
 
 using NodePtr = std::unique_ptr<ASTNode>;

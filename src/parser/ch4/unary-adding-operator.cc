@@ -22,20 +22,15 @@
 //
 // -- Parse a Unary Adding Operator
 //    -----------------------------
-bool Parser::ParseUnaryAddingOperator(void)
+UnaryOper Parser::ParseUnaryAddingOperator(void)
 {
     Production p(*this, "unary_adding_operator");
     MarkStream m(tokens, diags);
 
     switch (tokens.Current()) {
-    case TokenType::TOK_PLUS:
-    case TokenType::TOK_MINUS:
-        tokens.Advance();
-        m.Commit();
-        return true;
-
-    default:
-        return false;
+    case TokenType::TOK_PLUS:   tokens.Advance();  m.Commit();  return UnaryOper::Plus;
+    case TokenType::TOK_MINUS:  tokens.Advance();  m.Commit();  return UnaryOper::Minus;
+    default:                                                    return UnaryOper::Unspecified;
     }
 }
 
