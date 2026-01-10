@@ -32,7 +32,7 @@
 //
 //    This production is used for all things 'name' outside of an expression
 //    ----------------------------------------------------------------------
-NamePtr Parser::ParseNameNonExpr(Id &id)
+NamePtr Parser::ParseNameNonExpr(void)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(non-expr)");
@@ -69,20 +69,21 @@ NamePtr Parser::ParseNameNonExpr(Id &id)
 //    are added here for `ParseName_Base` and `ParseName_Suffix` to handle
 //    all things which are `name` cleanly without left recursion.
 //    ------------------------------------------------------------------------
-bool Parser::ParseNameExpr(Id &id)
+NamePtr Parser::ParseNameExpr(Id &id)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(expr)");
     MarkStream m(tokens, diags);
+    NamePtr rv = nullptr;
 
-    if (!ParseName_Base(id))        return false;
+    if ((rv = ParseName_Base(id)) == nullptr)        return nullptr;
 
-    while (ParseName_Postfix()) {
+    while (ParseName_Postfix(rv)) {
         // -- Do something important here
     }
 
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 
@@ -93,20 +94,23 @@ bool Parser::ParseNameExpr(Id &id)
 //    These alternatives are not dependent on `name` and therefore MUST
 //    consume a token from the stream.
 //    -----------------------------------------------------------------
-bool Parser::ParseName_Base(Id &id)
+NamePtr Parser::ParseName_Base(Id &id)
 {
     Production p(*this, "name(base)");
     MarkStream m(tokens, diags);
+    NamePtr rv = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
+        rv = std::move(std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload())));
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
-    if (m.CommitIf(ParseSimpleName() != nullptr))                return true;
-    if (ParseOperatorSymbol() != nullptr)              return true;
+    if ((rv = std::move(ParseSimpleName())) != nullptr)                return rv;
+    if ((rv = std::move(ParseOperatorSymbol())) != nullptr)            return rv;
 
-    return false;
+    return nullptr;
 }
 
 
@@ -118,10 +122,12 @@ bool Parser::ParseName_Base(Id &id)
 //    aready been factored out.  These alternatives are anything which
 //    can legally follow a base.
 //    ----------------------------------------------------------------
-bool Parser::ParseName_Postfix(void)
+bool Parser::ParseName_Postfix(NamePtr &prefix)
 {
     Production p(*this, "name(postfix)");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    NamePtr rv = nullptr;
 
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         if (ParseName_IndexOrSliceSuffix()) {
@@ -136,7 +142,11 @@ bool Parser::ParseName_Postfix(void)
     }
 
     if (m.CommitIf(ParseName_SelectedComponentSuffix()))    return true;
-    if (m.CommitIf(ParseName_AttributeSuffix()))            return true;
+
+    if ((rv = ParseName_AttributeSuffix(prefix)) != nullptr) {
+        m.Commit();
+        return true;
+    }
 
     return false;
 }
@@ -159,6 +169,7 @@ bool Parser::ParseName_IndexOrSliceSuffix(void)
     }
 
 
+    m.Reset();
     if (ParseName_IndexComponentSuffix()) {
         // -- do something important here
         m.Commit();
@@ -183,7 +194,7 @@ bool Parser::ParseName_IndexOrSliceSuffix(void)
 //    ---------------------------------------------------------
 Id Parser::ParseTypeName(void) {
     Id id;
-    if (!ParseNameNonExpr(id)) return { "", tokens.EmptyLocation() };
+    if (!ParseNameNonExpr()) return { "", tokens.EmptyLocation() };
     const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
     if (vec) {
         for (int i = 0; i < vec->size(); i ++) {
@@ -204,7 +215,7 @@ Id Parser::ParseTypeName(void) {
 //    -----------------------------------------
 Id Parser::ParseSubtypeName(void) {
     Id id;
-    if (!ParseNameNonExpr(id)) return { "", tokens.EmptyLocation() };
+    if (!ParseNameNonExpr()) return { "", tokens.EmptyLocation() };
     const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
     if (!vec || vec->empty()) return { "", tokens.EmptyLocation() };
     for (int i = 0; i < vec->size(); i ++) {

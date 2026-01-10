@@ -46,6 +46,7 @@
 //          RealLiteralExpr : LiteralExpr
 //          StringLiteralExpr : LiteralExpr
 //        NameExpr : Expr
+//          FunctionCall : NameExpr                         -- added by me
 //        QualifiedExpr : Expr
 //        ShortCircuitExpr : Expr
 //        UnaryExpr : Expr
