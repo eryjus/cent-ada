@@ -92,6 +92,7 @@ class NullLiteralExpr;
 class IntLiteralExpr;
 class RealLiteralExpr;
 class StringLiteralExpr;
+class NameExpr;
 
 
 enum class UnaryOper {
@@ -154,6 +155,7 @@ using NullLiteralExprPtr = std::unique_ptr<NullLiteralExpr>;
 using IntLiteralExprPtr = std::unique_ptr<IntLiteralExpr>;
 using RealLiteralExprPtr = std::unique_ptr<RealLiteralExpr>;
 using StringLiteralExprPtr = std::unique_ptr<StringLiteralExpr>;
+using NameExprPtr = std::unique_ptr<NameExpr>;
 
 
 

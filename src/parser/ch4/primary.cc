@@ -105,19 +105,26 @@ ExprPtr Parser::ParsePrimary(void)
 
 
     if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
-        if (ParseNameExpr()) {
+        NamePtr name = nullptr;
+        if ((name = std::move(ParseNameExpr())) != nullptr) {
+            NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
             m.Commit();
-            return true;
+            return std::move(rv);
         }
 
         m.Reset();
     }
 
 
-    if (ParseOperatorSymbol()) {
-        m.Commit();
-        return true;
+    {   // -- we want a scope here for overall readability
+        NamePtr name = nullptr;
+        if ((name = std::move(ParseOperatorSymbol())) != nullptr) {
+            NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
+            m.Commit();
+            return rv;
+        }
     }
+
 
 
     //
@@ -131,21 +138,24 @@ ExprPtr Parser::ParsePrimary(void)
             TypeSymbol *type = nullptr;
 
             for (auto &sym : *vec) {
+                NamePtr name = nullptr;
                 if (sym->kind == Symbol::SymbolKind::Deleted) continue;
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
                     if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
                         if (tokens.Peek(2) == TokenType::TOK_DIGITS || tokens.Peek(2) == TokenType::TOK_DELTA) {
-                            if (ParseNameExpr()) {
+                            if ((name = std::move(ParseNameExpr())) != nullptr) {
+                                NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
                                 m.Commit();
-                                return true;
+                                return rv;
                             }
                         }
                         if (ParseQualifiedExpression()) {
                             m.Commit();
                             return true;
-                        } else if (ParseNameExpr()) {
+                        } else if ((name = std::move(ParseNameExpr())) != nullptr) {
+                            NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
                             m.Commit();
-                            return true;
+                            return rv;
                         }
                     }
                     if (tokens.Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
@@ -156,14 +166,16 @@ ExprPtr Parser::ParsePrimary(void)
                     }
                 }
                 if (sym->kind == Symbol::SymbolKind::Subprogram) {
-                    if (ParseFunctionCall()) {
+                    if ((name = std::move(ParseFunctionCall())) != nullptr) {
+                        NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
                         m.Commit();
-                        return true;
+                        return rv;
                     }
                 }
-                if (ParseNameExpr()) {
+                if ((name = std::move(ParseNameExpr())) != nullptr) {
+                    NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
                     m.Commit();
-                    return true;
+                    return rv;
                 }
 
                 diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
@@ -181,10 +193,11 @@ ExprPtr Parser::ParsePrimary(void)
     //
     // -- If we have an expression followed by a TOK_RIGHT_PARENTHESIS, then we have a parenthetical expression
     //    -----------------------------------------------------------------------------------------------------
+    ExprPtr expr = nullptr;
     if (ParseExpression()) {
         if (Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             m.Commit();
-            return true;
+            return expr;
         }
     }
 

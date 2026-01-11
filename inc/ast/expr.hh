@@ -160,3 +160,28 @@ public:
 
 
 
+//
+// -- This is a name expression
+//    -------------------------
+class NameExpr : public Expr {
+    NameExpr(void) = delete;
+    NameExpr(const NameExpr &) = delete;
+    NameExpr &operator=(const NameExpr &) = delete;
+
+
+public:
+    NamePtr name;
+
+
+public:
+    NameExpr(SourceLoc_t loc, NamePtr n) : Expr(loc), name(std::move(n)) {}
+};
+
+
+
+
+
+
+
+
+
