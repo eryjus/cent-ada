@@ -314,13 +314,13 @@ public:
     bool ParseAggregateMore(void);
     bool ParseAllocator(void);
     bool ParseComponentAssociation(void);
-    bool ParseExpression(void);
-    bool ParseFactor(void);
+    ExprPtr ParseExpression(void);
+    ExprPtr ParseFactor(void);
     ExprPtr ParsePrimary(void);
     bool ParseQualifiedExpression(void);
-    bool ParseRelation(void);
-    bool ParseSimpleExpression(void);
-    bool ParseTerm(void);
+    ExprPtr ParseRelation(void);
+    ExprPtr ParseSimpleExpression(void);
+    ExprPtr ParseTerm(void);
     bool ParseTypeConversion(void);
     Id ParseSubtypeName(void);
     Id ParseTypeName(void);
@@ -364,10 +364,10 @@ public:
     bool ParseTaskDeclaration(void) { return false; }
     bool ParseUseClause(void) { return false; }
 
-    bool ParseUniversalStaticExpression(void) { return ParseExpression(); }
-    AttributeNamePtr ParseRangeAttribute(void) { return ParseAttribute(); }
-    bool ParseStaticSimpleExpression(void) { return ParseSimpleExpression(); }
-    NamePtr ParseDiscriminantSimpleName(void) { return ParseSimpleName(); }
+    ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
+    AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
+    ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
+    NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
 
 
 

@@ -197,6 +197,7 @@ using YYSTYPE = std::variant<
     struct CharLiteral,         // a character literal
     struct IntLiteral,          // an integer literal
     struct RealLiteral,         // a real literal
+    struct StringLiteral,       // a string literal
     struct IdentifierLexeme     // identifier
 >;
 

@@ -179,6 +179,31 @@ public:
 
 
 
+//
+// -- This is a range expression
+//    --------------------------
+class RangeExpr : public Expr {
+    RangeExpr(void) = delete;
+    RangeExpr(const RangeExpr &) = delete;
+    RangeExpr &operator=(const RangeExpr &) = delete;
+
+
+public:
+    DiscreteRangePtr range;
+
+
+public:
+    RangeExpr(SourceLoc_t loc, DiscreteRangePtr r) : Expr(loc), range(std::move(r)) {}
+};
+
+
+
+
+
+
+
+
+
 
 
 

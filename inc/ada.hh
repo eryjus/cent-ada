@@ -88,11 +88,14 @@ class SliceName;
 class SelectedName;
 class AttributeName;
 class UnaryExpr;
+class BinaryExpr;
 class NullLiteralExpr;
 class IntLiteralExpr;
 class RealLiteralExpr;
 class StringLiteralExpr;
 class NameExpr;
+class RangeExpr;
+
 
 
 enum class UnaryOper {
@@ -125,6 +128,7 @@ enum class BinaryOper {
     Mod,
     Rem,
     Power,
+    In,
 };
 
 
@@ -156,6 +160,9 @@ using IntLiteralExprPtr = std::unique_ptr<IntLiteralExpr>;
 using RealLiteralExprPtr = std::unique_ptr<RealLiteralExpr>;
 using StringLiteralExprPtr = std::unique_ptr<StringLiteralExpr>;
 using NameExprPtr = std::unique_ptr<NameExpr>;
+using UnaryExprPtr = std::unique_ptr<UnaryExpr>;
+using BinaryExprPtr = std::unique_ptr<BinaryExpr>;
+using RangeExprPtr = std::unique_ptr<RangeExpr>;
 
 
 

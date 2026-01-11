@@ -24,41 +24,54 @@
 //
 // -- Parse a Relation
 //    ----------------
-bool Parser::ParseRelation(void)
+ExprPtr Parser::ParseRelation(void)
 {
     Production p(*this, "relation");
     MarkStream m(tokens, diags);
     bool hasNot = false;
     Id id;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
+    BinaryOper bop = BinaryOper::Unspecified;
+    DiscreteRangePtr range = nullptr;
 
-    if (!ParseSimpleExpression())  return false;
+    if ((lhs = std::move(ParseSimpleExpression())) == nullptr)  return nullptr;
 
     if ((tokens.Current() == TokenType::TOK_NOT && tokens.Peek() == TokenType::TOK_IN)
             || tokens.Current() == TokenType::TOK_IN) {
         if (Optional(TokenType::TOK_NOT)) hasNot = true;
-        if (!Require(TokenType::TOK_IN))  return false;
+        if (!Require(TokenType::TOK_IN))  return nullptr;
 
-        if (ParseRange()) {
+        if ((range = std::move(ParseRange())) != nullptr) {
+            rhs = std::make_unique<RangeExpr>(astLoc, std::move(range));
+            ExprPtr rv = std::make_unique<BinaryExpr>(astLoc, BinaryOper::In, std::move(lhs), std::move(rhs));
+            if (hasNot) rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(rv));
             m.Commit();
-            return true;
+            return rv;
         }
 
         if ((id = ParseTypeMark()).name != "") {
+            SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
+            rhs = std::make_unique<NameExpr>(astLoc, std::move(name));
+            ExprPtr rv = std::make_unique<BinaryExpr>(astLoc, BinaryOper::In, std::move(lhs), std::move(rhs));
+            if (hasNot) rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(rv));
             m.Commit();
-            return true;
+            return std::move(rv);
         }
 
-        return false;
+        return nullptr;
     }
 
 
-    if (ParseRelationalOperator() == BinaryOper::Unspecified) {
-        if (!ParseSimpleExpression()) return false;
+    if ((bop = ParseRelationalOperator()) == BinaryOper::Unspecified) {
+        if ((rhs = std::move(ParseSimpleExpression())) == nullptr) return nullptr;
     }
 
 
+    ExprPtr rv = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
     m.Commit();
-    return true;
+    return rv;
 }
 
 

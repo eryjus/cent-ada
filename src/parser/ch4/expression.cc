@@ -26,38 +26,41 @@
 //
 // -- Parse an Expression
 //    -------------------
-bool Parser::ParseExpression(void)
+ExprPtr Parser::ParseExpression(void)
 {
     Production p(*this, "expression");
     MarkStream m(tokens, diags);
     TokenType tok;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
+    BinaryOper bop = BinaryOper::Unspecified;
 
 
-    if (!ParseRelation()) return false;
+    if ((lhs = std::move(ParseRelation())) == nullptr) return nullptr;
 
     switch (tokens.Current()) {
-    case TokenType::TOK_AND:
-    case TokenType::TOK_AND_THEN:
-    case TokenType::TOK_OR:
-    case TokenType::TOK_OR_ELSE:
-    case TokenType::TOK_XOR:
-        tok = tokens.Current();
-        break;
-
+    case TokenType::TOK_AND:        bop = BinaryOper::And;      tok = tokens.Current();  break;
+    case TokenType::TOK_AND_THEN:   bop = BinaryOper::AndThen;  tok = tokens.Current();  break;
+    case TokenType::TOK_OR:         bop = BinaryOper::Or;       tok = tokens.Current();  break;
+    case TokenType::TOK_OR_ELSE:    bop = BinaryOper::OrElse;   tok = tokens.Current();  break;
+    case TokenType::TOK_XOR:        bop = BinaryOper::Xor;      tok = tokens.Current();  break;
     default:
         m.Commit();
-        return true;
+        return std::move(lhs);
     }
 
     while (Optional(tok)) {
-        if (!ParseRelation()) {
+        if ((rhs = std::move(ParseRelation())) == nullptr) {
             // -- TODO: maybe issue an error about missing a relation and return true instead???
-            return false;
+            return nullptr;
         }
+
+        lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
     }
 
     m.Commit();
-    return true;
+    return lhs;
 }
 
 

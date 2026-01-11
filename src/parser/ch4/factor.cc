@@ -24,40 +24,47 @@
 //
 // -- Parse a Factor
 //    --------------
-bool Parser::ParseFactor(void)
+ExprPtr Parser::ParseFactor(void)
 {
     Production p(*this, "factor");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
 
     if (Require(TokenType::TOK_ABS)) {
         loc = tokens.SourceLocation();
-        if (!ParsePrimary()) {
+        if ((lhs = std::move(ParsePrimary())) == nullptr) {
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "ABS" } );
         }
 
+        UnaryExprPtr rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Abs, std::move(lhs));
         m.Commit();
-        return true;
+        return rv;
     } else if (Require(TokenType::TOK_NOT)) {
         loc = tokens.SourceLocation();
-        if (!ParsePrimary()) {
+        if ((lhs = std::move(ParsePrimary())) == nullptr) {
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "NOT" } );
         }
 
+        UnaryExprPtr rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(lhs));
         m.Commit();
-        return true;
+        return rv;
     } else {
-        if (!ParsePrimary())    return false;
+        if ((lhs = std::move(ParsePrimary())) == nullptr)           return nullptr;
 
         if (Optional(TokenType::TOK_DOUBLE_STAR)) {
-            if (!ParsePrimary())    return false;
+            if ((rhs = std::move(ParsePrimary())) == nullptr)       return nullptr;
         }
 
+        BinaryExprPtr rv = std::make_unique<BinaryExpr>(astLoc, BinaryOper::Power, std::move(lhs), std::move(rhs));
+
         m.Commit();
-        return true;
+        return rv;
     }
 
-    return false;
+    return nullptr;
 }
 
 

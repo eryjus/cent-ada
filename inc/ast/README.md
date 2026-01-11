@@ -69,7 +69,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | number-declaration                |       ✓        |              |                  |
 |  3 | object-declaration                |       ✓        |              |                  |
 |  4 | prefix                            |                |              |                  |
-|  4 | primary                           |                |              |                  |
+|  4 | primary                           |       ?        |              |                  |
 |  3 | proper-body                       |                |              |                  |
 |  4 | qualified-expression              |                |              |                  |
 |  3 | range                             |       ✓        |              |                  |

@@ -22,37 +22,41 @@
 //
 // -- Parse a Simple Expression
 //    -------------------------
-bool Parser::ParseSimpleExpression(void)
+ExprPtr Parser::ParseSimpleExpression(void)
 {
     Production p(*this, "simple_expression");
     MarkStream m(tokens, diags);
     UnaryOper uop;
+    BinaryOper bop;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
 
     uop = ParseUnaryAddingOperator();           // -- not required
-    if (!ParseTerm()) return false;
+    if ((lhs = std::move(ParseTerm())) == nullptr)      return nullptr;
     if (uop != UnaryOper::Unspecified) lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
 
     if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
         m.Commit();
-        return true;
+        return std::move(lhs);
     }
 
 
-    while (ParseBinaryAddingOperator() != BinaryOper::Unspecified) {
-        if (!ParseTerm()) return false;
+    while ((bop = ParseBinaryAddingOperator()) != BinaryOper::Unspecified) {
+        if ((rhs = std::move(ParseTerm())) == nullptr)          return nullptr;
         if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term
+            BinaryExprPtr rv = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
             m.Commit();
-            return true;
+            return std::move(rv);
         }
+
+        lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
     }
 
     m.Commit();
-    return true;
+    return std::move(lhs);
 }
 
 
