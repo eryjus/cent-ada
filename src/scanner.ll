@@ -204,28 +204,34 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
          *    ------------------------------------------------------
          */
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*# {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 
 {DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_INT_LITERAL;
             }
 
@@ -236,28 +242,34 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
          *    ---------------------------------------------------
          */
 {DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*# {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 {DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                 column += strlen(yytext);
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
                 return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
             }
 
@@ -269,7 +281,6 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
          */
 \'.\'       {
                 column += strlen(yytext);
-                CharLiteral ch;
                 yylval = CharLiteral { std::string(yytext), yytext[1] };
                 return TokenType::TOK_CHARACTER_LITERAL;
             }
@@ -280,8 +291,8 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
          * -- Handle a string literal
          *    -----------------------
          */
-<str>\"     { column ++; BEGIN(INITIAL); return TokenType::TOK_STRING_LITERAL; }
-<str>{LF}   { column = 0; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
+<str>\"     { column ++; BEGIN(INITIAL); yylval = StringLiteral { strVal }; return TokenType::TOK_STRING_LITERAL; }
+<str>{LF}   { column = 0; BEGIN(INITIAL); yylval = StringLiteral { strVal }; return TokenType::TOK_ERROR; }
 <str>\"\"   { column += 2; strVal += '"'; }
 <str>.      { column ++; strVal += yytext[0]; }
 

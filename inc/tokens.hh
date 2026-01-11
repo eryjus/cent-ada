@@ -154,6 +154,33 @@ struct CharLiteral {
 
 
 //
+// -- Define what an integer literal will look like when when passed from lexer to parser
+//    -----------------------------------------------------------------------------------
+struct IntLiteral {
+    std::string lexeme;
+};
+
+
+
+//
+// -- Define what a real literal will look like when when passed from lexer to parser
+//    -------------------------------------------------------------------------------
+struct RealLiteral {
+    std::string lexeme;
+};
+
+
+
+//
+// -- Define what a string literal will look like when when passed from lexer to parser
+//    ---------------------------------------------------------------------------------
+struct StringLiteral {
+    std::string lexeme;
+};
+
+
+
+//
 // -- Define what an identifier will look like passed from the lexer to the parser
 //    ----------------------------------------------------------------------------
 struct IdentifierLexeme {
@@ -168,6 +195,8 @@ struct IdentifierLexeme {
 using YYSTYPE = std::variant<
     std::monostate,             // empty token payload
     struct CharLiteral,         // a character literal
+    struct IntLiteral,          // an integer literal
+    struct RealLiteral,         // a real literal
     struct IdentifierLexeme     // identifier
 >;
 

@@ -73,3 +73,90 @@ public:
 
 
 
+//
+// -- A literal expression node
+//    -------------------------
+class LiteralExpr : public Expr {
+    LiteralExpr(void) = delete;
+    LiteralExpr(const LiteralExpr &) = delete;
+    LiteralExpr &operator=(const LiteralExpr &) = delete;
+
+
+public:
+    LiteralExpr(SourceLoc_t loc) : Expr(loc) {}
+};
+
+
+
+//
+// -- This is a NULL literal
+//    ----------------------
+class NullLiteralExpr : public LiteralExpr {
+    NullLiteralExpr(void) = delete;
+    NullLiteralExpr(const NullLiteralExpr &) = delete;
+    NullLiteralExpr &operator=(const NullLiteralExpr &) = delete;
+
+
+public:
+    NullLiteralExpr(SourceLoc_t loc) : LiteralExpr(loc) {}
+};
+
+
+
+//
+// -- This is an int literal
+//    ----------------------
+class IntLiteralExpr : public LiteralExpr {
+    IntLiteralExpr(void) = delete;
+    IntLiteralExpr(const IntLiteralExpr &) = delete;
+    IntLiteralExpr &operator=(const IntLiteralExpr &) = delete;
+
+
+public:
+    IntLiteral lit;
+
+
+public:
+    IntLiteralExpr(SourceLoc_t loc, IntLiteral l) : LiteralExpr(loc), lit(l) {}
+};
+
+
+
+//
+// -- This is a real literal
+//    ----------------------
+class RealLiteralExpr : public LiteralExpr {
+    RealLiteralExpr(void) = delete;
+    RealLiteralExpr(const RealLiteralExpr &) = delete;
+    RealLiteralExpr &operator=(const RealLiteralExpr &) = delete;
+
+
+public:
+    RealLiteral lit;
+
+
+public:
+    RealLiteralExpr(SourceLoc_t loc, RealLiteral l) : LiteralExpr(loc), lit(l) {}
+};
+
+
+
+//
+// -- This is a string literal
+//    ------------------------
+class StringLiteralExpr : public LiteralExpr {
+    StringLiteralExpr(void) = delete;
+    StringLiteralExpr(const StringLiteralExpr &) = delete;
+    StringLiteralExpr &operator=(const StringLiteralExpr &) = delete;
+
+
+public:
+    StringLiteral lit;
+
+
+public:
+    StringLiteralExpr(SourceLoc_t loc, StringLiteral l) : LiteralExpr(loc), lit(l) {}
+};
+
+
+

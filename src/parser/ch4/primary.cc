@@ -52,15 +52,17 @@
 //
 // -- Parse a Primary
 //    ---------------
-bool Parser::ParsePrimary(void)
+ExprPtr Parser::ParsePrimary(void)
 {
     Production p(*this, "primary");
     MarkStream m(tokens, diags);
     SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
     if (Optional(TokenType::TOK_NULL)) {
+        NullLiteralExprPtr rv = std::make_unique<NullLiteralExpr>(astLoc);
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
 
@@ -68,20 +70,27 @@ bool Parser::ParsePrimary(void)
     // -- The spec calls for a `numeric_literal` here.  I am going to split them out
     //    here rather than in the lexer.
     //    --------------------------------------------------------------------------
-    if (Optional(TokenType::TOK_UNIVERSAL_INT_LITERAL)) {
+    if (tokens.Current() == TokenType::TOK_UNIVERSAL_INT_LITERAL) {
+        IntLiteralExprPtr rv = std::make_unique<IntLiteralExpr>(astLoc, std::get<IntLiteral>(tokens.Payload()));
+        tokens.Advance();
         m.Commit();
-        return true;
-    }
-
-    if (Optional(TokenType::TOK_UNIVERSAL_REAL_LITERAL)) {
-        m.Commit();
-        return true;
+        return std::move(rv);
     }
 
 
-    if (Optional(TokenType::TOK_STRING_LITERAL)) {
+    if (tokens.Current() == TokenType::TOK_UNIVERSAL_REAL_LITERAL) {
+        RealLiteralExprPtr rv = std::make_unique<RealLiteralExpr>(astLoc, std::get<RealLiteral>(tokens.Payload()));
+        tokens.Advance();
         m.Commit();
-        return true;
+        return std::move(rv);
+    }
+
+
+    if (tokens.Current() == TokenType::TOK_STRING_LITERAL) {
+        StringLiteralExprPtr rv = std::make_unique<StringLiteralExpr>(astLoc, std::get<StringLiteral>(tokens.Payload()));
+        tokens.Advance();
+        m.Commit();
+        return std::move(rv);
     }
 
 
@@ -166,7 +175,7 @@ bool Parser::ParsePrimary(void)
     //
     // -- Now, everything else will start with a TOK_LEFT_PAREN
     //    -----------------------------------------------------
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
 
 
     //
@@ -187,7 +196,7 @@ bool Parser::ParsePrimary(void)
         return true;
     }
 
-    return false;
+    return nullptr;
 }
 
 

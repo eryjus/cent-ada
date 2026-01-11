@@ -31,7 +31,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  4 | attribute-designator              |                |              |                  |
 |  3 | basic-declaration                 |                |              |                  |
 |  3 | basic-declarative-item            |                |              |                  |
-|  4 | binary-adding-operator            |                |              |                  |
+|  4 | binary-adding-operator            |       ✓        |              |                  |
 |  3 | body                              |                |              |                  |
 |  3 | choice                            |                |              |                  |
 |  4 | component-association             |                |              |                  |
@@ -64,7 +64,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | index-subtype_definition          |                |              |                  |
 |  3 | integer-type-definition           |       ✓        |              |                  |
 |  3 | later-declarative-item            |                |              |                  |
-|  4 | multiplying-operator              |                |              |                  |
+|  4 | multiplying-operator              |       ✓        |              |                  |
 |  4 | name                              |       ✓        |              |                  |
 |  3 | number-declaration                |       ✓        |              |                  |
 |  3 | object-declaration                |       ✓        |              |                  |
@@ -90,7 +90,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | type-declaration                  |                |              |                  |
 |  3 | type-definition                   |                |              |                  |
 |  3 | type-mark                         |                |              |                  |
-|  4 | unary-adding-operator             |                |              |                  |
+|  4 | unary-adding-operator             |       ✓        |              |                  |
 |  3 | unconstrained-array-definition    |                |              |                  |
 |  3 | variant                           |                |              |                  |
 |  3 | variant-part                      |                |              |                  |

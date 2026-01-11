@@ -307,22 +307,21 @@ public:
     // -- Productions from Names and Expressions
     //    --------------------------------------
     AttributeNamePtr ParseAttribute(void);
+    BinaryOper ParseBinaryAddingOperator(void);
+    BinaryOper ParseMultiplyingOperator(void);
+    BinaryOper ParseRelationalOperator(void);
     bool ParseAggregate(void);
     bool ParseAggregateMore(void);
     bool ParseAllocator(void);
-    BinaryOper ParseBinaryAddingOperator(void);
     bool ParseComponentAssociation(void);
     bool ParseExpression(void);
     bool ParseFactor(void);
-    BinaryOper ParseMultiplyingOperator(void);
-    bool ParsePrimary(void);
+    ExprPtr ParsePrimary(void);
     bool ParseQualifiedExpression(void);
     bool ParseRelation(void);
-    BinaryOper ParseRelationalOperator(void);
     bool ParseSimpleExpression(void);
     bool ParseTerm(void);
     bool ParseTypeConversion(void);
-    UnaryOper ParseUnaryAddingOperator(void);
     Id ParseSubtypeName(void);
     Id ParseTypeName(void);
     IndexedNamePtr ParseIndexedComponent(void);
@@ -341,6 +340,7 @@ public:
     SelectedNamePtr ParseSelectedComponent(void);
     SelectedNamePtr ParseSelector(NamePtr &prefix);
     SliceNamePtr ParseSlice(void);
+    UnaryOper ParseUnaryAddingOperator(void);
 
 
 
