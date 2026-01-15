@@ -198,15 +198,21 @@ public:
 
 
 
+//
+// -- This is an aggregate expression
+//    -------------------------------
+class AggregateExpr : public Expr {
+    AggregateExpr(void) = delete;
+    AggregateExpr(const AggregateExpr &) = delete;
+    AggregateExpr &operator=(const AggregateExpr &) = delete;
 
 
+public:
+    ComponentAssociationListPtr list;
 
 
-
-
-
-
-
-
+public:
+    AggregateExpr(SourceLoc_t loc, ComponentAssociationListPtr l) : Expr(loc), list(std::move(l)) {}
+};
 
 

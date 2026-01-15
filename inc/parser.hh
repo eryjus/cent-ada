@@ -310,8 +310,8 @@ public:
     BinaryOper ParseBinaryAddingOperator(void);
     BinaryOper ParseMultiplyingOperator(void);
     BinaryOper ParseRelationalOperator(void);
-    bool ParseAggregate(void);
-    bool ParseAggregateMore(void);
+    ExprPtr ParseAggregate(void);
+//    bool ParseAggregateMore(void);
     bool ParseAllocator(void);
     ComponentAssociationPtr ParseComponentAssociation(void);
     bool ParseQualifiedExpression(void);

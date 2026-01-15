@@ -207,9 +207,9 @@ ExprPtr Parser::ParsePrimary(void)
     //    ----------------------------------------------------------------------------
     m.Reset();
 
-    if (ParseAggregate()) {
+    if ((expr = std::move(ParseAggregate())) != nullptr) {
         m.Commit();
-        return true;
+        return std::move(expr);
     }
 
     return nullptr;

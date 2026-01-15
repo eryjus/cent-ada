@@ -136,6 +136,7 @@ class RangeChoice;
 class NameChoice;
 class ExprChoice;
 class ComponentAssociation;
+class AggregateExpr;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -175,6 +176,7 @@ using RangeChoicePtr = std::unique_ptr<RangeChoice>;
 using NameChoicePtr = std::unique_ptr<NameChoice>;
 using ExprChoicePtr = std::unique_ptr<ExprChoice>;
 using ComponentAssociationPtr = std::unique_ptr<ComponentAssociation>;
+using AggregateExprPtr = std::unique_ptr<AggregateExpr>;
 
 
 
@@ -184,6 +186,8 @@ using ExprList = std::vector<ExprPtr>;
 using ExprListPtr = std::unique_ptr<ExprList>;
 using ChoiceList = std::vector<ChoicePtr>;
 using ChoiceListPtr = std::unique_ptr<ChoiceList>;
+using ComponentAssociationList = std::vector<ComponentAssociationPtr>;
+using ComponentAssociationListPtr = std::unique_ptr<ComponentAssociationList>;
 
 
 
