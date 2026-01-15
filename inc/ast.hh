@@ -124,4 +124,6 @@ using IdList = std::vector<Id>;
 #include "ast/typespec.hh"
 #include "ast/constraint.hh"
 #include "ast/discrete-range.hh"
+#include "ast/choice.hh"
+#include "ast/component-association.hh"
 

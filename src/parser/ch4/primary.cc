@@ -194,14 +194,17 @@ ExprPtr Parser::ParsePrimary(void)
     // -- If we have an expression followed by a TOK_RIGHT_PARENTHESIS, then we have a parenthetical expression
     //    -----------------------------------------------------------------------------------------------------
     ExprPtr expr = nullptr;
-    if (ParseExpression()) {
+    if ((expr = std::move(ParseExpression())) != nullptr) {
         if (Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             m.Commit();
             return expr;
         }
     }
 
+
+    //
     // -- we want to reset here and try again with an aggregate -- the only thing left
+    //    ----------------------------------------------------------------------------
     m.Reset();
 
     if (ParseAggregate()) {

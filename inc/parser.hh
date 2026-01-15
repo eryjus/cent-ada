@@ -256,7 +256,7 @@ public:
     bool ParseArrayTypeDefinition(Id &id);
     bool ParseBasicDeclarativeItem(void);
     bool ParseBody(void);
-    bool ParseChoice(void);
+    ChoicePtr ParseChoice(void);
     bool ParseComponentDeclaration(RecordTypeSymbol *rec);
     bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
@@ -313,15 +313,15 @@ public:
     bool ParseAggregate(void);
     bool ParseAggregateMore(void);
     bool ParseAllocator(void);
-    bool ParseComponentAssociation(void);
+    ComponentAssociationPtr ParseComponentAssociation(void);
+    bool ParseQualifiedExpression(void);
+    bool ParseTypeConversion(void);
     ExprPtr ParseExpression(void);
     ExprPtr ParseFactor(void);
     ExprPtr ParsePrimary(void);
-    bool ParseQualifiedExpression(void);
     ExprPtr ParseRelation(void);
     ExprPtr ParseSimpleExpression(void);
     ExprPtr ParseTerm(void);
-    bool ParseTypeConversion(void);
     Id ParseSubtypeName(void);
     Id ParseTypeName(void);
     IndexedNamePtr ParseIndexedComponent(void);

@@ -28,11 +28,15 @@
 //
 // -- Parse a Choice
 //    --------------
-bool Parser::ParseChoice(void)
+ChoicePtr Parser::ParseChoice(void)
 {
     Production p(*this, "choice");
     MarkStream m(tokens, diags);
     Id id;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    DiscreteRangePtr range = nullptr;
+    NamePtr name = nullptr;
+    ExprPtr expr = nullptr;
 
 
     //
@@ -42,15 +46,17 @@ bool Parser::ParseChoice(void)
     //    ----------------------------------------------------------------------------
     if (Optional(TokenType::TOK_OTHERS)) {
         m.Commit();
-        return true;
+        OthersChoicePtr rv = std::make_unique<OthersChoice>(astLoc);
+        return std::move(rv);
     }
 
-    if (ParseDiscreteRange()) {
+    if ((range = std::move(ParseDiscreteRange())) != nullptr) {
+        RangeChoicePtr rv = std::make_unique<RangeChoice>(astLoc, std::move(range));
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
-    if (ParseSimpleName() != nullptr) {
+    if ((name = std::move(ParseSimpleName())) != nullptr) {
         //
         // -- This is required to be a component simple name
         //
@@ -60,8 +66,9 @@ bool Parser::ParseChoice(void)
         if (vec != nullptr) {
             for (auto &sym : *vec) {
                 if (sym->kind == Symbol::SymbolKind::Component) {
+                    NameChoicePtr rv = std::make_unique<NameChoice>(astLoc, std::move(name));
                     m.Commit();
-                    return true;
+                    return std::move(rv);
                 }
             }
         }
@@ -69,14 +76,15 @@ bool Parser::ParseChoice(void)
         m.Reset();
     }
 
-    if (ParseSimpleExpression()) {
+    if ((expr = std::move(ParseSimpleExpression())) != nullptr) {
+        ExprChoicePtr rv = std::make_unique<ExprChoice>(astLoc, std::move(expr));
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
     diags.Error(tokens.SourceLocation(), DiagID::InvalidChoiceInVariant);
 
-    return false;
+    return nullptr;
 }
 
 

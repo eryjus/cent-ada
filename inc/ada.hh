@@ -43,6 +43,41 @@ extern YYSTYPE yylval;
 
 
 
+enum class UnaryOper {
+    Unspecified,
+    Plus,
+    Minus,
+    Abs,
+    Not,
+};
+
+
+enum class BinaryOper {
+    Unspecified,
+    And,
+    AndThen,
+    Or,
+    OrElse,
+    Xor,
+    Equal,
+    NotEqual,
+    LessThan,
+    LessEqual,
+    GreaterThan,
+    GreaterEqual,
+    Plus,
+    Minus,
+    Concatenate,
+    Times,
+    Divide,
+    Mod,
+    Rem,
+    Power,
+    In,
+};
+
+
+
 //
 // -- Here are quite a few forward declarations
 //    -----------------------------------------
@@ -95,41 +130,12 @@ class RealLiteralExpr;
 class StringLiteralExpr;
 class NameExpr;
 class RangeExpr;
-
-
-
-enum class UnaryOper {
-    Unspecified,
-    Plus,
-    Minus,
-    Abs,
-    Not,
-};
-
-
-enum class BinaryOper {
-    Unspecified,
-    And,
-    AndThen,
-    Or,
-    OrElse,
-    Xor,
-    Equal,
-    NotEqual,
-    LessThan,
-    LessEqual,
-    GreaterThan,
-    GreaterEqual,
-    Plus,
-    Minus,
-    Concatenate,
-    Times,
-    Divide,
-    Mod,
-    Rem,
-    Power,
-    In,
-};
+class Choice;
+class OthersChoice;
+class RangeChoice;
+class NameChoice;
+class ExprChoice;
+class ComponentAssociation;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -163,6 +169,12 @@ using NameExprPtr = std::unique_ptr<NameExpr>;
 using UnaryExprPtr = std::unique_ptr<UnaryExpr>;
 using BinaryExprPtr = std::unique_ptr<BinaryExpr>;
 using RangeExprPtr = std::unique_ptr<RangeExpr>;
+using ChoicePtr = std::unique_ptr<Choice>;
+using OthersChoicePtr = std::unique_ptr<OthersChoice>;
+using RangeChoicePtr = std::unique_ptr<RangeChoice>;
+using NameChoicePtr = std::unique_ptr<NameChoice>;
+using ExprChoicePtr = std::unique_ptr<ExprChoice>;
+using ComponentAssociationPtr = std::unique_ptr<ComponentAssociation>;
 
 
 
@@ -170,6 +182,8 @@ using IdList = std::vector<struct Id>;
 using IdListPtr = std::unique_ptr<IdList>;
 using ExprList = std::vector<ExprPtr>;
 using ExprListPtr = std::unique_ptr<ExprList>;
+using ChoiceList = std::vector<ChoicePtr>;
+using ChoiceListPtr = std::unique_ptr<ChoiceList>;
 
 
 
