@@ -137,6 +137,11 @@ class NameChoice;
 class ExprChoice;
 class ComponentAssociation;
 class AggregateExpr;
+class QualifiedExpr;
+class TypeConversionExpr;
+class QualExprAllocatorExpr;
+class SubtypeIndicationAllocatorExpr;
+class AllocatorExpr;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -177,6 +182,11 @@ using NameChoicePtr = std::unique_ptr<NameChoice>;
 using ExprChoicePtr = std::unique_ptr<ExprChoice>;
 using ComponentAssociationPtr = std::unique_ptr<ComponentAssociation>;
 using AggregateExprPtr = std::unique_ptr<AggregateExpr>;
+using QualifiedExprPtr = std::unique_ptr<QualifiedExpr>;
+using TypeConversionExprPtr = std::unique_ptr<TypeConversionExpr>;
+using QualExprAllocatorExprPtr = std::unique_ptr<QualExprAllocatorExpr>;
+using SubtypeIndicationAllocatorExprPtr = std::unique_ptr<SubtypeIndicationAllocatorExpr>;
+using AllocatorExprPtr = std::unique_ptr<AllocatorExpr>;
 
 
 

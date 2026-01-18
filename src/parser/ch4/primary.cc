@@ -95,9 +95,10 @@ ExprPtr Parser::ParsePrimary(void)
 
 
     if (tokens.Current() == TokenType::TOK_NEW) {
-        if (ParseAllocator()) {
+        AllocatorExprPtr rv = nullptr;
+        if ((rv = std::move(ParseAllocator())) != nullptr) {
             m.Commit();
-            return true;
+            return std::move(rv);
         }
 
         m.Reset();
@@ -149,9 +150,10 @@ ExprPtr Parser::ParsePrimary(void)
                                 return rv;
                             }
                         }
-                        if (ParseQualifiedExpression()) {
+                        ExprPtr rv = nullptr;
+                        if ((rv = std::move(ParseQualifiedExpression())) != nullptr) {
                             m.Commit();
-                            return true;
+                            return std::move(rv);
                         } else if ((name = std::move(ParseNameExpr())) != nullptr) {
                             NameExprPtr rv = std::make_unique<NameExpr>(astLoc, std::move(name));
                             m.Commit();
@@ -159,9 +161,10 @@ ExprPtr Parser::ParsePrimary(void)
                         }
                     }
                     if (tokens.Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
-                        if (ParseTypeConversion()) {
+                        ExprPtr rv = nullptr;
+                        if ((rv = std::move(ParseTypeConversion())) != nullptr) {
                             m.Commit();
-                            return true;
+                            return rv;
                         }
                     }
                 }

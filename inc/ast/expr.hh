@@ -216,3 +216,99 @@ public:
 };
 
 
+
+//
+// -- This is a qualified expression
+//    ------------------------------
+class QualifiedExpr : public Expr {
+    QualifiedExpr(void) = delete;
+    QualifiedExpr(const QualifiedExpr &) = delete;
+    QualifiedExpr &operator=(const QualifiedExpr &) = delete;
+
+
+public:
+    Id id;
+    ExprPtr expr;
+
+
+public:
+    QualifiedExpr(SourceLoc_t loc, Id i, ExprPtr e) : Expr(loc), id(i), expr(std::move(e)) {}
+};
+
+
+
+//
+// -- This is a type conversion
+//    -------------------------
+class TypeConversionExpr : public Expr {
+    TypeConversionExpr(void) = delete;
+    TypeConversionExpr(const TypeConversionExpr &) = delete;
+    TypeConversionExpr &operator=(const TypeConversionExpr &) = delete;
+
+
+public:
+    Id id;
+    ExprPtr expr;
+
+
+public:
+    TypeConversionExpr(SourceLoc_t loc, Id i, ExprPtr e) : Expr(loc), id(i), expr(std::move(e)) {}
+};
+
+
+
+//
+// -- This is a generic allocator
+//    ---------------------------
+class AllocatorExpr : public Expr {
+    AllocatorExpr(void) = delete;
+    AllocatorExpr(const AllocatorExpr &) = delete;
+    AllocatorExpr &operator=(const AllocatorExpr &) = delete;
+
+
+public:
+    AllocatorExpr(SourceLoc_t loc) : Expr(loc) {}
+};
+
+
+
+//
+// -- This is a Qualified Expression Allocator
+//    ----------------------------------------
+class QualExprAllocatorExpr : public AllocatorExpr {
+    QualExprAllocatorExpr(void) = delete;
+    QualExprAllocatorExpr(const QualExprAllocatorExpr &) = delete;
+    QualExprAllocatorExpr &operator=(const QualExprAllocatorExpr &) = delete;
+
+
+public:
+    QualifiedExprPtr expr;
+
+
+public:
+    QualExprAllocatorExpr(SourceLoc_t loc, QualifiedExprPtr e) : AllocatorExpr(loc), expr(std::move(e)) {}
+};
+
+
+
+//
+// -- This is a Subtype Indication Allocator
+//    --------------------------------------
+class SubtypeIndicationAllocatorExpr : public AllocatorExpr {
+    SubtypeIndicationAllocatorExpr(void) = delete;
+    SubtypeIndicationAllocatorExpr(const SubtypeIndicationAllocatorExpr &) = delete;
+    SubtypeIndicationAllocatorExpr &operator=(const SubtypeIndicationAllocatorExpr &) = delete;
+
+
+public:
+    SubtypeIndicationPtr sub;
+
+
+public:
+    SubtypeIndicationAllocatorExpr(SourceLoc_t loc, SubtypeIndicationPtr s) : AllocatorExpr(loc), sub(std::move(s)) {}
+};
+
+
+
+
+

@@ -311,11 +311,10 @@ public:
     BinaryOper ParseMultiplyingOperator(void);
     BinaryOper ParseRelationalOperator(void);
     ExprPtr ParseAggregate(void);
-//    bool ParseAggregateMore(void);
-    bool ParseAllocator(void);
+    AllocatorExprPtr ParseAllocator(void);
     ComponentAssociationPtr ParseComponentAssociation(void);
-    bool ParseQualifiedExpression(void);
-    bool ParseTypeConversion(void);
+    QualifiedExprPtr ParseQualifiedExpression(void);
+    ExprPtr ParseTypeConversion(void);
     ExprPtr ParseExpression(void);
     ExprPtr ParseFactor(void);
     ExprPtr ParsePrimary(void);

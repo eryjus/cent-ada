@@ -24,7 +24,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 | Ch | Production                        | AST Class | `nullptr` | Extra Tasks | DeskCheck |
 |:--:|:----------------------------------|:---------:|:---------:|:-----------:|:---------:|
 |  3 | access-type-definition            |           |           |             |           |
-|  4 | aggregate                         |           |           |             |           |
+|  4 | aggregate                         |     ✓     |           |             |           |
 |  4 | allocator                         |           |           |             |           |
 |  3 | array-type-definition             |           |           |             |           |
 |  4 | attribute                         |     ✓     |           |             |           |
@@ -69,9 +69,9 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | number-declaration                |     ✓     |           |             |           |
 |  3 | object-declaration                |     ✓     |           |             |           |
 |  4 | prefix                            |           |           |             |           |
-|  4 | primary                           |     ?     |           |             |           |
+|  4 | primary                           |     ✓     |           |             |           |
 |  3 | proper-body                       |           |           |             |           |
-|  4 | qualified-expression              |           |           |             |           |
+|  4 | qualified-expression              |     ✓     |           |             |           |
 |  3 | range                             |     ✓     |           |             |           |
 |  3 | range-constraint                  |     ✓     |           |             |           |
 |  3 | real-type-definition              |           |           |             |           |

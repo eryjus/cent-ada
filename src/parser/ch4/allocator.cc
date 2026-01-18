@@ -23,24 +23,29 @@
 //
 // -- Parse an Allocator
 //    ------------------
-bool Parser::ParseAllocator(void)
+AllocatorExprPtr Parser::ParseAllocator(void)
 {
     Production p(*this, "allocator");
     MarkStream m(tokens, diags);
+    QualifiedExprPtr q = nullptr;
+    SubtypeIndicationPtr s = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if (!Require(TokenType::TOK_NEW)) return false;
+    if (!Require(TokenType::TOK_NEW)) return nullptr;
 
-    if (ParseQualifiedExpression()) {
+    if ((q = std::move(ParseQualifiedExpression())) != nullptr) {
+        QualExprAllocatorExprPtr rv = std::make_unique<QualExprAllocatorExpr>(astLoc, std::move(q));
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
-    if (ParseSubtypeIndication()) {
+    if ((s = std::move(ParseSubtypeIndication())) != nullptr) {
+        SubtypeIndicationAllocatorExprPtr rv = std::make_unique<SubtypeIndicationAllocatorExpr>(astLoc, std::move(s));
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
-    return false;
+    return nullptr;
 }
 
 
