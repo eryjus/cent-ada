@@ -22,27 +22,28 @@
 //
 // -- Parse an Incomplete Type Declaration
 //    ------------------------------------
-bool Parser::ParseIncompleteTypeDeclaration(void)
+TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
 {
     Production p(*this, "incomplete_type_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
     Id id;
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
     std::string where = "incomplete type identifier";
 
 
     //
     // -- Start with the definitive tokens
     //    --------------------------------
-    if (!Require(TokenType::TOK_TYPE)) return false;
+    if (!Require(TokenType::TOK_TYPE)) return nullptr;
     loc = tokens.SourceLocation();
 
 
     //
     // -- Get the name of the incomplete type declaration
     //    -----------------------------------------------
-    if (!RequireIdent(id)) return false;
+    if (!RequireIdent(id)) return nullptr;
 
     if (scopes.IsLocalDefined(id.name)) {
         diags.Error(loc, DiagID::DuplicateName, { id.name } );
@@ -74,9 +75,11 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, nullptr);
+
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

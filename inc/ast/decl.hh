@@ -94,7 +94,7 @@ class TypeDecl : public Decl{
 public:
     Id name;
     ExprPtr discriminantPart;           // -- may be null
-    TypeSpecPtr definition;
+    TypeSpecPtr definition;             // -- may be null if incomplete
 
 
 public:

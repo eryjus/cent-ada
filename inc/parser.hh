@@ -268,13 +268,10 @@ public:
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
-    ExprPtr ParseFixedAccuracyDefinition(void);
-    ExprPtr ParseFloatingAccuracyDefinition(void);
-    bool ParseIncompleteTypeDeclaration(void);
+    TypeDeclPtr ParseIncompleteTypeDeclaration(void);
     bool ParseIndexSubtypeDefinition(void);
     bool ParseLaterDeclarativeItem(void);
     bool ParseProperBody(void);
-    NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
     bool ParseRecordTypeDefinition(Id &id);
     bool ParseSubtypeDeclaration(void);
     bool ParseTypeDeclaration(void);
@@ -285,6 +282,8 @@ public:
     ChoicePtr ParseChoice(void);
     DiscreteRangePtr ParseDiscreteRange(void);
     DiscreteRangePtr ParseRange(void);
+    ExprPtr ParseFixedAccuracyDefinition(void);
+    ExprPtr ParseFloatingAccuracyDefinition(void);
     Id ParseEnumerationLiteral(EnumTypeSymbol *type);
     Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
     Id ParseTypeMark(void);
@@ -293,6 +292,7 @@ public:
     NumberDeclarationPtr ParseNumberDeclaration(void);
     NumericTypeSpecPtr ParseFixedPointConstraint(Id &id);
     NumericTypeSpecPtr ParseFloatingPointConstraint(Id &id);
+    NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
     ObjectDeclarationPtr ParseObjectDeclaration(void);
     RangeConstraintPtr ParseRangeConstraint(void);
     std::unique_ptr<std::vector<DiscreteRangePtr>> ParseIndexConstraint(void);
