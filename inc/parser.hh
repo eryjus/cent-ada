@@ -256,7 +256,6 @@ public:
     bool ParseArrayTypeDefinition(Id &id);
     bool ParseBasicDeclarativeItem(void);
     bool ParseBody(void);
-    ChoicePtr ParseChoice(void);
     bool ParseComponentDeclaration(RecordTypeSymbol *rec);
     bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
@@ -283,6 +282,7 @@ public:
     bool ParseUnconstrainedArrayDefinition(Id &id);
     bool ParseVariant(RecordTypeSymbol *rec);
     bool ParseVariantPart(RecordTypeSymbol *rec);
+    ChoicePtr ParseChoice(void);
     DiscreteRangePtr ParseDiscreteRange(void);
     DiscreteRangePtr ParseRange(void);
     Id ParseEnumerationLiteral(EnumTypeSymbol *type);
@@ -306,21 +306,20 @@ public:
     //
     // -- Productions from Names and Expressions
     //    --------------------------------------
+    AllocatorExprPtr ParseAllocator(void);
     AttributeNamePtr ParseAttribute(void);
     BinaryOper ParseBinaryAddingOperator(void);
     BinaryOper ParseMultiplyingOperator(void);
     BinaryOper ParseRelationalOperator(void);
-    ExprPtr ParseAggregate(void);
-    AllocatorExprPtr ParseAllocator(void);
     ComponentAssociationPtr ParseComponentAssociation(void);
-    QualifiedExprPtr ParseQualifiedExpression(void);
-    ExprPtr ParseTypeConversion(void);
+    ExprPtr ParseAggregate(void);
     ExprPtr ParseExpression(void);
     ExprPtr ParseFactor(void);
     ExprPtr ParsePrimary(void);
     ExprPtr ParseRelation(void);
     ExprPtr ParseSimpleExpression(void);
     ExprPtr ParseTerm(void);
+    ExprPtr ParseTypeConversion(void);
     Id ParseSubtypeName(void);
     Id ParseTypeName(void);
     IndexedNamePtr ParseIndexedComponent(void);
@@ -336,6 +335,7 @@ public:
     NamePtr ParseNameNonExpr(void);
     NamePtr ParsePrefix(void);
     NamePtr ParseSimpleName(void);
+    QualifiedExprPtr ParseQualifiedExpression(void);
     SelectedNamePtr ParseSelectedComponent(void);
     SelectedNamePtr ParseSelector(NamePtr &prefix);
     SliceNamePtr ParseSlice(void);
