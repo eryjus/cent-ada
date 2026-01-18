@@ -22,27 +22,28 @@
 //
 // -- Parse a Fixed Accuracy Deinition
 //    --------------------------------
-bool Parser::ParseFixedAccuracyDefinition(void)
+ExprPtr Parser::ParseFixedAccuracyDefinition(void)
 {
     Production(*this, "fixed_accuracy_definition");
     MarkStream m(tokens, diags);
+    ExprPtr rv = nullptr;
 
     //
     // -- this production starts with a DELTA token
     //    -----------------------------------------
-    if (!Require(TokenType::TOK_DELTA)) return false;
+    if (!Require(TokenType::TOK_DELTA)) return nullptr;
 
 
     //
     // -- and constains a static simple expression
     //    ----------------------------------------
-    if (!ParseStaticSimpleExpression()) return false;
+    if ((rv = std::move(ParseStaticSimpleExpression())) == nullptr) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 

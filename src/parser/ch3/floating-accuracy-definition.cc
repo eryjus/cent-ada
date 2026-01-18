@@ -22,29 +22,30 @@
 //
 // -- Parse a Floating Accuracy Deinition
 //    -----------------------------------
-bool Parser::ParseFloatingAccuracyDefinition(void)
+ExprPtr Parser::ParseFloatingAccuracyDefinition(void)
 {
     Production p(*this, "floating_accuracy_definition");
     MarkStream m(tokens, diags);
+    ExprPtr rv = nullptr;
 
 
     //
     // -- this production starts with a DIGITS token
     //    ------------------------------------------
-    if (!Require(TokenType::TOK_DIGITS)) return false;
+    if (!Require(TokenType::TOK_DIGITS)) return nullptr;
 
 
     //
     // -- and constains a static simple expression
     //    ----------------------------------------
-    if (!ParseStaticSimpleExpression()) return false;
+    if ((rv = std::move(ParseStaticSimpleExpression())) == nullptr) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

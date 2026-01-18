@@ -29,6 +29,7 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    ExprPtr size = nullptr;
 
 
     //
@@ -53,7 +54,7 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if (!ParseFloatingAccuracyDefinition()) return nullptr;
+    if ((size = std::move(ParseFloatingAccuracyDefinition())) == nullptr) return nullptr;
 
 
     //
@@ -66,7 +67,7 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
     //
     // -- The parse is good here
     //    ----------------------
-    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FloatingPoint, nullptr, std::move(range));
+    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FloatingPoint, std::move(size), std::move(range));
 
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();

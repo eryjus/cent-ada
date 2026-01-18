@@ -22,14 +22,15 @@
 //
 // -- Parse a Real Type Definition
 //    ----------------------------
-bool Parser::ParseRealTypeDefinition(Id &id)
+NumericTypeSpecPtr Parser::ParseRealTypeDefinition(Id &id)
 {
     Production p(*this, "real_type_definition");
+    NumericTypeSpecPtr rv = nullptr;
 
-    if (ParseFloatingPointConstraint(id))   return true;
-    if (ParseFixedPointConstraint(id))      return true;
+    if ((rv = std::move(ParseFloatingPointConstraint(id))) != nullptr)   return std::move(rv);
+    if ((rv = std::move(ParseFixedPointConstraint(id))) != nullptr)      return std::move(rv);
 
-    return false;
+    return nullptr;
 }
 
 

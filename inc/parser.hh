@@ -268,13 +268,13 @@ public:
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
-    bool ParseFixedAccuracyDefinition(void);
-    bool ParseFloatingAccuracyDefinition(void);
+    ExprPtr ParseFixedAccuracyDefinition(void);
+    ExprPtr ParseFloatingAccuracyDefinition(void);
     bool ParseIncompleteTypeDeclaration(void);
     bool ParseIndexSubtypeDefinition(void);
     bool ParseLaterDeclarativeItem(void);
     bool ParseProperBody(void);
-    bool ParseRealTypeDefinition(Id &id);
+    NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
     bool ParseRecordTypeDefinition(Id &id);
     bool ParseSubtypeDeclaration(void);
     bool ParseTypeDeclaration(void);

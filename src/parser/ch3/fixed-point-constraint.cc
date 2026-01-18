@@ -29,6 +29,7 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     SourceLoc_t astLoc;
+    ExprPtr size;
 
 
 
@@ -54,7 +55,7 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if (!ParseFixedAccuracyDefinition()) return nullptr;
+    if ((size = std::move(ParseFixedAccuracyDefinition())) == nullptr) return nullptr;
 
 
     //
@@ -67,7 +68,7 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     //
     // -- The parse is good here
     //    ----------------------
-    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, nullptr, std::move(range));
+    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, std::move(size), std::move(range));
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     return std::move(rv);

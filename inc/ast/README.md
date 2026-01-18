@@ -52,9 +52,9 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | enumeration-type-definition       |     ✓     |           |             |           |
 |  4 | expression                        |     ✓     |           |             |           |
 |  4 | factor                            |     ✓     |           |             |           |
-|  3 | fixed-accuracy-definition         |           |           |             |           |
+|  3 | fixed-accuracy-definition         |     ✓     |           |             |           |
 |  3 | fixed-point-constraint            |     ✓     |           |             |           |
-|  3 | floating-accuracy-definition      |           |           |             |           |
+|  3 | floating-accuracy-definition      |     ✓     |           |             |           |
 |  3 | floating-point-constraint         |     ✓     |           |             |           |
 |  3 | full-type-declaration             |     ✓     |           |             |           |
 |  3 | identifier-list                   |     ✓     |           |             |           |
@@ -74,7 +74,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  4 | qualified-expression              |     ✓     |           |             |           |
 |  3 | range                             |     ✓     |           |             |           |
 |  3 | range-constraint                  |     ✓     |           |             |           |
-|  3 | real-type-definition              |           |           |             |           |
+|  3 | real-type-definition              |     ✓     |           |             |           |
 |  3 | record-type-definition            |           |           |             |           |
 |  4 | relation                          |     ✓     |           |             |           |
 |  4 | relational-operator               |     ✓     |           |             |           |
