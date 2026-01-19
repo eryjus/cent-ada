@@ -22,13 +22,13 @@
 //
 // -- Parse an Index Constraint
 //    -------------------------
-std::unique_ptr<std::vector<DiscreteRangePtr>> Parser::ParseIndexConstraint(void)
+DiscreteRangeListPtr Parser::ParseIndexConstraint(void)
 {
     Production p(*this, "index_constraint");
     MarkStream m(tokens, diags);
     SourceLoc_t loc, astLoc = tokens.SourceLocation();      // -- only init astLoc
     DiscreteRangePtr range;
-    std::unique_ptr<std::vector<DiscreteRangePtr>> vec = std::make_unique<std::vector<DiscreteRangePtr>>();
+    DiscreteRangeListPtr vec = std::make_unique<std::vector<DiscreteRangePtr>>();
 
 
     //

@@ -24,14 +24,15 @@
 //
 // -- Parse a Type Declaration
 //    ------------------------
-bool Parser::ParseTypeDeclaration(void)
+TypeDeclPtr Parser::ParseTypeDeclaration(void)
 {
     Production p(*this, "type_declaration");
+    TypeDeclPtr rv = nullptr;
 
-    if (ParseFullTypeDeclaration())         return true;
-    if (ParseIncompleteTypeDeclaration())   return true;
-    if (ParsePrivateTypeDeclaration())      return true;
-    return false;
+    if ((rv = std::move(ParseFullTypeDeclaration())) != nullptr)         return std::move(rv);
+    if ((rv = std::move(ParseIncompleteTypeDeclaration())) != nullptr)   return std::move(rv);
+    if ((rv = std::move(ParsePrivateTypeDeclaration())) != nullptr)      return std::move(rv);
+    return nullptr;
 }
 
 

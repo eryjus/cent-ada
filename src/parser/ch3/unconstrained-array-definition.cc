@@ -23,22 +23,26 @@
 //
 // -- Parse an Unconstrained Array Definition
 //    ---------------------------------------
-bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
+ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "unconstrained_array_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    DiscreteRangeListPtr idxList = std::make_unique<DiscreteRangeList>();
+    UnboundedRangePtr idx = nullptr;
+    SubtypeIndicationPtr compType = nullptr;
 
 
 
     //
     // -- Start parse with the first 2 required tokens
     //    --------------------------------------------
-    if (!Require(TokenType::TOK_ARRAY)) return false;
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_ARRAY)) return nullptr;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
 
 
     //
@@ -61,8 +65,8 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- now, there should be an index definition
     //    ----------------------------------------
-    if (!ParseIndexSubtypeDefinition()) return false;
-
+    if ((idx = std::move(ParseIndexSubtypeDefinition())) == nullptr) return nullptr;
+    idxList->push_back(std::move(idx));
 
 
     //
@@ -70,7 +74,9 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //    -------------------------------------
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseIndexSubtypeDefinition()) {
+        if ((idx = std::move(ParseIndexSubtypeDefinition())) != nullptr) {
+            idxList->push_back(std::move(idx));
+        } else {
             diags.Error(loc, DiagID::ExtraComma, { "index_subtype_definition" } );
             // -- continue on in hopes of finding more errors
 
@@ -95,8 +101,8 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Wrap up the rest of the production
     //    ----------------------------------
-    if (!Require(TokenType::TOK_OF)) return false;
-    if (!ParseComponentSubtypeIndication()) return false;
+    if (!Require(TokenType::TOK_OF)) return nullptr;
+    if ((compType = std::move(ParseComponentSubtypeIndication())) == nullptr) return nullptr;
 
 
 
@@ -105,9 +111,13 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
 
+    NamePtr name = std::make_unique<SimpleName>(astLoc, id);
+
+    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(name), true, std::move(idxList), std::move(compType));
+
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

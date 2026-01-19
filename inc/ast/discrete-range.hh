@@ -97,3 +97,21 @@ public:
 };
 
 
+//
+// -- This is an unbounded index range
+//    --------------------------------
+class UnboundedRange : public DiscreteRange {
+    UnboundedRange(void) = delete;
+    UnboundedRange(const UnboundedRange &) = delete;
+    UnboundedRange &operator=(const UnboundedRange &) = delete;
+
+public:
+    Id type;
+
+public:
+    UnboundedRange(SourceLoc_t loc, Id id)
+            : DiscreteRange(loc), type(id) {}
+
+};
+
+

@@ -251,11 +251,14 @@ public:
     //
     // -- Productions from Declarations and Types
     //    ---------------------------------------
+    bool ParseBody(void);
+    bool ParseProperBody(void);
+
+
     bool _HelpParseConstrainedArrayDefinition(void);
     bool ParseAccessTypeDefinition(Id &id);
     bool ParseArrayTypeDefinition(Id &id);
     bool ParseBasicDeclarativeItem(void);
-    bool ParseBody(void);
     bool ParseComponentDeclaration(RecordTypeSymbol *rec);
     bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
@@ -268,15 +271,12 @@ public:
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
-    TypeDeclPtr ParseIncompleteTypeDeclaration(void);
-    bool ParseIndexSubtypeDefinition(void);
+    UnboundedRangePtr ParseIndexSubtypeDefinition(void);
     bool ParseLaterDeclarativeItem(void);
-    bool ParseProperBody(void);
     bool ParseRecordTypeDefinition(Id &id);
     bool ParseSubtypeDeclaration(void);
-    bool ParseTypeDeclaration(void);
     bool ParseTypeDefinition(Id &id);
-    bool ParseUnconstrainedArrayDefinition(Id &id);
+    ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
     bool ParseVariant(RecordTypeSymbol *rec);
     bool ParseVariantPart(RecordTypeSymbol *rec);
     ChoicePtr ParseChoice(void);
@@ -295,9 +295,11 @@ public:
     NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
     ObjectDeclarationPtr ParseObjectDeclaration(void);
     RangeConstraintPtr ParseRangeConstraint(void);
-    std::unique_ptr<std::vector<DiscreteRangePtr>> ParseIndexConstraint(void);
+    DiscreteRangeListPtr ParseIndexConstraint(void);
     SubtypeIndicationPtr ParseSubtypeIndication(void);
     TypeDeclPtr ParseFullTypeDeclaration(void);
+    TypeDeclPtr ParseIncompleteTypeDeclaration(void);
+    TypeDeclPtr ParseTypeDeclaration(void);
     TypeSpecPtr ParseEnumerationTypeDefinition(Id &id);
     TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
 
@@ -342,11 +344,20 @@ public:
     UnaryOper ParseUnaryAddingOperator(void);
 
 
-
-
-
     NamePtr ParseFunctionCall(void) { return nullptr; }
     NamePtr ParseOperatorSymbol(void) { return nullptr; }
+    TypeDeclPtr ParsePrivateTypeDeclaration(void) { return nullptr; }
+
+
+    AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
+    DiscreteRangePtr ParseDiscreteSubtypeIndication(void);
+    ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
+    ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
+    NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
+    SubtypeIndicationPtr ParseComponentSubtypeIndication(void) { return std::move(ParseSubtypeIndication()); }
+
+
+
     bool ParseBodyStub(void) { return false; }
     bool ParseDeferredConstantDeclaration(void) { return false; }
     bool ParseExceptionDeclaration(void) { return false; }
@@ -354,7 +365,6 @@ public:
     bool ParseGenericInstantiation(void) { return false; }
     bool ParsePackageBody(void) { return false; }
     bool ParsePackageDeclaration(void) { return false; }
-    bool ParsePrivateTypeDeclaration(void) { return false; }
     bool ParseRenamingDeclaration(void) { return false; }
     bool ParseRepresentationClause(void) { return false; }
     bool ParseSubprogramBody(void) { return false; }
@@ -362,19 +372,6 @@ public:
     bool ParseTaskBody(void) { return false; }
     bool ParseTaskDeclaration(void) { return false; }
     bool ParseUseClause(void) { return false; }
-
-    ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
-    AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
-    ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
-    NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
-
-
-
-    bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication() != nullptr; }
-    DiscreteRangePtr ParseDiscreteSubtypeIndication(void);
-
-
-
 };
 
 

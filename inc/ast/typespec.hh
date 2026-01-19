@@ -31,13 +31,6 @@ public:
 
 
 
-class ArrayTypeSpec : public TypeSpec {
-//    std::vector<IndexConstraintPtr> indexes;
-    SubtypeIndicationPtr type;
-};
-
-
-
 //
 // -- An Enumeration Type Spec
 //    ------------------------
@@ -116,5 +109,29 @@ public:
 public:
     void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
+
+
+
+//
+// -- An array type specification
+//    ---------------------------
+class ArrayTypeSpec : public TypeSpec {
+    ArrayTypeSpec(void) = delete;
+    ArrayTypeSpec(const ArrayTypeSpec &) = delete;
+    ArrayTypeSpec &operator=(const ArrayTypeSpec &) = delete;
+
+public:
+    NamePtr name;
+    bool unconstrained;
+    DiscreteRangeListPtr indices;
+    SubtypeIndicationPtr component;
+
+
+public:
+    ArrayTypeSpec(SourceLoc_t l, NamePtr n, bool u, DiscreteRangeListPtr i, SubtypeIndicationPtr c)
+            : TypeSpec(l), name(std::move(n)), unconstrained(u), indices(std::move(i)), component(std::move(c)) {}
+
+};
+
 
 

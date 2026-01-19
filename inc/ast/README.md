@@ -37,7 +37,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  4 | component-association             |     ✓     |           |             |           |
 |  3 | component-declaration             |           |           |             |           |
 |  3 | component-list                    |           |           |             |           |
-|  3 | component-subtype-definition      |           |           |             |           |
+|  3 | component-subtype-definition      |     ✓     |           |             |           |
 |  3 | constrained-array-definition      |           |           |             |           |
 |  3 | constraint                        |           |           |             |           |
 |  3 | declarative-part                  |           |           |             |           |
@@ -58,10 +58,10 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | floating-point-constraint         |     ✓     |           |             |           |
 |  3 | full-type-declaration             |     ✓     |           |             |           |
 |  3 | identifier-list                   |     ✓     |           |             |           |
-|  3 | incomplete-type-declaration       |           |           |             |           |
-|  3 | index-constraint                  |           |           |             |           |
+|  3 | incomplete-type-declaration       |     ✓     |           |             |           |
+|  3 | index-constraint                  |     ✓     |           |             |           |
 |  4 | indexed-component                 |     ✓     |           |             |           |
-|  3 | index-subtype_definition          |           |           |             |           |
+|  3 | index-subtype_definition          |     ✓     |           |             |           |
 |  3 | integer-type-definition           |     ✓     |           |             |           |
 |  3 | later-declarative-item            |           |           |             |           |
 |  4 | multiplying-operator              |     ✓     |           |             |           |
@@ -87,11 +87,11 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | subtype-indication                |     ✓     |           |             |           |
 |  4 | term                              |     ✓     |           |             |           |
 |  4 | type-conversion                   |     ✓     |           |             |           |
-|  3 | type-declaration                  |           |           |             |           |
+|  3 | type-declaration                  |     ✓     |           |             |           |
 |  3 | type-definition                   |           |           |             |           |
-|  3 | type-mark                         |           |           |             |           |
+|  3 | type-mark                         |     ✓     |           |             |           |
 |  4 | unary-adding-operator             |     ✓     |           |             |           |
-|  3 | unconstrained-array-definition    |           |           |             |           |
+|  3 | unconstrained-array-definition    |     ✓     |           |             |           |
 |  3 | variant                           |           |           |             |           |
 |  3 | variant-part                      |           |           |             |           |
 

@@ -82,66 +82,68 @@ enum class BinaryOper {
 // -- Here are quite a few forward declarations
 //    -----------------------------------------
 class AccessTypeSymbol;
+class AggregateExpr;
+class AllocatorExpr;
 class ArrayTypeSymbol;
 class ASTNode;
+class AttributeName;
+class AttributeRange;
 class AttributeSymbol;
+class BinaryExpr;
+class CharacterLiteralName;
+class Choice;
+class ComponentAssociation;
 class ComponentSymbol;
 class Decl;
 class DerivedTypeSymbol;
+class DiscreteRange;
 class DiscriminantSymbol;
 class EnumerationTypeSpec;
 class EnumLiteralSymbol;
 class EnumTypeSymbol;
 class Expr;
+class ExprChoice;
 class IncompleteTypeSymbol;
+class IndexConstraint;
+class IndexedName;
 class IntegerTypeSymbol;
+class IntLiteralExpr;
 class Name;
+class NameChoice;
+class NameExpr;
+class NullLiteralExpr;
 class NumberDeclaration;
+class NumericTypeSpec;
 class ObjectDeclaration;
 class ObjectSymbol;
+class OthersChoice;
+class QualExprAllocatorExpr;
+class QualifiedExpr;
+class Range;
+class RangeChoice;
+class RangeConstraint;
+class RangeExpr;
+class RealLiteralExpr;
 class RealTypeSymbol;
 class RecordTypeSymbol;
+class SelectedName;
+class SimpleName;
+class SliceName;
 class Stmt;
+class StringLiteralExpr;
 class SubtypeIndication;
+class SubtypeIndicationAllocatorExpr;
+class SubtypeRange;
 class SubtypeSymbol;
 class Symbol;
 class SymbolVisitor;
+class TypeConversionExpr;
 class TypeDecl;
 class TypeSpec;
 class TypeSymbol;
-class RangeConstraint;
-class DiscreteRange;
-class NumericTypeSpec;
-class Range;
-class SubtypeRange;
-class IndexConstraint;
-class AttributeRange;
-class CharacterLiteralName;
-class SimpleName;
-class IndexedName;
-class SliceName;
-class SelectedName;
-class AttributeName;
 class UnaryExpr;
-class BinaryExpr;
-class NullLiteralExpr;
-class IntLiteralExpr;
-class RealLiteralExpr;
-class StringLiteralExpr;
-class NameExpr;
-class RangeExpr;
-class Choice;
-class OthersChoice;
-class RangeChoice;
-class NameChoice;
-class ExprChoice;
-class ComponentAssociation;
-class AggregateExpr;
-class QualifiedExpr;
-class TypeConversionExpr;
-class QualExprAllocatorExpr;
-class SubtypeIndicationAllocatorExpr;
-class AllocatorExpr;
+class UnboundedRange;
+class ArrayTypeSpec;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -187,6 +189,8 @@ using TypeConversionExprPtr = std::unique_ptr<TypeConversionExpr>;
 using QualExprAllocatorExprPtr = std::unique_ptr<QualExprAllocatorExpr>;
 using SubtypeIndicationAllocatorExprPtr = std::unique_ptr<SubtypeIndicationAllocatorExpr>;
 using AllocatorExprPtr = std::unique_ptr<AllocatorExpr>;
+using UnboundedRangePtr = std::unique_ptr<UnboundedRange>;
+using ArrayTypeSpecPtr = std::unique_ptr<ArrayTypeSpec>;
 
 
 
@@ -198,6 +202,8 @@ using ChoiceList = std::vector<ChoicePtr>;
 using ChoiceListPtr = std::unique_ptr<ChoiceList>;
 using ComponentAssociationList = std::vector<ComponentAssociationPtr>;
 using ComponentAssociationListPtr = std::unique_ptr<ComponentAssociationList>;
+using DiscreteRangeList = std::vector<DiscreteRangePtr>;
+using DiscreteRangeListPtr = std::unique_ptr<DiscreteRangeList>;
 
 
 
