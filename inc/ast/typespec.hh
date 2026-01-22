@@ -121,15 +121,15 @@ class ArrayTypeSpec : public TypeSpec {
     ArrayTypeSpec &operator=(const ArrayTypeSpec &) = delete;
 
 public:
-    NamePtr name;
+    NameListPtr list;
     bool unconstrained;
     DiscreteRangeListPtr indices;
     SubtypeIndicationPtr component;
 
 
 public:
-    ArrayTypeSpec(SourceLoc_t l, NamePtr n, bool u, DiscreteRangeListPtr i, SubtypeIndicationPtr c)
-            : TypeSpec(l), name(std::move(n)), unconstrained(u), indices(std::move(i)), component(std::move(c)) {}
+    ArrayTypeSpec(SourceLoc_t l, NameListPtr n, bool u, DiscreteRangeListPtr i, SubtypeIndicationPtr c)
+            : TypeSpec(l), list(std::move(n)), unconstrained(u), indices(std::move(i)), component(std::move(c)) {}
 
 };
 

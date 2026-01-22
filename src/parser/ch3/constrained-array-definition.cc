@@ -24,17 +24,31 @@
 //    Constrained Array Definitions -- one with a single identifier and one with a
 //    list of identifiers.
 //    -------------------------------------------------------------------------------
-bool Parser::_HelpParseConstrainedArrayDefinition(void)
+ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdList *list)
 {
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    NameListPtr names = std::make_unique<NameList>();
+    DiscreteRangeListPtr range = nullptr;
+    SubtypeIndicationPtr type = nullptr;
+
+    for (auto &id : *list) {
+        SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
+        names->push_back(std::move(name));
+    }
+
+
     //
     // -- Start parse with the TOK_ARRAY and carry right on through
     //    ---------------------------------------------------------
-    if (!Require(TokenType::TOK_ARRAY)) return false;
-    if (!ParseIndexConstraint()) return false;
-    if (!Require(TokenType::TOK_OF)) return false;
-    if (!ParseDiscreteSubtypeIndication()) return false;
+    if (!Require(TokenType::TOK_ARRAY)) return nullptr;
+    if ((range = std::move(ParseIndexConstraint())) == nullptr) return nullptr;
+    if (!Require(TokenType::TOK_OF)) return nullptr;
+    if ((type = std::move(ParseDiscreteSubtypeIndication())) == nullptr) return nullptr;
 
-    return true;
+
+    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(names), false, std::move(range), std::move(type));
+
+    return std::move(rv);
 }
 
 
@@ -42,7 +56,7 @@ bool Parser::_HelpParseConstrainedArrayDefinition(void)
 //
 // -- Parse a Constrained Array Definition
 //    ------------------------------------
-bool Parser::ParseConstrainedArrayDefinition(Id &id)
+ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "constrained_array_definition (id)");
     MarkStream m(tokens, diags);
@@ -69,8 +83,11 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
     ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
+    IdList *list;
+    list->push_back(id);
 
-    if (!_HelpParseConstrainedArrayDefinition()) return false;
+    ArrayTypeSpecPtr rv = nullptr;
+    if (( rv = std::move(_HelpParseConstrainedArrayDefinition(list))) == nullptr) return nullptr;
 
 
 
@@ -80,7 +97,7 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 
@@ -89,7 +106,7 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
 //
 // -- Parse a Constrained Array Definition
 //    ------------------------------------
-bool Parser::ParseConstrainedArrayDefinition(IdList *list)
+ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdList *list)
 {
     Production p(*this, "constrained_array_definition (list)");
     MarkStream m(tokens, diags);
@@ -106,7 +123,8 @@ bool Parser::ParseConstrainedArrayDefinition(IdList *list)
 
 
 
-    if (!_HelpParseConstrainedArrayDefinition()) return false;
+    ArrayTypeSpecPtr rv = nullptr;
+    if (( rv = std::move(_HelpParseConstrainedArrayDefinition(list))) == nullptr) return nullptr;
 
 
     //
@@ -114,7 +132,7 @@ bool Parser::ParseConstrainedArrayDefinition(IdList *list)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

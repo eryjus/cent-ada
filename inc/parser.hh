@@ -255,15 +255,15 @@ public:
     bool ParseProperBody(void);
 
 
-    bool _HelpParseConstrainedArrayDefinition(void);
+    ArrayTypeSpecPtr _HelpParseConstrainedArrayDefinition(IdList *list);
     bool ParseAccessTypeDefinition(Id &id);
     bool ParseArrayTypeDefinition(Id &id);
     bool ParseBasicDeclarativeItem(void);
     bool ParseComponentDeclaration(RecordTypeSymbol *rec);
     bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
-    bool ParseConstrainedArrayDefinition(Id &id);
-    bool ParseConstrainedArrayDefinition(IdList *);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdList *);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
     bool ParseDerivedTypeDefinition(Id &id);
@@ -350,7 +350,7 @@ public:
 
 
     AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
-    DiscreteRangePtr ParseDiscreteSubtypeIndication(void);
+    SubtypeIndicationPtr ParseDiscreteSubtypeIndication(void);
     ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
     ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
     NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }

@@ -56,6 +56,7 @@ This project is an implementation of the 1983 specification of the Ada compiler.
   * Check all functions to use `astLoc`
   * Check for unused `Id &` parameters
   * Make sure all locals are initialized
+- [ ] BUG: Correct IdList * to unique_ptr
 
 
 ### Parsing

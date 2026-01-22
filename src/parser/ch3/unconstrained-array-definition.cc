@@ -111,9 +111,11 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
 
+    NameListPtr list = std::make_unique<NameList>();
     NamePtr name = std::make_unique<SimpleName>(astLoc, id);
+    list->push_back(std::move(name));
 
-    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(name), true, std::move(idxList), std::move(compType));
+    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(list), true, std::move(idxList), std::move(compType));
 
     s.Commit();
     m.Commit();

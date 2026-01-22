@@ -38,7 +38,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | component-declaration             |           |           |             |           |
 |  3 | component-list                    |           |           |             |           |
 |  3 | component-subtype-definition      |     ✓     |           |             |           |
-|  3 | constrained-array-definition      |           |           |             |           |
+|  3 | constrained-array-definition      |     ✓     |           |             |           |
 |  3 | constraint                        |           |           |             |           |
 |  3 | declarative-part                  |           |           |             |           |
 |  3 | derived-type-definition           |           |           |             |           |

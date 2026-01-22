@@ -26,9 +26,17 @@ DiscreteRangePtr Parser::ParseDiscreteRange(void)
 {
     Production p(*this, "discrete_range");
     DiscreteRangePtr rv;
+    SubtypeIndicationPtr sType = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if ((rv = std::move(ParseDiscreteSubtypeIndication())) != nullptr)   return rv;
-    if ((rv = std::move(ParseRange())) != nullptr)                       return rv;
+    sType = ParseDiscreteSubtypeIndication();
+    if (sType != nullptr)   {
+        rv = std::make_unique<SubtypeRange>(astLoc, std::move(sType));
+        return std::move(rv);
+    }
+
+
+    if ((rv = std::move(ParseRange())) != nullptr)                       return std::move(rv);
 
     return nullptr;
 }
