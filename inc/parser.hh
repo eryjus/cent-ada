@@ -255,19 +255,18 @@ public:
     bool ParseProperBody(void);
 
 
+    AccessTypeSpecPtr ParseAccessTypeDefinition(Id &id);
     ArrayTypeSpecPtr _HelpParseConstrainedArrayDefinition(IdList *list);
     ArrayTypeSpecPtr ParseArrayTypeDefinition(Id &id);
     ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
     ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdList *);
     ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
-    AccessTypeSpecPtr ParseAccessTypeDefinition(Id &id);
     bool ParseBasicDeclarativeItem(void);
     bool ParseComponentDeclaration(RecordTypeSymbol *rec);
     bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
-    DerivedTypeSpecPtr ParseDerivedTypeDefinition(Id &id);
     bool ParseDiscriminantAssociation(void);
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
@@ -279,7 +278,8 @@ public:
     bool ParseVariant(RecordTypeSymbol *rec);
     bool ParseVariantPart(RecordTypeSymbol *rec);
     ChoicePtr ParseChoice(void);
-    DiscreteRangeListPtr ParseIndexConstraint(void);
+    DerivedTypeSpecPtr ParseDerivedTypeDefinition(Id &id);
+    IndexConstraintPtr ParseIndexConstraint(void);
     DiscreteRangePtr ParseDiscreteRange(void);
     DiscreteRangePtr ParseRange(void);
     ExprPtr ParseFixedAccuracyDefinition(void);

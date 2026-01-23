@@ -114,7 +114,7 @@ void ASTInvariant::Visit(const SubtypeRange &n)
 //    ---------------------------------------
 void ASTInvariant::Visit(const IndexConstraint &n)
 {
-    assert(n.index);
+    assert(n.indices);
 }
 
 

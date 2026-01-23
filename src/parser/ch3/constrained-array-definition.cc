@@ -28,7 +28,7 @@ ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdList *list)
 {
     SourceLoc_t astLoc = tokens.SourceLocation();
     NameListPtr names = std::make_unique<NameList>();
-    DiscreteRangeListPtr range = nullptr;
+    IndexConstraintPtr range = nullptr;
     SubtypeIndicationPtr type = nullptr;
 
     for (auto &id : *list) {

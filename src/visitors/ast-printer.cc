@@ -272,7 +272,7 @@ void ASTPrinter::Visit(const IndexConstraint &n)
     std::cout << "IndexConstraint\n";
     depth ++;
 
-    PrintRequiredChild("index", n.index.get());
+//    PrintRequiredChild("index", n.indices.get());
 
     depth --;
 }

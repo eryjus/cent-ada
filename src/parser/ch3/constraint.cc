@@ -30,11 +30,13 @@ bool Parser::ParseConstraint(void)
 {
     Production p(*this, "constraint");
     Id id;
+    NumericTypeSpecPtr real = nullptr;
+    ConstraintPtr rv = nullptr;
 
-    if (ParseRangeConstraint())             return true;
-    if (ParseFloatingPointConstraint(id))   return true;
-    if (ParseFixedPointConstraint(id))      return true;
-    if (ParseIndexConstraint())             return true;
+    if ((rv = std::move(ParseRangeConstraint())) != nullptr)               return true;
+    if ((real = std::move(ParseFloatingPointConstraint(id))) != nullptr)   return true;
+    if ((real = std::move(ParseFixedPointConstraint(id))) != nullptr)      return true;
+    if ((rv = std::move(ParseIndexConstraint())) != nullptr)               return true;
     if (ParseDiscriminantConstraint())      return true;
 
     return false;

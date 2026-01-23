@@ -31,7 +31,6 @@ public:
 
 
 
-
 //
 // -- This is a range constraint
 //    --------------------------
@@ -64,13 +63,33 @@ class IndexConstraint : public Constraint {
 
 public:
     bool unconstrained;
-    DiscreteRangePtr index;
+    DiscreteRangeListPtr indices;
 
 
 public:
-    IndexConstraint(SourceLoc_t loc, bool u, DiscreteRangePtr r) : Constraint(loc), unconstrained(u), index(std::move(r)) {}
+    IndexConstraint(SourceLoc_t loc, bool u, DiscreteRangeListPtr r) : Constraint(loc), unconstrained(u), indices(std::move(r)) {}
 
 
 public:
     virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
+
+
+
+//
+// -- This is a real constraint
+//    -------------------------
+class RealConstraint : public Constraint {
+    RealConstraint(void) = delete;
+    RealConstraint(const RealConstraint &) = delete;
+    RealConstraint &operator=(const RealConstraint &) = delete;
+
+public:
+    NumericTypeSpecPtr range;
+
+public:
+    RealConstraint(SourceLoc_t loc, NumericTypeSpecPtr r) : Constraint(loc), range(std::move(r)) {}
+};
+
+
+

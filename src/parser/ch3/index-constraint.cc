@@ -22,7 +22,7 @@
 //
 // -- Parse an Index Constraint
 //    -------------------------
-DiscreteRangeListPtr Parser::ParseIndexConstraint(void)
+IndexConstraintPtr Parser::ParseIndexConstraint(void)
 {
     Production p(*this, "index_constraint");
     MarkStream m(tokens, diags);
@@ -76,8 +76,9 @@ DiscreteRangeListPtr Parser::ParseIndexConstraint(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    IndexConstraintPtr rv = std::make_unique<IndexConstraint>(astLoc, false, std::move(vec));
     m.Commit();
-    return vec;
+    return std::move(rv);
 }
 
 

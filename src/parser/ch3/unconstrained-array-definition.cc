@@ -33,6 +33,7 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     DiscreteRangeListPtr idxList = std::make_unique<DiscreteRangeList>();
+    IndexConstraintPtr indices = nullptr;
     UnboundedRangePtr idx = nullptr;
     SubtypeIndicationPtr compType = nullptr;
 
@@ -114,8 +115,9 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     NameListPtr list = std::make_unique<NameList>();
     NamePtr name = std::make_unique<SimpleName>(astLoc, id);
     list->push_back(std::move(name));
+    indices = std::make_unique<IndexConstraint>(astLoc, true, std::move(idxList));
 
-    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(list), true, std::move(idxList), std::move(compType));
+    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(list), true, std::move(indices), std::move(compType));
 
     s.Commit();
     m.Commit();

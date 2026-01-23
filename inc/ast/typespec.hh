@@ -123,12 +123,12 @@ class ArrayTypeSpec : public TypeSpec {
 public:
     NameListPtr list;
     bool unconstrained;
-    DiscreteRangeListPtr indices;
+    IndexConstraintPtr indices;
     SubtypeIndicationPtr component;
 
 
 public:
-    ArrayTypeSpec(SourceLoc_t l, NameListPtr n, bool u, DiscreteRangeListPtr i, SubtypeIndicationPtr c)
+    ArrayTypeSpec(SourceLoc_t l, NameListPtr n, bool u, IndexConstraintPtr i, SubtypeIndicationPtr c)
             : TypeSpec(l), list(std::move(n)), unconstrained(u), indices(std::move(i)), component(std::move(c)) {}
 
 };

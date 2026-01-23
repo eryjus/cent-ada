@@ -23,7 +23,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 
 | Ch | Production                        | AST Class | `nullptr` | Extra Tasks | DeskCheck |
 |:--:|:----------------------------------|:---------:|:---------:|:-----------:|:---------:|
-|  3 | access-type-definition            |           |           |             |           |
+|  3 | access-type-definition            |     ✓     |           |             |           |
 |  4 | aggregate                         |     ✓     |           |             |           |
 |  4 | allocator                         |     ✓     |           |             |           |
 |  3 | array-type-definition             |           |           |             |           |
@@ -41,7 +41,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | constrained-array-definition      |     ✓     |           |             |           |
 |  3 | constraint                        |           |           |             |           |
 |  3 | declarative-part                  |           |           |             |           |
-|  3 | derived-type-definition           |           |           |             |           |
+|  3 | derived-type-definition           |     ✓     |           |             |           |
 |  3 | discrete_range                    |     ✓     |           |             |           |
 |  3 | discriminant-association          |           |           |             |           |
 |  3 | discriminant-constraint           |           |           |             |           |

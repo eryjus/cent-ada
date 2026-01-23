@@ -146,6 +146,8 @@ class UnboundedRange;
 class ArrayTypeSpec;
 class AccessTypeSpec;
 class DerivedTypeSpec;
+class RealConstraint;
+class Constraint;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -195,6 +197,8 @@ using UnboundedRangePtr = std::unique_ptr<UnboundedRange>;
 using ArrayTypeSpecPtr = std::unique_ptr<ArrayTypeSpec>;
 using AccessTypeSpecPtr = std::unique_ptr<AccessTypeSpec>;
 using DerivedTypeSpecPtr = std::unique_ptr<DerivedTypeSpec>;
+using RealConstraintPtr = std::unique_ptr<RealConstraint>;
+using ConstraintPtr = std::unique_ptr<Constraint>;
 
 
 
