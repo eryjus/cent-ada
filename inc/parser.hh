@@ -267,7 +267,7 @@ public:
     bool ParseComponentSubtypeDefinition(void);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
-    bool ParseDerivedTypeDefinition(Id &id);
+    DerivedTypeSpecPtr ParseDerivedTypeDefinition(Id &id);
     bool ParseDiscriminantAssociation(void);
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);

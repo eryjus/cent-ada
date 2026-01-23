@@ -145,6 +145,7 @@ class UnaryExpr;
 class UnboundedRange;
 class ArrayTypeSpec;
 class AccessTypeSpec;
+class DerivedTypeSpec;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -193,6 +194,7 @@ using AllocatorExprPtr = std::unique_ptr<AllocatorExpr>;
 using UnboundedRangePtr = std::unique_ptr<UnboundedRange>;
 using ArrayTypeSpecPtr = std::unique_ptr<ArrayTypeSpec>;
 using AccessTypeSpecPtr = std::unique_ptr<AccessTypeSpec>;
+using DerivedTypeSpecPtr = std::unique_ptr<DerivedTypeSpec>;
 
 
 

@@ -22,19 +22,22 @@
 //
 // -- Parse a Derived Type Definition
 //    -------------------------------
-bool Parser::ParseDerivedTypeDefinition(Id &id)
+DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
 {
     Production p(*this, "derived_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    SimpleNamePtr name = nullptr;
+    SubtypeIndicationPtr type = nullptr;
 
 
     //
     // -- This is just a TOK_NEW with a Subtype Indication
     //    ------------------------------------------------
-    if (!Require(TokenType::TOK_NEW)) return false;
+    if (!Require(TokenType::TOK_NEW)) return nullptr;
 
 
     //
@@ -53,18 +56,19 @@ bool Parser::ParseDerivedTypeDefinition(Id &id)
 
     scopes.Declare(std::make_unique<DerivedTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
+    name = std::make_unique<SimpleName>(astLoc, id);
 
-
-    if (!ParseSubtypeIndication()) return false;
+    if ((type = std::move(ParseSubtypeIndication())) == nullptr) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    DerivedTypeSpecPtr rv = std::make_unique<DerivedTypeSpec>(astLoc, std::move(name), std::move(type));
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

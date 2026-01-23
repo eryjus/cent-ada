@@ -156,3 +156,24 @@ public:
 
 
 
+//
+// -- An derived type specification
+//    -----------------------------
+class DerivedTypeSpec : public TypeSpec {
+    DerivedTypeSpec(void) = delete;
+    DerivedTypeSpec(const DerivedTypeSpec &) = delete;
+    DerivedTypeSpec &operator=(const DerivedTypeSpec &) = delete;
+
+public:
+    NamePtr name;
+    SubtypeIndicationPtr type;
+
+
+public:
+    DerivedTypeSpec(SourceLoc_t l, NamePtr n, SubtypeIndicationPtr t)
+            : TypeSpec(l), name(std::move(n)), type(std::move(t)) {}
+
+};
+
+
+
