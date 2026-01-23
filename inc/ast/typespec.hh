@@ -135,3 +135,24 @@ public:
 
 
 
+//
+// -- An access type specification
+//    ----------------------------
+class AccessTypeSpec : public TypeSpec {
+    AccessTypeSpec(void) = delete;
+    AccessTypeSpec(const AccessTypeSpec &) = delete;
+    AccessTypeSpec &operator=(const AccessTypeSpec &) = delete;
+
+public:
+    NamePtr name;
+    SubtypeIndicationPtr type;
+
+
+public:
+    AccessTypeSpec(SourceLoc_t l, NamePtr n, SubtypeIndicationPtr t)
+            : TypeSpec(l), name(std::move(n)), type(std::move(t)) {}
+
+};
+
+
+

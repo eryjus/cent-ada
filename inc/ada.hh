@@ -144,6 +144,7 @@ class TypeSymbol;
 class UnaryExpr;
 class UnboundedRange;
 class ArrayTypeSpec;
+class AccessTypeSpec;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -191,6 +192,7 @@ using SubtypeIndicationAllocatorExprPtr = std::unique_ptr<SubtypeIndicationAlloc
 using AllocatorExprPtr = std::unique_ptr<AllocatorExpr>;
 using UnboundedRangePtr = std::unique_ptr<UnboundedRange>;
 using ArrayTypeSpecPtr = std::unique_ptr<ArrayTypeSpec>;
+using AccessTypeSpecPtr = std::unique_ptr<AccessTypeSpec>;
 
 
 

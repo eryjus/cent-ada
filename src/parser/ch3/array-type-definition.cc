@@ -22,14 +22,15 @@
 //
 // -- Parse an Array Type Definition
 //    ------------------------------
-bool Parser::ParseArrayTypeDefinition(Id &id)
+ArrayTypeSpecPtr Parser::ParseArrayTypeDefinition(Id &id)
 {
     Production p(*this, "array_type_definition");
+    ArrayTypeSpecPtr rv = nullptr;
 
-    if (ParseUnconstrainedArrayDefinition(id))    return true;
-    if (ParseConstrainedArrayDefinition(id))      return true;
+    if ((rv = std::move(ParseUnconstrainedArrayDefinition(id))) != nullptr)    return std::move(rv);
+    if ((rv = std::move(ParseConstrainedArrayDefinition(id))) != nullptr)      return std::move(rv);
 
-    return false;
+    return nullptr;
 }
 
 

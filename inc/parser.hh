@@ -256,14 +256,15 @@ public:
 
 
     ArrayTypeSpecPtr _HelpParseConstrainedArrayDefinition(IdList *list);
-    bool ParseAccessTypeDefinition(Id &id);
-    bool ParseArrayTypeDefinition(Id &id);
+    ArrayTypeSpecPtr ParseArrayTypeDefinition(Id &id);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdList *);
+    ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
+    AccessTypeSpecPtr ParseAccessTypeDefinition(Id &id);
     bool ParseBasicDeclarativeItem(void);
     bool ParseComponentDeclaration(RecordTypeSymbol *rec);
     bool ParseComponentList(RecordTypeSymbol *rec);
     bool ParseComponentSubtypeDefinition(void);
-    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
-    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdList *);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
     bool ParseDerivedTypeDefinition(Id &id);
@@ -271,15 +272,14 @@ public:
     bool ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
-    UnboundedRangePtr ParseIndexSubtypeDefinition(void);
     bool ParseLaterDeclarativeItem(void);
     bool ParseRecordTypeDefinition(Id &id);
     bool ParseSubtypeDeclaration(void);
     bool ParseTypeDefinition(Id &id);
-    ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
     bool ParseVariant(RecordTypeSymbol *rec);
     bool ParseVariantPart(RecordTypeSymbol *rec);
     ChoicePtr ParseChoice(void);
+    DiscreteRangeListPtr ParseIndexConstraint(void);
     DiscreteRangePtr ParseDiscreteRange(void);
     DiscreteRangePtr ParseRange(void);
     ExprPtr ParseFixedAccuracyDefinition(void);
@@ -295,13 +295,13 @@ public:
     NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
     ObjectDeclarationPtr ParseObjectDeclaration(void);
     RangeConstraintPtr ParseRangeConstraint(void);
-    DiscreteRangeListPtr ParseIndexConstraint(void);
     SubtypeIndicationPtr ParseSubtypeIndication(void);
     TypeDeclPtr ParseFullTypeDeclaration(void);
     TypeDeclPtr ParseIncompleteTypeDeclaration(void);
     TypeDeclPtr ParseTypeDeclaration(void);
     TypeSpecPtr ParseEnumerationTypeDefinition(Id &id);
     TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
+    UnboundedRangePtr ParseIndexSubtypeDefinition(void);
 
 
 

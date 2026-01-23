@@ -22,19 +22,21 @@
 //
 // -- Parse an Access Type Definition
 //    -------------------------------
-bool Parser::ParseAccessTypeDefinition(Id &id)
+AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
 {
     Production p(*this, "access_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    SubtypeIndicationPtr type = nullptr;
 
 
     //
     // -- Parse the sequence
     //    ------------------
-    if (!Require(TokenType::TOK_ACCESS)) return false;
+    if (!Require(TokenType::TOK_ACCESS)) return nullptr;
 
 
 
@@ -54,19 +56,22 @@ bool Parser::ParseAccessTypeDefinition(Id &id)
 
     scopes.Declare(std::make_unique<AccessTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
+    SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
 
 
-    if (!ParseSubtypeIndication()) return false;
+
+    if ((type = std::move(ParseSubtypeIndication())) == nullptr) return nullptr;
 
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    AccessTypeSpecPtr rv = std::make_unique<AccessTypeSpec>(astLoc, std::move(name), std::move(type));
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 
