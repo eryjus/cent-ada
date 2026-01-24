@@ -22,20 +22,23 @@
 //
 // -- Parse a Component Declaration
 //    -----------------------------
-bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
+ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_declaration");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    SubtypeIndicationPtr type = nullptr;
+    ExprPtr expr = nullptr;
 
 
     //
     // -- Start by getting the list of identifiers
     //    ----------------------------------------
     idList = ParseIdentifierList();
-    if (!idList) return false;
+    if (!idList) return nullptr;
 
     for (int i = 0; i < idList->size(); i ++) {
         std::unique_ptr<ComponentSymbol> sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
@@ -43,8 +46,8 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
         scopes.Declare(std::move(sym));
     }
 
-    if (!Require(TokenType::TOK_COLON)) return false;
-    if (!ParseComponentSubtypeDefinition()) return false;
+    if (!Require(TokenType::TOK_COLON)) return nullptr;
+    if ((type = std::move(ParseComponentSubtypeDefinition())) == nullptr) return nullptr;
 
 
     //
@@ -52,7 +55,7 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     //    ----------------------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         loc = tokens.SourceLocation();
-        if (!ParseExpression()) {
+        if ((expr = std::move(ParseExpression())) == nullptr) {
             diags.Error(loc, DiagID::MissingExpression, { "component declaration assignment" } );
         }
 
@@ -61,7 +64,7 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
 
     loc = tokens.SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
-        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, { "expression" } );
+        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, { "component declaration" } );
         // -- continue on in hopes that this does not create a cascade of errors
 
     }
@@ -70,9 +73,11 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    ComponentDeclarationPtr rv = std::make_unique<ComponentDeclaration>(astLoc, std::move(idList), std::move(type), std::move(expr));
+
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

@@ -22,13 +22,12 @@
 //
 // -- Parse a Component Subtype Definition
 //    ------------------------------------
-bool Parser::ParseComponentSubtypeDefinition(void)
+SubtypeIndicationPtr Parser::ParseComponentSubtypeDefinition(void)
 {
     Production p(*this, "component_subtype_definition");
 
-    if (ParseSubtypeIndication())   return true;
-
-    return false;
+    // -- TODO: Clean up std::move
+    return std::move(ParseSubtypeIndication());
 }
 
 

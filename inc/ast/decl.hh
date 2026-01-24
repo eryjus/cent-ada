@@ -84,6 +84,30 @@ public:
 
 
 //
+// -- Component declaration
+//    ---------------------
+class ComponentDeclaration : public Decl {
+    ComponentDeclaration(void) = delete;
+    ComponentDeclaration(const ComponentDeclaration &) = delete;
+    ComponentDeclaration &operator=(const ComponentDeclaration &) = delete;
+
+
+public:
+    IdListPtr names;
+    TypeSpecPtr typeSpec;
+    ExprPtr initializer;                // may be nullptr
+
+
+public:
+    ComponentDeclaration(SourceLoc_t l, IdListPtr ids, TypeSpecPtr s, ExprPtr i) :
+            Decl(l), names(std::move(ids)), typeSpec(std::move(s)), initializer(std::move(i)) {}
+
+};
+
+
+
+
+//
 // -- The common Type Declaration node (Creating a type)
 //    --------------------------------------------------
 class TypeDecl : public Decl{
