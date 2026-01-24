@@ -148,6 +148,8 @@ class AccessTypeSpec;
 class DerivedTypeSpec;
 class RealConstraint;
 class Constraint;
+class DiscriminantAssociation;
+class DiscriminantConstraint;
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -199,7 +201,8 @@ using AccessTypeSpecPtr = std::unique_ptr<AccessTypeSpec>;
 using DerivedTypeSpecPtr = std::unique_ptr<DerivedTypeSpec>;
 using RealConstraintPtr = std::unique_ptr<RealConstraint>;
 using ConstraintPtr = std::unique_ptr<Constraint>;
-
+using DiscriminantAssociationPtr = std::unique_ptr<DiscriminantAssociation>;
+using DiscriminantConstraintPtr = std::unique_ptr<DiscriminantConstraint>;
 
 
 using IdList = std::vector<struct Id>;
@@ -214,6 +217,8 @@ using ComponentAssociationList = std::vector<ComponentAssociationPtr>;
 using ComponentAssociationListPtr = std::unique_ptr<ComponentAssociationList>;
 using DiscreteRangeList = std::vector<DiscreteRangePtr>;
 using DiscreteRangeListPtr = std::unique_ptr<DiscreteRangeList>;
+using DiscriminantAssociationList = std::vector<DiscriminantAssociationPtr>;
+using DiscriminantAssociationListPtr = std::unique_ptr<DiscriminantAssociationList>;
 
 
 

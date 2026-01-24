@@ -93,3 +93,21 @@ public:
 
 
 
+//
+// -- This is a discriminant constraint
+//    ---------------------------------
+class DiscriminantConstraint : public Constraint {
+    DiscriminantConstraint(void) = delete;
+    DiscriminantConstraint(const DiscriminantConstraint &) = delete;
+    DiscriminantConstraint &operator=(const DiscriminantConstraint &) = delete;
+
+public:
+    DiscriminantAssociationListPtr list;
+
+public:
+    DiscriminantConstraint(SourceLoc_t loc, DiscriminantAssociationListPtr l) : Constraint(loc), list(std::move(l)) {}
+};
+
+
+
+

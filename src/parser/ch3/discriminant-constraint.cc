@@ -22,26 +22,32 @@
 //
 // -- Parse a Discriminant Constraint
 //    -------------------------------
-bool Parser::ParseDiscriminantConstraint(void)
+DiscriminantConstraintPtr Parser::ParseDiscriminantConstraint(void)
 {
     Production p(*this, "discriminant_constraint");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    DiscriminantAssociationListPtr list = std::make_unique<DiscriminantAssociationList>();
+    DiscriminantAssociationPtr assoc = nullptr;
 
 
     //
     // -- Start with the required left paren token and the first association
     //    ------------------------------------------------------------------
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
-    if (!ParseDiscriminantAssociation()) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
+    if ((assoc = std::move(ParseDiscriminantAssociation())) == nullptr) return nullptr;
 
+    list->push_back(std::move(assoc));
 
     //
     // -- now get the optionsl additional associations
     //    --------------------------------------------
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseDiscriminantAssociation()) {
+        if ((assoc = std::move(ParseDiscriminantAssociation())) != nullptr) {
+            list->push_back(std::move(assoc));
+        } else {
             diags.Error(loc, DiagID::ExtraComma, { "discriminant association" } );
             // -- continue on in hopes of competing the parse
             break;
@@ -60,8 +66,10 @@ bool Parser::ParseDiscriminantConstraint(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    DiscriminantConstraintPtr rv = std::make_unique<DiscriminantConstraint>(astLoc, std::move(list));
+
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

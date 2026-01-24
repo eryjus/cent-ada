@@ -177,3 +177,21 @@ public:
 
 
 
+//
+// -- This is a discriminant association, which stands largely on its own
+//    -------------------------------------------------------------------
+class DiscriminantAssociation : public ASTNode {
+    DiscriminantAssociation(void) = delete;
+    DiscriminantAssociation(const DiscriminantAssociation &) = delete;
+    DiscriminantAssociation &operator=(const DiscriminantAssociation &) = delete;
+
+public:
+    NameListPtr names;              // always initialized; may be an empty list
+    ExprPtr expr;
+
+public:
+    DiscriminantAssociation(SourceLoc_t l, NameListPtr n, ExprPtr e) : ASTNode(l), names(std::move(n)), expr(std::move(e)) {}
+};
+
+
+

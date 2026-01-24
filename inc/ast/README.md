@@ -43,8 +43,8 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | declarative-part                  |           |           |             |           |
 |  3 | derived-type-definition           |     ✓     |           |             |           |
 |  3 | discrete_range                    |     ✓     |           |             |           |
-|  3 | discriminant-association          |           |           |             |           |
-|  3 | discriminant-constraint           |           |           |             |           |
+|  3 | discriminant-association          |     ✓     |           |             |           |
+|  3 | discriminant-constraint           |     ✓     |           |             |           |
 |  3 | discriminant-part                 |           |           |             |           |
 |  3 | discriminant-specification        |           |           |             |           |
 |  3 | enumeration-literal               |     ✓     |           |             |           |

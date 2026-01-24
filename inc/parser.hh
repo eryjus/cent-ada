@@ -267,8 +267,8 @@ public:
     bool ParseComponentSubtypeDefinition(void);
     bool ParseConstraint(void);
     bool ParseDeclarativePart(void);
-    bool ParseDiscriminantAssociation(void);
-    bool ParseDiscriminantConstraint(void);
+    DiscriminantAssociationPtr ParseDiscriminantAssociation(void);
+    DiscriminantConstraintPtr ParseDiscriminantConstraint(void);
     bool ParseDiscriminantPart(void);
     bool ParseDiscriminantSpecification(void);
     bool ParseLaterDeclarativeItem(void);
