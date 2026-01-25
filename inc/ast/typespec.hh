@@ -98,11 +98,12 @@ class SubtypeIndication : public TypeSpec {
 
 public:
     NamePtr name;
-    ExprPtr constraint;         // may be nullptr
+//    ExprPtr constraint;         // may be nullptr
+    ConstraintPtr constraint;
 
 
 public:
-    SubtypeIndication(SourceLoc_t l, NamePtr n, ExprPtr c)
+    SubtypeIndication(SourceLoc_t l, NamePtr n, ConstraintPtr c)
             : TypeSpec(l), name(std::move(n)), constraint(std::move(c)) {}
 
 

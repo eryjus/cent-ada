@@ -30,8 +30,7 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
-    Id id;
-    SimpleNamePtr type = nullptr;
+    NamePtr type = nullptr;
     ExprPtr expr = nullptr;
 
 
@@ -56,8 +55,7 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     //
     // -- Now get the type
     //    ----------------
-    if ((id = ParseTypeMark()).name == "") return nullptr;
-    type = std::make_unique<SimpleName>(astLoc, id);
+    if ((type = std::move(ParseTypeMark())) == nullptr) return nullptr;
 
 
     //

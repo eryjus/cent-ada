@@ -81,7 +81,7 @@ public:
     void Note(SourceLoc_t loc, DiagID id, std::vector<std::string> args = {}) {
         Emit("note", id, loc, args);
     }
-    void Debug(std::string s) { std::cerr << s << '\n'; }
+    void Debug(std::string_view s) { std::cerr << s << '\n'; }
 
 
 private:

@@ -276,10 +276,10 @@ public:
     ExprPtr ParseFloatingAccuracyDefinition(void);
     Id ParseEnumerationLiteral(EnumTypeSymbol *type);
     Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
-    Id ParseTypeMark(void);
+    NamePtr ParseTypeMark(void);
     IdListPtr ParseIdentifierList(void);
     IndexConstraintPtr ParseIndexConstraint(void);
-    NodePtr ParseBasicDeclaration(void);
+    DeclPtr ParseBasicDeclaration(void);
     NodePtr ParseBasicDeclarativeItem(void);
     NodePtr ParseDeclarativePart(void);
     NodePtr ParseLaterDeclarativeItem(void);
@@ -322,8 +322,8 @@ public:
     ExprPtr ParseSimpleExpression(void);
     ExprPtr ParseTerm(void);
     ExprPtr ParseTypeConversion(void);
-    Id ParseSubtypeName(void);
-    Id ParseTypeName(void);
+    NamePtr ParseSubtypeName(void);
+    NamePtr ParseTypeName(void);
     IndexedNamePtr ParseIndexedComponent(void);
     NamePtr ParseAttributeDesignator(NamePtr &);
     NamePtr ParseName_AttributeSuffix(NamePtr &);

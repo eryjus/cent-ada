@@ -196,19 +196,21 @@ NamePtr Parser::ParseName_IndexOrSliceSuffix(NamePtr &prefix)
 //
 // -- Parse a name which will be a Type name (maybe incomplete)
 //    ---------------------------------------------------------
-Id Parser::ParseTypeName(void) {
-    Id id;
-    if (!ParseNameNonExpr()) return { "", tokens.EmptyLocation() };
-    const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
+NamePtr Parser::ParseTypeName(void) {
+    NamePtr name = nullptr;
+
+    if ((name = std::move(ParseNameNonExpr())) == nullptr) return nullptr;
+    const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
+
     if (vec) {
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return id;
-            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return id;
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return std::move(name);
+            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return std::move(name);
         }
     }
 
 
-    return { "", tokens.EmptyLocation() };
+    return nullptr;
 }
 
 
@@ -217,18 +219,21 @@ Id Parser::ParseTypeName(void) {
 //
 // -- Parse a name which will be a subtype name
 //    -----------------------------------------
-Id Parser::ParseSubtypeName(void) {
-    Id id;
-    if (!ParseNameNonExpr()) return { "", tokens.EmptyLocation() };
-    const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-    if (!vec || vec->empty()) return { "", tokens.EmptyLocation() };
+NamePtr Parser::ParseSubtypeName(void) {
+    NamePtr name = nullptr;
+
+    if ((name = std::move(ParseNameNonExpr())) == nullptr) return nullptr;
+    const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
+
+    if (!vec || vec->empty()) return nullptr;
+
     for (int i = 0; i < vec->size(); i ++) {
         if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
             TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
-            if (tp->category == TypeSymbol::TypeCategory::Subtype) return id;
+            if (tp->category == TypeSymbol::TypeCategory::Subtype) return std::move(name);
         }
     }
 
-    return { "", tokens.EmptyLocation() };
+    return nullptr;
 }
 

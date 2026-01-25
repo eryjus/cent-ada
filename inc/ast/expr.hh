@@ -227,12 +227,12 @@ class QualifiedExpr : public Expr {
 
 
 public:
-    Id id;
+    NamePtr id;
     ExprPtr expr;
 
 
 public:
-    QualifiedExpr(SourceLoc_t loc, Id i, ExprPtr e) : Expr(loc), id(i), expr(std::move(e)) {}
+    QualifiedExpr(SourceLoc_t loc, NamePtr i, ExprPtr e) : Expr(loc), id(std::move(i)), expr(std::move(e)) {}
 };
 
 
@@ -247,12 +247,12 @@ class TypeConversionExpr : public Expr {
 
 
 public:
-    Id id;
+    NamePtr id;
     ExprPtr expr;
 
 
 public:
-    TypeConversionExpr(SourceLoc_t loc, Id i, ExprPtr e) : Expr(loc), id(i), expr(std::move(e)) {}
+    TypeConversionExpr(SourceLoc_t loc, NamePtr i, ExprPtr e) : Expr(loc), id(std::move(i)), expr(std::move(e)) {}
 };
 
 

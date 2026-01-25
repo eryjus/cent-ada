@@ -26,14 +26,15 @@ UnboundedRangePtr Parser::ParseIndexSubtypeDefinition(void)
 {
     Production p(*this, "index_subtype_definition");
     MarkStream m(tokens, diags);
-    Id id;
+//    Id id;
+    NamePtr id;
     SourceLoc_t astLoc = tokens.SourceLocation();
 
 
     //
     // -- Get a type mark, and then the 2 required tokens to provide context
     //    ------------------------------------------------------------------
-    if ((id = ParseTypeMark()).name == "") return nullptr;
+    if ((id = std::move(ParseTypeMark())) == nullptr) return nullptr;
     if (!Require(TokenType::TOK_RANGE)) return nullptr;
     if (!Require(TokenType::TOK_BOX)) return nullptr;
 
@@ -42,7 +43,7 @@ UnboundedRangePtr Parser::ParseIndexSubtypeDefinition(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    UnboundedRangePtr rv = std::make_unique<UnboundedRange>(astLoc, id);
+    UnboundedRangePtr rv = std::make_unique<UnboundedRange>(astLoc, std::move(id));
     m.Commit();
     return std::move(rv);
 }

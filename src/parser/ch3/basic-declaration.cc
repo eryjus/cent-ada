@@ -51,25 +51,26 @@
 //
 // -- For Chapter 3, a `basic_declaration` is the top-level production
 //    ----------------------------------------------------------------
-NodePtr Parser::ParseBasicDeclaration(void)
+DeclPtr Parser::ParseBasicDeclaration(void)
 {
     // -- This top-level production must Mark its location so it can output diags
     MarkStream m(tokens, diags);
     Production p(*this, "basic_declaration");
     SourceLoc_t loc = tokens.SourceLocation();
+    DeclPtr rv = nullptr;
 
-    if (ParseObjectDeclaration())            { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseNumberDeclaration())            { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseTypeDeclaration())              { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseSubtypeDeclaration())           { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseSubprogramDeclaration())        { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParsePackageDeclaration())           { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseTaskDeclaration())              { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseGenericDeclaration())           { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseExceptionDeclaration())         { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseGenericInstantiation())         { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseRenamingDeclaration())          { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
-    if (ParseDeferredConstantDeclaration())  { m.Commit(); return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if ((rv = std::move(ParseObjectDeclaration())) != nullptr)            { return std::move(rv); }
+    if ((rv = std::move(ParseNumberDeclaration())) != nullptr)            { return std::move(rv); }
+    if ((rv = std::move(ParseTypeDeclaration())) != nullptr)              { return std::move(rv); }
+    if ((rv = std::move(ParseSubtypeDeclaration())) != nullptr)           { return std::move(rv); }
+    if (!ParseSubprogramDeclaration())        { return nullptr; }
+    if (!ParsePackageDeclaration())           { return nullptr; }
+    if (!ParseTaskDeclaration())              { return nullptr; }
+    if (!ParseGenericDeclaration())           { return nullptr; }
+    if (!ParseExceptionDeclaration())         { return nullptr; }
+    if (!ParseGenericInstantiation())         { return nullptr; }
+    if (!ParseRenamingDeclaration())          { return nullptr; }
+    if (!ParseDeferredConstantDeclaration())  { return nullptr; }
 
     if (opts.requireBasicDeclaration) {
         diags.Error(loc, DiagID::MissingBasicDeclaration);

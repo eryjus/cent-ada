@@ -27,21 +27,24 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
     SourceLoc_t loc = tokens.SourceLocation();
-    Id id;
+    NamePtr id = nullptr;
+//    Id id;
+    ConstraintPtr constraint = nullptr;
 
 
     //
     // -- Find a type mark and then optionally a constraint
     //    -------------------------------------------------
-    if ((id = ParseTypeMark()).name == "") return nullptr;
-    ParseConstraint();
+    if ((id = std::move(ParseTypeMark())) == nullptr) return nullptr;
+    constraint = std::move(ParseConstraint());
 
 
 
     //
     // -- Sine this will pass at this point, build the AST here
     //    -----------------------------------------------------
-    SubtypeIndicationPtr rv = std::make_unique<SubtypeIndication>(loc, nullptr, nullptr);
+//    NamePtr name = std::make_unique<SimpleName>(loc, id);
+    SubtypeIndicationPtr rv = std::make_unique<SubtypeIndication>(loc, std::move(id), std::move(constraint));
 
 
 

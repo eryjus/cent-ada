@@ -29,7 +29,8 @@ ExprPtr Parser::ParseRelation(void)
     Production p(*this, "relation");
     MarkStream m(tokens, diags);
     bool hasNot = false;
-    Id id;
+//    Id id;
+    NamePtr id = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
@@ -51,9 +52,9 @@ ExprPtr Parser::ParseRelation(void)
             return rv;
         }
 
-        if ((id = ParseTypeMark()).name != "") {
-            SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
-            rhs = std::make_unique<NameExpr>(astLoc, std::move(name));
+        if ((id = std::move(ParseTypeMark())) != nullptr) {
+//            SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
+            rhs = std::make_unique<NameExpr>(astLoc, std::move(id));
             ExprPtr rv = std::make_unique<BinaryExpr>(astLoc, BinaryOper::In, std::move(lhs), std::move(rhs));
             if (hasNot) rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(rv));
             m.Commit();

@@ -106,11 +106,11 @@ class UnboundedRange : public DiscreteRange {
     UnboundedRange &operator=(const UnboundedRange &) = delete;
 
 public:
-    Id type;
+    NamePtr type;
 
 public:
-    UnboundedRange(SourceLoc_t loc, Id id)
-            : DiscreteRange(loc), type(id) {}
+    UnboundedRange(SourceLoc_t loc, NamePtr id)
+            : DiscreteRange(loc), type(std::move(id)) {}
 
 };
 

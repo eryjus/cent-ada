@@ -65,6 +65,10 @@ IdListPtr Parser::ParseIdentifierList(void)
     // -- At this point, we are going to create the AST node
     //    --------------------------------------------------
 exit:
+    for (auto &id : *ids) {
+        std::cout << "ID: " << id.name << '\n';
+    }
+
     m.Commit();
     return std::move(ids);
 }
