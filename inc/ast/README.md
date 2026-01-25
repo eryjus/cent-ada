@@ -26,26 +26,26 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | access-type-definition            |     ✓     |           |             |           |
 |  4 | aggregate                         |     ✓     |           |             |           |
 |  4 | allocator                         |     ✓     |           |             |           |
-|  3 | array-type-definition             |           |           |             |           |
+|  3 | array-type-definition             |     ✓     |           |             |           |
 |  4 | attribute                         |     ✓     |           |             |           |
 |  4 | attribute-designator              |     ✓     |           |             |           |
-|  3 | basic-declaration                 |           |           |             |           |
-|  3 | basic-declarative-item            |           |           |             |           |
+|  3 | basic-declaration                 |     ✓     |           |             |           |
+|  3 | basic-declarative-item            |     ✓     |           |             |           |
 |  4 | binary-adding-operator            |     ✓     |           |             |           |
 |  3 | body                              |           |           |             |           |
 |  3 | choice                            |     ✓     |           |             |           |
 |  4 | component-association             |     ✓     |           |             |           |
 |  3 | component-declaration             |     ✓     |           |             |           |
-|  3 | component-list                    |           |           |             |           |
+|  3 | component-list                    |     ✓     |           |             |           |
 |  3 | component-subtype-definition      |     ✓     |           |             |           |
 |  3 | constrained-array-definition      |     ✓     |           |             |           |
-|  3 | constraint                        |           |           |             |           |
+|  3 | constraint                        |     ✓     |           |             |           |
 |  3 | declarative-part                  |           |           |             |           |
 |  3 | derived-type-definition           |     ✓     |           |             |           |
 |  3 | discrete_range                    |     ✓     |           |             |           |
 |  3 | discriminant-association          |     ✓     |           |             |           |
 |  3 | discriminant-constraint           |     ✓     |           |             |           |
-|  3 | discriminant-part                 |           |           |             |           |
+|  3 | discriminant-part                 |     ✓     |           |             |           |
 |  3 | discriminant-specification        |     ✓     |           |             |           |
 |  3 | enumeration-literal               |     ✓     |           |             |           |
 |  3 | enumeration-literal-specification |     ✓     |           |             |           |
@@ -75,7 +75,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | range                             |     ✓     |           |             |           |
 |  3 | range-constraint                  |     ✓     |           |             |           |
 |  3 | real-type-definition              |     ✓     |           |             |           |
-|  3 | record-type-definition            |           |           |             |           |
+|  3 | record-type-definition            |     ✓     |           |             |           |
 |  4 | relation                          |     ✓     |           |             |           |
 |  4 | relational-operator               |     ✓     |           |             |           |
 |  4 | selected-component                |     ✓     |           |             |           |
@@ -92,8 +92,8 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | type-mark                         |     ✓     |           |             |           |
 |  4 | unary-adding-operator             |     ✓     |           |             |           |
 |  3 | unconstrained-array-definition    |     ✓     |           |             |           |
-|  3 | variant                           |           |           |             |           |
-|  3 | variant-part                      |           |           |             |           |
+|  3 | variant                           |     ✓     |           |             |           |
+|  3 | variant-part                      |     ✓     |           |             |           |
 
 
 ## Class hierarchy:

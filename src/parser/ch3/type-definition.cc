@@ -28,18 +28,19 @@
 //
 // -- Parse a Type Definition
 //    ------------------------
-bool Parser::ParseTypeDefinition(Id &id)
+TypeSpecPtr Parser::ParseTypeDefinition(Id &id)
 {
     Production p(*this, "type_definition");
+    TypeSpecPtr rv = nullptr;
 
-    if (ParseEnumerationTypeDefinition(id)) return true;
-    if (ParseIntegerTypeDefinition(id))     return true;
-    if (ParseRealTypeDefinition(id))        return true;
-    if (ParseArrayTypeDefinition(id))       return true;
-    if (ParseRecordTypeDefinition(id))      return true;
-    if (ParseAccessTypeDefinition(id))      return true;
-    if (ParseDerivedTypeDefinition(id))     return true;
-    return false;
+    if ((rv = std::move(ParseEnumerationTypeDefinition(id))) != nullptr) return std::move(rv);
+    if ((rv = std::move(ParseIntegerTypeDefinition(id))) != nullptr)     return std::move(rv);
+    if ((rv = std::move(ParseRealTypeDefinition(id))) != nullptr)        return std::move(rv);
+    if ((rv = std::move(ParseArrayTypeDefinition(id))) != nullptr)       return std::move(rv);
+    if ((rv = std::move(ParseRecordTypeDefinition(id))) != nullptr)      return std::move(rv);
+    if ((rv = std::move(ParseAccessTypeDefinition(id))) != nullptr)      return std::move(rv);
+    if ((rv = std::move(ParseDerivedTypeDefinition(id))) != nullptr)     return std::move(rv);
+    return nullptr;
 }
 
 

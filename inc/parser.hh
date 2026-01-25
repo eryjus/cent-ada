@@ -261,8 +261,6 @@ public:
     ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
     ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdList *);
     ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
-    RecordSpecificationPtr ParseRecordTypeDefinition(Id &id);
-    bool ParseTypeDefinition(Id &id);
     ChoicePtr ParseChoice(void);
     ComponentDeclarationPtr ParseComponentDeclaration(RecordTypeSymbol *rec);
     ComponentListPtr ParseComponentList(RecordTypeSymbol *rec);
@@ -291,6 +289,7 @@ public:
     NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
     ObjectDeclarationPtr ParseObjectDeclaration(void);
     RangeConstraintPtr ParseRangeConstraint(void);
+    RecordSpecificationPtr ParseRecordTypeDefinition(Id &id);
     SubtypeIndicationPtr ParseComponentSubtypeDefinition(void);
     SubtypeIndicationPtr ParseSubtypeIndication(void);
     TypeDeclPtr ParseFullTypeDeclaration(void);
@@ -299,6 +298,7 @@ public:
     TypeDeclPtr ParseTypeDeclaration(void);
     TypeSpecPtr ParseEnumerationTypeDefinition(Id &id);
     TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
+    TypeSpecPtr ParseTypeDefinition(Id &id);
     UnboundedRangePtr ParseIndexSubtypeDefinition(void);
     VariantPartPtr ParseVariantPart(RecordTypeSymbol *rec);
     VariantPtr ParseVariant(RecordTypeSymbol *rec);
