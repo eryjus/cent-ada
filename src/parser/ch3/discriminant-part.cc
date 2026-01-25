@@ -22,19 +22,24 @@
 //
 // -- Parse a Discriminant Part
 //    -------------------------
-bool Parser::ParseDiscriminantPart(void)
+DiscriminantSpecificationListPtr Parser::ParseDiscriminantPart(void)
 {
     Production p(*this, "disctiminant_part");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    DiscriminantSpecificationListPtr rv = std::make_unique<DiscriminantSpecificationList>();
+    DiscriminantSpecificationPtr spec = nullptr;
 
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
-    if (!ParseDiscriminantSpecification()) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
+    if ((spec = std::move(ParseDiscriminantSpecification())) == nullptr) return nullptr;
 
+    rv->push_back(std::move(spec));
 
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_SEMICOLON)) {
-        if (!ParseDiscriminantSpecification()) {
+        if ((spec = std::move(ParseDiscriminantSpecification())) != nullptr) {
+            rv->push_back(std::move(spec));
+        } else {
         diags.Error(loc, DiagID::ExtraSemicolon, { "discriminant specification" } );
         // -- continue on in hopes that this does not create a cascade of errors
         }
@@ -51,7 +56,7 @@ bool Parser::ParseDiscriminantPart(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

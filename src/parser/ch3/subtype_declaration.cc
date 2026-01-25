@@ -22,26 +22,28 @@
 //
 // -- Parse a Subtype Declaration
 //    ---------------------------
-bool Parser::ParseSubtypeDeclaration(void)
+TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
 {
     Production p(*this, "subtype_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
     Id id;
     SourceLoc_t loc;
+    SourceLoc_t astLoc;
+    SubtypeIndicationPtr type = nullptr;
 
 
     //
     // -- start with a TOK_SUBTYPE token
     //    ------------------------------
-    if (!Require(TokenType::TOK_SUBTYPE)) return false;
+    if (!Require(TokenType::TOK_SUBTYPE)) return nullptr;
 
 
     //
     // -- Get the type name and check if its used
     //    ---------------------------------------
     loc = tokens.SourceLocation();
-    if (!RequireIdent(id)) return false;
+    if (!RequireIdent(id)) return nullptr;
 
     if (scopes.IsLocalDefined(id.name)) {
         diags.Error(loc, DiagID::DuplicateName, { id.name } );
@@ -58,8 +60,8 @@ bool Parser::ParseSubtypeDeclaration(void)
     // -- The definition of the subtype; TOK_IS and the subtype_indication
     //    must be present for this production to be valid.
     //    ----------------------------------------------------------------
-    if (!Require(TokenType::TOK_IS)) return false;
-    if (!ParseSubtypeIndication()) return false;
+    if (!Require(TokenType::TOK_IS)) return nullptr;
+    if ((type = std::move(ParseSubtypeIndication())) == nullptr) return nullptr;
 
 
 
@@ -76,9 +78,11 @@ bool Parser::ParseSubtypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, std::move(type));
+
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

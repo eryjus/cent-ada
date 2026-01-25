@@ -24,15 +24,15 @@
 //
 // -- Parse a Basic Declarative Item
 //    ------------------------------
-bool Parser::ParseBasicDeclarativeItem(void)
+NodePtr Parser::ParseBasicDeclarativeItem(void)
 {
     Production p(*this, "basic_declarative_item");
 
-    if (ParseBasicDeclaration())        return true;
-    if (ParseRepresentationClause())    return true;
-    if (ParseUseClause())               return true;
+    if (ParseBasicDeclaration())        { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseRepresentationClause())    { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseUseClause())               { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
 
-    return false;
+    return nullptr;
 }
 
 

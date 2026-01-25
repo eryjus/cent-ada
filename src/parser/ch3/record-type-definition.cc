@@ -22,21 +22,23 @@
 //
 // -- Parse a Record Type Definition
 //    ------------------------------
-bool Parser::ParseRecordTypeDefinition(Id &id)
+RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
 {
     Production p(*this, "record_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    ComponentListPtr list = nullptr;
 
 
 
     //
     // -- this production starts with a TOK_RECORD
     //    ----------------------------------------
-    if (!Require(TokenType::TOK_RECORD)) return false;
+    if (!Require(TokenType::TOK_RECORD)) return nullptr;
 
 
 
@@ -64,7 +66,7 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     //
     // -- then is followed by a list of components
     //    ----------------------------------------
-    if (!ParseComponentList(rec)) return false;
+    if ((list = std::move(ParseComponentList(rec)))== nullptr) return nullptr;
 
 
 
@@ -89,10 +91,13 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     // -- Consider this parse to be good
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
+    RecordSpecificationPtr rv = std::make_unique<RecordSpecification>(astLoc, id, std::move(list));
+
     s.Commit();
     m.Commit();
     scopes.PopScope();
-    return true;
+    return std::move(rv);
 }
 
 

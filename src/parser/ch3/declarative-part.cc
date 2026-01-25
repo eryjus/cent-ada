@@ -22,7 +22,7 @@
 //
 // -- Parse a Declarative Part
 //    ------------------------
-bool Parser::ParseDeclarativePart(void)
+NodePtr Parser::ParseDeclarativePart(void)
 {
     Production p(*this, "declarative_part");
     MarkStream m(tokens, diags);
@@ -49,7 +49,7 @@ bool Parser::ParseDeclarativePart(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+    return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation()));
 }
 
 

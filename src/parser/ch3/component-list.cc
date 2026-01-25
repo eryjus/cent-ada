@@ -24,11 +24,15 @@
 //
 // -- Parse a Component List
 //    ----------------------
-bool Parser::ParseComponentList(RecordTypeSymbol *rec)
+ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_list");
     MarkStream m(tokens, diags);
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    ComponentDeclarationListPtr comps = std::make_unique<ComponentDeclarationList>();
+    ComponentDeclarationPtr decl = nullptr;
+    VariantPartPtr variant = nullptr;
 
 
 
@@ -46,8 +50,9 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
         //
         // -- Consider this parse to be good
         //    ------------------------------
+        ComponentListPtr rv = std::make_unique<ComponentList>(astLoc, std::move(comps), nullptr);
         m.Commit();
-        return true;
+        return std::move(rv);
     }
 
 
@@ -63,7 +68,8 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
     // -- Parse all component declarations
     //    --------------------------------
     loc = tokens.SourceLocation();
-    while (ParseComponentDeclaration(rec)) {
+    while ((decl = std::move(ParseComponentDeclaration(rec))) != nullptr) {
+        comps->push_back(std::move(decl));
         declCnt ++;
     }
 
@@ -89,8 +95,9 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    ComponentListPtr rv = std::make_unique<ComponentList>(astLoc, std::move(comps), std::move(variant));
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

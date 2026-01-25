@@ -28,19 +28,19 @@
 //
 // -- Parse a Later Declarative Item
 //    ------------------------------
-bool Parser::ParseLaterDeclarativeItem(void)
+NodePtr Parser::ParseLaterDeclarativeItem(void)
 {
     Production p(*this, "later_declarative_item");
 
-    if (ParseBody())                        return true;
-    if (ParseSubprogramDeclaration())       return true;
-    if (ParsePackageDeclaration())          return true;
-    if (ParseTaskDeclaration())             return true;
-    if (ParseGenericDeclaration())          return true;
-    if (ParseUseClause())                   return true;
-    if (ParseGenericInstantiation())        return true;
+    if (ParseBody())                        { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseSubprogramDeclaration())       { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParsePackageDeclaration())          { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseTaskDeclaration())             { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseGenericDeclaration())          { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseUseClause())                   { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
+    if (ParseGenericInstantiation())        { return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation())); }
 
-    return false;
+    return nullptr;
 }
 
 

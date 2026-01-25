@@ -22,35 +22,40 @@
 //
 // -- Parse a Variant Part
 //    --------------------
-bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
+VariantPartPtr Parser::ParseVariantPart(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant_part");
     MarkStream m(tokens, diags);
     Id id;
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    VariantListPtr variants = std::make_unique<VariantList>();
+    NamePtr name = nullptr;
+    VariantPtr variant = nullptr;
 
 
     //
     // -- Start this off with a TOK_CASE token
     //    ------------------------------------
-    if (!Require(TokenType::TOK_CASE)) return false;
+    if (!Require(TokenType::TOK_CASE)) return nullptr;
 
 
     //
     // -- Check for a simple name
     //    -----------------------
     loc = tokens.SourceLocation();
-    if (ParseDiscriminantSimpleName() == nullptr) return false;
+    if ((name = std::move(ParseDiscriminantSimpleName())) == nullptr) return nullptr;
 
 
     //
     // -- parse the variants
     //    ------------------
-    if (!Require(TokenType::TOK_IS)) return false;
-    if (!ParseVariant(rec)) return false;
+    if (!Require(TokenType::TOK_IS)) return nullptr;
+    if ((variant = std::move(ParseVariant(rec))) ==nullptr) return nullptr;
+    variants->push_back(std::move(variant));
 
-    while (ParseVariant(rec)) {
-        // -- for the moment, nothing is needed here
+    while ((variant = std::move(ParseVariant(rec))) != nullptr) {
+        variants->push_back(std::move(variant));
     }
 
     loc = tokens.SourceLocation();
@@ -75,8 +80,10 @@ bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    VariantPartPtr rv = std::make_unique<VariantPart>(astLoc, std::move(name), std::move(variants));
+
     m.Commit();
-    return true;
+    return rv;
 }
 
 

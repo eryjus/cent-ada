@@ -195,3 +195,41 @@ public:
 
 
 
+//
+// -- This is a discriminant specification
+//    ------------------------------------
+class DiscriminantSpecification : public TypeSpec {
+    DiscriminantSpecification(void) = delete;
+    DiscriminantSpecification(const DiscriminantSpecification &) = delete;
+    DiscriminantSpecification &operator=(const DiscriminantSpecification &) = delete;
+
+public:
+    IdListPtr ids;
+    NamePtr type;
+    ExprPtr expr;
+
+public:
+    DiscriminantSpecification(SourceLoc_t l, IdListPtr i, NamePtr t, ExprPtr e)
+            : TypeSpec(l), ids(std::move(i)), type(std::move(t)), expr(std::move(e)) {}
+};
+
+
+
+//
+// -- This is a record specification
+//    ------------------------------
+class RecordSpecification : public TypeSpec {
+    RecordSpecification(void) = delete;
+    RecordSpecification(const RecordSpecification &) = delete;
+    RecordSpecification &operator=(const RecordSpecification &) = delete;
+
+public:
+    Id id;
+    ComponentListPtr components;
+
+public:
+    RecordSpecification(SourceLoc_t l, Id id, ComponentListPtr comps) : TypeSpec(l), id(id), components(std::move(comps)) {}
+};
+
+
+

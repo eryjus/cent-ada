@@ -108,6 +108,75 @@ public:
 
 
 //
+// -- Variants
+//    --------
+class Variant : public Decl {
+    Variant(void) = delete;
+    Variant(const Variant &) = delete;
+    Variant &operator=(const Variant &) = delete;
+
+
+public:
+    ChoiceListPtr choices;              // -- may be nullptr
+    ComponentListPtr components;
+
+
+public:
+    Variant(SourceLoc_t l, ChoiceListPtr choices, ComponentListPtr components)
+            : Decl(l), choices(std::move(choices)), components(std::move(components)) {}
+
+};
+
+
+
+
+
+//
+// -- Variant Part
+//    ------------
+class VariantPart : public Decl {
+    VariantPart(void) = delete;
+    VariantPart(const VariantPart &) = delete;
+    VariantPart &operator=(const VariantPart &) = delete;
+
+
+public:
+    NamePtr name;
+    VariantListPtr variants;
+
+
+public:
+    VariantPart(SourceLoc_t l, NamePtr n, VariantListPtr v) : Decl(l), name(std::move(n)), variants(std::move(v)) {}
+
+};
+
+
+
+
+//
+// -- Component list
+//    --------------
+class ComponentList : public Decl {
+    ComponentList(void) = delete;
+    ComponentList(const ComponentList &) = delete;
+    ComponentList &operator=(const ComponentList &) = delete;
+
+
+public:
+    ComponentDeclarationListPtr components;         // -- may be an empty list
+    VariantPartPtr variantPart;                     // -- may be nullptr
+
+
+public:
+    ComponentList(SourceLoc_t l, ComponentDeclarationListPtr c, VariantPartPtr v) :
+            Decl(l), components(std::move(c)), variantPart(std::move(v)) {}
+
+};
+
+
+
+
+//
 // -- The common Type Declaration node (Creating a type)
 //    --------------------------------------------------
 class TypeDecl : public Decl{

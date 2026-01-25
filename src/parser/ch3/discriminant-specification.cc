@@ -22,21 +22,24 @@
 //
 // -- Parse a Discriminant Specification
 //    ----------------------------------
-bool Parser::ParseDiscriminantSpecification(void)
+DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
 {
     Production p(*this, "discriminant_specification");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t loc;
+    SourceLoc_t astLoc = tokens.SourceLocation();
     Id id;
+    SimpleNamePtr type = nullptr;
+    ExprPtr expr = nullptr;
 
 
     //
     // -- Get a list of identifiers
     //    -------------------------
     idList = ParseIdentifierList();
-    if (!idList) return false;
+    if (!idList) return nullptr;
 
 
     for (int i = 0; i < idList->size(); i ++) {
@@ -47,13 +50,14 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Get the TOK_COLON
     //    -----------------
-    if (!Require(TokenType::TOK_COLON)) return false;
+    if (!Require(TokenType::TOK_COLON)) return nullptr;
 
 
     //
     // -- Now get the type
     //    ----------------
-    if ((id = ParseTypeMark()).name == "") return false;
+    if ((id = ParseTypeMark()).name == "") return nullptr;
+    type = std::make_unique<SimpleName>(astLoc, id);
 
 
     //
@@ -61,7 +65,7 @@ bool Parser::ParseDiscriminantSpecification(void)
     //    ------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         loc = tokens.SourceLocation();
-        if (!ParseExpression()) {
+        if ((expr = std::move(ParseExpression())) == nullptr) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
         }
     }
@@ -70,9 +74,12 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    DiscriminantSpecificationPtr rv = std::make_unique<DiscriminantSpecification>(astLoc, std::move(idList), std::move(type), std::move(expr));
+
     s.Commit();
     m.Commit();
-    return true;
+    // -- TODO: Remove the move
+    return std::move(rv);
 }
 
 

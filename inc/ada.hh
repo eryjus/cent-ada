@@ -151,6 +151,12 @@ class Constraint;
 class DiscriminantAssociation;
 class DiscriminantConstraint;
 class ComponentDeclaration;
+class DiscriminantSpecification;
+class VariantPart;
+class ComponentList;
+class Variant;
+class RecordSpecification;
+
 
 
 using NodePtr = std::unique_ptr<ASTNode>;
@@ -205,6 +211,12 @@ using ConstraintPtr = std::unique_ptr<Constraint>;
 using DiscriminantAssociationPtr = std::unique_ptr<DiscriminantAssociation>;
 using DiscriminantConstraintPtr = std::unique_ptr<DiscriminantConstraint>;
 using ComponentDeclarationPtr = std::unique_ptr<ComponentDeclaration>;
+using DiscriminantSpecificationPtr = std::unique_ptr<DiscriminantSpecification>;
+using VariantPartPtr = std::unique_ptr<VariantPart>;
+using ComponentListPtr = std::unique_ptr<ComponentList>;
+using VariantPtr = std::unique_ptr<Variant>;
+using RecordSpecificationPtr = std::unique_ptr<RecordSpecification>;
+
 
 
 using IdList = std::vector<struct Id>;
@@ -221,7 +233,12 @@ using DiscreteRangeList = std::vector<DiscreteRangePtr>;
 using DiscreteRangeListPtr = std::unique_ptr<DiscreteRangeList>;
 using DiscriminantAssociationList = std::vector<DiscriminantAssociationPtr>;
 using DiscriminantAssociationListPtr = std::unique_ptr<DiscriminantAssociationList>;
-
+using ComponentDeclarationList = std::vector<ComponentDeclarationPtr>;
+using ComponentDeclarationListPtr = std::unique_ptr<ComponentDeclarationList>;
+using DiscriminantSpecificationList = std::vector<DiscriminantSpecificationPtr>;
+using DiscriminantSpecificationListPtr = std::unique_ptr<DiscriminantSpecificationList>;
+using VariantList = std::vector<VariantPtr>;
+using VariantListPtr = std::unique_ptr<VariantList>;
 
 
 

@@ -35,7 +35,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | body                              |           |           |             |           |
 |  3 | choice                            |     ✓     |           |             |           |
 |  4 | component-association             |     ✓     |           |             |           |
-|  3 | component-declaration             |           |           |             |           |
+|  3 | component-declaration             |     ✓     |           |             |           |
 |  3 | component-list                    |           |           |             |           |
 |  3 | component-subtype-definition      |     ✓     |           |             |           |
 |  3 | constrained-array-definition      |     ✓     |           |             |           |
@@ -46,7 +46,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  3 | discriminant-association          |     ✓     |           |             |           |
 |  3 | discriminant-constraint           |     ✓     |           |             |           |
 |  3 | discriminant-part                 |           |           |             |           |
-|  3 | discriminant-specification        |           |           |             |           |
+|  3 | discriminant-specification        |     ✓     |           |             |           |
 |  3 | enumeration-literal               |     ✓     |           |             |           |
 |  3 | enumeration-literal-specification |     ✓     |           |             |           |
 |  3 | enumeration-type-definition       |     ✓     |           |             |           |
@@ -83,7 +83,7 @@ The command was run from the `parser` folder.  The raw data from `find` was in t
 |  4 | simple-expression                 |     ✓     |           |             |           |
 |  4 | simple-name                       |     ✓     |           |             |           |
 |  4 | slice                             |     ✓     |           |             |           |
-|  3 | subtype_declaration               |           |           |             |           |
+|  3 | subtype_declaration               |     ✓     |           |             |           |
 |  3 | subtype-indication                |     ✓     |           |             |           |
 |  4 | term                              |     ✓     |           |             |           |
 |  4 | type-conversion                   |     ✓     |           |             |           |
