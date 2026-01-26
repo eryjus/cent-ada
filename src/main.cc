@@ -240,12 +240,12 @@ static int Compile(std::string filename, ParseType_t type)
     switch (type) {
     case COMPILE_TYPES:
         while (tokens->Current() != TokenType::YYEOF) {
-            if(!parser->ParseBasicDeclaration()) {
+            if(parser->ParseBasicDeclaration() == nullptr) {
                 std::cerr << "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m\n";
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {
-//                std::cerr << "Completed a Declaration\n";
+                std::cerr << "Completed a Declaration\n";
             }
         }
 

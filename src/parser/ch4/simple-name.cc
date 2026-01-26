@@ -29,7 +29,10 @@ NamePtr Parser::ParseSimpleName(void)
     SourceLoc_t loc = tokens.SourceLocation(), astLoc = loc;
     Id id;
 
-    if (!RequireIdent(id))  return nullptr;
+    if (!RequireIdent(id)) {
+        p.At("No ID");
+        return nullptr;
+    }
 
     if (scopes.Lookup(id.name) == nullptr) {
         diags.Error(loc, DiagID::UnknownName, { id.name } );
@@ -40,5 +43,7 @@ NamePtr Parser::ParseSimpleName(void)
     SimpleNamePtr rv = std::move(std::make_unique<SimpleName>(astLoc, id));
 
     m.Commit();
+    p.At("Success");
+    TOKEN;
     return rv;
 }

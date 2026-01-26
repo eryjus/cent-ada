@@ -47,12 +47,12 @@ NamePtr Parser::ParseNameNonExpr(void)
 
     NamePtr rv = nullptr;
 
-    if ((rv = std::move(ParseSimpleName())) != nullptr)             return rv;
-    if ((rv = std::move(ParseOperatorSymbol())) != nullptr)         return rv;
-    if ((rv = std::move(ParseIndexedComponent())) != nullptr)       return rv;
-    if ((rv = std::move(ParseSlice())) != nullptr)                  return rv;
-    if ((rv = std::move(ParseSelectedComponent())) != nullptr)      return rv;
-    if ((rv = std::move(ParseAttribute())) != nullptr)              return rv;
+    if ((rv = std::move(ParseSimpleName())) != nullptr)             { m.Commit(); return rv; }
+    if ((rv = std::move(ParseOperatorSymbol())) != nullptr)         { m.Commit(); return rv; }
+    if ((rv = std::move(ParseIndexedComponent())) != nullptr)       { m.Commit(); return rv; }
+    if ((rv = std::move(ParseSlice())) != nullptr)                  { m.Commit(); return rv; }
+    if ((rv = std::move(ParseSelectedComponent())) != nullptr)      { m.Commit(); return rv; }
+    if ((rv = std::move(ParseAttribute())) != nullptr)              { m.Commit(); return rv; }
 
     return nullptr;
 }
@@ -197,6 +197,7 @@ NamePtr Parser::ParseName_IndexOrSliceSuffix(NamePtr &prefix)
 // -- Parse a name which will be a Type name (maybe incomplete)
 //    ---------------------------------------------------------
 NamePtr Parser::ParseTypeName(void) {
+    Production p(*this, "Name(type)");
     NamePtr name = nullptr;
 
     if ((name = std::move(ParseNameNonExpr())) == nullptr) return nullptr;
@@ -209,7 +210,7 @@ NamePtr Parser::ParseTypeName(void) {
         }
     }
 
-
+    p.At("failed");
     return nullptr;
 }
 

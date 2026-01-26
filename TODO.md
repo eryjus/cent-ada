@@ -48,15 +48,16 @@ This project is an implementation of the 1983 specification of the Ada compiler.
 
 ### Infrastructure
 - [x] REFACTOR: Refactor `parse-expr` into separate files like Ch3
-- [ ] BUG: Check for the following in each parser source:
-  * MarkStream m ==> is used?
+- [ ] BUG: Check for the following in each parser source (EXTRA TASKS):
+  * MarkStream m ==> is used correctly?
   * Remove all `m.CommitIf()` references & function
   * Check all return types and make sure they are appropriate
   * Check all versions of `loc` to be `parseLoc`
-  * Check all functions to use `astLoc`
+  * Check all functions to use `astLoc` -- is there a better construct?
   * Check for unused `Id &` parameters
   * Make sure all locals are initialized
 - [ ] BUG: Correct IdList * to unique_ptr
+- [ ] BUG: Canonicalize `tokens`
 
 
 ### Parsing

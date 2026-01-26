@@ -54,12 +54,11 @@
 DeclPtr Parser::ParseBasicDeclaration(void)
 {
     // -- This top-level production must Mark its location so it can output diags
-    MarkStream m(tokens, diags);
     Production p(*this, "basic_declaration");
     SourceLoc_t loc = tokens.SourceLocation();
     DeclPtr rv = nullptr;
 
-    if ((rv = std::move(ParseObjectDeclaration())) != nullptr)            { return std::move(rv); }
+    if ((rv = std::move(ParseObjectDeclaration())) != nullptr)            { p.At("Object"); return std::move(rv); }
     if ((rv = std::move(ParseNumberDeclaration())) != nullptr)            { return std::move(rv); }
     if ((rv = std::move(ParseTypeDeclaration())) != nullptr)              { return std::move(rv); }
     if ((rv = std::move(ParseSubtypeDeclaration())) != nullptr)           { return std::move(rv); }
@@ -74,7 +73,6 @@ DeclPtr Parser::ParseBasicDeclaration(void)
 
     if (opts.requireBasicDeclaration) {
         diags.Error(loc, DiagID::MissingBasicDeclaration);
-        m.Commit();
         tokens.Recovery();
     }
 

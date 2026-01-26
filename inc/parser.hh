@@ -160,6 +160,7 @@ private:
     class Production {
     private:
         Parser &parser;
+        std::string at = "";
 
     public:
         Production(Parser &parser, std::string p) : parser(parser)
@@ -169,10 +170,16 @@ private:
             std::cerr.flush();
         }
         ~Production() {
-            if (opts.trace) std::cerr << "Leaving " << parser.Last() << '\n';
+            if (opts.trace) {
+                std::cerr << "Leaving " << parser.Last();
+                if (at != "") std::cerr << " at " << at;
+                std::cerr << '\n';
+            }
+
             parser.stack.pop_back();
             std::cerr.flush();
         }
+        void At(std::string a) { at = a; }
     };
 
 
