@@ -50,20 +50,21 @@ SelectedNamePtr Parser::ParseSelectedComponent(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-NamePtr Parser::ParseName_SelectedComponentSuffix(NamePtr &prefix)
+SelectedNamePtr Parser::ParseName_SelectedComponentSuffix(NamePtr &prefix)
 {
     Production p(*this, "selected_component(suffix)");
     MarkStream m(tokens, diags);
-    NamePtr selector = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    NamePtr selector = nullptr;
 
-    if (!Require(TokenType::TOK_DOT))                                   return nullptr;
-    if ((selector = std::move(ParseSelector(prefix))) == nullptr)       return nullptr;
+    if (!Require(TokenType::TOK_DOT)) return nullptr;
 
-    SelectedNamePtr rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
+    selector = ParseSelector(prefix);
+    if (!selector) return nullptr;
 
     m.Commit();
-    return rv;
+
+    return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
 }
 
 

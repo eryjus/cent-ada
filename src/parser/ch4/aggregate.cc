@@ -26,19 +26,22 @@ ExprPtr Parser::ParseAggregate(void)
 {
     Production p(*this, "aggregate");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc= astLoc;
     ComponentAssociationListPtr list = std::make_unique<ComponentAssociationList>();
     ComponentAssociationPtr assoc = nullptr;
 
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS))          return nullptr;
-    if ((assoc = std::move(ParseComponentAssociation())) == nullptr)   return nullptr;
+
+    assoc = ParseComponentAssociation();
+    if (!assoc)   return nullptr;
 
     list->push_back(std::move(assoc));
 
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if ((assoc = std::move(ParseComponentAssociation())) != nullptr) {
+        assoc = ParseComponentAssociation();
+        if (assoc) {
             list->push_back(std::move(assoc));
         } else {
             diags.Error(loc, DiagID::ExtraComma, { "component association" } );
@@ -53,42 +56,12 @@ ExprPtr Parser::ParseAggregate(void)
     }
 
 
-    AggregateExprPtr rv = std::make_unique<AggregateExpr>(astLoc, std::move(list));
 
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<AggregateExpr>(astLoc, std::move(list));
 }
 
-
-
-#if 0
-//
-// -- Parse an Aggregate Suffix
-//    -------------------------
-bool Parser::ParseAggregateMore(void)
-{
-    Production p(*this, "aggregate(more)");
-    MarkStream m(tokens, diags);
-    SourceLoc_t loc;
-
-    loc = tokens.SourceLocation();
-    while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseComponentAssociation()) {
-            diags.Error(loc, DiagID::ExtraComma, { "aggregate" } );
-        }
-
-        loc = tokens.SourceLocation();
-    }
-
-    loc = tokens.SourceLocation();
-    if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
-        diags.Error(loc, DiagID::MissingRightParen, { "component_association" } );
-    }
-
-    m.Commit();
-    return true;
-}
-#endif
 
 
 

@@ -27,6 +27,7 @@ BinaryOper Parser::ParseRelationalOperator(void)
     Production p(*this, "relational_operator");
     MarkStream m(tokens, diags);
 
+
     switch (tokens.Current()) {
     case TokenType::TOK_EQUAL:                  tokens.Advance();  m.Commit();  return BinaryOper::Equal;
     case TokenType::TOK_INEQUALITY:             tokens.Advance();  m.Commit();  return BinaryOper::NotEqual;

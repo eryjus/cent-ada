@@ -26,27 +26,33 @@ ExprPtr Parser::ParseTypeConversion(void)
 {
     Production p(*this, "type_conversion");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
-//    Id id;
+    SourceLoc_t loc = astLoc;
     NamePtr id = nullptr;
     ExprPtr expr = nullptr;
 
-    if ((id = std::move(ParseTypeMark())) == nullptr)       return nullptr;
+
+    id = ParseTypeMark();
+    if (!id) return nullptr;
+
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return nullptr;
     loc = tokens.SourceLocation();
-    if ((expr = std::move(ParseExpression())) == nullptr) {
+
+
+    expr = ParseExpression();
+    if (!expr) {
         diags.Error(loc, DiagID::InvalidExpression, { "type conversion" } );
     }
+
+
     loc = tokens.SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
 
-    TypeConversionExprPtr rv = std::make_unique<TypeConversionExpr>(astLoc, std::move(id), std::move(expr));
-
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<TypeConversionExpr>(astLoc, std::move(id), std::move(expr));
 }
 
 

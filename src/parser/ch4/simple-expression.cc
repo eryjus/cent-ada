@@ -26,37 +26,46 @@ ExprPtr Parser::ParseSimpleExpression(void)
 {
     Production p(*this, "simple_expression");
     MarkStream m(tokens, diags);
-    UnaryOper uop;
-    BinaryOper bop;
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    UnaryOper uop = UnaryOper::Unspecified;
+    BinaryOper bop = BinaryOper::Unspecified;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
 
     uop = ParseUnaryAddingOperator();           // -- not required
-    if ((lhs = std::move(ParseTerm())) == nullptr)      return nullptr;
-    if (uop != UnaryOper::Unspecified) lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
+
+    lhs = ParseTerm();
+    if (!lhs) return nullptr;
+
+    if (uop != UnaryOper::Unspecified) {
+        lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
+    }
 
     if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
         m.Commit();
-        return std::move(lhs);
+        return lhs;
     }
 
 
-    while ((bop = ParseBinaryAddingOperator()) != BinaryOper::Unspecified) {
-        if ((rhs = std::move(ParseTerm())) == nullptr)          return nullptr;
+    bop = ParseBinaryAddingOperator();
+    while (bop != BinaryOper::Unspecified) {
+        if ((rhs = std::move(ParseTerm())) == nullptr) return nullptr;
+
         if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term
-            BinaryExprPtr rv = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
             m.Commit();
-            return std::move(rv);
+
+            return std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
         }
 
         lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
+        bop = ParseBinaryAddingOperator();
     }
 
     m.Commit();
-    return std::move(lhs);
+
+    return lhs;
 }
 
 

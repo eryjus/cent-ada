@@ -27,6 +27,7 @@ BinaryOper Parser::ParseMultiplyingOperator(void)
     Production p(*this, "multiplying_operator");
     MarkStream m(tokens, diags);
 
+
     switch (tokens.Current()) {
     case TokenType::TOK_STAR:       tokens.Advance();  m.Commit();  return BinaryOper::Times;
     case TokenType::TOK_SLASH:      tokens.Advance();  m.Commit();  return BinaryOper::Divide;

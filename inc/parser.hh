@@ -338,14 +338,14 @@ public:
     NamePtr ParseSubtypeName(void);
     NamePtr ParseTypeName(void);
     IndexedNamePtr ParseIndexedComponent(void);
-    NamePtr ParseAttributeDesignator(NamePtr &);
-    NamePtr ParseName_AttributeSuffix(NamePtr &);
+    AttributeNamePtr ParseAttributeDesignator(NamePtr &);
+    AttributeNamePtr ParseName_AttributeSuffix(NamePtr &);
     NamePtr ParseName_Base(void);
     NamePtr ParseName_IndexComponentSuffix(NamePtr &prefix);
     NamePtr ParseName_IndexOrSliceSuffix(NamePtr &prefix);
     NamePtr ParseName_Postfix(NamePtr &prefix);
-    NamePtr ParseName_SelectedComponentSuffix(NamePtr &prefix);
-    NamePtr ParseName_SliceSuffix(NamePtr &prefix);
+    SelectedNamePtr ParseName_SelectedComponentSuffix(NamePtr &prefix);
+    SliceNamePtr ParseName_SliceSuffix(NamePtr &prefix);
     NamePtr ParseNameExpr(void);
     NamePtr ParseNameNonExpr(void);
     NamePtr ParsePrefix(void);

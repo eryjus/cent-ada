@@ -26,7 +26,8 @@ NamePtr Parser::ParseSimpleName(void)
 {
     Production p(*this, "simple_name");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation(), astLoc = loc;
+    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t astLoc = loc;
     Id id;
 
     if (!RequireIdent(id)) {
@@ -40,10 +41,8 @@ NamePtr Parser::ParseSimpleName(void)
     }
 
 
-    SimpleNamePtr rv = std::move(std::make_unique<SimpleName>(astLoc, id));
-
     m.Commit();
     p.At("Success");
-    TOKEN;
-    return rv;
+
+    return std::make_unique<SimpleName>(astLoc, id);
 }

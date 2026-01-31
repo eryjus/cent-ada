@@ -33,17 +33,21 @@ AllocatorExprPtr Parser::ParseAllocator(void)
 
     if (!Require(TokenType::TOK_NEW)) return nullptr;
 
-    if ((q = std::move(ParseQualifiedExpression())) != nullptr) {
-        QualExprAllocatorExprPtr rv = std::make_unique<QualExprAllocatorExpr>(astLoc, std::move(q));
+    q = ParseQualifiedExpression();
+    if (q) {
         m.Commit();
-        return std::move(rv);
+
+        return std::make_unique<QualExprAllocatorExpr>(astLoc, std::move(q));
     }
 
-    if ((s = std::move(ParseSubtypeIndication())) != nullptr) {
-        SubtypeIndicationAllocatorExprPtr rv = std::make_unique<SubtypeIndicationAllocatorExpr>(astLoc, std::move(s));
+    s = ParseSubtypeIndication();
+    if (s) {
         m.Commit();
-        return std::move(rv);
+
+        return std::make_unique<SubtypeIndicationAllocatorExpr>(astLoc, std::move(s));
     }
+
+
 
     return nullptr;
 }

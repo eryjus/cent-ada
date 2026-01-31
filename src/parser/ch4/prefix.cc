@@ -28,8 +28,13 @@ NamePtr Parser::ParsePrefix(void)
     Production p(*this, "prefix");
     NamePtr rv = nullptr;
 
-    if ((rv = std::move(ParseNameExpr())) != nullptr)       return rv;
-    if ((rv = std::move(ParseFunctionCall())) != nullptr)   return rv;
+
+    rv = ParseNameExpr();
+    if (rv) return rv;
+
+    rv = ParseFunctionCall();
+    if (rv) return rv;
+
 
     return nullptr;
 }

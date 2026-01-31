@@ -26,14 +26,19 @@ SliceNamePtr Parser::ParseSlice(void)
 {
     Production p(*this, "slice");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = tokens.SourceLocation();
     NamePtr pre = nullptr;
     DiscreteRangePtr range = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
 
 
-    if (!ParsePrefix())                                 return nullptr;
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))      return nullptr;
-    if ((range = ParseDiscreteRange()) == nullptr)      return nullptr;
+    pre = ParsePrefix();
+    if (!pre) return nullptr;
+
+
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
+
+    range = ParseDiscreteRange();
+    if (!range) return nullptr;
 
     SourceLoc_t loc = tokens.SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
@@ -41,11 +46,9 @@ SliceNamePtr Parser::ParseSlice(void)
     }
 
 
-    SliceNamePtr rv = std::make_unique<SliceName>(astLoc, std::move(pre), std::move(range));
-
-
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<SliceName>(astLoc, std::move(pre), std::move(range));
 }
 
 
@@ -55,20 +58,21 @@ SliceNamePtr Parser::ParseSlice(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-NamePtr Parser::ParseName_SliceSuffix(NamePtr &prefix)
+SliceNamePtr Parser::ParseName_SliceSuffix(NamePtr &prefix)
 {
     Production p(*this, "slice(suffix)");
     MarkStream m(tokens, diags);
     DiscreteRangePtr range = nullptr;
-    NamePtr rv = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
 
-    if ((range = std::move(ParseDiscreteRange())) == nullptr)       return nullptr;
 
-    rv = std::make_unique<SliceName>(astLoc, std::move(prefix), std::move(range));
+    range = ParseDiscreteRange();
+    if (!range) return nullptr;
+
 
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<SliceName>(astLoc, std::move(prefix), std::move(range));
 }
 
 

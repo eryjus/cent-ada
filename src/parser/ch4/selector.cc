@@ -27,44 +27,48 @@ SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
     Production p(*this, "selector");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = tokens.SourceLocation();
-    Id id;
     NamePtr selector = nullptr;
     SelectedNamePtr rv = nullptr;
+    Id id;
+
 
     if (Optional(TokenType::TOK_ALL)) {
-        rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), nullptr);
         m.Commit();
-        return std::move(rv);
+
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), nullptr);
     }
+
 
     if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
         CharacterLiteralNamePtr charSelector = std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload()));
         tokens.Advance();
-        rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(charSelector));
-
         m.Commit();
-        return std::move(rv);
+
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(charSelector));
     }
 
+
     SourceLoc_t loc = tokens.SourceLocation();
-    if ((selector = std::move(ParseSimpleName())) != nullptr) {
+    selector = ParseSimpleName();
+    if (selector) {
         if (!scopes.Lookup(id.name)) {
             diags.Error(loc, DiagID::UnknownName, { "selector"} );
             // -- allow the parse to continue
         }
 
-        rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
-
         m.Commit();
-        return std::move(rv);
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
     }
 
-    if ((selector = std::move(ParseOperatorSymbol())) != nullptr) {
-        rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
 
+    selector = ParseOperatorSymbol();
+    if (selector) {
         m.Commit();
-        return rv;
+
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));;
     }
+
+
 
     return nullptr;
 }

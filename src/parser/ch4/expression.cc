@@ -30,14 +30,15 @@ ExprPtr Parser::ParseExpression(void)
 {
     Production p(*this, "expression");
     MarkStream m(tokens, diags);
-    TokenType tok;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    BinaryOper bop = BinaryOper::Unspecified;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
-    BinaryOper bop = BinaryOper::Unspecified;
+    TokenType tok;
 
 
-    if ((lhs = std::move(ParseRelation())) == nullptr) return nullptr;
+    lhs = ParseRelation();
+    if (!lhs) return nullptr;
 
     switch (tokens.Current()) {
     case TokenType::TOK_AND:        bop = BinaryOper::And;      tok = tokens.Current();  break;
@@ -47,19 +48,23 @@ ExprPtr Parser::ParseExpression(void)
     case TokenType::TOK_XOR:        bop = BinaryOper::Xor;      tok = tokens.Current();  break;
     default:
         m.Commit();
-        return std::move(lhs);
+        return lhs;
     }
 
+
     while (Optional(tok)) {
-        if ((rhs = std::move(ParseRelation())) == nullptr) {
+        rhs = ParseRelation();
+        if (!rhs) {
             // -- TODO: maybe issue an error about missing a relation and return true instead???
             return nullptr;
         }
+
 
         lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
     }
 
     m.Commit();
+
     return lhs;
 }
 

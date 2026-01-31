@@ -27,19 +27,27 @@ ExprPtr Parser::ParseTerm(void)
     Production p(*this, "term");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = tokens.SourceLocation();
+    BinaryOper bop = BinaryOper::Unspecified;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
-    BinaryOper bop = BinaryOper::Unspecified;
 
 
-    if ((lhs = std::move(ParseFactor())) == nullptr) return nullptr;
+    lhs = ParseFactor();
+    if (!lhs) return nullptr;
 
-    while ((bop = ParseMultiplyingOperator()) != BinaryOper::Unspecified) {
-        if ((rhs = std::move(ParseFactor())) == nullptr) return nullptr;
+    bop = ParseMultiplyingOperator();
+    while (bop != BinaryOper::Unspecified) {
+        rhs = ParseFactor();
+        if (!rhs) return nullptr;
+
         lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
+
+        bop = ParseMultiplyingOperator();
     }
 
+
     m.Commit();
+
     return lhs;
 }
 

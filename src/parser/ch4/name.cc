@@ -37,22 +37,34 @@ NamePtr Parser::ParseNameNonExpr(void)
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(non-expr)");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc;
-
-    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
-        CharacterLiteralNamePtr rv = std::move(std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload())));
-        m.Commit();
-        return std::move(rv);
-    }
-
+    SourceLoc_t astLoc = tokens.SourceLocation();
     NamePtr rv = nullptr;
 
-    if ((rv = std::move(ParseSimpleName())) != nullptr)             { m.Commit(); return rv; }
-    if ((rv = std::move(ParseOperatorSymbol())) != nullptr)         { m.Commit(); return rv; }
-    if ((rv = std::move(ParseIndexedComponent())) != nullptr)       { m.Commit(); return rv; }
-    if ((rv = std::move(ParseSlice())) != nullptr)                  { m.Commit(); return rv; }
-    if ((rv = std::move(ParseSelectedComponent())) != nullptr)      { m.Commit(); return rv; }
-    if ((rv = std::move(ParseAttribute())) != nullptr)              { m.Commit(); return rv; }
+    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
+        m.Commit();
+
+        return std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload()));
+    }
+
+
+    rv = ParseSimpleName();
+    if (rv) { m.Commit(); return rv; }
+
+    rv = ParseOperatorSymbol();
+    if (rv) { m.Commit(); return rv; }
+
+    rv = ParseIndexedComponent();
+    if (rv) { m.Commit(); return rv; }
+
+    rv = ParseSlice();
+    if (rv) { m.Commit(); return rv; }
+
+    rv = ParseSelectedComponent();
+    if (rv) { m.Commit(); return rv; }
+
+    rv = ParseAttribute();
+    if (rv) { m.Commit(); return rv; }
+
 
     return nullptr;
 }
@@ -74,16 +86,19 @@ NamePtr Parser::ParseNameExpr(void)
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(expr)");
     MarkStream m(tokens, diags);
-    NamePtr rv = nullptr;
+    NamePtr pre = nullptr;
 
-    if ((rv = ParseName_Base()) == nullptr)        return nullptr;
 
-    while (ParseName_Postfix(rv)) {
+    pre = ParseName_Base();
+    if (!pre) return nullptr;
+
+    while (ParseName_Postfix(pre)) {
         // -- Do something important here
     }
 
     m.Commit();
-    return std::move(rv);
+
+    return pre;
 }
 
 
@@ -98,17 +113,22 @@ NamePtr Parser::ParseName_Base(void)
 {
     Production p(*this, "name(base)");
     MarkStream m(tokens, diags);
-    NamePtr rv = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    NamePtr rv = nullptr;
 
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
-        rv = std::move(std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload())));
         m.Commit();
-        return std::move(rv);
+
+        return std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload()));
     }
 
-    if ((rv = std::move(ParseSimpleName())) != nullptr)                return rv;
-    if ((rv = std::move(ParseOperatorSymbol())) != nullptr)            return rv;
+
+    rv = ParseSimpleName();
+    if (rv) return rv;
+
+    rv = ParseOperatorSymbol();
+    if (rv) return rv;
+
 
     return nullptr;
 }
@@ -128,28 +148,39 @@ NamePtr Parser::ParseName_Postfix(NamePtr &prefix)
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = tokens.SourceLocation();
     NamePtr rv = nullptr;
+    SelectedNamePtr selected = nullptr;
+    AttributeNamePtr attr = nullptr;
 
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
-        if ((rv = std::move(ParseName_IndexOrSliceSuffix(prefix))) != nullptr) {
+        rv = ParseName_IndexOrSliceSuffix(prefix);
+        if (rv) {
             SourceLoc_t loc = tokens.SourceLocation();
             if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
                 diags.Error(loc, DiagID::MissingRightParen, { "index or selected component" } );
             }
 
             m.Commit();
-            return std::move(rv);
+
+            return rv;
         }
     }
 
-    if (ParseName_SelectedComponentSuffix(prefix) != nullptr) {
+
+    selected = ParseName_SelectedComponentSuffix(prefix);
+    if (selected) {
         m.Commit();
-        return rv;
+
+        return selected;
     }
 
-    if ((rv = ParseName_AttributeSuffix(prefix)) != nullptr) {
+
+    attr = ParseName_AttributeSuffix(prefix);
+    if (attr) {
         m.Commit();
-        return rv;
+
+        return attr;
     }
+
 
     return nullptr;
 }
@@ -166,23 +197,24 @@ NamePtr Parser::ParseName_IndexOrSliceSuffix(NamePtr &prefix)
     NamePtr rv = nullptr;
 
     m.Reset();
-    if (ParseName_SliceSuffix(prefix)) {
-        // -- do something important here
+    rv = ParseName_SliceSuffix(prefix);
+    if (rv) {
         m.Commit();
         return rv;
     }
 
 
     m.Reset();
-    if ((rv = std::move(ParseName_IndexComponentSuffix(prefix))) != nullptr) {
+    rv = ParseName_IndexComponentSuffix(prefix);
+    if (rv) {
         m.Commit();
         return rv;
     }
 
 
     m.Reset();
-    if (ParseName_SelectedComponentSuffix(prefix) != nullptr) {
-        // -- do something important here
+    rv = ParseName_SelectedComponentSuffix(prefix);
+    if (rv) {
         m.Commit();
         return rv;
     }
@@ -205,8 +237,8 @@ NamePtr Parser::ParseTypeName(void) {
 
     if (vec) {
         for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return std::move(name);
-            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return std::move(name);
+            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return name;
+            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return name;
         }
     }
 
@@ -231,7 +263,7 @@ NamePtr Parser::ParseSubtypeName(void) {
     for (int i = 0; i < vec->size(); i ++) {
         if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
             TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
-            if (tp->category == TypeSymbol::TypeCategory::Subtype) return std::move(name);
+            if (tp->category == TypeSymbol::TypeCategory::Subtype) return name;
         }
     }
 
