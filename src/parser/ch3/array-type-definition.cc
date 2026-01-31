@@ -27,9 +27,19 @@ ArrayTypeSpecPtr Parser::ParseArrayTypeDefinition(Id &id)
     Production p(*this, "array_type_definition");
     ArrayTypeSpecPtr rv = nullptr;
 
-    if ((rv = std::move(ParseUnconstrainedArrayDefinition(id))) != nullptr)    return std::move(rv);
-    if ((rv = std::move(ParseConstrainedArrayDefinition(id))) != nullptr)      return std::move(rv);
+    rv = ParseUnconstrainedArrayDefinition(id);
+    if (!rv) {
+        p.At("Unconstrained Array");
+        return rv;
+    }
 
+    rv = ParseConstrainedArrayDefinition(id);
+    if (!rv) {
+        p.At("Constrained Array");
+        return rv;
+    }
+
+    p.At("no match");
     return nullptr;
 }
 

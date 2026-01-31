@@ -27,9 +27,9 @@ Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
     Production p(*this, "enumeration_literal");
     MarkStream m(tokens, diags);
     SourceLoc_t loc = tokens.SourceLocation();
-    Id id;
-    EnumLiteralSymbol *sym;
+    EnumLiteralSymbol *sym= nullptr;
     YYSTYPE yy = yylval;      // in case we have a character liteal
+    Id id;
 
 
     //

@@ -43,9 +43,9 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -58,17 +58,23 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
 
     name = std::make_unique<SimpleName>(astLoc, id);
 
-    if ((type = std::move(ParseSubtypeIndication())) == nullptr) return nullptr;
+
+    //
+    // -- Get the subtype
+    //    ---------------
+    type = ParseSubtypeIndication();
+    if (!type) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    DerivedTypeSpecPtr rv = std::make_unique<DerivedTypeSpec>(astLoc, std::move(name), std::move(type));
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<DerivedTypeSpec>(astLoc, std::move(name), std::move(type));
 }
 
 

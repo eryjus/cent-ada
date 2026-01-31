@@ -28,8 +28,8 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = astLoc;
     NamePtr type = nullptr;
     ExprPtr expr = nullptr;
 
@@ -55,7 +55,8 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     //
     // -- Now get the type
     //    ----------------
-    if ((type = std::move(ParseTypeMark())) == nullptr) return nullptr;
+    type = ParseTypeMark();
+    if (!type) return nullptr;
 
 
     //
@@ -63,7 +64,8 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     //    ------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         loc = tokens.SourceLocation();
-        if ((expr = std::move(ParseExpression())) == nullptr) {
+        expr = ParseExpression();
+        if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
         }
     }
@@ -72,12 +74,10 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    DiscriminantSpecificationPtr rv = std::make_unique<DiscriminantSpecification>(astLoc, std::move(idList), std::move(type), std::move(expr));
-
     s.Commit();
     m.Commit();
-    // -- TODO: Remove the move
-    return std::move(rv);
+
+    return std::make_unique<DiscriminantSpecification>(astLoc, std::move(idList), std::move(type), std::move(expr));
 }
 
 

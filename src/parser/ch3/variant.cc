@@ -26,8 +26,8 @@ VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = astLoc;
     ChoicePtr choice = nullptr;
     ChoiceListPtr choices = std::make_unique<ChoiceList>();
     ComponentListPtr comps = nullptr;
@@ -37,12 +37,15 @@ VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
     // -- start this parse with the required token
     //    ----------------------------------------
     if (!Require(TokenType::TOK_WHEN)) return nullptr;
-    if ((choice = std::move(ParseChoice())) == nullptr) return nullptr;
+
+    choice = ParseChoice();
+    if (!choice) return nullptr;
     choices->push_back(std::move(choice));
 
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_VERTICAL_BAR)) {
-        if ((choice = std::move(ParseChoice())) != nullptr) {
+        choice = ParseChoice();
+        if (choice) {
             choices->push_back(std::move(choice));
         } else {
             diags.Error(loc, DiagID::ExtraVertialBar, { "choice" } );
@@ -57,15 +60,17 @@ VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
     // -- Complete the parse
     //    ------------------
     if (!Require(TokenType::TOK_ARROW)) return nullptr;
-    if ((comps = std::move(ParseComponentList(rec))) == nullptr) return nullptr;
+
+    comps = ParseComponentList(rec);
+    if (!comps) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    VariantPtr rv = std::make_unique<Variant>(astLoc, std::move(choices), std::move(comps));
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<Variant>(astLoc, std::move(choices), std::move(comps));
 }
 
 

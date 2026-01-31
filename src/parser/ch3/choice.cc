@@ -45,30 +45,32 @@ ChoicePtr Parser::ParseChoice(void)
     //    the trivial deterministic options, where were placed first.
     //    ----------------------------------------------------------------------------
     if (Optional(TokenType::TOK_OTHERS)) {
+        p.At("TOK_OTHERS");
         m.Commit();
-        OthersChoicePtr rv = std::make_unique<OthersChoice>(astLoc);
-        return std::move(rv);
+        return std::make_unique<OthersChoice>(astLoc);
     }
 
-    if ((range = std::move(ParseDiscreteRange())) != nullptr) {
-        RangeChoicePtr rv = std::make_unique<RangeChoice>(astLoc, std::move(range));
+
+    range = ParseDiscreteRange();
+    if (range) {
+        p.At("Range");
         m.Commit();
-        return std::move(rv);
+        return std::make_unique<RangeChoice>(astLoc, std::move(range));
     }
 
-    if ((name = std::move(ParseSimpleName())) != nullptr) {
+
+    name = ParseSimpleName();
+    if (name) {
         //
         // -- This is required to be a component simple name
-        //
-        //    TODO: Check the type of the simple name
         //    ----------------------------------------------
         const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         if (vec != nullptr) {
             for (auto &sym : *vec) {
                 if (sym->kind == Symbol::SymbolKind::Component) {
-                    NameChoicePtr rv = std::make_unique<NameChoice>(astLoc, std::move(name));
+                    p.At("Component Simple Name");
                     m.Commit();
-                    return std::move(rv);
+                    return std::make_unique<NameChoice>(astLoc, std::move(name));
                 }
             }
         }
@@ -76,11 +78,13 @@ ChoicePtr Parser::ParseChoice(void)
         m.Reset();
     }
 
-    if ((expr = std::move(ParseSimpleExpression())) != nullptr) {
-        ExprChoicePtr rv = std::make_unique<ExprChoice>(astLoc, std::move(expr));
+    expr = ParseSimpleExpression();
+    if (expr) {
+        p.At("Expression");
         m.Commit();
-        return std::move(rv);
+        return std::make_unique<ExprChoice>(astLoc, std::move(expr));
     }
+
 
     diags.Error(tokens.SourceLocation(), DiagID::InvalidChoiceInVariant);
 

@@ -34,18 +34,12 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     //
     // -- Find a type mark and then optionally a constraint
     //    -------------------------------------------------
-    if ((id = std::move(ParseTypeMark())) == nullptr) {
+    id = ParseTypeMark();
+    if (!id) {
         p.At("TypeMark");
         return nullptr;
     }
-    constraint = std::move(ParseConstraint());
-
-
-
-    //
-    // -- Sine this will pass at this point, build the AST here
-    //    -----------------------------------------------------
-    SubtypeIndicationPtr rv = std::make_unique<SubtypeIndication>(loc, std::move(id), std::move(constraint));
+    constraint = ParseConstraint();
 
 
 
@@ -53,23 +47,25 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<SubtypeIndication>(loc, std::move(id), std::move(constraint));
 }
 
 
 
+//
+// -- Parse a Discrete Subtype Indication
+//    -----------------------------------
 SubtypeIndicationPtr Parser::ParseDiscreteSubtypeIndication(void)
 {
     Production p(*this, "subtype_indication(discrete)");
     SourceLoc_t astLoc = tokens.SourceLocation();
-    SubtypeRangePtr rv;
-    SubtypeIndicationPtr node;
+    SubtypeIndicationPtr node = nullptr;
 
     node = ParseSubtypeIndication();
-    if (node == nullptr) return nullptr;
+    if (!node) return nullptr;
 
-//    rv = std::make_unique<SubtypeRange>(astLoc, std::move(node));
-    return std::move(node);
+    return node;
 }
 
 

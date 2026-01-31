@@ -38,14 +38,15 @@ ExprPtr Parser::ParseFloatingAccuracyDefinition(void)
     //
     // -- and constains a static simple expression
     //    ----------------------------------------
-    if ((rv = std::move(ParseStaticSimpleExpression())) == nullptr) return nullptr;
+    rv = ParseStaticSimpleExpression();
+    if (!rv) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return std::move(rv);
+    return rv;
 }
 
 

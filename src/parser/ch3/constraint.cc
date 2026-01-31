@@ -29,26 +29,54 @@
 ConstraintPtr Parser::ParseConstraint(void)
 {
     Production p(*this, "constraint");
-    Id id;
     NumericTypeSpecPtr real = nullptr;
     ConstraintPtr rv = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    Id id;
 
-    if ((rv = std::move(ParseRangeConstraint())) != nullptr)               return std::move(rv);
 
-    if ((real = std::move(ParseFloatingPointConstraint(id))) != nullptr) {
-        RealConstraintPtr rv = std::make_unique<RealConstraint>(astLoc, std::move(real));
-        return std::move(rv);
+    //
+    // -- Range Constraint
+    //    ----------------
+    rv = ParseRangeConstraint();
+    if (rv) return rv;
+
+
+    //
+    // -- Floating Point Constraint
+    //    -------------------------
+    real = ParseFloatingPointConstraint(id);
+    if (real) {
+        return std::make_unique<RealConstraint>(astLoc, std::move(real));
     }
 
-    if ((real = std::move(ParseFixedPointConstraint(id))) != nullptr) {
-        RealConstraintPtr rv = std::make_unique<RealConstraint>(astLoc, std::move(real));
-        return std::move(rv);
+
+    //
+    // -- Fixed Point Constraint
+    //    ----------------------
+    real = ParseFixedPointConstraint(id);
+    if (real) {
+        return std::make_unique<RealConstraint>(astLoc, std::move(real));
     }
 
-    if ((rv = std::move(ParseIndexConstraint())) != nullptr)               return std::move(rv);
-    if ((rv = std::move(ParseDiscriminantConstraint())) != nullptr)        return std::move(rv);
 
+    //
+    // -- Index Constraint
+    //    ----------------
+    rv = ParseIndexConstraint();
+    if (rv) return rv;
+
+
+    //
+    // -- Discriminant Constraint
+    //    -----------------------
+    rv = ParseDiscriminantConstraint();
+    if (rv) return rv;
+
+
+    //
+    // -- None of the above
+    //    -----------------
     return nullptr;
 }
 

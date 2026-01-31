@@ -28,8 +28,8 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = astLoc;
     SubtypeIndicationPtr type = nullptr;
     ExprPtr expr = nullptr;
 
@@ -38,16 +38,28 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     // -- Start by getting the list of identifiers
     //    ----------------------------------------
     idList = ParseIdentifierList();
-    if (!idList) return nullptr;
+    if (!idList) {
+        p.At("no IdList");
+        return nullptr;
+    }
 
     for (int i = 0; i < idList->size(); i ++) {
-        std::unique_ptr<ComponentSymbol> sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
+        ComponentSymbolPtr sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
         rec->components.push_back(sym.get());
         scopes.Declare(std::move(sym));
     }
 
-    if (!Require(TokenType::TOK_COLON)) return nullptr;
-    if ((type = std::move(ParseComponentSubtypeDefinition())) == nullptr) return nullptr;
+    if (!Require(TokenType::TOK_COLON)) {
+        p.At("no TOK_COLON");
+        return nullptr;
+    }
+
+
+    type = ParseComponentSubtypeDefinition();
+    if (!type) {
+        p.At("No Component Subtype Definition");
+        return nullptr;
+    }
 
 
     //
@@ -73,11 +85,10 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    ComponentDeclarationPtr rv = std::make_unique<ComponentDeclaration>(astLoc, std::move(idList), std::move(type), std::move(expr));
-
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<ComponentDeclaration>(astLoc, std::move(idList), std::move(type), std::move(expr));
 }
 
 

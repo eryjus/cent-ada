@@ -29,15 +29,24 @@ DiscreteRangePtr Parser::ParseDiscreteRange(void)
     SubtypeIndicationPtr sType = nullptr;
     SourceLoc_t astLoc = tokens.SourceLocation();
 
+
+    //
+    // -- Try a subtype indication
+    //    ------------------------
     sType = ParseDiscreteSubtypeIndication();
-    if (sType != nullptr)   {
-        rv = std::make_unique<SubtypeRange>(astLoc, std::move(sType));
-        return std::move(rv);
-    }
+    if (sType) return std::make_unique<SubtypeRange>(astLoc, std::move(sType));
 
 
-    if ((rv = std::move(ParseRange())) != nullptr)                       return std::move(rv);
+    //
+    // -- Try a range
+    //    -----------
+    rv = ParseRange();
+    if (rv) return rv;
 
+
+    //
+    // -- nothing found
+    //    -------------
     return nullptr;
 }
 

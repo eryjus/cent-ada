@@ -36,9 +36,9 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
     // -- Manage the symbol table
     //    -----------------------
     if (!id.name.empty()) {
-        if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        if (scopes.IsLocalDefined(id.name)) {
             // -- name is used in this scope is it a singleton and incomplete class?
-            vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+            vec = scopes.CurrentScope()->LocalLookup(id.name);
 
             if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
                 updateIncomplete = true;
@@ -46,6 +46,7 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
                 diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
             }
         }
+
         scopes.Declare(std::make_unique<RealTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
@@ -54,24 +55,25 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if ((size = std::move(ParseFloatingAccuracyDefinition())) == nullptr) return nullptr;
+    size = ParseFloatingAccuracyDefinition();
+    if (!size) return nullptr;
 
 
     //
     // -- and then check on the optional Range Constraint
     //    -----------------------------------------------
-    RangeConstraintPtr range = std::move(ParseRangeConstraint());
+    RangeConstraintPtr range = ParseRangeConstraint();
 
 
 
     //
     // -- The parse is good here
     //    ----------------------
-    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FloatingPoint, std::move(size), std::move(range));
-
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
-    return std::move(rv);
+
+    return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FloatingPoint, std::move(size), std::move(range));
 }
 
 

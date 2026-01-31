@@ -186,12 +186,12 @@ class TypeDecl : public Decl{
 
 public:
     Id name;
-    ExprPtr discriminantPart;           // -- may be null
+    DiscriminantSpecificationListPtr discriminantPart;           // -- may be null
     TypeSpecPtr definition;             // -- may be null if incomplete
 
 
 public:
-    TypeDecl(SourceLoc_t loc, Id n, ExprPtr dis, TypeSpecPtr defn)
+    TypeDecl(SourceLoc_t loc, Id n, DiscriminantSpecificationListPtr dis, TypeSpecPtr defn)
             : Decl(loc), name(n), discriminantPart(std::move(dis)), definition(std::move(defn)) {}
 
 public:

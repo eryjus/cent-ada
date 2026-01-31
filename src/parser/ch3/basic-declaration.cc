@@ -58,10 +58,31 @@ DeclPtr Parser::ParseBasicDeclaration(void)
     SourceLoc_t loc = tokens.SourceLocation();
     DeclPtr rv = nullptr;
 
-    if ((rv = std::move(ParseObjectDeclaration())) != nullptr)            { p.At("Object"); return std::move(rv); }
-    if ((rv = std::move(ParseNumberDeclaration())) != nullptr)            { return std::move(rv); }
-    if ((rv = std::move(ParseTypeDeclaration())) != nullptr)              { return std::move(rv); }
-    if ((rv = std::move(ParseSubtypeDeclaration())) != nullptr)           { return std::move(rv); }
+
+    rv = ParseObjectDeclaration();
+    if (rv) {
+        p.At("Object");
+        return rv;
+    }
+
+    rv = ParseNumberDeclaration();
+    if (rv) {
+        p.At("Number");
+        return rv;
+    }
+
+    rv = ParseTypeDeclaration();
+    if (rv) {
+        p.At("Type");
+        return rv;
+    }
+
+    rv = ParseSubtypeDeclaration();
+    if (rv) {
+        p.At("Subtype");
+        return rv;
+    }
+
     if (!ParseSubprogramDeclaration())        { return nullptr; }
     if (!ParsePackageDeclaration())           { return nullptr; }
     if (!ParseTaskDeclaration())              { return nullptr; }

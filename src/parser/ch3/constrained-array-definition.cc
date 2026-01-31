@@ -26,6 +26,7 @@
 //    -------------------------------------------------------------------------------
 ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdList *list)
 {
+    // -- MarkStream is not needed here since this is a helper function.
     SourceLoc_t astLoc = tokens.SourceLocation();
     NameListPtr names = std::make_unique<NameList>();
     IndexConstraintPtr range = nullptr;
@@ -41,14 +42,18 @@ ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdList *list)
     // -- Start parse with the TOK_ARRAY and carry right on through
     //    ---------------------------------------------------------
     if (!Require(TokenType::TOK_ARRAY)) return nullptr;
-    if ((range = std::move(ParseIndexConstraint())) == nullptr) return nullptr;
+
+    range = ParseIndexConstraint();
+
+    if (!range) return nullptr;
+
     if (!Require(TokenType::TOK_OF)) return nullptr;
-    if ((type = std::move(ParseDiscreteSubtypeIndication())) == nullptr) return nullptr;
+
+    type = ParseDiscreteSubtypeIndication();
+    if (!type) return nullptr;
 
 
-    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(names), false, std::move(range), std::move(type));
-
-    return std::move(rv);
+    return std::make_unique<ArrayTypeSpec>(astLoc, std::move(names), false, std::move(range), std::move(type));
 }
 
 
@@ -69,9 +74,9 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -86,8 +91,8 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     IdList *list;
     list->push_back(id);
 
-    ArrayTypeSpecPtr rv = nullptr;
-    if (( rv = std::move(_HelpParseConstrainedArrayDefinition(list))) == nullptr) return nullptr;
+    ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
+    if (!rv) return nullptr;
 
 
 
@@ -97,7 +102,8 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return rv;
 }
 
 
@@ -123,8 +129,8 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdList *list)
 
 
 
-    ArrayTypeSpecPtr rv = nullptr;
-    if (( rv = std::move(_HelpParseConstrainedArrayDefinition(list))) == nullptr) return nullptr;
+    ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
+    if (!rv) return nullptr;
 
 
     //
@@ -132,7 +138,8 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdList *list)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return rv;
 }
 
 

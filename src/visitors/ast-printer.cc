@@ -158,7 +158,7 @@ void ASTPrinter::Visit(const TypeDecl &n)
     depth ++;
 
     PrintField("name", n.name.name);
-    PrintOptionalChild("discriminantPart", n.discriminantPart.get());
+//    PrintOptionalChild("discriminantPart", n.discriminantPart.get());
     PrintRequiredChild("definition", n.definition.get());
 
     depth --;

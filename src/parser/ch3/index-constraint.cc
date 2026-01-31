@@ -27,7 +27,7 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     Production p(*this, "index_constraint");
     MarkStream m(tokens, diags);
     SourceLoc_t loc, astLoc = tokens.SourceLocation();      // -- only init astLoc
-    DiscreteRangePtr range;
+    DiscreteRangePtr range = nullptr;
     DiscreteRangeListPtr vec = std::make_unique<std::vector<DiscreteRangePtr>>();
 
 
@@ -40,7 +40,8 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     //
     // -- and then a range for the index
     //    ------------------------------
-    if ((range = std::move(ParseDiscreteRange())) == nullptr) return nullptr;
+    range = ParseDiscreteRange();
+    if (!range) return nullptr;
     vec->push_back(std::move(range));
 
 
@@ -50,7 +51,8 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     //    --------------------------------------------
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if ((range = std::move(ParseDiscreteRange())) == nullptr) {
+        range = ParseDiscreteRange();
+        if (!range) {
             diags.Error(loc, DiagID::ExtraComma, { "discrete_range" } );
 
             // -- continue on
@@ -76,9 +78,9 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    IndexConstraintPtr rv = std::make_unique<IndexConstraint>(astLoc, false, std::move(vec));
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<IndexConstraint>(astLoc, false, std::move(vec));
 }
 
 

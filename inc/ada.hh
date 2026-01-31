@@ -156,6 +156,7 @@ class UnaryExpr;
 class UnboundedRange;
 class Variant;
 class VariantPart;
+class AttributeConstraint;
 
 
 
@@ -216,6 +217,9 @@ using UnaryExprPtr = std::unique_ptr<UnaryExpr>;
 using UnboundedRangePtr = std::unique_ptr<UnboundedRange>;
 using VariantPartPtr = std::unique_ptr<VariantPart>;
 using VariantPtr = std::unique_ptr<Variant>;
+using ComponentSymbolPtr = std::unique_ptr<ComponentSymbol>;
+using AttributeConstraintPtr = std::unique_ptr<AttributeConstraint>;
+using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
 
 
 

@@ -29,9 +29,17 @@ TypeDeclPtr Parser::ParseTypeDeclaration(void)
     Production p(*this, "type_declaration");
     TypeDeclPtr rv = nullptr;
 
-    if ((rv = std::move(ParseFullTypeDeclaration())) != nullptr)         return std::move(rv);
-    if ((rv = std::move(ParseIncompleteTypeDeclaration())) != nullptr)   return std::move(rv);
-    if ((rv = std::move(ParsePrivateTypeDeclaration())) != nullptr)      return std::move(rv);
+
+    rv = ParseFullTypeDeclaration();
+    if (rv) return rv;
+
+    rv = ParseIncompleteTypeDeclaration();
+    if (rv) return rv;
+
+    rv = ParsePrivateTypeDeclaration();
+    if (rv) return rv;
+
+
     return nullptr;
 }
 

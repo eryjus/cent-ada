@@ -28,8 +28,8 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     Production p(*this, "unconstrained_array_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc=astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     DiscreteRangeListPtr idxList = std::make_unique<DiscreteRangeList>();
@@ -49,9 +49,9 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
         } else {
@@ -66,7 +66,8 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- now, there should be an index definition
     //    ----------------------------------------
-    if ((idx = std::move(ParseIndexSubtypeDefinition())) == nullptr) return nullptr;
+    idx = ParseIndexSubtypeDefinition();
+    if (!idx) return nullptr;
     idxList->push_back(std::move(idx));
 
 
@@ -75,7 +76,8 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //    -------------------------------------
     loc = tokens.SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if ((idx = std::move(ParseIndexSubtypeDefinition())) != nullptr) {
+        idx = ParseIndexSubtypeDefinition();
+        if (idx) {
             idxList->push_back(std::move(idx));
         } else {
             diags.Error(loc, DiagID::ExtraComma, { "index_subtype_definition" } );
@@ -103,7 +105,9 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     // -- Wrap up the rest of the production
     //    ----------------------------------
     if (!Require(TokenType::TOK_OF)) return nullptr;
-    if ((compType = std::move(ParseComponentSubtypeIndication())) == nullptr) return nullptr;
+
+    compType = ParseComponentSubtypeIndication();
+    if (!compType) return nullptr;
 
 
 
@@ -117,11 +121,10 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     list->push_back(std::move(name));
     indices = std::make_unique<IndexConstraint>(astLoc, true, std::move(idxList));
 
-    ArrayTypeSpecPtr rv = std::make_unique<ArrayTypeSpec>(astLoc, std::move(list), true, std::move(indices), std::move(compType));
-
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<ArrayTypeSpec>(astLoc, std::move(list), true, std::move(indices), std::move(compType));
 }
 
 

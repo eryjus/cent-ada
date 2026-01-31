@@ -1,6 +1,6 @@
-: foreach ../src/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> %b.o
-: foreach ../gen/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> %b.o
-: foreach ../src/parser/ch3/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> ch3_parser_%b.o
-: foreach ../src/parser/ch4/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> ch4_parser_%b.o
-: foreach ../src/visitors/*.cc |> gcc -I ../inc -I ../gen -c -o %o %f |> visitors_%b.o
+: foreach ../src/*.cc |> gcc -Werror -I ../inc -I ../gen -c -o %o %f |> %b.o
+: foreach ../gen/*.cc |> gcc -Werror -I ../inc -I ../gen -c -o %o %f |> %b.o
+: foreach ../src/parser/ch3/*.cc |> gcc -Werror -I ../inc -I ../gen -c -o %o %f |> ch3_parser_%b.o
+: foreach ../src/parser/ch4/*.cc |> gcc -Werror -I ../inc -I ../gen -c -o %o %f |> ch4_parser_%b.o
+: foreach ../src/visitors/*.cc |> gcc -Werror -I ../inc -I ../gen -c -o %o %f |> visitors_%b.o
 

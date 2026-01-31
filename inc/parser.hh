@@ -272,6 +272,8 @@ public:
     ComponentDeclarationPtr ParseComponentDeclaration(RecordTypeSymbol *rec);
     ComponentListPtr ParseComponentList(RecordTypeSymbol *rec);
     ConstraintPtr ParseConstraint(void);
+    DeclPtr ParseBasicDeclaration(void);
+    DeclPtr ParseBasicDeclarativeItem(void);
     DerivedTypeSpecPtr ParseDerivedTypeDefinition(Id &id);
     DiscreteRangePtr ParseDiscreteRange(void);
     DiscreteRangePtr ParseRange(void);
@@ -282,12 +284,13 @@ public:
     ExprPtr ParseFixedAccuracyDefinition(void);
     ExprPtr ParseFloatingAccuracyDefinition(void);
     Id ParseEnumerationLiteral(EnumTypeSymbol *type);
-    Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
-    NamePtr ParseTypeMark(void);
+    Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type) {
+        Production p(*this, "enumeration_literal_specification");
+        return ParseEnumerationLiteral(type);
+    }
     IdListPtr ParseIdentifierList(void);
     IndexConstraintPtr ParseIndexConstraint(void);
-    DeclPtr ParseBasicDeclaration(void);
-    NodePtr ParseBasicDeclarativeItem(void);
+    NamePtr ParseTypeMark(void);
     NodePtr ParseDeclarativePart(void);
     NodePtr ParseLaterDeclarativeItem(void);
     NumberDeclarationPtr ParseNumberDeclaration(void);
@@ -297,7 +300,10 @@ public:
     ObjectDeclarationPtr ParseObjectDeclaration(void);
     RangeConstraintPtr ParseRangeConstraint(void);
     RecordSpecificationPtr ParseRecordTypeDefinition(Id &id);
-    SubtypeIndicationPtr ParseComponentSubtypeDefinition(void);
+    SubtypeIndicationPtr ParseComponentSubtypeDefinition(void) {
+        Production p(*this, "component_subtype_definition");
+        return ParseSubtypeIndication();
+    }
     SubtypeIndicationPtr ParseSubtypeIndication(void);
     TypeDeclPtr ParseFullTypeDeclaration(void);
     TypeDeclPtr ParseIncompleteTypeDeclaration(void);

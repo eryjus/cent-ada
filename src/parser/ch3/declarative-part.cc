@@ -49,6 +49,7 @@ NodePtr Parser::ParseDeclarativePart(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
+
     return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation()));
 }
 

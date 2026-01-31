@@ -27,8 +27,10 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     Production p(*this, "full_type_definition");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    Id id;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    DiscriminantSpecificationListPtr discriminant = nullptr;
+    TypeSpecPtr type = nullptr;
+    Id id;
 
 
     //
@@ -48,7 +50,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Here is an optional discriminant part
     //    -------------------------------------
-    ParseDiscriminantPart();
+    discriminant = ParseDiscriminantPart();
 
 
 
@@ -57,7 +59,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //    production to be valid.  See incomplete_type_declaration.
     //    -----------------------------------------------------------
     if (!Require(TokenType::TOK_IS)) return nullptr;
-    ParseTypeDefinition(id);
+    type = ParseTypeDefinition(id);
 
 
     //
@@ -73,13 +75,10 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, nullptr);
-    ASTPrinter prt;
-    rv->Accept(prt);
-
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<TypeDecl>(astLoc, id, std::move(discriminant), std::move(type));
 }
 
 

@@ -29,7 +29,8 @@ NumberDeclarationPtr Parser::ParseNumberDeclaration(void)
     MarkSymbols s(scopes);
     std::unique_ptr<IdList> idList;
     SourceLoc_t astLoc = tokens.SourceLocation();
-    SourceLoc_t loc;
+    SourceLoc_t loc = astLoc;
+    ExprPtr expr = nullptr;
 
 
     //
@@ -68,7 +69,7 @@ NumberDeclarationPtr Parser::ParseNumberDeclaration(void)
     //    the value must be static and must also evalueate to either a `universal_real`
     //    or a `universal_integer` type.
     //    -----------------------------------------------------------------------------
-    ParseUniversalStaticExpression();
+    expr = ParseUniversalStaticExpression();
 
 
 
@@ -85,11 +86,10 @@ NumberDeclarationPtr Parser::ParseNumberDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    NumberDeclarationPtr rv = std::make_unique<NumberDeclaration>(astLoc, std::move(idList), nullptr);
-
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<NumberDeclaration>(astLoc, std::move(idList), std::move(expr));
 }
 
 

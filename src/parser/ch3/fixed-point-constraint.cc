@@ -28,8 +28,8 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
-    SourceLoc_t astLoc;
-    ExprPtr size;
+    SourceLoc_t astLoc= tokens.SourceLocation();
+    ExprPtr size = nullptr;
 
 
 
@@ -37,9 +37,9 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     // -- Manage the symbol table
     //    -----------------------
     if (!id.name.empty()) {
-        if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        if (scopes.IsLocalDefined(id.name)) {
             // -- name is used in this scope is it a singleton and incomplete class?
-            vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+            vec = scopes.CurrentScope()->LocalLookup(id.name);
 
             if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
                 updateIncomplete = true;
@@ -55,23 +55,24 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if ((size = std::move(ParseFixedAccuracyDefinition())) == nullptr) return nullptr;
+    size = ParseFixedAccuracyDefinition();
+    if (!size) return nullptr;
 
 
     //
     // -- and then check on the optional Range Constraint
     //    -----------------------------------------------
-    RangeConstraintPtr range = std::move(ParseRangeConstraint());
+    RangeConstraintPtr range = ParseRangeConstraint();
 
 
 
     //
     // -- The parse is good here
     //    ----------------------
-    NumericTypeSpecPtr rv = std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, std::move(size), std::move(range));
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
-    return std::move(rv);
+
+    return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, std::move(size), std::move(range));
 }
 
 

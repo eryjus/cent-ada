@@ -26,8 +26,12 @@ NamePtr Parser::ParseTypeMark(void)
     Production p(*this, "type_mark");
     NamePtr rv;
 
-    if ((rv = std::move(ParseTypeName())) != nullptr)        { diags.Debug(rv->GetName()); p.At("type-name"); return rv; }
-    if ((rv = std::move(ParseSubtypeName())) != nullptr)     { diags.Debug(rv->GetName()); p.At("subtype-name"); return rv; }
+
+    rv = ParseTypeName();
+    if (rv)  { p.At("type-name"); return rv; }
+
+    rv = ParseSubtypeName();
+    if (rv)  { p.At("subtype-name"); return rv; }
 
     p.At("type-mark fails");
     return nullptr;

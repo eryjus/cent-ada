@@ -26,12 +26,13 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
 {
     Production p(*this, "enumeration_type_definition");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc, astLoc;
     MarkScope s(scopes);
+    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
-    Id id;
     IdListPtr ids = std::make_unique<IdList>();
+    Id id;
 
 
 
@@ -91,14 +92,12 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    EnumerationTypeSpecPtr rv = std::make_unique<EnumerationTypeSpec>(astLoc, std::move(ids));
-    ASTPrinter prt;
-    rv->Accept(prt);
-
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<EnumerationTypeSpec>(astLoc, std::move(ids));
 }
 
 

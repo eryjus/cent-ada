@@ -28,34 +28,40 @@ DiscreteRangePtr Parser::ParseRange(void)
     Production p(*this, "range");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = tokens.SourceLocation();
+    AttributeNamePtr attr = nullptr;
+    ExprPtr from = nullptr;
+    ExprPtr to = nullptr;
 
 
     //
     // -- If we find a range attribute we're done
     //    ---------------------------------------
-    if (ParseRangeAttribute()) {
-        DiscreteRangePtr rv = std::make_unique<SubtypeRange>(astLoc, nullptr);
-
+    attr = ParseRangeAttribute();
+    if (attr) {
         m.Commit();
-        return std::move(rv);
+
+        return std::make_unique<AttributeRange>(astLoc, std::move(attr));
     }
 
 
     //
     // -- otherwise, we have a range expression
     //    -------------------------------------
-    if (!ParseSimpleExpression()) return nullptr;
+    from = ParseSimpleExpression();
+    if (!from) return nullptr;
+
     if (!Require(TokenType::TOK_DOUBLE_DOT)) return nullptr;
-    if (!ParseSimpleExpression()) return nullptr;
+
+    to = ParseSimpleExpression();
+    if (!to) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    DiscreteRangePtr rv = std::make_unique<Range>(astLoc, nullptr, nullptr);
-
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<Range>(astLoc, std::move(from), std::move(to));
 }
 
 

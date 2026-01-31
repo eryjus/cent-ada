@@ -98,7 +98,6 @@ class SubtypeIndication : public TypeSpec {
 
 public:
     NamePtr name;
-//    ExprPtr constraint;         // may be nullptr
     ConstraintPtr constraint;
 
 

@@ -33,19 +33,23 @@ AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
     SubtypeIndicationPtr type = nullptr;
 
 
+
     //
     // -- Parse the sequence
     //    ------------------
-    if (!Require(TokenType::TOK_ACCESS)) return nullptr;
+    if (!Require(TokenType::TOK_ACCESS)) {
+        p.At("TOK_ACCESS");
+        return nullptr;
+    }
 
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -56,22 +60,34 @@ AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
 
     scopes.Declare(std::make_unique<AccessTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
-    SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
 
 
-
-    if ((type = std::move(ParseSubtypeIndication())) == nullptr) return nullptr;
+    //
+    // -- Check for the optional Subtype Indication
+    //    -----------------------------------------
+    type = ParseSubtypeIndication();
+    if (!type) {
+        p.At("Subtype Indication");
+        return nullptr;
+    }
 
 
 
     //
-    // -- Consider this parse to be good
-    //    ------------------------------
-    AccessTypeSpecPtr rv = std::make_unique<AccessTypeSpec>(astLoc, std::move(name), std::move(type));
+    // -- Consider this parse to be good; build the AST nodes
+    //    ---------------------------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
+
+
+    //
+    // -- Commit and Exit
+    //    ---------------
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
+    return std::make_unique<AccessTypeSpec>(astLoc, std::move(name), std::move(type));
 }
 
 

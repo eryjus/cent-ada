@@ -27,11 +27,12 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     Production p(*this, "record_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     ComponentListPtr list = nullptr;
+    RecordTypeSymbolPtr recSym = nullptr;
 
 
 
@@ -45,12 +46,12 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     //
     // -- Symbol table management
     //    -----------------------
-    std::unique_ptr<RecordTypeSymbol> recSym = std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope());
+    recSym = std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope());
     RecordTypeSymbol *rec = recSym.get();
 
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -66,7 +67,8 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     //
     // -- then is followed by a list of components
     //    ----------------------------------------
-    if ((list = std::move(ParseComponentList(rec)))== nullptr) return nullptr;
+    list = ParseComponentList(rec);
+    if (!list) return nullptr;
 
 
 
@@ -92,12 +94,11 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
 
-    RecordSpecificationPtr rv = std::make_unique<RecordSpecification>(astLoc, id, std::move(list));
-
     s.Commit();
     m.Commit();
     scopes.PopScope();
-    return std::move(rv);
+
+    return std::make_unique<RecordSpecification>(astLoc, id, std::move(list));
 }
 
 

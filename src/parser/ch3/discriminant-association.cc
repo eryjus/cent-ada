@@ -27,19 +27,20 @@ DiscriminantAssociationPtr Parser::ParseDiscriminantAssociation(void)
     Production p(*this, "disriminant_association");
     MarkStream m(tokens, diags);
     std::vector<Symbol *> *vec = nullptr;
-    Id id;
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = astLoc;
     NameListPtr names = std::make_unique<NameList>();
     NamePtr name = nullptr;
     ExprPtr expr = nullptr;
+    Id id;
 
 
     //
     // -- Start by checking if there is a discriminant simple name
     //    --------------------------------------------------------
     loc = tokens.SourceLocation();
-    if ((name = std::move(ParseDiscriminantSimpleName())) != nullptr) {
+    name = ParseDiscriminantSimpleName();
+    if (name) {
         names->push_back(std::move(name));
         //
         // -- This will only work if the next token is a TOK_VERTICAL_BAR or TOK_ARROW
@@ -57,7 +58,8 @@ DiscriminantAssociationPtr Parser::ParseDiscriminantAssociation(void)
         //    -----------------------
         loc = tokens.SourceLocation();
         while (Optional(TokenType::TOK_VERTICAL_BAR)) {
-            if ((name = std::move(ParseDiscriminantSimpleName())) != nullptr) {
+            name = ParseDiscriminantSimpleName();
+            if (name) {
                 names->push_back(std::move(name));
             } else {
                 diags.Error(loc, DiagID::ExtraVertialBar, { "discriminant simple name" } );
@@ -68,23 +70,25 @@ DiscriminantAssociationPtr Parser::ParseDiscriminantAssociation(void)
         }
 
 
-        if (!Require(TokenType::TOK_ARROW)) return nullptr;
+        if (!Require(TokenType::TOK_ARROW)) {
+            p.At("Rejected");
+            return nullptr;
+        }
     }
 
 expr:
     loc = tokens.SourceLocation();
-    if ((expr = std::move(ParseExpression())) == nullptr) {
+    expr = ParseExpression();
+    if (!expr) {
         diags.Error(loc, DiagID::MissingExpression, { "discriminant association" } );
     }
 
-
-    DiscriminantAssociationPtr rv = std::make_unique<DiscriminantAssociation>(astLoc, std::move(names), std::move(expr));
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return std::move(rv);
+    return std::make_unique<DiscriminantAssociation>(astLoc, std::move(names), std::move(expr));
 }
 
 

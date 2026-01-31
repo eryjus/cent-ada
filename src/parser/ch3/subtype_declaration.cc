@@ -48,7 +48,7 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
     if (scopes.IsLocalDefined(id.name)) {
         diags.Error(loc, DiagID::DuplicateName, { id.name } );
 
-        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id.name));
+        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         SourceLoc_t loc2 = vec->at(0)->loc;
         diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {

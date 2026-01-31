@@ -27,10 +27,11 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     Production p(*this, "incomplete_type_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    Id id;
-    SourceLoc_t loc;
     SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc= astLoc;
     std::string where = "incomplete type identifier";
+    DiscriminantSpecificationListPtr discriminant;
+    Id id;
 
 
     //
@@ -48,7 +49,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     if (scopes.IsLocalDefined(id.name)) {
         diags.Error(loc, DiagID::DuplicateName, { id.name } );
 
-        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id.name));
+        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         SourceLoc_t loc2 = vec->at(0)->loc;
         diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {
@@ -59,7 +60,8 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- this is optional
     //    ----------------
-    if (ParseDiscriminantPart()) where = "discriminant part";
+    discriminant = ParseDiscriminantPart();
+    if (discriminant) where = "discriminant part";
 
 
     //
@@ -75,11 +77,10 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, nullptr);
-
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<TypeDecl>(astLoc, id, std::move(discriminant), nullptr);
 }
 
 

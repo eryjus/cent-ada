@@ -30,11 +30,13 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     MarkSymbols s(scopes);
     std::unique_ptr<IdList> idList;
     bool isConstant = false;
-    std::string where;
     SourceLoc_t astLoc = tokens.SourceLocation();
-    SourceLoc_t loc;
+    SourceLoc_t loc= astLoc;
     TypeSpecPtr typeSpec = nullptr;
     ExprPtr expr = nullptr;
+    std::string where;
+
+
 
     //
     // -- Parse the common prefix
@@ -54,6 +56,7 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     isConstant = Optional(TokenType::TOK_CONSTANT);
 
 
+
     //
     // -- Now, check for any duplicates and add the name if there are none
     //    ----------------------------------------------------------------
@@ -70,20 +73,24 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     }
 
 
+
     //
     // -- Here is where the rules differ
     //    ------------------------------
-    TOKEN;
-    if ((typeSpec = std::move(ParseSubtypeIndication())) != nullptr) {
+    typeSpec = ParseSubtypeIndication();
+    if (typeSpec) {
         where = "subtype_indication";
-    } else if (typeSpec = std::move(ParseConstrainedArrayDefinition(idList.get()))) {
-        where = "constrained_array_definition";
     } else {
-        // -- These are not the tokens we are looking for
-        p.At("Type indication");
-        return nullptr;
+        typeSpec = ParseConstrainedArrayDefinition(idList.get());
+        if (typeSpec) {
+            where = "constrained_array_definition";
+        } else {
+            // -- These are not the tokens we are looking for
+            p.At("Type indication");
+            return nullptr;
+        }
     }
-    TOKEN;
+
 
 
     //
@@ -91,7 +98,8 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //    ------------------------------------------------------
     loc = tokens.SourceLocation();
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
-        if ((expr = std::move(ParseExpression())) == nullptr) {
+        expr = ParseExpression();
+        if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
         }
 
@@ -99,26 +107,25 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     }
 
 
+
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
     loc = tokens.SourceLocation();
-    TOKEN;
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
 
+
     //
     // -- Consider this parse to be good
     //    ------------------------------
-
-    ObjectDeclarationPtr rv = std::make_unique<ObjectDeclaration>(loc, std::move(idList), isConstant, std::move(typeSpec), std::move(expr));
-
     s.Commit();
     m.Commit();
-    return std::move(rv);
+
+    return std::make_unique<ObjectDeclaration>(loc, std::move(idList), isConstant, std::move(typeSpec), std::move(expr));
 }
 
 
