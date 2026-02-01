@@ -33,6 +33,10 @@ public:
 public:
     ComponentAssociation(SourceLoc_t loc, ChoiceListPtr l, ExprPtr e)
             : ASTNode(loc), choices(std::move(l)), expr(std::move(expr)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

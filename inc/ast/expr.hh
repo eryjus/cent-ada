@@ -47,6 +47,10 @@ public:
 
 public:
     UnaryExpr(SourceLoc_t loc, UnaryOper op, ExprPtr e) : Expr(loc), op(op), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -69,6 +73,10 @@ public:
 public:
     BinaryExpr(SourceLoc_t loc, BinaryOper op, ExprPtr l, ExprPtr r)
             : Expr(loc), op(op), lhs(std::move(l)), rhs(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -99,6 +107,10 @@ class NullLiteralExpr : public LiteralExpr {
 
 public:
     NullLiteralExpr(SourceLoc_t loc) : LiteralExpr(loc) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -118,6 +130,10 @@ public:
 
 public:
     IntLiteralExpr(SourceLoc_t loc, IntLiteral l) : LiteralExpr(loc), lit(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -137,6 +153,10 @@ public:
 
 public:
     RealLiteralExpr(SourceLoc_t loc, RealLiteral l) : LiteralExpr(loc), lit(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -156,6 +176,10 @@ public:
 
 public:
     StringLiteralExpr(SourceLoc_t loc, StringLiteral l) : LiteralExpr(loc), lit(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -175,6 +199,10 @@ public:
 
 public:
     NameExpr(SourceLoc_t loc, NamePtr n) : Expr(loc), name(std::move(n)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -194,6 +222,10 @@ public:
 
 public:
     RangeExpr(SourceLoc_t loc, DiscreteRangePtr r) : Expr(loc), range(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -213,6 +245,10 @@ public:
 
 public:
     AggregateExpr(SourceLoc_t loc, ComponentAssociationListPtr l) : Expr(loc), list(std::move(l)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -233,6 +269,10 @@ public:
 
 public:
     QualifiedExpr(SourceLoc_t loc, NamePtr i, ExprPtr e) : Expr(loc), id(std::move(i)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -253,6 +293,10 @@ public:
 
 public:
     TypeConversionExpr(SourceLoc_t loc, NamePtr i, ExprPtr e) : Expr(loc), id(std::move(i)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -268,6 +312,10 @@ class AllocatorExpr : public Expr {
 
 public:
     AllocatorExpr(SourceLoc_t loc) : Expr(loc) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -287,6 +335,10 @@ public:
 
 public:
     QualExprAllocatorExpr(SourceLoc_t loc, QualifiedExprPtr e) : AllocatorExpr(loc), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -306,6 +358,10 @@ public:
 
 public:
     SubtypeIndicationAllocatorExpr(SourceLoc_t loc, SubtypeIndicationPtr s) : AllocatorExpr(loc), sub(std::move(s)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

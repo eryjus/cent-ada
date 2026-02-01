@@ -41,6 +41,10 @@ class OthersChoice : public Choice {
 
 public:
     OthersChoice(SourceLoc_t loc) : Choice(loc) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -60,6 +64,10 @@ public:
 
 public:
     RangeChoice(SourceLoc_t loc, DiscreteRangePtr r) : Choice(loc), range(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -79,6 +87,10 @@ public:
 
 public:
     NameChoice(SourceLoc_t loc, NamePtr n) : Choice(loc), name(std::move(n)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -98,6 +110,10 @@ public:
 
 public:
     ExprChoice(SourceLoc_t loc, ExprPtr e) : Choice(loc), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

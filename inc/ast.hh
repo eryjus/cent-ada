@@ -97,12 +97,16 @@ class ASTNode {
 public:
     SourceLoc_t loc;
     virtual ~ASTNode() = default;
-    virtual void Accept(ASTVisitor &) {};
 
 
 public:
     ASTNode(SourceLoc_t l) : loc(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
+
 
 // -- Alias the pointer to this class
 using NodePtr = std::unique_ptr<ASTNode>;

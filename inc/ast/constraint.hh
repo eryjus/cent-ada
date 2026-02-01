@@ -106,6 +106,10 @@ public:
 
 public:
     DiscriminantConstraint(SourceLoc_t loc, DiscriminantAssociationListPtr l) : Constraint(loc), list(std::move(l)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

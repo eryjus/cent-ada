@@ -112,6 +112,9 @@ public:
     UnboundedRange(SourceLoc_t loc, NamePtr id)
             : DiscreteRange(loc), type(std::move(id)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

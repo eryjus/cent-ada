@@ -102,6 +102,9 @@ public:
     ComponentDeclaration(SourceLoc_t l, IdListPtr ids, TypeSpecPtr s, ExprPtr i) :
             Decl(l), names(std::move(ids)), typeSpec(std::move(s)), initializer(std::move(i)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -125,6 +128,9 @@ public:
     Variant(SourceLoc_t l, ChoiceListPtr choices, ComponentListPtr components)
             : Decl(l), choices(std::move(choices)), components(std::move(components)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -148,6 +154,9 @@ public:
 public:
     VariantPart(SourceLoc_t l, NamePtr n, VariantListPtr v) : Decl(l), name(std::move(n)), variants(std::move(v)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -171,6 +180,9 @@ public:
     ComponentList(SourceLoc_t l, ComponentDeclarationListPtr c, VariantPartPtr v) :
             Decl(l), components(std::move(c)), variantPart(std::move(v)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

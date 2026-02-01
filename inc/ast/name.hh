@@ -31,7 +31,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) = 0;
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -53,7 +53,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return ""; }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -77,7 +77,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return id.name; }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -101,7 +101,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return lit.lexeme; }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -127,7 +127,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return prefix->GetName(); }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -153,7 +153,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return prefix->GetName(); }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -180,7 +180,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return prefix->GetName(); }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -207,7 +207,7 @@ public:
 
 public:
     virtual std::string_view GetName(void) override { return prefix->GetName(); }
-    virtual void Accept(ASTVisitor &) override {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

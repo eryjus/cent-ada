@@ -49,7 +49,7 @@ public:
 
 
 public:
-    void Accept(ASTVisitor &v) { v.Visit(*this); }
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -83,7 +83,7 @@ public:
 
 
 public:
-    void Accept(ASTVisitor &v) { v.Visit(*this); }
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -107,7 +107,7 @@ public:
 
 
 public:
-    void Accept(ASTVisitor &v) { v.Visit(*this); }
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -131,6 +131,9 @@ public:
     ArrayTypeSpec(SourceLoc_t l, NameListPtr n, bool u, IndexConstraintPtr i, SubtypeIndicationPtr c)
             : TypeSpec(l), list(std::move(n)), unconstrained(u), indices(std::move(i)), component(std::move(c)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -152,6 +155,9 @@ public:
     AccessTypeSpec(SourceLoc_t l, NamePtr n, SubtypeIndicationPtr t)
             : TypeSpec(l), name(std::move(n)), type(std::move(t)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -173,6 +179,9 @@ public:
     DerivedTypeSpec(SourceLoc_t l, NamePtr n, SubtypeIndicationPtr t)
             : TypeSpec(l), name(std::move(n)), type(std::move(t)) {}
 
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -191,6 +200,10 @@ public:
 
 public:
     DiscriminantAssociation(SourceLoc_t l, NameListPtr n, ExprPtr e) : ASTNode(l), names(std::move(n)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -211,6 +224,10 @@ public:
 public:
     DiscriminantSpecification(SourceLoc_t l, IdListPtr i, NamePtr t, ExprPtr e)
             : TypeSpec(l), ids(std::move(i)), type(std::move(t)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -229,6 +246,10 @@ public:
 
 public:
     RecordSpecification(SourceLoc_t l, Id id, ComponentListPtr comps) : TypeSpec(l), id(id), components(std::move(comps)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
