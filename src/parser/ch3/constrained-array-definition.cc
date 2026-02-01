@@ -24,7 +24,7 @@
 //    Constrained Array Definitions -- one with a single identifier and one with a
 //    list of identifiers.
 //    -------------------------------------------------------------------------------
-ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdList *list)
+ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdListPtr &list)
 {
     // -- MarkStream is not needed here since this is a helper function.
     SourceLoc_t astLoc = tokens.SourceLocation();
@@ -74,6 +74,7 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
+    diags.Debug("Manage Symbol Table");
     if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
         vec = scopes.CurrentScope()->LocalLookup(id.name);
@@ -85,21 +86,26 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
         }
     }
 
+    diags.Debug("After Symbol Table");
+
     ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
-    IdList *list;
+    IdListPtr list = std::make_unique<IdList>();
     list->push_back(id);
+
+    diags.Debug("Starting Helper Function");
 
     ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
     if (!rv) return nullptr;
 
-
+    diags.Debug("Success, cleaning up");
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
 
@@ -112,7 +118,7 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
 //
 // -- Parse a Constrained Array Definition
 //    ------------------------------------
-ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdList *list)
+ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdListPtr &list)
 {
     Production p(*this, "constrained_array_definition (list)");
     MarkStream m(tokens, diags);

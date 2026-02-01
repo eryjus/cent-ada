@@ -81,7 +81,7 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     if (typeSpec) {
         where = "subtype_indication";
     } else {
-        typeSpec = ParseConstrainedArrayDefinition(idList.get());
+        typeSpec = ParseConstrainedArrayDefinition(idList);
         if (typeSpec) {
             where = "constrained_array_definition";
         } else {

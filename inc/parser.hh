@@ -263,10 +263,10 @@ public:
 
 
     AccessTypeSpecPtr ParseAccessTypeDefinition(Id &id);
-    ArrayTypeSpecPtr _HelpParseConstrainedArrayDefinition(IdList *list);
+    ArrayTypeSpecPtr _HelpParseConstrainedArrayDefinition(IdListPtr &list);
     ArrayTypeSpecPtr ParseArrayTypeDefinition(Id &id);
     ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
-    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdList *);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdListPtr &list);
     ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
     ChoicePtr ParseChoice(void);
     ComponentDeclarationPtr ParseComponentDeclaration(RecordTypeSymbol *rec);
