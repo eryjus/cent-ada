@@ -69,7 +69,7 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
         loc = tokens.SourceLocation();
 
         expr = ParseExpression();
-        if (expr) {
+        if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "component declaration assignment" } );
         }
 
