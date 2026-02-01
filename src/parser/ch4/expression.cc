@@ -36,6 +36,8 @@ ExprPtr Parser::ParseExpression(void)
     ExprPtr rhs = nullptr;
     TokenType tok;
 
+    TOKEN;
+
 
     lhs = ParseRelation();
     if (!lhs) {

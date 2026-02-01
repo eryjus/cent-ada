@@ -36,6 +36,9 @@ ExprPtr Parser::ParseRelation(void)
     ExprPtr rhs = nullptr;
     DiscreteRangePtr range = nullptr;
 
+    TOKEN;
+
+
     lhs = ParseSimpleExpression();
     if (!lhs) {
         p.At("lhs failed");

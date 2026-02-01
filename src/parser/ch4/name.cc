@@ -87,13 +87,22 @@ NamePtr Parser::ParseNameExpr(void)
     Production p(*this, "name(expr)");
     MarkStream m(tokens, diags);
     NamePtr pre = nullptr;
+    NamePtr wrk = nullptr;
+
+
+    TOKEN;
 
 
     pre = ParseName_Base();
     if (!pre) return nullptr;
 
-    while (ParseName_Postfix(pre)) {
-        // -- Do something important here
+    TOKEN;
+
+    wrk = ParseName_Postfix(pre);
+    while (wrk) {
+        pre = std::move(wrk);
+        TOKEN;
+        wrk = ParseName_Postfix(pre);
     }
 
     m.Commit();
@@ -124,10 +133,16 @@ NamePtr Parser::ParseName_Base(void)
 
 
     rv = ParseSimpleName();
-    if (rv) return rv;
+    if (rv) {
+        m.Commit();
+        return rv;
+    }
 
     rv = ParseOperatorSymbol();
-    if (rv) return rv;
+    if (rv) {
+        m.Commit();
+        return rv;
+    }
 
 
     return nullptr;
@@ -254,6 +269,7 @@ NamePtr Parser::ParseTypeName(void) {
 // -- Parse a name which will be a subtype name
 //    -----------------------------------------
 NamePtr Parser::ParseSubtypeName(void) {
+    Production p(*this, "Name(Subtype)");
     NamePtr name = nullptr;
 
     name = ParseNameNonExpr();

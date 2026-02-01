@@ -198,7 +198,7 @@ ExprPtr Parser::ParsePrimary(void)
 
                 name = ParseNameExpr();
                 if (name) {
-                    p.At("Name Expression");
+                    p.At("Name Expression 2");
                     m.Commit();
                     return std::make_unique<NameExpr>(astLoc, std::move(name));;
                 }

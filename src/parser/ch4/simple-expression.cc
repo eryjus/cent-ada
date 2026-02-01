@@ -73,6 +73,7 @@ ExprPtr Parser::ParseSimpleExpression(void)
 
 
     p.At("Simple Expression chain");
+    TOKEN;
     m.Commit();
 
     return lhs;

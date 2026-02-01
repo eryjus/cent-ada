@@ -30,6 +30,7 @@ NamePtr Parser::ParseSimpleName(void)
     SourceLoc_t astLoc = loc;
     Id id;
 
+    TOKEN;
     if (!RequireIdent(id)) {
         p.At("No ID");
         return nullptr;
@@ -43,6 +44,7 @@ NamePtr Parser::ParseSimpleName(void)
 
     m.Commit();
     p.At("Success");
+    TOKEN;
 
     return std::make_unique<SimpleName>(astLoc, id);
 }

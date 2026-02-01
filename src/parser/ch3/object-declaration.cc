@@ -139,6 +139,7 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     TOKEN;
     p.At("proper obj decl");
     diags.Debug("*** Done parsing an object declaration");
+    TOKEN;
 
     s.Commit();
     m.Commit();
