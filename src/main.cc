@@ -256,12 +256,15 @@ static int Compile(std::string filename, ParseType_t type)
         {
             NodePtr ast;
 
-            while ((ast = std::move(parser->ParseBasicDeclaration())) != nullptr) {
+            ast = parser->ParseBasicDeclaration();
+            while (ast) {
                 if (opts.checkAstInvariants) {
                     assert(ast);
                     ASTInvariant check;
                     ast->Accept(check);
                 }
+
+                ast = parser->ParseBasicDeclaration();
             }
         }
 

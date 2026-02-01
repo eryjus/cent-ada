@@ -28,8 +28,6 @@ Diagnostics diags;
 //    -------------------------
 void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string> &args)
 {
-    std::cerr << "Diag ID  " << (int)id << '\n';
-
     assert(DiagMsgs.find(id) != DiagMsgs.end());
 
     auto it = DiagMsgs.find(id);

@@ -35,14 +35,18 @@ ExprPtr Parser::ParseSimpleExpression(void)
     uop = ParseUnaryAddingOperator();           // -- not required
 
     lhs = ParseTerm();
-    if (!lhs) return nullptr;
+    if (!lhs) {
+        p.At("No lhs");
+        return nullptr;
+    }
 
-    if (uop != UnaryOper::Unspecified) {
+    if (uop == UnaryOper::Unspecified) {
         lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
     }
 
     if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
+        p.At("Comma/Arrow next");
         m.Commit();
         return lhs;
     }
@@ -50,7 +54,11 @@ ExprPtr Parser::ParseSimpleExpression(void)
 
     bop = ParseBinaryAddingOperator();
     while (bop != BinaryOper::Unspecified) {
-        if ((rhs = std::move(ParseTerm())) == nullptr) return nullptr;
+        rhs = ParseTerm();
+        if (!rhs) {
+            p.At("lhs only");
+            return nullptr;
+        }
 
         if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term
@@ -63,6 +71,8 @@ ExprPtr Parser::ParseSimpleExpression(void)
         bop = ParseBinaryAddingOperator();
     }
 
+
+    p.At("Simple Expression chain");
     m.Commit();
 
     return lhs;

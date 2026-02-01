@@ -38,7 +38,10 @@ ExprPtr Parser::ParseExpression(void)
 
 
     lhs = ParseRelation();
-    if (!lhs) return nullptr;
+    if (!lhs) {
+        p.At("empty lhs");
+        return nullptr;
+    }
 
     switch (tokens.Current()) {
     case TokenType::TOK_AND:        bop = BinaryOper::And;      tok = tokens.Current();  break;
@@ -47,6 +50,7 @@ ExprPtr Parser::ParseExpression(void)
     case TokenType::TOK_OR_ELSE:    bop = BinaryOper::OrElse;   tok = tokens.Current();  break;
     case TokenType::TOK_XOR:        bop = BinaryOper::Xor;      tok = tokens.Current();  break;
     default:
+        p.At("lhs only");
         m.Commit();
         return lhs;
     }
@@ -56,6 +60,7 @@ ExprPtr Parser::ParseExpression(void)
         rhs = ParseRelation();
         if (!rhs) {
             // -- TODO: maybe issue an error about missing a relation and return true instead???
+            p.At("no rhs");
             return nullptr;
         }
 
@@ -63,6 +68,8 @@ ExprPtr Parser::ParseExpression(void)
         lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
     }
 
+
+    p.At("only lhs");
     m.Commit();
 
     return lhs;

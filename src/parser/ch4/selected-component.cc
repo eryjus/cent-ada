@@ -26,21 +26,21 @@ SelectedNamePtr Parser::ParseSelectedComponent(void)
 {
     Production p(*this, "selected_component");
     MarkStream m(tokens, diags);
-    std::string discard;
-    SourceLoc_t astLoc;
+    SourceLoc_t astLoc =tokens.SourceLocation();
     NamePtr prefix = nullptr;
     NamePtr selector = nullptr;
+    std::string discard;
 
 
     if (!ParsePrefix())                                             return nullptr;
     if (!Require(TokenType::TOK_DOT))                               return nullptr;
-    if ((selector = std::move(ParseSelector(prefix))) == nullptr)         return nullptr;
 
+    selector = ParseSelector(prefix);
+    if (!selector) return nullptr;
 
-    SelectedNamePtr rv = std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
 
     m.Commit();
-    return std::move(rv);
+    return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
 }
 
 

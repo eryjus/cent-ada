@@ -37,7 +37,10 @@ ExprPtr Parser::ParseRelation(void)
     DiscreteRangePtr range = nullptr;
 
     lhs = ParseSimpleExpression();
-    if (!lhs) return nullptr;
+    if (!lhs) {
+        p.At("lhs failed");
+        return nullptr;
+    }
 
     if ((tokens.Current() == TokenType::TOK_NOT && tokens.Peek() == TokenType::TOK_IN)
             || tokens.Current() == TokenType::TOK_IN) {
@@ -50,6 +53,7 @@ ExprPtr Parser::ParseRelation(void)
             ExprPtr rv = std::make_unique<BinaryExpr>(astLoc, BinaryOper::In, std::move(lhs), std::move(rhs));
             if (hasNot) rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(rv));
 
+            p.At("Range");
             m.Commit();
             return rv;
         }
@@ -60,22 +64,29 @@ ExprPtr Parser::ParseRelation(void)
             ExprPtr rv = std::make_unique<BinaryExpr>(astLoc, BinaryOper::In, std::move(lhs), std::move(rhs));
             if (hasNot) rv = std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(rv));
 
+            p.At("Type Mark");
             m.Commit();
             return rv;
         }
 
 
+        p.At("fail after IN/NOT IN");
         return nullptr;
     }
 
 
     bop = ParseRelationalOperator();
-    if (bop == BinaryOper::Unspecified) {
+    std::cerr << "=======   Relation BinOp is " << (int)bop << '\n';
+    if (bop != BinaryOper::Unspecified) {
         rhs = ParseSimpleExpression();
-        if (!rhs) return nullptr;
+        if (!rhs) {
+            p.At("empty rhs");
+            return nullptr;
+        }
     }
 
 
+    p.At("Relation chain");
     m.Commit();
 
     return std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));;

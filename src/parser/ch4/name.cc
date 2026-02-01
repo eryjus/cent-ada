@@ -232,7 +232,8 @@ NamePtr Parser::ParseTypeName(void) {
     Production p(*this, "Name(type)");
     NamePtr name = nullptr;
 
-    if ((name = std::move(ParseNameNonExpr())) == nullptr) return nullptr;
+    name = ParseNameNonExpr();
+    if (!name) return nullptr;
     const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
 
     if (vec) {
@@ -255,7 +256,9 @@ NamePtr Parser::ParseTypeName(void) {
 NamePtr Parser::ParseSubtypeName(void) {
     NamePtr name = nullptr;
 
-    if ((name = std::move(ParseNameNonExpr())) == nullptr) return nullptr;
+    name = ParseNameNonExpr();
+    if (!name) return nullptr;
+
     const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
 
     if (!vec || vec->empty()) return nullptr;

@@ -41,6 +41,7 @@ ExprPtr Parser::ParseFactor(void)
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "ABS" } );
         }
 
+        p.At("ABS");
         m.Commit();
 
         return std::make_unique<UnaryExpr>(astLoc, UnaryOper::Abs, std::move(lhs));
@@ -52,24 +53,32 @@ ExprPtr Parser::ParseFactor(void)
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "NOT" } );
         }
 
+        p.At("NOT");
         m.Commit();
 
         return std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(lhs));
     } else {
         lhs = ParsePrimary();
-        if (!lhs) return nullptr;
+        if (!lhs) {
+            p.At("No Primary");
+            return nullptr;
+        }
 
         if (Optional(TokenType::TOK_DOUBLE_STAR)) {
             rhs = ParsePrimary();
             if (!rhs) return nullptr;
+            p.At("STAR_STAR");
+            return std::make_unique<BinaryExpr>(astLoc, BinaryOper::Power, std::move(lhs), std::move(rhs));
         }
 
+        p.At("Single");
         m.Commit();
 
-        return std::make_unique<BinaryExpr>(astLoc, BinaryOper::Power, std::move(lhs), std::move(rhs));
+        return lhs;
     }
 
 
+    p.At("Failed");
     return nullptr;
 }
 

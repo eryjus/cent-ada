@@ -59,6 +59,9 @@ ExprPtr Parser::ParsePrimary(void)
     SourceLoc_t loc = tokens.SourceLocation();
     SourceLoc_t astLoc = tokens.SourceLocation();
 
+    diags.Debug("******* Primary: next token");
+    TOKEN;
+
     if (Optional(TokenType::TOK_NULL)) {
         m.Commit();
 
@@ -73,6 +76,7 @@ ExprPtr Parser::ParsePrimary(void)
     if (tokens.Current() == TokenType::TOK_UNIVERSAL_INT_LITERAL) {
         IntLiteral lit = std::get<IntLiteral>(tokens.Payload());
         tokens.Advance();
+        p.At("UNIVERSAL_INT_LITERAL");
         m.Commit();
 
         return std::make_unique<IntLiteralExpr>(astLoc, lit);
@@ -82,6 +86,7 @@ ExprPtr Parser::ParsePrimary(void)
     if (tokens.Current() == TokenType::TOK_UNIVERSAL_REAL_LITERAL) {
         RealLiteral lit = std::get<RealLiteral>(tokens.Payload());
         tokens.Advance();
+        p.At("UNIVERSAL_REAL_LITERAL");
         m.Commit();
 
         return std::make_unique<RealLiteralExpr>(astLoc, lit);
@@ -91,7 +96,9 @@ ExprPtr Parser::ParsePrimary(void)
     if (tokens.Current() == TokenType::TOK_STRING_LITERAL) {
         StringLiteral lit = std::get<StringLiteral>(tokens.Payload());
         tokens.Advance();
+        p.At("UNIVERSAL_STRING_LITERAL");
         m.Commit();
+
         return std::make_unique<StringLiteralExpr>(astLoc, lit);
     }
 
@@ -99,6 +106,7 @@ ExprPtr Parser::ParsePrimary(void)
     if (tokens.Current() == TokenType::TOK_NEW) {
         AllocatorExprPtr rv = ParseAllocator();
         if (rv) {
+            p.At("NEW");
             m.Commit();
             return rv;
         }
@@ -110,6 +118,7 @@ ExprPtr Parser::ParsePrimary(void)
     if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
         NamePtr name = ParseNameExpr();
         if (name) {
+            p.At("Character Literal");
             m.Commit();
             return std::make_unique<NameExpr>(astLoc, std::move(name));
         }
@@ -121,6 +130,7 @@ ExprPtr Parser::ParsePrimary(void)
     {   // -- we want a scope here for overall readability
         NamePtr name = ParseOperatorSymbol();
         if (name) {
+            p.At("Operator Symbol");
             m.Commit();
             return std::make_unique<NameExpr>(astLoc, std::move(name));;
         }
@@ -146,17 +156,20 @@ ExprPtr Parser::ParsePrimary(void)
                         if (tokens.Peek(2) == TokenType::TOK_DIGITS || tokens.Peek(2) == TokenType::TOK_DELTA) {
                             name = ParseNameExpr();
                             if (name) {
+                                p.At("digits/delta next");
                                 m.Commit();
                                 return std::make_unique<NameExpr>(astLoc, std::move(name));;
                             }
                         }
                         ExprPtr rv = ParseQualifiedExpression();
                         if (rv) {
+                            p.At("Qualified Expression");
                             m.Commit();
                             return rv;
                         } else {
                             name = ParseNameExpr();
                             if (name) {
+                                p.At("Name Expression");
                                 m.Commit();
                                 return std::make_unique<NameExpr>(astLoc, std::move(name));;
                             }
@@ -165,6 +178,7 @@ ExprPtr Parser::ParsePrimary(void)
                     if (tokens.Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
                         ExprPtr rv = ParseTypeConversion();
                         if (rv) {
+                            p.At("Type Conversion");
                             m.Commit();
                             return rv;
                         }
@@ -175,6 +189,7 @@ ExprPtr Parser::ParsePrimary(void)
                 if (sym->kind == Symbol::SymbolKind::Subprogram) {
                     name = ParseFunctionCall();
                     if (name) {
+                        p.At("Function Call");
                         m.Commit();
                         return std::make_unique<NameExpr>(astLoc, std::move(name));;
                     }
@@ -183,6 +198,7 @@ ExprPtr Parser::ParsePrimary(void)
 
                 name = ParseNameExpr();
                 if (name) {
+                    p.At("Name Expression");
                     m.Commit();
                     return std::make_unique<NameExpr>(astLoc, std::move(name));;
                 }
@@ -196,7 +212,10 @@ ExprPtr Parser::ParsePrimary(void)
     //
     // -- Now, everything else will start with a TOK_LEFT_PAREN
     //    -----------------------------------------------------
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) {
+        p.At("No Paren");
+        return nullptr;
+    }
 
 
     //
@@ -205,6 +224,7 @@ ExprPtr Parser::ParsePrimary(void)
     ExprPtr expr = ParseExpression();
     if (expr) {
         if (Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
+            p.At("Parenthetical Expression");
             m.Commit();
             return expr;
         }
@@ -218,11 +238,13 @@ ExprPtr Parser::ParsePrimary(void)
 
     expr = ParseAggregate();
     if (expr) {
+        p.At("Aggregate");
         m.Commit();
         return expr;
     }
 
 
+    p.At("Failed");
     return nullptr;
 }
 

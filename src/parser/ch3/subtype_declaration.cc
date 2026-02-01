@@ -61,7 +61,9 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
     //    must be present for this production to be valid.
     //    ----------------------------------------------------------------
     if (!Require(TokenType::TOK_IS)) return nullptr;
-    if ((type = std::move(ParseSubtypeIndication())) == nullptr) return nullptr;
+
+    type = ParseSubtypeIndication();
+    if (!type) return nullptr;
 
 
 

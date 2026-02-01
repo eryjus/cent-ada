@@ -39,7 +39,11 @@ ConstraintPtr Parser::ParseConstraint(void)
     // -- Range Constraint
     //    ----------------
     rv = ParseRangeConstraint();
-    if (rv) return rv;
+    if (rv) {
+        diags.Debug("=============== Range Constraint Results ===============");
+        p.At("Range");
+        return rv;
+    }
 
 
     //
@@ -47,6 +51,7 @@ ConstraintPtr Parser::ParseConstraint(void)
     //    -------------------------
     real = ParseFloatingPointConstraint(id);
     if (real) {
+        p.At("Float");
         return std::make_unique<RealConstraint>(astLoc, std::move(real));
     }
 
@@ -56,6 +61,7 @@ ConstraintPtr Parser::ParseConstraint(void)
     //    ----------------------
     real = ParseFixedPointConstraint(id);
     if (real) {
+        p.At("Fixed");
         return std::make_unique<RealConstraint>(astLoc, std::move(real));
     }
 
@@ -64,19 +70,27 @@ ConstraintPtr Parser::ParseConstraint(void)
     // -- Index Constraint
     //    ----------------
     rv = ParseIndexConstraint();
-    if (rv) return rv;
+    if (rv) {
+        p.At("Index");
+        return rv;
+    }
 
 
     //
     // -- Discriminant Constraint
     //    -----------------------
     rv = ParseDiscriminantConstraint();
-    if (rv) return rv;
+    if (rv) {
+        p.At("Discriminant");
+        return rv;
+    }
 
 
     //
     // -- None of the above
     //    -----------------
+    p.At("failed");
+
     return nullptr;
 }
 

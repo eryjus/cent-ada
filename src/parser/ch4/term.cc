@@ -33,7 +33,10 @@ ExprPtr Parser::ParseTerm(void)
 
 
     lhs = ParseFactor();
-    if (!lhs) return nullptr;
+    if (!lhs) {
+        p.At("Failed");
+        return nullptr;
+    }
 
     bop = ParseMultiplyingOperator();
     while (bop != BinaryOper::Unspecified) {
@@ -46,6 +49,7 @@ ExprPtr Parser::ParseTerm(void)
     }
 
 
+    p.At("proper term");
     m.Commit();
 
     return lhs;

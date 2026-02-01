@@ -36,7 +36,7 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     //    -------------------------------------------------
     id = ParseTypeMark();
     if (!id) {
-        p.At("TypeMark");
+        p.At("TypeMark fail");
         return nullptr;
     }
     constraint = ParseConstraint();
@@ -46,6 +46,7 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    p.At("type mark found");
     m.Commit();
 
     return std::make_unique<SubtypeIndication>(loc, std::move(id), std::move(constraint));

@@ -67,7 +67,9 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     //    ----------------------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         loc = tokens.SourceLocation();
-        if ((expr = std::move(ParseExpression())) == nullptr) {
+
+        expr = ParseExpression();
+        if (expr) {
             diags.Error(loc, DiagID::MissingExpression, { "component declaration assignment" } );
         }
 
