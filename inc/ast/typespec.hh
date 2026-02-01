@@ -242,7 +242,7 @@ class RecordSpecification : public TypeSpec {
 
 public:
     Id id;
-    ComponentListPtr components;
+    ComponentListPtr components;        // could have size == 0
 
 public:
     RecordSpecification(SourceLoc_t l, Id id, ComponentListPtr comps) : TypeSpec(l), id(id), components(std::move(comps)) {}
