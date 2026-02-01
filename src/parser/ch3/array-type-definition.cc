@@ -28,13 +28,13 @@ ArrayTypeSpecPtr Parser::ParseArrayTypeDefinition(Id &id)
     ArrayTypeSpecPtr rv = nullptr;
 
     rv = ParseUnconstrainedArrayDefinition(id);
-    if (!rv) {
+    if (rv) {
         p.At("Unconstrained Array");
         return rv;
     }
 
     rv = ParseConstrainedArrayDefinition(id);
-    if (!rv) {
+    if (rv) {
         p.At("Constrained Array");
         return rv;
     }
