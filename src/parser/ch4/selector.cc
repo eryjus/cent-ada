@@ -29,7 +29,6 @@ SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
     SourceLoc_t astLoc = tokens.SourceLocation();
     NamePtr selector = nullptr;
     SelectedNamePtr rv = nullptr;
-    Id id;
 
 
     if (Optional(TokenType::TOK_ALL)) {
@@ -51,8 +50,8 @@ SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
     SourceLoc_t loc = tokens.SourceLocation();
     selector = ParseSimpleName();
     if (selector) {
-        if (!scopes.Lookup(id.name)) {
-            diags.Error(loc, DiagID::UnknownName, { "selector"} );
+        if (!scopes.Lookup(selector->GetName())) {
+            diags.Error(loc, DiagID::UnknownName, { std::string(selector->GetName()) } );
             // -- allow the parse to continue
         }
 
