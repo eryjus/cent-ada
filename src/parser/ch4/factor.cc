@@ -68,6 +68,7 @@ ExprPtr Parser::ParseFactor(void)
             rhs = ParsePrimary();
             if (!rhs) return nullptr;
             p.At("STAR_STAR");
+            m.Commit();
             return std::make_unique<BinaryExpr>(astLoc, BinaryOper::Power, std::move(lhs), std::move(rhs));
         }
 
