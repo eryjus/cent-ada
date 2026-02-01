@@ -142,7 +142,10 @@ ExprPtr Parser::ParsePrimary(void)
     // -- Now, an Identifier can start several different alternatives.  Check here for each.
     //    ----------------------------------------------------------------------------------
     if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
+        diags.Debug("---- Getting ID lexeme");
+        diags.Debug(std::to_string(tokens.Payload().index()));
         IdentifierLexeme idLex = std::get<IdentifierLexeme>(tokens.Payload());
+        diags.Debug("---- Complete");
         const std::vector<Symbol *> *vec = scopes.Lookup(idLex.name);
 
         if (vec != nullptr) {

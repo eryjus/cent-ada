@@ -64,21 +64,23 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 
         if (tok == TokenType::TOK_AND) {
             TokenType tok2 = (TokenType)yylex();
+            YYSTYPE v2 = yylval;
 
             if (tok2 == TokenType::TOK_THEN) {
                 tokStream.push_back(new Token(filename, l, c, TokenType::TOK_AND_THEN, v));
             } else {
                 tokStream.push_back(new Token(filename, l, c, tok, v));
-                tokStream.push_back(new Token(filename, l, c, tok2, v));
+                tokStream.push_back(new Token(filename, l, c, tok2, v2));
             }
         } else if (tok == TokenType::TOK_OR) {
             TokenType tok2 = (TokenType)yylex();
+            YYSTYPE v2 = yylval;
 
             if (tok2 == TokenType::TOK_ELSE) {
                 tokStream.push_back(new Token(filename, l, c, TokenType::TOK_OR_ELSE, v));
             } else {
                 tokStream.push_back(new Token(filename, l, c, tok, v));
-                tokStream.push_back(new Token(filename, l, c, tok2, v));
+                tokStream.push_back(new Token(filename, l, c, tok2, v2));
             }
         } else {
             tokStream.push_back(new Token(filename, l, c, tok, v));
