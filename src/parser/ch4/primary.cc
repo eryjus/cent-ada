@@ -59,7 +59,6 @@ ExprPtr Parser::ParsePrimary(void)
     SourceLoc_t loc = tokens.SourceLocation();
     SourceLoc_t astLoc = tokens.SourceLocation();
 
-    diags.Debug("******* Primary: next token");
     TOKEN;
 
     if (Optional(TokenType::TOK_NULL)) {
@@ -74,7 +73,7 @@ ExprPtr Parser::ParsePrimary(void)
     //    here rather than in the lexer.
     //    --------------------------------------------------------------------------
     if (tokens.Current() == TokenType::TOK_UNIVERSAL_INT_LITERAL) {
-        IntLiteral lit = std::get<IntLiteral>(tokens.Payload());
+        std::string lit = std::get<IntLiteral>(tokens.Payload()).lexeme;
         tokens.Advance();
         p.At("UNIVERSAL_INT_LITERAL");
         m.Commit();
@@ -84,7 +83,7 @@ ExprPtr Parser::ParsePrimary(void)
 
 
     if (tokens.Current() == TokenType::TOK_UNIVERSAL_REAL_LITERAL) {
-        RealLiteral lit = std::get<RealLiteral>(tokens.Payload());
+        std::string lit = std::get<RealLiteral>(tokens.Payload()).lexeme;
         tokens.Advance();
         p.At("UNIVERSAL_REAL_LITERAL");
         m.Commit();
@@ -94,7 +93,7 @@ ExprPtr Parser::ParsePrimary(void)
 
 
     if (tokens.Current() == TokenType::TOK_STRING_LITERAL) {
-        StringLiteral lit = std::get<StringLiteral>(tokens.Payload());
+        std::string lit = std::get<StringLiteral>(tokens.Payload()).lexeme;
         tokens.Advance();
         p.At("UNIVERSAL_STRING_LITERAL");
         m.Commit();
@@ -108,6 +107,7 @@ ExprPtr Parser::ParsePrimary(void)
         if (rv) {
             p.At("NEW");
             m.Commit();
+
             return rv;
         }
 
@@ -120,6 +120,7 @@ ExprPtr Parser::ParsePrimary(void)
         if (name) {
             p.At("Character Literal");
             m.Commit();
+
             return std::make_unique<NameExpr>(astLoc, std::move(name));
         }
 
@@ -132,6 +133,7 @@ ExprPtr Parser::ParsePrimary(void)
         if (name) {
             p.At("Operator Symbol");
             m.Commit();
+
             return std::make_unique<NameExpr>(astLoc, std::move(name));;
         }
     }
@@ -142,10 +144,7 @@ ExprPtr Parser::ParsePrimary(void)
     // -- Now, an Identifier can start several different alternatives.  Check here for each.
     //    ----------------------------------------------------------------------------------
     if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-        diags.Debug("---- Getting ID lexeme");
-        diags.Debug(std::to_string(tokens.Payload().index()));
         IdentifierLexeme idLex = std::get<IdentifierLexeme>(tokens.Payload());
-        diags.Debug("---- Complete");
         const std::vector<Symbol *> *vec = scopes.Lookup(idLex.name);
 
         if (vec != nullptr) {
@@ -161,6 +160,7 @@ ExprPtr Parser::ParsePrimary(void)
                             if (name) {
                                 p.At("digits/delta next");
                                 m.Commit();
+
                                 return std::make_unique<NameExpr>(astLoc, std::move(name));;
                             }
                         }
@@ -168,12 +168,14 @@ ExprPtr Parser::ParsePrimary(void)
                         if (rv) {
                             p.At("Qualified Expression");
                             m.Commit();
+
                             return rv;
                         } else {
                             name = ParseNameExpr();
                             if (name) {
                                 p.At("Name Expression");
                                 m.Commit();
+
                                 return std::make_unique<NameExpr>(astLoc, std::move(name));;
                             }
                         }
@@ -183,6 +185,7 @@ ExprPtr Parser::ParsePrimary(void)
                         if (rv) {
                             p.At("Type Conversion");
                             m.Commit();
+
                             return rv;
                         }
                     }
@@ -194,6 +197,7 @@ ExprPtr Parser::ParsePrimary(void)
                     if (name) {
                         p.At("Function Call");
                         m.Commit();
+
                         return std::make_unique<NameExpr>(astLoc, std::move(name));;
                     }
                 }
@@ -203,6 +207,7 @@ ExprPtr Parser::ParsePrimary(void)
                 if (name) {
                     p.At("Name Expression 2");
                     m.Commit();
+
                     return std::make_unique<NameExpr>(astLoc, std::move(name));;
                 }
 
@@ -229,6 +234,7 @@ ExprPtr Parser::ParsePrimary(void)
         if (Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             p.At("Parenthetical Expression");
             m.Commit();
+
             return expr;
         }
     }
@@ -243,6 +249,7 @@ ExprPtr Parser::ParsePrimary(void)
     if (expr) {
         p.At("Aggregate");
         m.Commit();
+
         return expr;
     }
 

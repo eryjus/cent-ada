@@ -26,7 +26,6 @@ public:
 
     virtual void Visit(const AccessTypeSpec &) = 0;
     virtual void Visit(const AggregateExpr &) = 0;
-    virtual void Visit(const AllocatorExpr &) = 0;
     virtual void Visit(const ArrayTypeSpec &) = 0;
     virtual void Visit(const ASTNode &) = 0;
     virtual void Visit(const AttributeRange &) = 0;
@@ -95,51 +94,60 @@ protected:
     void PrintOptionalChild(std::string label, ASTNode *child);
     void PrintField(std::string label, std::string value);
     void PrintIdList(std::string label, IdList *child);
+    void Entry(std::string label);
+    void Exit(void) { --depth; }
+
+    // -- template to print a list
+    template <typename T>
+    void PrintList(const std::string &label, const std::vector<T> &list) {
+        for (auto const &ent : list) {
+            PrintRequiredChild(label, ent.get());  // -- MUST be a smart pointer
+        }
+    }
 
 
-    virtual void Visit(const SubtypeIndication &) override;
-    virtual void Visit(const NumberDeclaration &) override;
-    virtual void Visit(const ObjectDeclaration &) override;
-    virtual void Visit(const TypeDecl &) override;
-    virtual void Visit(const EnumerationTypeSpec &) override;
-    virtual void Visit(const RangeConstraint &) override;
-    virtual void Visit(const NumericTypeSpec &) override;
-    virtual void Visit(const Range &) override;
-    virtual void Visit(const SubtypeRange &) override;
-    virtual void Visit(const IndexConstraint &) override;
+    virtual void Visit(const AccessTypeSpec &) override;
+    virtual void Visit(const AggregateExpr &) override;
+    virtual void Visit(const ArrayTypeSpec &) override;
+    virtual void Visit(const ASTNode &) override { }
     virtual void Visit(const AttributeRange &) override;
-    virtual void Visit(const ComponentAssociation &) override {}
-    virtual void Visit(const ExprChoice &) override {}
-    virtual void Visit(const NameChoice &) override {}
-    virtual void Visit(const RangeChoice &) override {}
-    virtual void Visit(const OthersChoice &) override {}
-    virtual void Visit(const UnboundedRange &) override {}
-    virtual void Visit(const DiscriminantConstraint &) override {}
-    virtual void Visit(const RecordSpecification &) override {}
-    virtual void Visit(const DiscriminantSpecification &) override {}
-    virtual void Visit(const DiscriminantAssociation &) override {}
-    virtual void Visit(const DerivedTypeSpec &) override {}
-    virtual void Visit(const AccessTypeSpec &) override {}
-    virtual void Visit(const ArrayTypeSpec &) override {}
-    virtual void Visit(const SubtypeIndicationAllocatorExpr &) override {}
-    virtual void Visit(const QualExprAllocatorExpr &) override {}
-    virtual void Visit(const AllocatorExpr &) override {}
-    virtual void Visit(const TypeConversionExpr &) override {}
-    virtual void Visit(const QualifiedExpr &) override {}
-    virtual void Visit(const AggregateExpr &) override {}
-    virtual void Visit(const RangeExpr &) override {}
-    virtual void Visit(const NameExpr &) override {}
-    virtual void Visit(const StringLiteralExpr &) override {}
-    virtual void Visit(const RealLiteralExpr &) override {}
-    virtual void Visit(const IntLiteralExpr &) override {}
-    virtual void Visit(const NullLiteralExpr &) override {}
-    virtual void Visit(const BinaryExpr &) override {}
-    virtual void Visit(const UnaryExpr &) override {}
-    virtual void Visit(const ComponentList &) override {}
-    virtual void Visit(const VariantPart &) override {}
-    virtual void Visit(const Variant &) override {}
-    virtual void Visit(const ComponentDeclaration &) override {}
-    virtual void Visit(const ASTNode &) override {}
+    virtual void Visit(const BinaryExpr &) override;
+    virtual void Visit(const ComponentAssociation &) override;
+    virtual void Visit(const ComponentDeclaration &) override;
+    virtual void Visit(const ComponentList &) override;
+    virtual void Visit(const DerivedTypeSpec &) override;
+    virtual void Visit(const DiscriminantAssociation &) override;
+    virtual void Visit(const DiscriminantConstraint &) override;
+    virtual void Visit(const DiscriminantSpecification &) override;
+    virtual void Visit(const EnumerationTypeSpec &) override;
+    virtual void Visit(const ExprChoice &) override;
+    virtual void Visit(const IndexConstraint &) override;
+    virtual void Visit(const IntLiteralExpr &) override;
+    virtual void Visit(const NameChoice &) override;
+    virtual void Visit(const NameExpr &) override;
+    virtual void Visit(const NullLiteralExpr &) override;
+    virtual void Visit(const NumberDeclaration &) override;
+    virtual void Visit(const NumericTypeSpec &) override;
+    virtual void Visit(const ObjectDeclaration &) override;
+    virtual void Visit(const OthersChoice &) override;
+    virtual void Visit(const QualExprAllocatorExpr &) override;
+    virtual void Visit(const QualifiedExpr &) override;
+    virtual void Visit(const Range &) override;
+    virtual void Visit(const RangeChoice &) override;
+    virtual void Visit(const RangeConstraint &) override;
+    virtual void Visit(const RangeExpr &) override;
+    virtual void Visit(const RealLiteralExpr &) override;
+    virtual void Visit(const RecordSpecification &) override;
+    virtual void Visit(const StringLiteralExpr &) override;
+    virtual void Visit(const SubtypeIndication &) override;
+    virtual void Visit(const SubtypeIndicationAllocatorExpr &) override;
+    virtual void Visit(const SubtypeRange &) override;
+    virtual void Visit(const TypeConversionExpr &) override;
+    virtual void Visit(const TypeDecl &) override;
+    virtual void Visit(const UnaryExpr &) override;
+    virtual void Visit(const UnboundedRange &) override;
+    virtual void Visit(const Variant &) override;
+    virtual void Visit(const VariantPart &) override;
 };
 
 
@@ -159,7 +167,6 @@ public:
 protected:
     virtual void Visit(const AccessTypeSpec &) override;
     virtual void Visit(const AggregateExpr &) override;
-    virtual void Visit(const AllocatorExpr &) override;
     virtual void Visit(const ArrayTypeSpec &) override;
     virtual void Visit(const ASTNode &) override;
     virtual void Visit(const AttributeRange &) override;

@@ -79,20 +79,25 @@ ExprPtr Parser::ParseRelation(void)
 
 
     bop = ParseRelationalOperator();
-    std::cerr << "=======   Relation BinOp is " << (int)bop << '\n';
     if (bop != BinaryOper::Unspecified) {
         rhs = ParseSimpleExpression();
         if (!rhs) {
             p.At("empty rhs");
-            return nullptr;
+            m.Commit();
+            return lhs;
         }
+
+        p.At("Relation chain");
+        m.Commit();
+
+        return std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));;
     }
 
 
-    p.At("Relation chain");
+    p.At("lhs only");
     m.Commit();
 
-    return std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));;
+    return lhs;
 }
 
 

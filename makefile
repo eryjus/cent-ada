@@ -43,5 +43,7 @@ test: all
 	./scripts/run-expr-tests.sh | grep FAILED --color=always || true
 	echo "Invar:"
 	./scripts/run-invar-tests.sh | grep FAILED --color=always || true
+	echo "AST:"
+	./scripts/run-ast-tests.sh | grep FAILED --color=always || true
 
 

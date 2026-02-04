@@ -109,6 +109,10 @@ public:
 extern Diagnostics diags;
 
 
+#if __PRINT_TOKENS__
 #define TOKEN_PTR std::cerr << "TOKEN: " << tokens->tokenStr(tokens->Current()) << '\n'
 #define TOKEN std::cerr << "TOKEN: " << tokens.tokenStr(tokens.Current()) << '\n'
-
+#else
+#define TOKEN_PTR
+#define TOKEN
+#endif

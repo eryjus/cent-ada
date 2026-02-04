@@ -125,11 +125,11 @@ class IntLiteralExpr : public LiteralExpr {
 
 
 public:
-    IntLiteral lit;
+    std::string lexeme;
 
 
 public:
-    IntLiteralExpr(SourceLoc_t loc, IntLiteral l) : LiteralExpr(loc), lit(l) {}
+    IntLiteralExpr(SourceLoc_t loc, std::string l) : LiteralExpr(loc), lexeme(l) {}
 
 
 public:
@@ -148,11 +148,11 @@ class RealLiteralExpr : public LiteralExpr {
 
 
 public:
-    RealLiteral lit;
+    std::string lexeme;
 
 
 public:
-    RealLiteralExpr(SourceLoc_t loc, RealLiteral l) : LiteralExpr(loc), lit(l) {}
+    RealLiteralExpr(SourceLoc_t loc, std::string l) : LiteralExpr(loc), lexeme(l) {}
 
 
 public:
@@ -171,11 +171,11 @@ class StringLiteralExpr : public LiteralExpr {
 
 
 public:
-    StringLiteral lit;
+    std::string lexeme;
 
 
 public:
-    StringLiteralExpr(SourceLoc_t loc, StringLiteral l) : LiteralExpr(loc), lit(l) {}
+    StringLiteralExpr(SourceLoc_t loc, std::string l) : LiteralExpr(loc), lexeme(l) {}
 
 
 public:
@@ -312,10 +312,6 @@ class AllocatorExpr : public Expr {
 
 public:
     AllocatorExpr(SourceLoc_t loc) : Expr(loc) {}
-
-
-public:
-    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

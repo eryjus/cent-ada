@@ -67,10 +67,7 @@ void ASTPrinter::PrintOptionalChild(std::string label, ASTNode *child) {
 //    -------------
 void ASTPrinter::PrintField(std::string label, std::string value) {
     PrintDepth();
-    std::cout << label << '\n';
-    depth ++;
-    PrintDepth();
-    std::cout << "- " << value << '\n';
+    std::cout << label << " --> " << value << '\n';
     depth --;
 }
 
@@ -88,7 +85,7 @@ void ASTPrinter::PrintIdList(std::string label, IdList *child) {
     depth ++;
     for (auto &id : *child) {
         PrintDepth();
-        std::cout << "- " << id.name << '\n';
+        std::cout << "--> " << id.name << '\n';
     }
     depth --;
 }
@@ -96,149 +93,309 @@ void ASTPrinter::PrintIdList(std::string label, IdList *child) {
 
 
 //
-// -- Print a SubtypeInciation AST node
-//    ---------------------------------
-void ASTPrinter::Visit(const SubtypeIndication &n)
+// -- Output the AST Node Preamble
+//    ----------------------------
+void ASTPrinter::Entry(std::string label)
 {
     PrintDepth();
-    std::cout << "SubtypeIndication\n";
+    std::cout << label << '\n';
     depth ++;
-
-    PrintRequiredChild("type mark", n.name.get());
-    PrintOptionalChild("constraint", n.constraint.get());
-
-    depth --;
 }
 
 
 
 //
-// -- Print a Number Declaration AST node
-//    -----------------------------------
-void ASTPrinter::Visit(const NumberDeclaration &n)
+// == Individual class Printer methods
+//    ================================
+
+
+
+//
+// -- AccessTypeSpec
+//    --------------
+void ASTPrinter::Visit(const AccessTypeSpec &n)
 {
-    PrintDepth();
-    std::cout << "NumberDeclaration\n";
-    depth ++;
-
-    PrintIdList("names", n.names.get());
-    PrintRequiredChild("initializer", n.initializer.get());
-
-    depth --;
+    Entry("AccessTypeSpec");
+    PrintRequiredChild("name", n.name.get());
+    PrintRequiredChild("type", n.type.get());
+    Exit();
 }
 
 
 
 //
-// -- Print an Object Declaration AST node
-//    ------------------------------------
-void ASTPrinter::Visit(const ObjectDeclaration &n)
+// -- AggregateExpr
+//    -------------
+void ASTPrinter::Visit(const AggregateExpr &n)
 {
-    PrintDepth();
-    std::cout << "ObjectDeclaration\n";
-    depth ++;
-
-    PrintIdList("names", n.names.get());
-    PrintField("constant", (n.isConstant?"true":"false"));
-    PrintRequiredChild("typeSpec", n.typeSpec.get());
-    PrintRequiredChild("initializer", n.initializer.get());
-
-    depth --;
+    Entry("AggregateExpr");
+    PrintList("list", *n.list.get());
+    Exit();
 }
 
 
 
 //
-// -- Print an Full Type Declaration AST node
-//    ---------------------------------------
-void ASTPrinter::Visit(const TypeDecl &n)
+// -- ArrayTypeSpec
+//    -------------
+void ASTPrinter::Visit(const ArrayTypeSpec &n)
 {
-    PrintDepth();
-    std::cout << "TypeDecl\n";
-    depth ++;
-
-    PrintField("name", n.name.name);
-//    PrintOptionalChild("discriminantPart", n.discriminantPart.get());
-    PrintRequiredChild("definition", n.definition.get());
-
-    depth --;
+    Entry("ArrayTypeSpec");
+    PrintList("list", *n.list.get());
+    PrintField("unconstrained", (n.unconstrained?"true":"false"));
+    PrintRequiredChild("indices", n.indices.get());
+    PrintRequiredChild("subtype", n.component.get());
+    Exit();
 }
 
 
 
 //
-// -- Print an Enumeration Type Specification
-//    ---------------------------------------
+// -- AttributeRange
+//    --------------
+void ASTPrinter::Visit(const AttributeRange &n)
+{
+    Entry("AttributeRange");
+    PrintRequiredChild("attribute", n.rangeAttribute.get());
+    Exit();
+}
+
+
+
+//
+// -- BinaryExpr
+//    ----------
+void ASTPrinter::Visit(const BinaryExpr &n)
+{
+    Entry("BinaryExpr");
+    PrintRequiredChild("lhs", n.lhs.get());
+
+    switch (n.op) {
+    case BinaryOper::And:           PrintField("op", "AND");                        break;
+    case BinaryOper::AndThen:       PrintField("op", "AND_THEN");                   break;
+    case BinaryOper::Concatenate:   PrintField("op", "& (concat)");                 break;
+    case BinaryOper::Divide:        PrintField("op", "/ (divide)");                 break;
+    case BinaryOper::Equal:         PrintField("op", "= (equal)");                  break;
+    case BinaryOper::GreaterEqual:  PrintField("op", ">= (greater or equal)");      break;
+    case BinaryOper::GreaterThan:   PrintField("op", "> (greater)");                break;
+    case BinaryOper::In:            PrintField("op", "IN");                         break;
+    case BinaryOper::LessEqual:     PrintField("op", "<= (less equal)");            break;
+    case BinaryOper::LessThan:      PrintField("op", "< (less)");                   break;
+    case BinaryOper::Minus:         PrintField("op", "- (minus)");                  break;
+    case BinaryOper::Mod:           PrintField("op", "MOD");                        break;
+    case BinaryOper::NotEqual:      PrintField("op", "/= (not equal)");             break;
+    case BinaryOper::Or:            PrintField("op", "OR");                         break;
+    case BinaryOper::OrElse:        PrintField("op", "OR_ELSE");                    break;
+    case BinaryOper::Plus:          PrintField("op", "+ (plus)");                   break;
+    case BinaryOper::Power:         PrintField("op", "** (power)");                 break;
+    case BinaryOper::Rem:           PrintField("op", "REM");                        break;
+    case BinaryOper::Times:         PrintField("op", "* (times)");                  break;
+    case BinaryOper::Xor:           PrintField("op", "XOR");                        break;
+    default:                        assert(false);
+    }
+
+    PrintRequiredChild("rhs", n.rhs.get());
+    Exit();
+}
+
+
+
+//
+// -- ComponentAssociation
+//    --------------------
+void ASTPrinter::Visit(const ComponentAssociation &n)
+{
+    Entry("ComponentAssociation");
+    PrintList("choices", *n.choices.get());
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- ComponentDeclaration
+//    --------------------
+void ASTPrinter::Visit(const ComponentDeclaration &n)
+{
+    Entry("ComponentDeclaration");
+    PrintIdList(std::string("names"), n.names.get());
+    PrintRequiredChild("type", n.typeSpec.get());
+    PrintOptionalChild("initializer", n.initializer.get());
+    Exit();
+}
+
+
+
+//
+// -- ComponentList
+//    -------------
+void ASTPrinter::Visit(const ComponentList &n)
+{
+    Entry("ComponentList");
+    PrintList("components", *n.components.get());
+    PrintRequiredChild("variant part", n.variantPart.get());
+    Exit();
+}
+
+
+
+//
+// -- DerivedTypeSpec
+//    ---------------
+void ASTPrinter::Visit(const DerivedTypeSpec &n)
+{
+    Entry("DerivedTypeSpec");
+    PrintRequiredChild("name", n.name.get());
+    PrintRequiredChild("type", n.type.get());
+    Exit();
+}
+
+
+
+//
+// -- DiscriminantAssociation
+//    -----------------------
+void ASTPrinter::Visit(const DiscriminantAssociation &n)
+{
+    Entry("DiscriminantAssociation");
+    PrintList("name", *n.names.get());
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- DiscriminantConstraint
+//    -----------------------
+void ASTPrinter::Visit(const DiscriminantConstraint &n)
+{
+    Entry("DiscriminantConstraint");
+    PrintList("lsit", *n.list.get());
+    Exit();
+}
+
+
+
+//
+// -- DiscriminantSpecification
+//    -------------------------
+void ASTPrinter::Visit(const DiscriminantSpecification &n)
+{
+    Entry("DiscriminantSpecification");
+    PrintIdList("ids", n.ids.get());
+    PrintRequiredChild("type", n.type.get());
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- EnumerationTypeSpec
+//    -------------------
 void ASTPrinter::Visit(const EnumerationTypeSpec &n)
 {
-    PrintDepth();
-    std::cout << "EnumerationTypeSpec\n";
-    depth ++;
-
+    Entry("EnumerationTypeSpec");
     PrintIdList("literals", n.literals.get());
-
-    depth --;
+    Exit();
 }
 
 
 
 //
-// -- Print a Range Constraint
-//    ------------------------
-void ASTPrinter::Visit(const RangeConstraint &n)
+// -- ExprChoice
+//    ----------
+void ASTPrinter::Visit(const ExprChoice &n)
 {
-    PrintDepth();
-    std::cout << "RangeConstraint\n";
-    depth ++;
-
-    PrintRequiredChild("range", n.range.get());
-
-    depth --;
+    Entry("ExprChoice");
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
 }
 
 
 
 //
-// -- Print a Range
-//    -------------
-void ASTPrinter::Visit(const Range &n)
+// -- IndexConstraint
+//    ---------------
+void ASTPrinter::Visit(const IndexConstraint &n)
 {
-    PrintDepth();
-    std::cout << "Range\n";
-    depth ++;
-
-    PrintRequiredChild("lower", n.lowerBound.get());
-    PrintRequiredChild("upper", n.upperBound.get());
-
-    depth --;
+    Entry("IndexConstraint");
+    PrintField("unconstrained", n.unconstrained?"true":"false");
+    PrintList("indices", *n.indices.get());
+    Exit();
 }
 
 
+
 //
-// -- Print a Subtype Range
-//    ---------------------
-void ASTPrinter::Visit(const SubtypeRange &n)
+// -- IntLiteralExpr
+//    --------------
+void ASTPrinter::Visit(const IntLiteralExpr &n)
 {
-    PrintDepth();
-    std::cout << "SubtypeRange\n";
-    depth ++;
-
-    PrintRequiredChild("attribute", n.subtype.get());
-
-    depth --;
+    Entry("IntLiteralExpr");
+    PrintField("value", n.lexeme);
+    Exit();
 }
 
 
 
+//
+// -- NameChoice
+//    ----------
+void ASTPrinter::Visit(const NameChoice &n)
+{
+    Entry("NameChoice");
+    PrintRequiredChild("name", n.name.get());
+    Exit();
+}
+
+
 
 //
-// -- Print an Integer Type
-//    ------------------------
+// -- NameExpr
+//    --------
+void ASTPrinter::Visit(const NameExpr &n)
+{
+    Entry("NameExpr");
+    PrintRequiredChild("name", n.name.get());
+    Exit();
+}
+
+
+
+//
+// -- NullLiteralExpr
+//    ---------------
+void ASTPrinter::Visit(const NullLiteralExpr &n)
+{
+    Entry("NullLiteralExpr");
+    PrintField("NullLiteralExpr", "null");
+    Exit();
+}
+
+
+
+//
+// -- NumberDeclaration
+//    -----------------
+void ASTPrinter::Visit(const NumberDeclaration &n)
+{
+    Entry("NumberDeclaration");
+    PrintIdList("names", n.names.get());
+    PrintRequiredChild("initializer", n.initializer.get());
+    Exit();
+}
+
+
+
+//
+// -- NumericTypeSpec
+//    ---------------
 void ASTPrinter::Visit(const NumericTypeSpec &n)
 {
-    PrintDepth();
-    std::cout << "NumericTypeSpec\n";
-    depth ++;
+    Entry("NumericTypeSpec");
 
     switch (n.kind) {
     case NumericTypeSpec::Kind::Integer:
@@ -257,44 +414,270 @@ void ASTPrinter::Visit(const NumericTypeSpec &n)
     }
 
     PrintRequiredChild("range", n.range.get());
-
-    depth --;
+    Exit();
 }
 
 
 
 //
-// -- Print an Index Range
-//    --------------------
-void ASTPrinter::Visit(const IndexConstraint &n)
+// -- ObjectDeclaration
+//    -----------------
+void ASTPrinter::Visit(const ObjectDeclaration &n)
 {
-    PrintDepth();
-    std::cout << "IndexConstraint\n";
-    depth ++;
-
-//    PrintRequiredChild("index", n.indices.get());
-
-    depth --;
+    Entry("ObjectDeclaration");
+    PrintIdList("names", n.names.get());
+    PrintField("constant", (n.isConstant?"true":"false"));
+    PrintRequiredChild("typeSpec", n.typeSpec.get());
+    PrintRequiredChild("initializer", n.initializer.get());
+    Exit();
 }
 
 
 
 //
-// -- Print an Attribute Range
-//    ------------------------
-void ASTPrinter::Visit(const AttributeRange &n)
+// -- OthersChoice
+//    ------------
+void ASTPrinter::Visit(const OthersChoice &n)
 {
-    PrintDepth();
-    std::cout << "AttributeRange\n";
-    depth ++;
-
-    PrintRequiredChild("attribute", n.rangeAttribute.get());
-
-    depth --;
+    Entry("OthersChoice");
+    PrintField("others", "others");
+    Exit();
 }
 
 
 
+//
+// -- QualExprAllocatorExpr
+//    ---------------------
+void ASTPrinter::Visit(const QualExprAllocatorExpr &n)
+{
+    Entry("QualExprAllocatorExpr");
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- QualifiedExpr
+//    -------------
+void ASTPrinter::Visit(const QualifiedExpr &n)
+{
+    Entry("QualifiedExpr");
+    PrintRequiredChild("id", n.id.get());
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- Range
+//    -----
+void ASTPrinter::Visit(const Range &n)
+{
+    Entry("Range");
+    PrintRequiredChild("lower", n.lowerBound.get());
+    PrintRequiredChild("upper", n.upperBound.get());
+    Exit();
+}
+
+
+
+//
+// -- RangeChoice
+//    -----------
+void ASTPrinter::Visit(const RangeChoice &n)
+{
+    Entry("RangeChoice");
+    PrintRequiredChild("range", n.range.get());
+    Exit();
+}
+
+
+
+//
+// -- RangeExpr
+//    ---------
+void ASTPrinter::Visit(const RangeExpr &n)
+{
+    Entry("RangeExpr");
+    PrintRequiredChild("range", n.range.get());
+    Exit();
+}
+
+
+
+//
+// -- RealLiteralExpr
+//    ---------------
+void ASTPrinter::Visit(const RealLiteralExpr &n)
+{
+    Entry("RealLiteralExpr");
+    PrintField("value", n.lexeme);
+    Exit();
+}
+
+
+
+//
+// -- RecordSpecification
+//    -------------------
+void ASTPrinter::Visit(const RecordSpecification &n)
+{
+    Entry("RecordSpecification");
+    PrintField("ID", n.id.name);
+    PrintRequiredChild("components", n.components.get());
+    Exit();
+}
+
+
+
+//
+// -- StringLiteralExpr
+//    -----------------
+void ASTPrinter::Visit(const StringLiteralExpr &n)
+{
+    Entry("StringLiteralExpr");
+    PrintField("value", n.lexeme);
+    Exit();
+}
+
+
+
+//
+// -- SubtypeIndication
+//    -----------------
+void ASTPrinter::Visit(const SubtypeIndication &n)
+{
+    Entry("SubtypeIndication");
+    PrintRequiredChild("type mark", n.name.get());
+    PrintOptionalChild("constraint", n.constraint.get());
+    Exit();
+}
+
+
+
+//
+// -- SubtypeIndicationAllocatorExpr
+//    ------------------------------
+void ASTPrinter::Visit(const SubtypeIndicationAllocatorExpr &n)
+{
+    Entry("SubtypeIndicationAllocatorExpr");
+    PrintRequiredChild("subtype", n.sub.get());
+    Exit();
+}
+
+
+
+//
+// -- RangeConstraint
+//    ---------------
+void ASTPrinter::Visit(const RangeConstraint &n)
+{
+    Entry("RangeConstraint");
+    PrintRequiredChild("range", n.range.get());
+    Exit();
+}
+
+
+
+//
+// -- SubtypeRange
+//    ------------
+void ASTPrinter::Visit(const SubtypeRange &n)
+{
+    Entry("SubtypeRange");
+    PrintRequiredChild("attribute", n.subtype.get());
+    Exit();
+}
+
+
+
+//
+// -- TypeConversionExpr
+//    ------------------
+void ASTPrinter::Visit(const TypeConversionExpr &n)
+{
+    Entry("TypeConversionExpr");
+    PrintRequiredChild("id", n.id.get());
+    PrintRequiredChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- TypeDecl
+//    --------
+void ASTPrinter::Visit(const TypeDecl &n)
+{
+    Entry("TypeDecl");
+    PrintField("name", n.name.name);
+    PrintList("discriminantPart", *n.discriminantPart.get());
+    PrintOptionalChild("definition", n.definition.get());
+    Exit();
+}
+
+
+
+//
+// -- UnaryExpr
+//    ---------
+void ASTPrinter::Visit(const UnaryExpr &n)
+{
+    Entry("UnaryExpr");
+
+    switch (n.op) {
+    case UnaryOper::Plus:           PrintField("op", "+ (plus)");                   break;
+    case UnaryOper::Minus:          PrintField("op", "- (minus)");                  break;
+    case UnaryOper::Abs:            PrintField("op", "ABS");                        break;
+    case UnaryOper::Not:            PrintField("op", "NOT");                        break;
+    default:                        assert(false);
+    }
+
+    PrintRequiredChild("operand", n.expr.get());
+    Exit();
+}
+
+
+
+//
+// -- UnboundedRange
+//    --------------
+void ASTPrinter::Visit(const UnboundedRange &n)
+{
+    Entry("UnboundedRange");
+    PrintRequiredChild("type", n.type.get());
+    Exit();
+}
+
+
+
+//
+// -- Variant
+//    -------
+void ASTPrinter::Visit(const Variant &n)
+{
+    Entry("Variant");
+    PrintList("choices", *n.choices.get());
+    PrintRequiredChild("components", n.components.get());
+    Exit();
+}
+
+
+
+
+//
+// -- VariantPart
+//    -----------
+void ASTPrinter::Visit(const VariantPart &n)
+{
+    Entry("VariantPart");
+    PrintRequiredChild("name", n.name.get());
+    PrintList("variants", *n.variants.get());
+    Exit();
+}
 
 
 

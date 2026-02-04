@@ -74,7 +74,6 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    diags.Debug("Manage Symbol Table");
     if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
         vec = scopes.CurrentScope()->LocalLookup(id.name);
@@ -86,20 +85,15 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
         }
     }
 
-    diags.Debug("After Symbol Table");
-
     ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
     IdListPtr list = std::make_unique<IdList>();
     list->push_back(id);
 
-    diags.Debug("Starting Helper Function");
-
     ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
     if (!rv) return nullptr;
 
-    diags.Debug("Success, cleaning up");
 
     //
     // -- Consider this parse to be good

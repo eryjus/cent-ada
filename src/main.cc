@@ -236,11 +236,14 @@ static int Compile(std::string filename, ParseType_t type)
     diags.SetParser(parser);
     int cnt = 0;
     int rv = EXIT_SUCCESS;
+    NodePtr node = nullptr;
+
 
     switch (type) {
     case COMPILE_TYPES:
         while (tokens->Current() != TokenType::YYEOF) {
-            if(parser->ParseBasicDeclaration() == nullptr) {
+            node = parser->ParseBasicDeclaration();
+            if (!node) {
                 std::cerr << "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m\n";
                 rv = EXIT_FAILURE;
                 goto exit;
@@ -272,15 +275,20 @@ static int Compile(std::string filename, ParseType_t type)
         std::cerr << "********************************\n";
         std::cerr << "** Starting Expressions Parse **\n";
         std::cerr << "********************************\n\n";
-        if(!parser->ParseExpression()) {
+        node = parser->ParseExpression();
+        if(!node) {
             std::cerr << "\n\e[31;1mERROR: Unable to properly parse Expression\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
         }
 
-        std::cerr << "next token " << tokens->tokenStr(tokens->Current()) << '\n';
         if (tokens->Current() != TokenType::YYEOF) {
-            std::cerr << "\n\e[31;1mERROR: Extra input in Expression parse\e[0m\n";
+            std::cerr << "\n\e[31;1mERROR: Extra input in Expression parse:\n";
+            while (tokens->Current() != TokenType::YYEOF) {
+                std::cerr << "    " << tokens->tokenStr(tokens->Current()) << '\n';
+                tokens->Advance();
+            }
+            std::cerr << "\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
         }
@@ -297,6 +305,15 @@ static int Compile(std::string filename, ParseType_t type)
 exit:
     if (opts.listing) tokens->Listing();
     if (opts.dumpSymtab) parser->Scopes()->Print();
+
+    if (opts.prtAst) {
+        ASTPrinter prt;
+
+        node->Accept(prt);
+        std::cout << "\n\n";
+    }
+
+
 
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
     std::cerr << "   Warnings: " << diags.Warnings() << '\n';
@@ -325,6 +342,7 @@ static void Usage(std::string pgm)
     std::cout << "                      process only expressions/declarations parts of the parser\n";
     std::cout << "      invariants, invar\n";
     std::cout << "                      same as 'expressions' but also check AST invariants\n";
+    std::cout << "      ast             parse the source and print the AST\n";
     std::cout << "\n";
     std::cout << "  options:\n";
     std::cout << "  -h, --help          print this screen and exit\n";
@@ -373,6 +391,11 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        if (arg == "--print-ast") {
+            opts.prtAst = true;
+            continue;
+        }
+
         if (arg == "scan") {
             action = ACT_SCAN;
             continue;
@@ -400,6 +423,13 @@ int main(int argc, char *argv[])
             action = ACT_COMPILE;
             type = COMPILE_EXPRS;
             opts.checkAstInvariants = true;
+            continue;
+        }
+
+        if (arg == "ast") {
+            action = ACT_COMPILE;
+            type = COMPILE_TYPES;
+            opts.prtAst = true;
             continue;
         }
 

@@ -40,7 +40,7 @@ ExprPtr Parser::ParseSimpleExpression(void)
         return nullptr;
     }
 
-    if (uop == UnaryOper::Unspecified) {
+    if (uop != UnaryOper::Unspecified) {
         lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
     }
 
@@ -48,6 +48,7 @@ ExprPtr Parser::ParseSimpleExpression(void)
         // -- at this point we already have a good Term
         p.At("Comma/Arrow next");
         m.Commit();
+
         return lhs;
     }
 

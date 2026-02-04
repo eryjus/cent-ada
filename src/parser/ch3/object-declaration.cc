@@ -41,7 +41,6 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Parse the common prefix
     //    -----------------------
-    diags.Debug("*** Parsing the Identifier List");
     idList = ParseIdentifierList();
 
     if (!idList) {
@@ -50,14 +49,12 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     }
 
 
-    diags.Debug("*** Consuming the TOK_COLON");
     if (!Require(TokenType::TOK_COLON)) {
         p.At("no TOK_COLON");
         return nullptr;
     }
 
 
-    diags.Debug("*** Consuming the optiondl TOK_CONSTANT");
     isConstant = Optional(TokenType::TOK_CONSTANT);
 
 
@@ -65,7 +62,6 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Now, check for any duplicates and add the name if there are none
     //    ----------------------------------------------------------------
-    diags.Debug("*** Managing the Symbol Table");
     for (int i = 0; i < idList->size(); i ++) {
         if (scopes.IsLocalDefined(idList->at(i).name)) {
             diags.Error(idList->at(i).loc, DiagID::DuplicateName, { idList->at(i).name } );
@@ -83,7 +79,6 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Here is where the rules differ
     //    ------------------------------
-    diags.Debug("*** Parsing the Type Specification");
     typeSpec = ParseSubtypeIndication();
     if (typeSpec) {
         where = "subtype_indication";
@@ -103,15 +98,11 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Now, check for an optional assignment to an expression
     //    ------------------------------------------------------
-    diags.Debug("*** Parsing the optional TOK_ASSIGMENT");
     loc = tokens.SourceLocation();
     TOKEN;
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
-        diags.Debug("*** ... and after the assignment, the resulting expression");
-        diags.Debug("Assigning a value to ab object declaration");
         TOKEN;
         expr = ParseExpression();
-        diags.Debug("... after parsing the expression");
         TOKEN;
         if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
@@ -138,7 +129,6 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //    ------------------------------
     TOKEN;
     p.At("proper obj decl");
-    diags.Debug("*** Done parsing an object declaration");
     TOKEN;
 
     s.Commit();

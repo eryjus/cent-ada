@@ -19,6 +19,7 @@ struct Options {
     bool listing = false;
     bool requireBasicDeclaration = false;
     bool checkAstInvariants = false;
+    bool prtAst = false;
 };
 
 
