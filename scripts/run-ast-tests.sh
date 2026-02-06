@@ -36,6 +36,8 @@ for test in "${TESTS[@]}"; do
     fi
 
     sed -i 's/[[:space:]]*$//' "$actual"
+    sed -i ':a;/^[ \n]*$/{$d;N;ba}' "$actual"
+    sed -i ':a;/^[ \n]*$/{$d;N;ba}' "$expected"
 
     if diff -u "$expected" "$actual" > /dev/null ; then
         printf "[      OK  ] %s\n" "$name"

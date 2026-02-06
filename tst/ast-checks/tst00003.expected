@@ -1,6 +1,6 @@
-Listing for tst/ast-checks/tst00001.ada:
+Listing for tst/ast-checks/tst00003.ada:
 ========================================
-     1   PI : CONSTANT := 3.14159;
+     1   PASSTIME : CONSTANT := "Now is the time...";
      2
 
 
@@ -8,10 +8,10 @@ PRINTING THE AST STRUCTURE
 ==========================
 ObjectDeclaration
   names
-    --> pi
+    --> passtime
   constant --> true
   typeSpec
     (null)
   initializer
-    RealLiteralExpr
-      value --> 3.14159
+    StringLiteralExpr
+      value --> Now is the time...

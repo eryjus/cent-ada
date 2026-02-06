@@ -1,6 +1,6 @@
-Listing for tst/ast-checks/tst00001.ada:
+Listing for tst/ast-checks/tst00005.ada:
 ========================================
-     1   PI : CONSTANT := 3.14159;
+     1   PI : CONSTANT REAL := 3.14159;
      2
 
 
@@ -11,7 +11,12 @@ ObjectDeclaration
     --> pi
   constant --> true
   typeSpec
-    (null)
+    SubtypeIndication
+      type mark
+        SimpleName
+          id --> real
+      constraint
+        (null)
   initializer
     RealLiteralExpr
       value --> 3.14159

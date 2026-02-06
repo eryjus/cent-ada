@@ -1,6 +1,6 @@
-Listing for tst/ast-checks/tst00001.ada:
+Listing for tst/ast-checks/tst00004.ada:
 ========================================
-     1   PI : CONSTANT := 3.14159;
+     1   ONE, UNO, UN : constant := 1;
      2
 
 
@@ -8,10 +8,12 @@ PRINTING THE AST STRUCTURE
 ==========================
 ObjectDeclaration
   names
-    --> pi
+    --> one
+    --> uno
+    --> un
   constant --> true
   typeSpec
     (null)
   initializer
-    RealLiteralExpr
-      value --> 3.14159
+    IntLiteralExpr
+      value --> 1

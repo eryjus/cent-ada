@@ -1,6 +1,6 @@
-Listing for tst/ast-checks/tst00001.ada:
+Listing for tst/ast-checks/tst00002.ada:
 ========================================
-     1   PI : CONSTANT := 3.14159;
+     1   MEANING_OF_LIFE : CONSTANT := 42;
      2
 
 
@@ -8,10 +8,10 @@ PRINTING THE AST STRUCTURE
 ==========================
 ObjectDeclaration
   names
-    --> pi
+    --> meaning_of_life
   constant --> true
   typeSpec
     (null)
   initializer
-    RealLiteralExpr
-      value --> 3.14159
+    IntLiteralExpr
+      value --> 42
