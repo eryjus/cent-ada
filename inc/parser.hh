@@ -293,7 +293,7 @@ public:
     NamePtr ParseTypeMark(void);
     NodePtr ParseDeclarativePart(void);
     NodePtr ParseLaterDeclarativeItem(void);
-    NumberDeclarationPtr ParseNumberDeclaration(void);
+    ObjectDeclarationPtr ParseNumberDeclaration(void);
     NumericTypeSpecPtr ParseFixedPointConstraint(Id &id);
     NumericTypeSpecPtr ParseFloatingPointConstraint(Id &id);
     NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);

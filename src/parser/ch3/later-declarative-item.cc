@@ -32,13 +32,13 @@ NodePtr Parser::ParseLaterDeclarativeItem(void)
 {
     Production p(*this, "later_declarative_item");
 
-    if (ParseBody())                        { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
-    if (ParseSubprogramDeclaration())       { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
-    if (ParsePackageDeclaration())          { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
-    if (ParseTaskDeclaration())             { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
-    if (ParseGenericDeclaration())          { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
-    if (ParseUseClause())                   { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
-    if (ParseGenericInstantiation())        { return std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParseBody())                        { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParseSubprogramDeclaration())       { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParsePackageDeclaration())          { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParseTaskDeclaration())             { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParseGenericDeclaration())          { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParseUseClause())                   { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
+    if (ParseGenericInstantiation())        { return nullptr; } // std::make_unique<ASTNode>(tokens.EmptyLocation()); }
 
     return nullptr;
 }

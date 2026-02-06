@@ -1,0 +1,2 @@
+PI : CONSTANT REAL := 3.14159;
+

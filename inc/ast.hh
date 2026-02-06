@@ -104,7 +104,7 @@ public:
 
 
 public:
-    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+    virtual void Accept(ASTVisitor &v) = 0;
 };
 
 

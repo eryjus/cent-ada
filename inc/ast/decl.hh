@@ -32,31 +32,6 @@ public:
 
 
 //
-// -- Number declaration
-//    ------------------
-class NumberDeclaration : public Decl {
-    NumberDeclaration(void) = delete;
-    NumberDeclaration(const NumberDeclaration &) = delete;
-    NumberDeclaration &operator=(const NumberDeclaration &) = delete;
-
-
-public:
-    IdListPtr names;
-    ExprPtr initializer;
-
-
-public:
-    NumberDeclaration(SourceLoc_t l, IdListPtr ids, ExprPtr i) :
-            Decl(l), names(std::move(ids)), initializer(std::move(i)) {}
-
-
-public:
-    virtual void Accept(ASTVisitor &v) override { v.Visit(*this); }
-};
-
-
-
-//
 // -- Object declaration
 //    ------------------
 class ObjectDeclaration : public Decl {
@@ -68,7 +43,7 @@ class ObjectDeclaration : public Decl {
 public:
     IdListPtr names;
     bool isConstant;
-    TypeSpecPtr typeSpec;
+    TypeSpecPtr typeSpec;               // may be nullptr for number decl
     ExprPtr initializer;                // may be nullptr
 
 

@@ -22,14 +22,13 @@
 //    ----------------------------------------------
 class ASTVisitor {
 public:
-    virtual void Visit(const Name &) { std::cout << "Unimplemented\n"; }
-
     virtual void Visit(const AccessTypeSpec &) = 0;
     virtual void Visit(const AggregateExpr &) = 0;
     virtual void Visit(const ArrayTypeSpec &) = 0;
-    virtual void Visit(const ASTNode &) = 0;
+    virtual void Visit(const AttributeName &) = 0;
     virtual void Visit(const AttributeRange &) = 0;
     virtual void Visit(const BinaryExpr &) = 0;
+    virtual void Visit(const CharacterLiteralName &) = 0;
     virtual void Visit(const ComponentAssociation &) = 0;
     virtual void Visit(const ComponentDeclaration &) = 0;
     virtual void Visit(const ComponentList &) = 0;
@@ -39,12 +38,13 @@ public:
     virtual void Visit(const DiscriminantSpecification &) = 0;
     virtual void Visit(const EnumerationTypeSpec &) = 0;
     virtual void Visit(const ExprChoice &) = 0;
+    virtual void Visit(const IdentifierList &) = 0;
     virtual void Visit(const IndexConstraint &) = 0;
+    virtual void Visit(const IndexedName &) = 0;
     virtual void Visit(const IntLiteralExpr &) = 0;
     virtual void Visit(const NameChoice &) = 0;
     virtual void Visit(const NameExpr &) = 0;
     virtual void Visit(const NullLiteralExpr &) = 0;
-    virtual void Visit(const NumberDeclaration &) = 0;
     virtual void Visit(const NumericTypeSpec &) = 0;
     virtual void Visit(const ObjectDeclaration &) = 0;
     virtual void Visit(const OthersChoice &) = 0;
@@ -54,8 +54,12 @@ public:
     virtual void Visit(const RangeChoice &) = 0;
     virtual void Visit(const RangeConstraint &) = 0;
     virtual void Visit(const RangeExpr &) = 0;
+    virtual void Visit(const RealConstraint &) = 0;
     virtual void Visit(const RealLiteralExpr &) = 0;
     virtual void Visit(const RecordSpecification &) = 0;
+    virtual void Visit(const SelectedName &) = 0;
+    virtual void Visit(const SimpleName &) = 0;
+    virtual void Visit(const SliceName &) = 0;
     virtual void Visit(const StringLiteralExpr &) = 0;
     virtual void Visit(const SubtypeIndication &) = 0;
     virtual void Visit(const SubtypeIndicationAllocatorExpr &) = 0;
@@ -109,9 +113,10 @@ protected:
     virtual void Visit(const AccessTypeSpec &) override;
     virtual void Visit(const AggregateExpr &) override;
     virtual void Visit(const ArrayTypeSpec &) override;
-    virtual void Visit(const ASTNode &) override { }
+    virtual void Visit(const AttributeName &) override;
     virtual void Visit(const AttributeRange &) override;
     virtual void Visit(const BinaryExpr &) override;
+    virtual void Visit(const CharacterLiteralName &) override;
     virtual void Visit(const ComponentAssociation &) override;
     virtual void Visit(const ComponentDeclaration &) override;
     virtual void Visit(const ComponentList &) override;
@@ -121,12 +126,13 @@ protected:
     virtual void Visit(const DiscriminantSpecification &) override;
     virtual void Visit(const EnumerationTypeSpec &) override;
     virtual void Visit(const ExprChoice &) override;
+    virtual void Visit(const IdentifierList &) override;
     virtual void Visit(const IndexConstraint &) override;
+    virtual void Visit(const IndexedName &) override;
     virtual void Visit(const IntLiteralExpr &) override;
     virtual void Visit(const NameChoice &) override;
     virtual void Visit(const NameExpr &) override;
     virtual void Visit(const NullLiteralExpr &) override;
-    virtual void Visit(const NumberDeclaration &) override;
     virtual void Visit(const NumericTypeSpec &) override;
     virtual void Visit(const ObjectDeclaration &) override;
     virtual void Visit(const OthersChoice &) override;
@@ -136,8 +142,12 @@ protected:
     virtual void Visit(const RangeChoice &) override;
     virtual void Visit(const RangeConstraint &) override;
     virtual void Visit(const RangeExpr &) override;
+    virtual void Visit(const RealConstraint &) override;
     virtual void Visit(const RealLiteralExpr &) override;
     virtual void Visit(const RecordSpecification &) override;
+    virtual void Visit(const SelectedName &) override;
+    virtual void Visit(const SimpleName &) override;
+    virtual void Visit(const SliceName &) override;
     virtual void Visit(const StringLiteralExpr &) override;
     virtual void Visit(const SubtypeIndication &) override;
     virtual void Visit(const SubtypeIndicationAllocatorExpr &) override;
@@ -168,9 +178,10 @@ protected:
     virtual void Visit(const AccessTypeSpec &) override;
     virtual void Visit(const AggregateExpr &) override;
     virtual void Visit(const ArrayTypeSpec &) override;
-    virtual void Visit(const ASTNode &) override;
+    virtual void Visit(const AttributeName &) override;
     virtual void Visit(const AttributeRange &) override;
     virtual void Visit(const BinaryExpr &) override;
+    virtual void Visit(const CharacterLiteralName &) override;
     virtual void Visit(const ComponentAssociation &) override;
     virtual void Visit(const ComponentDeclaration &) override;
     virtual void Visit(const ComponentList &) override;
@@ -180,12 +191,13 @@ protected:
     virtual void Visit(const DiscriminantSpecification &) override;
     virtual void Visit(const EnumerationTypeSpec &n) override;
     virtual void Visit(const ExprChoice &) override;
-    virtual void Visit(const IndexConstraint &n) override;
+    virtual void Visit(const IdentifierList &) override;
+    virtual void Visit(const IndexConstraint &) override;
+    virtual void Visit(const IndexedName &) override;
     virtual void Visit(const IntLiteralExpr &) override;
     virtual void Visit(const NameChoice &) override;
     virtual void Visit(const NameExpr &) override;
     virtual void Visit(const NullLiteralExpr &) override;
-    virtual void Visit(const NumberDeclaration &n) override;
     virtual void Visit(const NumericTypeSpec &n) override;
     virtual void Visit(const ObjectDeclaration &n) override;
     virtual void Visit(const OthersChoice &) override;
@@ -195,8 +207,12 @@ protected:
     virtual void Visit(const RangeChoice &) override;
     virtual void Visit(const RangeConstraint &n) override;
     virtual void Visit(const RangeExpr &) override;
+    virtual void Visit(const RealConstraint &) override;
     virtual void Visit(const RealLiteralExpr &) override;
     virtual void Visit(const RecordSpecification &) override;
+    virtual void Visit(const SelectedName &) override;
+    virtual void Visit(const SimpleName &) override;
+    virtual void Visit(const SliceName &) override;
     virtual void Visit(const StringLiteralExpr &) override;
     virtual void Visit(const SubtypeIndication &n) override;
     virtual void Visit(const SubtypeIndicationAllocatorExpr &) override;

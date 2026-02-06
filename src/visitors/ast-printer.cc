@@ -68,7 +68,6 @@ void ASTPrinter::PrintOptionalChild(std::string label, ASTNode *child) {
 void ASTPrinter::PrintField(std::string label, std::string value) {
     PrintDepth();
     std::cout << label << " --> " << value << '\n';
-    depth --;
 }
 
 
@@ -151,6 +150,20 @@ void ASTPrinter::Visit(const ArrayTypeSpec &n)
 
 
 //
+// -- AttributeName
+//    -------------
+void ASTPrinter::Visit(const AttributeName &n)
+{
+    Entry("AttributeName");
+    PrintRequiredChild("prefix", n.prefix.get());
+    PrintRequiredChild("attribute", n.attr.get());
+    PrintOptionalChild("expr", n.expr.get());
+    Exit();
+}
+
+
+
+//
 // -- AttributeRange
 //    --------------
 void ASTPrinter::Visit(const AttributeRange &n)
@@ -195,6 +208,18 @@ void ASTPrinter::Visit(const BinaryExpr &n)
     }
 
     PrintRequiredChild("rhs", n.rhs.get());
+    Exit();
+}
+
+
+
+//
+// -- CharacterLiteralName
+//    --------------------
+void ASTPrinter::Visit(const CharacterLiteralName &n)
+{
+    Entry("CharacterLiteralName");
+    PrintField("literal", n.lit.lexeme);
     Exit();
 }
 
@@ -317,12 +342,37 @@ void ASTPrinter::Visit(const ExprChoice &n)
 
 
 //
+// -- IdentifierList
+//    --------------
+void ASTPrinter::Visit(const IdentifierList &n)
+{
+    Entry("IdentifierList");
+    PrintIdList("ids", n.ids.get());
+    Exit();
+}
+
+
+
+//
 // -- IndexConstraint
 //    ---------------
 void ASTPrinter::Visit(const IndexConstraint &n)
 {
     Entry("IndexConstraint");
     PrintField("unconstrained", n.unconstrained?"true":"false");
+    PrintList("indices", *n.indices.get());
+    Exit();
+}
+
+
+
+//
+// -- IndexedName
+//    -----------
+void ASTPrinter::Visit(const IndexedName &n)
+{
+    Entry("IndexedName");
+    PrintRequiredChild("prefix", n.prefix.get());
     PrintList("indices", *n.indices.get());
     Exit();
 }
@@ -372,19 +422,6 @@ void ASTPrinter::Visit(const NullLiteralExpr &n)
 {
     Entry("NullLiteralExpr");
     PrintField("NullLiteralExpr", "null");
-    Exit();
-}
-
-
-
-//
-// -- NumberDeclaration
-//    -----------------
-void ASTPrinter::Visit(const NumberDeclaration &n)
-{
-    Entry("NumberDeclaration");
-    PrintIdList("names", n.names.get());
-    PrintRequiredChild("initializer", n.initializer.get());
     Exit();
 }
 
@@ -497,6 +534,18 @@ void ASTPrinter::Visit(const RangeChoice &n)
 
 
 //
+// -- RealConstraint
+//    --------------
+void ASTPrinter::Visit(const RealConstraint &n)
+{
+    Entry("RealConstraint");
+    PrintRequiredChild("range", n.range.get());
+    Exit();
+}
+
+
+
+//
 // -- RangeExpr
 //    ---------
 void ASTPrinter::Visit(const RangeExpr &n)
@@ -528,6 +577,45 @@ void ASTPrinter::Visit(const RecordSpecification &n)
     Entry("RecordSpecification");
     PrintField("ID", n.id.name);
     PrintRequiredChild("components", n.components.get());
+    Exit();
+}
+
+
+
+//
+// -- SelectedName
+//    ------------
+void ASTPrinter::Visit(const SelectedName &n)
+{
+    Entry("SelectedName");
+    PrintRequiredChild("prefix", n.prefix.get());
+    PrintOptionalChild("selector", n.selector.get());
+    PrintField("all", (n.all?"true":"false"));
+    Exit();
+}
+
+
+
+//
+// -- SimpleName
+//    ----------
+void ASTPrinter::Visit(const SimpleName &n)
+{
+    Entry("SimpleName");
+    PrintField("id", n.id.name);
+    Exit();
+}
+
+
+
+//
+// -- SliceName
+//    ---------
+void ASTPrinter::Visit(const SliceName &n)
+{
+    Entry("SliceName");
+    PrintRequiredChild("prefix", n.prefix.get());
+    PrintRequiredChild("range", n.range.get());
     Exit();
 }
 

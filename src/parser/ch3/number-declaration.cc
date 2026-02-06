@@ -22,7 +22,7 @@
 //
 // -- Parse a Number Declaration
 //    --------------------------
-NumberDeclarationPtr Parser::ParseNumberDeclaration(void)
+ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
 {
     Production p(*this, "number_declaration");
     MarkStream m(tokens, diags);
@@ -89,7 +89,7 @@ NumberDeclarationPtr Parser::ParseNumberDeclaration(void)
     s.Commit();
     m.Commit();
 
-    return std::make_unique<NumberDeclaration>(astLoc, std::move(idList), std::move(expr));
+    return std::make_unique<ObjectDeclaration>(astLoc, std::move(idList), true, nullptr, std::move(expr));
 }
 
 

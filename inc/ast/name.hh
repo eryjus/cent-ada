@@ -31,7 +31,6 @@ public:
 
 public:
     virtual std::string_view GetName(void) = 0;
-    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
@@ -44,8 +43,10 @@ class IdentifierList : public Name {
     IdentifierList(const IdentifierList &) = delete;
     IdentifierList &operator=(const IdentifierList &) = delete;
 
+
 public:
     IdListPtr ids;
+
 
 public:
     IdentifierList(SourceLoc_t l, IdListPtr list) : Name(loc), ids(std::move(list)) {}

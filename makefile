@@ -44,6 +44,6 @@ test: all
 	echo "Invar:"
 	./scripts/run-invar-tests.sh | grep FAILED --color=always || true
 	echo "AST:"
-	./scripts/run-ast-tests.sh | grep FAILED --color=always || true
+	./scripts/run-ast-tests.sh | grep -E 'FAILED|MISSING' --color=always || true
 
 

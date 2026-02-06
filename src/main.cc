@@ -430,6 +430,7 @@ int main(int argc, char *argv[])
             action = ACT_COMPILE;
             type = COMPILE_TYPES;
             opts.prtAst = true;
+            opts.listing = true;
             continue;
         }
 

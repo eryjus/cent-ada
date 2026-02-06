@@ -89,6 +89,10 @@ public:
 
 public:
     RealConstraint(SourceLoc_t loc, NumericTypeSpecPtr r) : Constraint(loc), range(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 
