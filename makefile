@@ -31,6 +31,11 @@ test-invar: all
 	echo "== Running AST Invariant tests =="
 	./scripts/run-invar-tests.sh
 
+.PHONY: test-ast
+test-invar: all
+	echo "== Running AST tests =="
+	./scripts/run-ast-tests.sh
+
 
 ## The following is built to always pass each test group!
 ## DO NOT USE IN CI as undesirable results will occur

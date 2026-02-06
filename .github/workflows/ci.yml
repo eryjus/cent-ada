@@ -43,6 +43,16 @@ jobs:
         run: make test-exprs
         continue-on-error: true
 
+      - name: Run Invariant tests (expressions)
+        id: invar
+        run: make test-invar
+        continue-on-error: true
+
+      - name: Run AST tests (ast)
+        id: ast
+        run: make test-ast
+        continue-on-error: true
+
       # -------------------------
       # Final evaluation
       # -------------------------
@@ -51,12 +61,17 @@ jobs:
         if: always()
         run: |
           echo "================ CI SUMMARY ================"
-          echo "Ch3 tests: ${{ steps.ch3.outcome }}"
-          echo "Ch4 tests: ${{ steps.ch4.outcome }}"
+          echo "  Ch3 tests: ${{ steps.ch3.outcome }}"
+          echo "  Ch4 tests: ${{ steps.ch4.outcome }}"
+          echo "Invar tests: ${{ steps.invar.outcome }}"
+          echo "  AST tests: ${{ steps.ast.outcome }}"
           echo "============================================"
 
-          if [ "${{ steps.ch3.outcome }}" != "success" ] || \
-             [ "${{ steps.ch4.outcome }}" != "success" ]; then
+          if [ "${{ steps.ch3.outcome }}"   != "success" ] || \
+             [ "${{ steps.ch4.outcome }}"   != "success" ] || \
+             [ "${{ steps.invar.outcome }}" != "success" ] || \
+             [ "${{ steps.ast.outcome }}"   != "success" ] || \
+             ; then
             echo "❌ One or more test stages failed (informational)"
             exit 1
           else
