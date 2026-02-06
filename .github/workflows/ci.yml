@@ -70,7 +70,7 @@ jobs:
           if [ "${{ steps.ch3.outcome }}"   != "success" ] || \
              [ "${{ steps.ch4.outcome }}"   != "success" ] || \
              [ "${{ steps.invar.outcome }}" != "success" ] || \
-             [ "${{ steps.ast.outcome }}"   != "success" ] || \
+             [ "${{ steps.ast.outcome }}"   != "success" ] \
              ; then
             echo "❌ One or more test stages failed (informational)"
             exit 1
