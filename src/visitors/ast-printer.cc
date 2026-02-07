@@ -128,7 +128,7 @@ void ASTPrinter::Visit(const AccessTypeSpec &n)
 void ASTPrinter::Visit(const AggregateExpr &n)
 {
     Entry("AggregateExpr");
-    PrintList("list", *n.list.get());
+    if (n.list) PrintList("list", *n.list.get()); else PrintField("list", "(null)");
     Exit();
 }
 
@@ -140,7 +140,7 @@ void ASTPrinter::Visit(const AggregateExpr &n)
 void ASTPrinter::Visit(const ArrayTypeSpec &n)
 {
     Entry("ArrayTypeSpec");
-    PrintList("list", *n.list.get());
+    if (n.list) PrintList("list", *n.list.get()); else PrintField("list", "(null)");
     PrintField("unconstrained", (n.unconstrained?"true":"false"));
     PrintRequiredChild("indices", n.indices.get());
     PrintRequiredChild("subtype", n.component.get());
@@ -181,7 +181,6 @@ void ASTPrinter::Visit(const AttributeRange &n)
 void ASTPrinter::Visit(const BinaryExpr &n)
 {
     Entry("BinaryExpr");
-    PrintRequiredChild("lhs", n.lhs.get());
 
     switch (n.op) {
     case BinaryOper::And:           PrintField("op", "AND");                        break;
@@ -207,6 +206,7 @@ void ASTPrinter::Visit(const BinaryExpr &n)
     default:                        assert(false);
     }
 
+    PrintRequiredChild("lhs", n.lhs.get());
     PrintRequiredChild("rhs", n.rhs.get());
     Exit();
 }
@@ -231,7 +231,7 @@ void ASTPrinter::Visit(const CharacterLiteralName &n)
 void ASTPrinter::Visit(const ComponentAssociation &n)
 {
     Entry("ComponentAssociation");
-    PrintList("choices", *n.choices.get());
+    if (n.choices) PrintList("choices", *n.choices.get()); else PrintField("choices", "(null)");
     PrintRequiredChild("expr", n.expr.get());
     Exit();
 }
@@ -258,7 +258,7 @@ void ASTPrinter::Visit(const ComponentDeclaration &n)
 void ASTPrinter::Visit(const ComponentList &n)
 {
     Entry("ComponentList");
-    PrintList("components", *n.components.get());
+    if (n.components) PrintList("components", *n.components.get()); else PrintField("components", "(null)");
     PrintRequiredChild("variant part", n.variantPart.get());
     Exit();
 }
@@ -284,7 +284,7 @@ void ASTPrinter::Visit(const DerivedTypeSpec &n)
 void ASTPrinter::Visit(const DiscriminantAssociation &n)
 {
     Entry("DiscriminantAssociation");
-    PrintList("name", *n.names.get());
+    if (n.names) PrintList("name", *n.names.get()); else PrintField("names", "(null)");
     PrintRequiredChild("expr", n.expr.get());
     Exit();
 }
@@ -297,7 +297,7 @@ void ASTPrinter::Visit(const DiscriminantAssociation &n)
 void ASTPrinter::Visit(const DiscriminantConstraint &n)
 {
     Entry("DiscriminantConstraint");
-    PrintList("lsit", *n.list.get());
+    if (n.list) PrintList("lsit", *n.list.get()); else PrintField("list", "(null)");
     Exit();
 }
 
@@ -360,7 +360,7 @@ void ASTPrinter::Visit(const IndexConstraint &n)
 {
     Entry("IndexConstraint");
     PrintField("unconstrained", n.unconstrained?"true":"false");
-    PrintList("indices", *n.indices.get());
+    if (n.indices) PrintList("indices", *n.indices.get()); else PrintField("indices", "(null)");
     Exit();
 }
 
@@ -373,7 +373,7 @@ void ASTPrinter::Visit(const IndexedName &n)
 {
     Entry("IndexedName");
     PrintRequiredChild("prefix", n.prefix.get());
-    PrintList("indices", *n.indices.get());
+    if (n.indices) PrintList("indices", *n.indices.get()); else PrintField("indices", "(null)");
     Exit();
 }
 
@@ -639,7 +639,7 @@ void ASTPrinter::Visit(const StringLiteralExpr &n)
 void ASTPrinter::Visit(const SubtypeIndication &n)
 {
     Entry("SubtypeIndication");
-    PrintRequiredChild("type mark", n.name.get());
+    PrintRequiredChild("type_mark", n.name.get());
     PrintOptionalChild("constraint", n.constraint.get());
     Exit();
 }
@@ -702,7 +702,7 @@ void ASTPrinter::Visit(const TypeDecl &n)
 {
     Entry("TypeDecl");
     PrintField("name", n.name.name);
-    PrintList("discriminantPart", *n.discriminantPart.get());
+    if (n.discriminantPart) PrintList("discriminantPart", *n.discriminantPart.get()); else PrintField("discriminantPart", "(null)");
     PrintOptionalChild("definition", n.definition.get());
     Exit();
 }
@@ -748,7 +748,7 @@ void ASTPrinter::Visit(const UnboundedRange &n)
 void ASTPrinter::Visit(const Variant &n)
 {
     Entry("Variant");
-    PrintList("choices", *n.choices.get());
+    if (n.choices) PrintList("choices", *n.choices.get()); else PrintField("choices", "(null)");
     PrintRequiredChild("components", n.components.get());
     Exit();
 }
@@ -763,7 +763,7 @@ void ASTPrinter::Visit(const VariantPart &n)
 {
     Entry("VariantPart");
     PrintRequiredChild("name", n.name.get());
-    PrintList("variants", *n.variants.get());
+    if (n.variants) PrintList("variants", *n.variants.get()); else PrintField("variants", "(null)");
     Exit();
 }
 

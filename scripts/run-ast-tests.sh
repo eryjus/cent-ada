@@ -17,7 +17,7 @@ for test in "${TESTS[@]}"; do
     total=$((total + 1))
 
     name=$(basename "$test")
-    expected="$TEST_DIR/${name%.ada}.expected"
+    expected="$TEST_DIR/expected/${name%.ada}.expected"
     actual=$(mktemp
     )
     printf "[ RUN      ] %s\r" "$name"
