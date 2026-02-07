@@ -1,2 +1,0 @@
-COUNT, SUM : INTEGER;
-

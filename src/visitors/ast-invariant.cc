@@ -19,7 +19,7 @@
 
 void ASTInvariant::Visit(const AccessTypeSpec &n) { assert(n.name); assert(n.type); }
 void ASTInvariant::Visit(const AggregateExpr &n) { assert(n.list); assert(n.list->size()); }
-void ASTInvariant::Visit(const ArrayTypeSpec &n) { assert(n.list); assert(n.indices); assert(n.component); assert(n.list->size()); }
+void ASTInvariant::Visit(const ArrayTypeSpec &n) { assert(n.indices); assert(n.component); }
 void ASTInvariant::Visit(const AttributeName &n) { assert(n.prefix); assert(n.attr); }
 void ASTInvariant::Visit(const AttributeRange &n) { assert(n.rangeAttribute); }
 void ASTInvariant::Visit(const BinaryExpr &n) { assert(n.lhs); assert(n.rhs); }

@@ -53,7 +53,7 @@ ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdListPtr &list)
     if (!type) return nullptr;
 
 
-    return std::make_unique<ArrayTypeSpec>(astLoc, std::move(names), false, std::move(range), std::move(type));
+    return std::make_unique<ArrayTypeSpec>(astLoc, false, std::move(range), std::move(type));
 }
 
 

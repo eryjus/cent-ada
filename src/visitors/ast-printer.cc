@@ -24,20 +24,22 @@ void ASTPrinter::PrintRequiredChild(std::string label, ASTNode *child) {
     // -- TODO: Remove the following if-statement and block after the entire AST has been properly built
     if (!child) {
         PrintDepth();
-        std::cout << label << '\n';
-        depth ++;
-        PrintDepth();
+//        std::cout << label << '\n';
+        std::cout << label << ": ";
+//        depth ++;
+//        PrintDepth();
         std::cout << "(null)\n";
-        depth --;
+//        depth --;
         return;
     };
 
     assert(child);
     PrintDepth();
-    std::cout << label << '\n';
-    depth ++;
+//    std::cout << label << '\n';
+    std::cout << label << ": ";
+//    depth ++;
     child->Accept(*this);
-    depth --;
+//    depth --;
 }
 
 
@@ -47,16 +49,17 @@ void ASTPrinter::PrintRequiredChild(std::string label, ASTNode *child) {
 //    -------------------------------------------
 void ASTPrinter::PrintOptionalChild(std::string label, ASTNode *child) {
     PrintDepth();
-    std::cout << label << '\n';
+//    std::cout << label << '\n';
+    std::cout << label << ": ";
     if (child) {
-        depth ++;
+//        depth ++;
         child->Accept(*this);
-        depth --;
+//        depth --;
     } else {
-        depth ++;
-        PrintDepth();
+//        depth ++;
+//        PrintDepth();
         std::cout << "(null)\n";
-        depth --;
+//        depth --;
     }
 }
 
@@ -80,11 +83,12 @@ void ASTPrinter::PrintIdList(std::string label, IdList *child) {
 
     PrintDepth();
     std::cout << label << '\n';
+    int idx = 0;
 
     depth ++;
     for (auto &id : *child) {
         PrintDepth();
-        std::cout << "--> " << id.name << '\n';
+        std::cout << "[" << idx ++ << "] --> " << id.name << '\n';
     }
     depth --;
 }
@@ -96,7 +100,7 @@ void ASTPrinter::PrintIdList(std::string label, IdList *child) {
 //    ----------------------------
 void ASTPrinter::Entry(std::string label)
 {
-    PrintDepth();
+//    PrintDepth();
     std::cout << label << '\n';
     depth ++;
 }
@@ -140,7 +144,6 @@ void ASTPrinter::Visit(const AggregateExpr &n)
 void ASTPrinter::Visit(const ArrayTypeSpec &n)
 {
     Entry("ArrayTypeSpec");
-    if (n.list) PrintList("list", *n.list.get()); else PrintField("list", "(null)");
     PrintField("unconstrained", (n.unconstrained?"true":"false"));
     PrintRequiredChild("indices", n.indices.get());
     PrintRequiredChild("subtype", n.component.get());

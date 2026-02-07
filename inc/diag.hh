@@ -44,6 +44,7 @@ enum class DiagID {
     InvalidExpression,
     MissingBasicDeclaration,
     UnknownError,
+    NoDeclaration,
 };
 
 
@@ -109,6 +110,7 @@ public:
 extern Diagnostics diags;
 
 
+#define __PRINT_TOKENS__ 0
 #if __PRINT_TOKENS__
 #define TOKEN_PTR std::cerr << "TOKEN: " << tokens->tokenStr(tokens->Current()) << '\n'
 #define TOKEN std::cerr << "TOKEN: " << tokens.tokenStr(tokens.Current()) << '\n'

@@ -2,8 +2,9 @@
 
 set -euo pipefail
 
-TEST_DIR="tst/ast-checks"
+TEST_DIR="tst/declarations"
 TESTS=("$TEST_DIR"/tst*.ada)
+EXP_DIR="tst/ast-checks"
 
 COMPILER="./bin/ada-cc"
 
@@ -17,9 +18,8 @@ for test in "${TESTS[@]}"; do
     total=$((total + 1))
 
     name=$(basename "$test")
-    expected="$TEST_DIR/expected/${name%.ada}.expected"
-    actual=$(mktemp
-    )
+    expected="$EXP_DIR/${name%.ada}.exp"
+    actual=$(mktemp)
     printf "[ RUN      ] %s\r" "$name"
 
     if [[ ! -f "$expected" ]] ; then

@@ -237,6 +237,7 @@ static int Compile(std::string filename, ParseType_t type)
     int cnt = 0;
     int rv = EXIT_SUCCESS;
     NodePtr node = nullptr;
+    NodeListPtr pgm = std::make_unique<NodeList>();
 
 
     switch (type) {
@@ -244,7 +245,7 @@ static int Compile(std::string filename, ParseType_t type)
         while (tokens->Current() != TokenType::YYEOF) {
             node = parser->ParseBasicDeclaration();
             if (!node) {
-                std::cerr << "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m\n";
+                diags.Error(tokens->EmptyLocation(), DiagID::NoDeclaration, { } );
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {
@@ -296,6 +297,39 @@ static int Compile(std::string filename, ParseType_t type)
         break;
 
 
+    case COMPILE_FULL:
+        {
+            do {
+                node = parser->ParseBasicDeclaration();
+                if (node) pgm->push_back(std::move(node));
+                TOKEN_PTR;
+            } while (tokens->Current() != TokenType::YYEOF);
+
+
+
+            if (diags.Errors()) {
+                rv = EXIT_FAILURE;
+                goto exit;
+            }
+
+
+            ASTPrinter prt;
+            for (auto &decl : *pgm.get()) {
+                decl->Accept(prt);
+            }
+
+            std::cout << "\n\n";
+
+
+            opts.prtAst = false;
+            opts.dumpSymtab = false;
+            opts.listing = false;
+
+            rv = EXIT_SUCCESS;
+            goto exit;
+        }
+
+
     default:
         break;
     }
@@ -303,14 +337,17 @@ static int Compile(std::string filename, ParseType_t type)
     std::cerr << "\nParse Complete.\n\n";
 
 exit:
-    if (opts.listing) tokens->Listing();
-    if (opts.dumpSymtab) parser->Scopes()->Print();
+    if (diags.Errors() == 0) {
+        if (opts.listing) tokens->Listing();
+        if (opts.dumpSymtab) parser->Scopes()->Print();
 
-    if (opts.prtAst) {
-        ASTPrinter prt;
+        if (opts.prtAst) {
+            ASTPrinter prt;
 
-        node->Accept(prt);
-        std::cout << "\n\n";
+            assert(node);
+            node->Accept(prt);
+            std::cout << "\n\n";
+        }
     }
 
 
@@ -428,7 +465,7 @@ int main(int argc, char *argv[])
 
         if (arg == "ast") {
             action = ACT_COMPILE;
-            type = COMPILE_TYPES;
+            type = COMPILE_FULL;
             opts.prtAst = true;
             opts.listing = true;
             continue;

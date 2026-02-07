@@ -124,7 +124,7 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     s.Commit();
     m.Commit();
 
-    return std::make_unique<ArrayTypeSpec>(astLoc, std::move(list), true, std::move(indices), std::move(compType));
+    return std::make_unique<ArrayTypeSpec>(astLoc, true, std::move(indices), std::move(compType));
 }
 
 

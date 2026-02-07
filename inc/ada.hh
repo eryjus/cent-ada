@@ -160,6 +160,7 @@ class AttributeConstraint;
 
 
 
+using NodePtr = std::unique_ptr<ASTNode>;
 using AccessTypeSpecPtr = std::unique_ptr<AccessTypeSpec>;
 using AggregateExprPtr = std::unique_ptr<AggregateExpr>;
 using AllocatorExprPtr = std::unique_ptr<AllocatorExpr>;
@@ -222,6 +223,8 @@ using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
 
 
 
+using NodeList = std::vector<NodePtr>;
+using NodeListPtr = std::unique_ptr<NodeList>;
 using ChoiceList = std::vector<ChoicePtr>;
 using ChoiceListPtr = std::unique_ptr<ChoiceList>;
 using ComponentAssociationList = std::vector<ComponentAssociationPtr>;
