@@ -440,6 +440,7 @@ void ASTPrinter::Visit(const NumericTypeSpec &n)
         break;
     }
 
+    PrintOptionalChild("size", n.size.get());
     PrintRequiredChild("range", n.range.get());
     Exit();
 }

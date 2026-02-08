@@ -1,1 +1,2 @@
 POWER_16 : constant := 2 ** 16;
+

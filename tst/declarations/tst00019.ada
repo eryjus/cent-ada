@@ -1,1 +1,2 @@
 subtype INT is INTEGER;
+
