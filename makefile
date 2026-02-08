@@ -32,7 +32,7 @@ test-invar: all
 	./scripts/run-invar-tests.sh
 
 .PHONY: test-ast
-test-invar: all
+test-ast: all
 	echo "== Running AST tests =="
 	./scripts/run-ast-tests.sh
 
