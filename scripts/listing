@@ -1,0 +1,26 @@
+#! /bin/env bash
+
+if [[ $1 = '' ]]; then
+    exit 1
+fi
+
+if [ ! -f "$1" ]; then
+    echo "File not found: $1"
+    exit 1
+fi
+
+SRC=$1
+CNT=1
+
+echo "Listing for $SRC:"
+echo "=========================================="
+
+while IFS= read -r LINE; do
+    printf "%6d" $CNT
+    echo "   $LINE"
+    CNT=$((CNT + 1))
+done < $SRC
+
+echo
+
+

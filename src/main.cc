@@ -323,7 +323,7 @@ static int Compile(std::string filename, ParseType_t type)
 
             opts.prtAst = false;
             opts.dumpSymtab = false;
-            opts.listing = false;
+            opts.listing = true;
 
             rv = EXIT_SUCCESS;
             goto exit;

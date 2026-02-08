@@ -24,22 +24,15 @@ void ASTPrinter::PrintRequiredChild(std::string label, ASTNode *child) {
     // -- TODO: Remove the following if-statement and block after the entire AST has been properly built
     if (!child) {
         PrintDepth();
-//        std::cout << label << '\n';
         std::cout << label << ": ";
-//        depth ++;
-//        PrintDepth();
         std::cout << "(null)\n";
-//        depth --;
         return;
     };
 
     assert(child);
     PrintDepth();
-//    std::cout << label << '\n';
     std::cout << label << ": ";
-//    depth ++;
     child->Accept(*this);
-//    depth --;
 }
 
 
@@ -49,17 +42,11 @@ void ASTPrinter::PrintRequiredChild(std::string label, ASTNode *child) {
 //    -------------------------------------------
 void ASTPrinter::PrintOptionalChild(std::string label, ASTNode *child) {
     PrintDepth();
-//    std::cout << label << '\n';
     std::cout << label << ": ";
     if (child) {
-//        depth ++;
         child->Accept(*this);
-//        depth --;
     } else {
-//        depth ++;
-//        PrintDepth();
         std::cout << "(null)\n";
-//        depth --;
     }
 }
 
@@ -480,7 +467,7 @@ void ASTPrinter::Visit(const ObjectDeclaration &n)
 void ASTPrinter::Visit(const OthersChoice &n)
 {
     Entry("OthersChoice");
-    PrintField("others", "others");
+    PrintField("others", "Others");
     Exit();
 }
 

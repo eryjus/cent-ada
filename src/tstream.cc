@@ -243,10 +243,12 @@ const char *TokenStream::tokenStr(TokenType tok) const
 //    ----------------
 void TokenStream::Listing(void)
 {
-    const char *line = "============================================================================================";
+//    const char *line = "============================================================================================";
+    const char *line = "==========================================";
 
     std::cout << "Listing for " << filename << ":\n";
-    std::cout << std::string(line).substr(0, filename.length() + 13) << '\n';
+//    std::cout << std::string(line).substr(0, filename.length() + 13) << '\n';
+    std::cout << line << '\n';
 
     for (int i = 0; i < source.size(); i ++) {
         std::cout << std::setw(6) << i + 1 << "   " << source[i];

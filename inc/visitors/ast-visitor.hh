@@ -104,9 +104,14 @@ protected:
     // -- template to print a list
     template <typename T>
     void PrintList(const std::string &label, const std::vector<T> &list) {
+        PrintDepth();
+        depth ++;
+        std::cout << label << '\n';
+        int i = 0;
         for (auto const &ent : list) {
-            PrintRequiredChild(label, ent.get());  // -- MUST be a smart pointer
+            PrintRequiredChild(std::string("[") + std::to_string(i) + ']', ent.get());  // -- MUST be a smart pointer
         }
+        depth --;
     }
 
 

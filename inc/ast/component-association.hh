@@ -32,7 +32,7 @@ public:
 
 public:
     ComponentAssociation(SourceLoc_t loc, ChoiceListPtr l, ExprPtr e)
-            : ASTNode(loc), choices(std::move(l)), expr(std::move(expr)) {}
+            : ASTNode(loc), choices(std::move(l)), expr(std::move(e)) {}
 
 
 public:
