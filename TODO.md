@@ -58,12 +58,14 @@ This project is an implementation of the 1983 specification of the Ada compiler.
   * Make sure all locals are initialized
 - [ ] BUG: Correct IdList * to unique_ptr
 - [ ] BUG: Canonicalize `tokens`
+- [ ] BUG: Check for duplicate `unconstrained` items in arrays and indices and reconcile
 
 
 ### Parsing
 - [ ] BUG: Deal with Choice better
 - [ ] BUG: Deal with Aggregate better
 - [ ] BUG: Deal with Attribute better
+- [ ] BUG: Clean up the use of Id as parameters where possible (typeSpec in particular)
 
 
 ### Debugging

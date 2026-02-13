@@ -49,6 +49,7 @@ AttributeNamePtr Parser::ParseAttributeDesignator(NamePtr &prefix)
         if (!name) return nullptr;
     }
 
+
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         expr = ParseExpression();
         if (!expr) return nullptr;
@@ -60,10 +61,8 @@ AttributeNamePtr Parser::ParseAttributeDesignator(NamePtr &prefix)
         }
     }
 
-
-
     m.Commit();
-    return std::make_unique<AttributeName>(loc, std::move(prefix), std::move(name), nullptr);
+    return std::make_unique<AttributeName>(loc, std::move(prefix), std::move(name), std::move(expr));
 }
 
 

@@ -17,7 +17,7 @@
 
 
 
-void ASTInvariant::Visit(const AccessTypeSpec &n) { assert(n.name); assert(n.type); }
+void ASTInvariant::Visit(const AccessTypeSpec &n) { assert(n.type); }
 void ASTInvariant::Visit(const AggregateExpr &n) { assert(n.list); assert(n.list->size()); }
 void ASTInvariant::Visit(const ArrayTypeSpec &n) { assert(n.indices); assert(n.component); }
 void ASTInvariant::Visit(const AttributeName &n) { assert(n.prefix); assert(n.attr); }
@@ -27,7 +27,7 @@ void ASTInvariant::Visit(const CharacterLiteralName &n) { }
 void ASTInvariant::Visit(const ComponentAssociation &n) { assert(n.choices); assert(n.expr); assert(n.choices->size()); }
 void ASTInvariant::Visit(const ComponentDeclaration &n) { assert(n.names); assert(n.typeSpec); assert(n.names->size()); }
 void ASTInvariant::Visit(const ComponentList &n) { assert(n.components); }
-void ASTInvariant::Visit(const DerivedTypeSpec &n) { assert(n.name); assert(n.type); }
+void ASTInvariant::Visit(const DerivedTypeSpec &n) { assert(n.type); }
 void ASTInvariant::Visit(const DiscriminantAssociation &n) { assert(n.names); assert(n.expr); }
 void ASTInvariant::Visit(const DiscriminantConstraint &n) { assert(n.list); assert(n.list->size()); }
 void ASTInvariant::Visit(const DiscriminantSpecification &n) { assert(n.ids); assert(n.type); assert(n.expr); assert(n.ids->size()); }

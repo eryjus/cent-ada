@@ -74,7 +74,7 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
     s.Commit();
     m.Commit();
 
-    return std::make_unique<DerivedTypeSpec>(astLoc, std::move(name), std::move(type));
+    return std::make_unique<DerivedTypeSpec>(astLoc, /*std::move(name),*/ std::move(type));
 }
 
 

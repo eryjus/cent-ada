@@ -146,13 +146,12 @@ class AccessTypeSpec : public TypeSpec {
     AccessTypeSpec &operator=(const AccessTypeSpec &) = delete;
 
 public:
-    NamePtr name;
     SubtypeIndicationPtr type;
 
 
 public:
-    AccessTypeSpec(SourceLoc_t l, NamePtr n, SubtypeIndicationPtr t)
-            : TypeSpec(l), name(std::move(n)), type(std::move(t)) {}
+    AccessTypeSpec(SourceLoc_t l, SubtypeIndicationPtr t)
+            : TypeSpec(l), type(std::move(t)) {}
 
 
 public:
@@ -170,13 +169,12 @@ class DerivedTypeSpec : public TypeSpec {
     DerivedTypeSpec &operator=(const DerivedTypeSpec &) = delete;
 
 public:
-    NamePtr name;
     SubtypeIndicationPtr type;
 
 
 public:
-    DerivedTypeSpec(SourceLoc_t l, NamePtr n, SubtypeIndicationPtr t)
-            : TypeSpec(l), name(std::move(n)), type(std::move(t)) {}
+    DerivedTypeSpec(SourceLoc_t l, SubtypeIndicationPtr t)
+            : TypeSpec(l), type(std::move(t)) {}
 
 
 public:

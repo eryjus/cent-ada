@@ -87,7 +87,7 @@ AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
     m.Commit();
 
     SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
-    return std::make_unique<AccessTypeSpec>(astLoc, std::move(name), std::move(type));
+    return std::make_unique<AccessTypeSpec>(astLoc, std::move(type));
 }
 
 

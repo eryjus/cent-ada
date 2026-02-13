@@ -56,16 +56,18 @@ AttributeNamePtr Parser::ParseName_AttributeSuffix(NamePtr &prefix)
 {
     Production p(*this, "name(attribute)");
     MarkStream m(tokens, diags);
-    AttributeNamePtr rv = nullptr;
+    AttributeNamePtr attr = nullptr;
+    SourceLoc_t astLoc = tokens.SourceLocation();
 
     if (!Require(TokenType::TOK_APOSTROPHE)) return nullptr;
 
-    rv = ParseAttributeDesignator(prefix);
-    if (!rv) return nullptr;
+    attr = ParseAttributeDesignator(prefix);
+    if (!attr) return nullptr;
 
+    p.At("committing");
     m.Commit();
 
-    return rv;
+    return attr;
 }
 
 

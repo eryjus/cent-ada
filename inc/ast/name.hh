@@ -203,7 +203,7 @@ public:
 
 public:
     AttributeName(SourceLoc_t loc, NamePtr p, NamePtr a, ExprPtr e)
-            : Name(loc), prefix(std::move(prefix)), attr(std::move(a)), expr(std::move(e)) {}
+            : Name(loc), prefix(std::move(p)), attr(std::move(a)), expr(std::move(e)) {}
 
 
 public:

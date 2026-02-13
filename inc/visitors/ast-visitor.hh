@@ -106,13 +106,14 @@ protected:
     void PrintList(const std::string &label, const std::vector<T> &list) {
         PrintDepth();
         depth ++;
-        std::cout << label << '\n';
+        std::cout << label << " ===\n";
         int i = 0;
         for (auto const &ent : list) {
-            PrintRequiredChild(std::string("[") + std::to_string(i) + ']', ent.get());  // -- MUST be a smart pointer
+            PrintRequiredChild(std::string("[") + std::to_string(i ++) + ']', ent.get());  // -- MUST be a smart pointer
         }
         depth --;
     }
+    void NullList(const std::string &label) { PrintDepth(); std::cout << label << " === (null)\n"; }
 
 
     virtual void Visit(const AccessTypeSpec &) override;
