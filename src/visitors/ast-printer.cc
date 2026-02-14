@@ -425,6 +425,7 @@ void ASTPrinter::Visit(const NumericTypeSpec &n)
     switch (n.kind) {
     case NumericTypeSpec::Kind::Integer:
         PrintField("kind", "Integer");
+        PrintOptionalChild("size", n.size.get());
         break;
 
     case NumericTypeSpec::Kind::FixedPoint:
@@ -438,7 +439,6 @@ void ASTPrinter::Visit(const NumericTypeSpec &n)
         break;
     }
 
-    PrintOptionalChild("size", n.size.get());
     PrintRequiredChild("range", n.range.get());
     Exit();
 }
