@@ -665,7 +665,7 @@ void ASTPrinter::Visit(const RangeConstraint &n)
 void ASTPrinter::Visit(const SubtypeRange &n)
 {
     Entry("SubtypeRange");
-    PrintRequiredChild("attribute", n.subtype.get());
+    PrintRequiredChild("subtype", n.subtype.get());
     Exit();
 }
 
