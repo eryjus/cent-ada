@@ -564,7 +564,6 @@ void ASTPrinter::Visit(const RealLiteralExpr &n)
 void ASTPrinter::Visit(const RecordSpecification &n)
 {
     Entry("RecordSpecification");
-    PrintField("ID", n.id.name);
     PrintRequiredChild("components", n.components.get());
     Exit();
 }

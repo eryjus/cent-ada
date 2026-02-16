@@ -6,3 +6,4 @@ type DATE is
         MONTH : MONTH_NAME;
         YEAR : INTEGER range 0 .. 4000;
     end record;
+

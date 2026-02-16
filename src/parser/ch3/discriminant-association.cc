@@ -41,7 +41,6 @@ DiscriminantAssociationPtr Parser::ParseDiscriminantAssociation(void)
     loc = tokens.SourceLocation();
     name = ParseDiscriminantSimpleName();
     if (name) {
-        names->push_back(std::move(name));
         //
         // -- This will only work if the next token is a TOK_VERTICAL_BAR or TOK_ARROW
         //    Otherwise it will be an expression as a simple name
@@ -50,6 +49,8 @@ DiscriminantAssociationPtr Parser::ParseDiscriminantAssociation(void)
             // -- not the correct condition, backtrack and parse an expression
             m.Reset();
             goto expr;
+        } else {
+            names->push_back(std::move(name));
         }
 
 

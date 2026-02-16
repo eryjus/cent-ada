@@ -238,11 +238,10 @@ class RecordSpecification : public TypeSpec {
     RecordSpecification &operator=(const RecordSpecification &) = delete;
 
 public:
-    Id id;
     ComponentListPtr components;        // could have size == 0
 
 public:
-    RecordSpecification(SourceLoc_t l, Id id, ComponentListPtr comps) : TypeSpec(l), id(id), components(std::move(comps)) {}
+    RecordSpecification(SourceLoc_t l, ComponentListPtr comps) : TypeSpec(l), components(std::move(comps)) {}
 
 
 public:

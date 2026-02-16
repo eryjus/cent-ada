@@ -98,7 +98,7 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     m.Commit();
     scopes.PopScope();
 
-    return std::make_unique<RecordSpecification>(astLoc, id, std::move(list));
+    return std::make_unique<RecordSpecification>(astLoc, std::move(list));
 }
 
 
