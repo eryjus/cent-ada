@@ -78,7 +78,8 @@ ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
     //
     // -- Check for the optional variant part
     //    -----------------------------------
-    if (ParseVariantPart(rec)) {
+    variant = ParseVariantPart(rec);
+    if (variant) {
         hasVariant = true;
     }
 

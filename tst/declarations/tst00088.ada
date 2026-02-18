@@ -19,3 +19,4 @@ type PERIPHERAL(UNIT : DEVICE := DISK) is
     end record;
 
 subtype DRUM_UNIT is PERIPHERAL(DRUM);
+
