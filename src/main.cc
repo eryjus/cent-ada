@@ -322,7 +322,7 @@ static int Compile(std::string filename, ParseType_t type)
 
 
             opts.prtAst = false;
-            opts.dumpSymtab = false;
+            opts.dumpSymtab = true;
             opts.listing = true;
 
             rv = EXIT_SUCCESS;
@@ -468,6 +468,7 @@ int main(int argc, char *argv[])
             type = COMPILE_FULL;
             opts.prtAst = true;
             opts.listing = true;
+            opts.dumpSymtab = true;
             continue;
         }
 

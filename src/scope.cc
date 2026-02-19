@@ -73,7 +73,7 @@ std::vector<Symbol *> *Scope::LocalLookup(std::string_view name)
 //    ---------------------
 void Scope::Print(void) const
 {
-    SymbolPrinter printer(std::cerr);
+    SymbolPrinter printer(std::cout);
 
     for (auto &sym : ordered) {
         sym.get()->Accept(printer);
