@@ -45,7 +45,7 @@ void SymbolPrinter::Visit(const EnumTypeSymbol &s) {
     out << "Enumeration Type: " << s.name << " : " << s.CategoryString() << '\n';
     out << "   containing literals (";
     for (auto &sym : s.literals) out << sym->name << ' ';
-    out << "\b)\n";
+    out << ")\n";
 }
 
 

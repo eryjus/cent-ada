@@ -45,6 +45,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     SourceLoc_t loc = tokens.SourceLocation();
     if (!RequireIdent(id)) return nullptr;
 
+
     if (scopes.IsLocalDefined(id.name)) {
         std::vector<Symbol *> *vec = scopes.CurrentScope()->LocalLookup(id.name);
         std::cout << "====  Checking for duplicate Symbol!!!\n";
@@ -89,8 +90,6 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //    ------------------------------
     s.Commit();
     m.Commit();
-
-    scopes.Print();
 
     return std::make_unique<TypeDecl>(astLoc, id, std::move(discriminant), std::move(type));
 }

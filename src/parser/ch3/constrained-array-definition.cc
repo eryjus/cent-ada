@@ -120,12 +120,16 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdListPtr &list)
 
 
 
+#if 0
     //
     // -- Manage the symbol table
     //    -----------------------
+    std::cout << "Symbol List\n";
     for (auto &id : *list) {
+        std::cout << "Adding " << id.name << '\n';
         ObjectSymbol *type = scopes.Declare(std::make_unique<ObjectSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
+#endif
 
 
 

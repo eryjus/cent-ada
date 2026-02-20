@@ -1,4 +1,2 @@
-
 SORTED      : BOOLEAN := FALSE;
-
 

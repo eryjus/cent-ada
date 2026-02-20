@@ -3,10 +3,21 @@
 set -euo pipefail
 
 TEST_DIR="tst/declarations"
-TESTS=("$TEST_DIR"/tst*.ada)
 EXP_DIR="tst/ast-checks"
-
 COMPILER="./bin/ada-cc"
+
+# If a test name is provided and exists, use only that test.
+# Otherwise fall back to all tests.
+if [[ $# -ge 1 ]]; then
+    if [[ -f "$TEST_DIR/$1" ]]; then
+        TESTS=("$TEST_DIR/$1")
+    else
+        echo "Warning: test '$1' not found in $TEST_DIR — running full suite."
+        TESTS=("$TEST_DIR"/tst*.ada)
+    fi
+else
+    TESTS=("$TEST_DIR"/tst*.ada)
+fi
 
 failures=0
 total=0
@@ -48,7 +59,7 @@ for test in "${TESTS[@]}"; do
     cat "$expected" >> "$target"
     echo >> "$target"
     echo >> "$target"
-    scripts/listing "$test" >> "$target"
+    #scripts/listing "$test" >> "$target"
 
     sed -i 's/[[:space:]]*$//' "$target"
     sed -i ':a;/^[ \n]*$/{$d;N;ba}' "$target"
