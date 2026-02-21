@@ -1,0 +1,178 @@
+ObjectDeclaration
+  names ===
+    [0] --> page_size
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 66
+TypeDecl
+  name --> device
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> printer
+      [1] --> disk
+      [2] --> drum
+TypeDecl
+  name --> state
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> open
+      [1] --> closed
+TypeDecl
+  name --> cylinder_index
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 99
+TypeDecl
+  name --> track_number
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 99
+TypeDecl
+  name --> peripheral
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> unit
+      type: SimpleName
+        id --> device
+      expr: NameExpr
+        name: SimpleName
+          id --> disk
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> status
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> state
+            constraint: (null)
+          initializer: (null)
+      variant part: VariantPart
+        name: SimpleName
+          id --> unit
+        variants ===
+          [0]: Variant
+            choices ===
+              [0]: ExprChoice
+                expr: NameExpr
+                  name: SimpleName
+                    id --> printer
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> line_count
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> integer
+                    constraint: RangeConstraint
+                      range: Range
+                        lower: IntLiteralExpr
+                          value --> 1
+                        upper: NameExpr
+                          name: SimpleName
+                            id --> page_size
+                  initializer: (null)
+              variant part: (null)
+          [1]: Variant
+            choices ===
+              [0]: OthersChoice
+                others --> Others
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> cylinder
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> cylinder_index
+                    constraint: (null)
+                  initializer: (null)
+                [1]: ComponentDeclaration
+                  names ===
+                    [0] --> track
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> track_number
+                    constraint: (null)
+                  initializer: (null)
+              variant part: (null)
+
+
+Listing for tst/declarations/tst00087.ada:
+==========================================
+     1   PAGE_SIZE : constant := 66;
+     2
+     3   type DEVICE is (PRINTER, DISK, DRUM);
+     4   type STATE is (OPEN, CLOSED);
+     5
+     6   subtype CYLINDER_INDEX is INTEGER range 1 .. 99;
+     7   subtype TRACK_NUMBER is INTEGER range 1 .. 99;
+     8
+     9   type PERIPHERAL(UNIT : DEVICE := DISK) is
+    10       record
+    11           STATUS : STATE;
+    12           case UNIT is
+    13               when PRINTER =>
+    14                   LINE_COUNT : INTEGER range 1 .. PAGE_SIZE;
+    15               when others =>
+    16                   CYLINDER : CYLINDER_INDEX;
+    17                   TRACK    : TRACK_NUMBER;
+    18           end case;
+    19       end record;
+    20
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: page_size : Object
+Enumeration Type: device : Enumeration
+   containing literals (printer disk drum )
+Enumeration Literal: printer : EnumLiteral of type device; value (0)
+Enumeration Literal: disk : EnumLiteral of type device; value (1)
+Enumeration Literal: drum : EnumLiteral of type device; value (2)
+Enumeration Type: state : Enumeration
+   containing literals (open closed )
+Enumeration Literal: open : EnumLiteral of type state; value (0)
+Enumeration Literal: closed : EnumLiteral of type state; value (1)
+Subtype: cylinder_index : Subtype
+Subtype: track_number : Subtype
+Discriminant Symbol: unit : Discriminant
+Record Type: peripheral : Record
+   containing components (status line_count cylinder track )
+-------------------
+
+Scope Name: peripheral
+Scope ID  : 2
+-------------------
+Component Symbol: status : Component
+Component Symbol: line_count : Component
+Component Symbol: cylinder : Component
+Component Symbol: track : Component
+-------------------

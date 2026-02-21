@@ -13,6 +13,17 @@
 
 
 
+//
+// -- This is the definition of an Id in the Parser
+//    ---------------------------------------------
+struct Id {
+    std::string name;
+    SourceLoc_t loc;
+};
+
+
+using IdList = std::vector<Id>;
+
 
 //
 // -- This class will handle the entirety of the parser
@@ -23,14 +34,6 @@ private:
     std::vector<std::string> stack;
     ScopeManager scopes;
 
-
-private:
-    using Id = struct Id {
-        std::string name;
-        SourceLoc_t loc;
-    };
-
-    using IdList = std::vector<Id>;
 
 private:
     class MarkStream {
@@ -157,6 +160,7 @@ private:
     class Production {
     private:
         Parser &parser;
+        std::string at = "";
 
     public:
         Production(Parser &parser, std::string p) : parser(parser)
@@ -166,10 +170,16 @@ private:
             std::cerr.flush();
         }
         ~Production() {
-            if (opts.trace) std::cerr << "Leaving " << parser.Last() << '\n';
+            if (opts.trace) {
+                std::cerr << "Leaving " << parser.Last();
+                if (at != "") std::cerr << " at " << at;
+                std::cerr << '\n';
+            }
+
             parser.stack.pop_back();
             std::cerr.flush();
         }
+        void At(std::string a) { at = a; }
     };
 
 
@@ -182,23 +192,23 @@ public:
 public:
     // -- a token is illegal and if found is an illegal parse -- check only, never consumes
     bool Illegal(TokenType tok) {
-        if (tokens.Current() == tok) {
+        if (TokenStream::Get().Current() == tok) {
             return true;
         }
         return false;
     }
     // -- a token is optional and if found advance past it
     bool Optional(TokenType tok) {
-        if (tokens.Current() == tok) {
-            tokens.Advance();
+        if (TokenStream::Get().Current() == tok) {
+            TokenStream::Get().Advance();
             return true;
         }
         return false;
     }
     // -- a token is required to be next
     bool Require(TokenType tok) {
-        if (tokens.Current() == tok) {
-            tokens.Advance();
+        if (TokenStream::Get().Current() == tok) {
+            TokenStream::Get().Advance();
             return true;
         }
 
@@ -207,9 +217,9 @@ public:
     // -- DEPRECATED: An identifier is required to be next
     bool RequireIdent(std::string &id) {
         id = "";
-        if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-            id = std::get<IdentifierLexeme>(tokens.Payload()).name;
-            tokens.Advance();
+        if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
+            id = std::get<IdentifierLexeme>(TokenStream::Get().Payload()).name;
+            TokenStream::Get().Advance();
             return true;
         }
         return false;
@@ -218,11 +228,11 @@ public:
     // -- An identifier is required to be next
     bool RequireIdent(Id &id) {
         id.name = "";
-        id.loc = tokens.SourceLocation();
+        id.loc = TokenStream::Get().SourceLocation();
 
-        if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-            id.name = std::get<IdentifierLexeme>(tokens.Payload()).name;
-            tokens.Advance();
+        if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
+            id.name = std::get<IdentifierLexeme>(TokenStream::Get().Payload()).name;
+            TokenStream::Get().Advance();
             return true;
         }
         return false;
@@ -248,103 +258,119 @@ public:
     //
     // -- Productions from Declarations and Types
     //    ---------------------------------------
-    bool ParseAccessTypeDefinition(Id &id);
-    bool ParseArrayTypeDefinition(Id &id);
-    bool ParseBasicDeclaration(void);
-    bool ParseBasicDeclarativeItem(void);
     bool ParseBody(void);
-    bool ParseChoice(void);
-    bool ParseComponentDeclaration(RecordTypeSymbol *rec);
-    bool ParseComponentList(RecordTypeSymbol *rec);
-    bool ParseComponentSubtypeDefinition(void);
-    bool ParseConstrainedArrayDefinition(Id &id);
-    bool ParseConstrainedArrayDefinition(IdList *);
-    bool ParseConstraint(void);
-    bool ParseDeclarativePart(void);
-    bool ParseDerivedTypeDefinition(Id &id);
-    bool ParseDiscreteRange(void);
-    bool ParseDiscriminantAssociation(void);
-    bool ParseDiscriminantConstraint(void);
-    bool ParseDiscriminantPart(void);
-    bool ParseDiscriminantSpecification(void);
-    bool ParseEnumerationLiteral(EnumTypeSymbol *type);
-    bool ParseEnumerationLiteralSpecification(EnumTypeSymbol *type);
-    bool ParseEnumerationTypeDefinition(Id &id);
-    bool ParseFixedAccuracyDefinition(void);
-    bool ParseFixedPointConstraint(Id &id);
-    bool ParseFloatingAccuracyDefinition(void);
-    bool ParseFloatingPointConstraint(Id &id);
-    bool ParseFullTypeDeclaration(void);
-    bool ParseIdentifierList(IdList *ids);
-    bool ParseIncompleteTypeDeclaration(void);
-    bool ParseIndexConstraint(void);
-    bool ParseIndexSubtypeDefinition(void);
-    bool ParseIntegerTypeDefinition(Id &id);
-    bool ParseLaterDeclarativeItem(void);
-    bool ParseNumberDeclaration(void);
-    bool ParseObjectDeclaration(void);
     bool ParseProperBody(void);
-    bool ParseRange(void);
-    bool ParseRangeConstraint(void);
-    bool ParseRealTypeDefinition(Id &id);
-    bool ParseRecordTypeDefinition(Id &id);
-    bool ParseSubtypeDeclaration(void);
-    bool ParseSubtypeIndication(void);
-    bool ParseTypeDeclaration(void);
-    bool ParseTypeDefinition(Id &id);
-    bool ParseTypeMark(void);
-    bool ParseUnconstrainedArrayDefinition(Id &id);
-    bool ParseVariant(RecordTypeSymbol *rec);
-    bool ParseVariantPart(RecordTypeSymbol *rec);
-    bool _HelpParseConstrainedArrayDefinition(void);
+
+
+    AccessTypeSpecPtr ParseAccessTypeDefinition(Id &id);
+    ArrayTypeSpecPtr _HelpParseConstrainedArrayDefinition(IdListPtr &list);
+    ArrayTypeSpecPtr ParseArrayTypeDefinition(Id &id);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(Id &id);
+    ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdListPtr &list);
+    ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
+    ChoicePtr ParseChoice(void);
+    ComponentDeclarationPtr ParseComponentDeclaration(RecordTypeSymbol *rec);
+    ComponentListPtr ParseComponentList(RecordTypeSymbol *rec);
+    ConstraintPtr ParseConstraint(void);
+    DeclPtr ParseBasicDeclaration(void);
+    DeclPtr ParseBasicDeclarativeItem(void);
+    DerivedTypeSpecPtr ParseDerivedTypeDefinition(Id &id);
+    DiscreteRangePtr ParseDiscreteRange(void);
+    DiscreteRangePtr ParseRange(void);
+    DiscriminantAssociationPtr ParseDiscriminantAssociation(void);
+    DiscriminantConstraintPtr ParseDiscriminantConstraint(void);
+    DiscriminantSpecificationListPtr ParseDiscriminantPart(void);
+    DiscriminantSpecificationPtr ParseDiscriminantSpecification(void);
+    ExprPtr ParseFixedAccuracyDefinition(void);
+    ExprPtr ParseFloatingAccuracyDefinition(void);
+    Id ParseEnumerationLiteral(EnumTypeSymbol *type);
+    Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type) {
+        Production p(*this, "enumeration_literal_specification");
+        return ParseEnumerationLiteral(type);
+    }
+    IdListPtr ParseIdentifierList(void);
+    IndexConstraintPtr ParseIndexConstraint(void);
+    NamePtr ParseTypeMark(void);
+    NodePtr ParseDeclarativePart(void);
+    NodePtr ParseLaterDeclarativeItem(void);
+    ObjectDeclarationPtr ParseNumberDeclaration(void);
+    NumericTypeSpecPtr ParseFixedPointConstraint(Id &id);
+    NumericTypeSpecPtr ParseFloatingPointConstraint(Id &id);
+    NumericTypeSpecPtr ParseRealTypeDefinition(Id &id);
+    ObjectDeclarationPtr ParseObjectDeclaration(void);
+    RangeConstraintPtr ParseRangeConstraint(void);
+    RecordSpecificationPtr ParseRecordTypeDefinition(Id &id);
+    SubtypeIndicationPtr ParseComponentSubtypeDefinition(void) {
+        Production p(*this, "component_subtype_definition");
+        return ParseSubtypeIndication();
+    }
+    SubtypeIndicationPtr ParseSubtypeIndication(void);
+    TypeDeclPtr ParseFullTypeDeclaration(void);
+    TypeDeclPtr ParseIncompleteTypeDeclaration(void);
+    TypeDeclPtr ParseSubtypeDeclaration(void);
+    TypeDeclPtr ParseTypeDeclaration(void);
+    TypeSpecPtr ParseEnumerationTypeDefinition(Id &id);
+    TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
+    TypeSpecPtr ParseTypeDefinition(Id &id);
+    UnboundedRangePtr ParseIndexSubtypeDefinition(void);
+    VariantPartPtr ParseVariantPart(RecordTypeSymbol *rec);
+    VariantPtr ParseVariant(RecordTypeSymbol *rec);
 
 
 
     //
     // -- Productions from Names and Expressions
     //    --------------------------------------
-    bool ParseAggregate(void);                                  // -- Ch 4: in `parse_expr.cc`
-    bool ParseAggregateMore(void);                              // -- Ch 4: in `parse_expr.cc`
-    bool ParseAllocator(void);                                  // -- Ch 4: in `parse_expr.cc`
-    bool ParseAttribute(void);                                  // -- Ch 4: in `parse_expr.cc`
-    bool ParseAttributeDesignator(void);                        // -- Ch 4: in `parse_expr.cc`
-    bool ParseBinaryAddingOperator(void);                       // -- Ch 4: in `parse_expr.cc`
-    bool ParseComponentAssociation(void);                       // -- Ch 4: in `parse_expr.cc`
-    bool ParseExpression(void);                                 // -- Ch 4: in `parse_expr.cc`
-    bool ParseFactor(void);                                     // -- Ch 4: in `parse_expr.cc`
-    bool ParseIndexedComponent(void);                           // -- Ch 4: in `parse_expr.cc`
-    bool ParseMultiplyingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
-    bool ParseNameNonExpr(Id &id);                              // -- Ch 4: in `parse_expr.cc`
-    bool ParseNameExpr(Id &id);                                 // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_Base(Id &id);                                // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_Postfix(void);                               // -- Ch 4: in `parse_expr.cc`
-    bool ParseTypeName(void);
-    bool ParseSubtypeName(void);
-    bool ParsePrefix(void);                                     // -- Ch 4: in `parse_expr.cc`
-    bool ParsePrimary(void);                                    // -- Ch 4: in `parse_expr.cc`
-    bool ParseQualifiedExpression(void);                        // -- Ch 4: in `parse_expr.cc`
-    bool ParseRelation(void);                                   // -- Ch 4: in `parse_expr.cc`
-    bool ParseRelationalOperator(void);                         // -- Ch 4: in `parse_expr.cc`
-    bool ParseSelectedComponent(void);                          // -- Ch 4: in `parse_expr.cc`
-    bool ParseSelector(void);                                   // -- Ch 4: in `parse_expr.cc`
-    bool ParseSimpleExpression(void);                           // -- Ch 4: in `parse_expr.cc`
-    bool ParseSimpleName(Id &id);                               // -- Ch 4: in `parse_expr.cc`
-    bool ParseSlice(void);                                      // -- Ch 4: in `parse_expr.cc`
-    bool ParseTerm(void);                                       // -- Ch 4: in `parse_expr.cc`
-    bool ParseTypeConversion(void);                             // -- Ch 4: in `parse_expr.cc`
-    bool ParseUnaryAddingOperator(void);                        // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_IndexComponentSuffix(void);                  // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_SliceSuffix(void);                           // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_SelectedComponentSuffix(void);               // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_AttributeSuffix(void);                       // -- Ch 4: in `parse_expr.cc`
-    bool ParseName_IndexOrSliceSuffix(void);                    // -- Ch 4: in `parse_expr.cc`
+    AllocatorExprPtr ParseAllocator(void);
+    AttributeNamePtr ParseAttribute(void);
+    BinaryOper ParseBinaryAddingOperator(void);
+    BinaryOper ParseMultiplyingOperator(void);
+    BinaryOper ParseRelationalOperator(void);
+    ComponentAssociationPtr ParseComponentAssociation(void);
+    ExprPtr ParseAggregate(void);
+    ExprPtr ParseExpression(void);
+    ExprPtr ParseFactor(void);
+    ExprPtr ParsePrimary(void);
+    ExprPtr ParseRelation(void);
+    ExprPtr ParseSimpleExpression(void);
+    ExprPtr ParseTerm(void);
+    ExprPtr ParseTypeConversion(void);
+    NamePtr ParseSubtypeName(void);
+    NamePtr ParseTypeName(void);
+    IndexedNamePtr ParseIndexedComponent(void);
+    AttributeNamePtr ParseAttributeDesignator(NamePtr &);
+    AttributeNamePtr ParseName_AttributeSuffix(NamePtr &);
+    NamePtr ParseName_Base(void);
+    NamePtr ParseName_IndexComponentSuffix(NamePtr &prefix);
+    NamePtr ParseName_IndexOrSliceSuffix(NamePtr &prefix);
+    NamePtr ParseName_Postfix(NamePtr &prefix);
+    SelectedNamePtr ParseName_SelectedComponentSuffix(NamePtr &prefix);
+    SliceNamePtr ParseName_SliceSuffix(NamePtr &prefix);
+    NamePtr ParseNameExpr(void);
+    NamePtr ParseNameNonExpr(void);
+    NamePtr ParsePrefix(void);
+    NamePtr ParseSimpleName(void);
+    QualifiedExprPtr ParseQualifiedExpression(void);
+    SelectedNamePtr ParseSelectedComponent(void);
+    SelectedNamePtr ParseSelector(NamePtr &prefix);
+    SliceNamePtr ParseSlice(void);
+    UnaryOper ParseUnaryAddingOperator(void);
+
+
+    NamePtr ParseFunctionCall(void) { return nullptr; }
+    NamePtr ParseOperatorSymbol(void) { return nullptr; }
+    TypeDeclPtr ParsePrivateTypeDeclaration(void) { return nullptr; }
+
+
+    AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
+    SubtypeIndicationPtr ParseDiscreteSubtypeIndication(void);
+    ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
+    ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
+    NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
+    SubtypeIndicationPtr ParseComponentSubtypeIndication(void) { return std::move(ParseSubtypeIndication()); }
 
 
 
-
-
-    bool ParseFunctionCall(void) { return false; }
-    bool ParseOperatorSymbol(void) { return false; }
     bool ParseBodyStub(void) { return false; }
     bool ParseDeferredConstantDeclaration(void) { return false; }
     bool ParseExceptionDeclaration(void) { return false; }
@@ -352,7 +378,6 @@ public:
     bool ParseGenericInstantiation(void) { return false; }
     bool ParsePackageBody(void) { return false; }
     bool ParsePackageDeclaration(void) { return false; }
-    bool ParsePrivateTypeDeclaration(void) { return false; }
     bool ParseRenamingDeclaration(void) { return false; }
     bool ParseRepresentationClause(void) { return false; }
     bool ParseSubprogramBody(void) { return false; }
@@ -360,21 +385,10 @@ public:
     bool ParseTaskBody(void) { return false; }
     bool ParseTaskDeclaration(void) { return false; }
     bool ParseUseClause(void) { return false; }
-
-    bool ParseUniversalStaticExpression(void) { return ParseExpression(); }
-    bool ParseRangeAttribute(void) { return ParseAttribute(); }
-    bool ParseStaticSimpleExpression(void) { return ParseSimpleExpression(); }
-    bool ParseDiscriminantSimpleName(Id &id) { return ParseSimpleName(id); }
-
-
-
-    bool ParseComponentSubtypeIndication(void) { return ParseSubtypeIndication(); }
-    bool ParseDiscreteSubtypeIndication(void) { return ParseSubtypeIndication(); }
-
-
-
 };
 
 
 
+using IdList = std::vector<Id>;
+using IdListPtr = std::unique_ptr<IdList>;
 

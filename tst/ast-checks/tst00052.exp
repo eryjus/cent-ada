@@ -1,0 +1,48 @@
+ObjectDeclaration
+  names ===
+    [0] --> word_length
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 8
+ObjectDeclaration
+  names ===
+    [0] --> del
+  constant --> true
+  typeSpec: (null)
+  initializer: BinaryExpr
+    op --> / (divide)
+    lhs: RealLiteralExpr
+      value --> 1.0
+    rhs: BinaryExpr
+      op --> ** (power)
+      lhs: IntLiteralExpr
+        value --> 2
+      rhs: BinaryExpr
+        op --> - (minus)
+        lhs: NameExpr
+          name: SimpleName
+            id --> word_length
+        rhs: IntLiteralExpr
+          value --> 1
+
+
+Listing for tst/declarations/tst00052.ada:
+==========================================
+     1   WORD_LENGTH : constant := 8;
+     2   DEL : constant := 1.0 / 2 ** (WORD_LENGTH - 1);
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: word_length : Object
+Object Symbol: del : Object
+-------------------

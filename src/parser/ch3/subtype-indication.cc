@@ -22,27 +22,52 @@
 //
 // -- Parse a Subtype Indication
 //    --------------------------
-bool Parser::ParseSubtypeIndication(void)
+SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
 {
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    NamePtr id = nullptr;
+    ConstraintPtr constraint = nullptr;
 
 
     //
     // -- Find a type mark and then optionally a constraint
     //    -------------------------------------------------
-    if (!ParseTypeMark()) return false;
-    ParseConstraint();
+    id = ParseTypeMark();
+    if (!id) {
+        p.At("TypeMark fail");
+        return nullptr;
+    }
+    constraint = ParseConstraint();
 
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    p.At("type mark found");
     m.Commit();
-    return true;
+
+    return std::make_unique<SubtypeIndication>(loc, std::move(id), std::move(constraint));
 }
 
+
+
+//
+// -- Parse a Discrete Subtype Indication
+//    -----------------------------------
+SubtypeIndicationPtr Parser::ParseDiscreteSubtypeIndication(void)
+{
+    Production p(*this, "subtype_indication(discrete)");
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SubtypeIndicationPtr node = nullptr;
+
+    node = ParseSubtypeIndication();
+    if (!node) return nullptr;
+
+    return node;
+}
 
 
 

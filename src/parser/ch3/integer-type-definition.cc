@@ -22,37 +22,45 @@
 //
 // -- Parse an Integer Type Definition
 //    --------------------------------
-bool Parser::ParseIntegerTypeDefinition(Id &id)
+TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
 {
     Production p(*this, "integer_type_definition");
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    RangeConstraintPtr con = nullptr;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (ParseRangeConstraint()) {
-        if (scopes.IsLocalDefined(std::string_view(id.name))) {
-            // -- name is used in this scope is it a singleton and incomplete class?
-            vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+    con = ParseRangeConstraint();
+    if (!con) return nullptr;
 
-            if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
-                updateIncomplete = true;
-            } else {
-                diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
-            }
+
+    if (scopes.IsLocalDefined(id.name)) {
+        // -- name is used in this scope is it a singleton and incomplete class?
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
+
+        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+            updateIncomplete = true;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
         }
-
-        scopes.Declare(std::make_unique<IntegerTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
-
-        if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
-        s.Commit();
-        return true;
     }
 
-    return false;
+    scopes.Declare(std::make_unique<IntegerTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+
+
+    //
+    // -- Consider this parse complete
+    //    ----------------------------
+    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
+    s.Commit();
+
+    return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::Integer, nullptr, std::move(con));
 }
 
 

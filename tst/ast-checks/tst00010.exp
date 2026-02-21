@@ -1,0 +1,40 @@
+ObjectDeclaration
+  names ===
+    [0] --> pi
+  constant --> true
+  typeSpec: (null)
+  initializer: RealLiteralExpr
+    value --> 3.14159_26536
+ObjectDeclaration
+  names ===
+    [0] --> two_pi
+  constant --> true
+  typeSpec: (null)
+  initializer: BinaryExpr
+    op --> * (times)
+    lhs: RealLiteralExpr
+      value --> 2.0
+    rhs: NameExpr
+      name: SimpleName
+        id --> pi
+
+
+Listing for tst/declarations/tst00010.ada:
+==========================================
+     1   PI : constant := 3.14159_26536;
+     2   TWO_PI : constant := 2.0 * PI;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: pi : Object
+Object Symbol: two_pi : Object
+-------------------

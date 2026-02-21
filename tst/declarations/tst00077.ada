@@ -5,3 +5,4 @@ type COMPLEX is
     end record;
 
 A, B, C : COMPLEX;
+

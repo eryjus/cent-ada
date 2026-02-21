@@ -1,0 +1,29 @@
+TypeDecl
+  name --> state
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> open
+      [1] --> closed
+
+
+Listing for tst/declarations/tst00086.ada:
+==========================================
+     1   type STATE is (OPEN, CLOSED);
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: state : Enumeration
+   containing literals (open closed )
+Enumeration Literal: open : EnumLiteral of type state; value (0)
+Enumeration Literal: closed : EnumLiteral of type state; value (1)
+-------------------

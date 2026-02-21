@@ -52,16 +52,19 @@
 //
 // -- Parse a Primary
 //    ---------------
-bool Parser::ParsePrimary(void)
+ExprPtr Parser::ParsePrimary(void)
 {
     Production p(*this, "primary");
     MarkStream m(tokens, diags);
-    Id id;
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+
+    TOKEN;
 
     if (Optional(TokenType::TOK_NULL)) {
         m.Commit();
-        return true;
+
+        return std::make_unique<NullLiteralExpr>(astLoc);
     }
 
 
@@ -69,93 +72,143 @@ bool Parser::ParsePrimary(void)
     // -- The spec calls for a `numeric_literal` here.  I am going to split them out
     //    here rather than in the lexer.
     //    --------------------------------------------------------------------------
-    if (Optional(TokenType::TOK_UNIVERSAL_INT_LITERAL)) {
+    if (TokenStream::Get().Current() == TokenType::TOK_UNIVERSAL_INT_LITERAL) {
+        std::string lit = std::get<IntLiteral>(TokenStream::Get().Payload()).lexeme;
+        TokenStream::Get().Advance();
+        p.At("UNIVERSAL_INT_LITERAL");
         m.Commit();
-        return true;
-    }
 
-    if (Optional(TokenType::TOK_UNIVERSAL_REAL_LITERAL)) {
-        m.Commit();
-        return true;
-    }
-
-
-    if (Optional(TokenType::TOK_STRING_LITERAL)) {
-        m.Commit();
-        return true;
+        return std::make_unique<IntLiteralExpr>(astLoc, lit);
     }
 
 
-    if (tokens.Current() == TokenType::TOK_NEW) {
-        if (ParseAllocator()) {
+    if (TokenStream::Get().Current() == TokenType::TOK_UNIVERSAL_REAL_LITERAL) {
+        std::string lit = std::get<RealLiteral>(TokenStream::Get().Payload()).lexeme;
+        TokenStream::Get().Advance();
+        p.At("UNIVERSAL_REAL_LITERAL");
+        m.Commit();
+
+        return std::make_unique<RealLiteralExpr>(astLoc, lit);
+    }
+
+
+    if (TokenStream::Get().Current() == TokenType::TOK_STRING_LITERAL) {
+        std::string lit = std::get<StringLiteral>(TokenStream::Get().Payload()).lexeme;
+        TokenStream::Get().Advance();
+        p.At("UNIVERSAL_STRING_LITERAL");
+        m.Commit();
+
+        return std::make_unique<StringLiteralExpr>(astLoc, lit);
+    }
+
+
+    if (TokenStream::Get().Current() == TokenType::TOK_NEW) {
+        AllocatorExprPtr rv = ParseAllocator();
+        if (rv) {
+            p.At("NEW");
             m.Commit();
-            return true;
+
+            return rv;
         }
 
         m.Reset();
     }
 
 
-    if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
-        if (ParseNameExpr(id)) {
+    if (TokenStream::Get().Current() == TokenType::TOK_CHARACTER_LITERAL) {
+        NamePtr name = ParseNameExpr();
+        if (name) {
+            p.At("Character Literal");
             m.Commit();
-            return true;
+
+            return std::make_unique<NameExpr>(astLoc, std::move(name));
         }
 
         m.Reset();
     }
 
 
-    if (ParseOperatorSymbol()) {
-        m.Commit();
-        return true;
+    {   // -- we want a scope here for overall readability
+        NamePtr name = ParseOperatorSymbol();
+        if (name) {
+            p.At("Operator Symbol");
+            m.Commit();
+
+            return std::make_unique<NameExpr>(astLoc, std::move(name));;
+        }
     }
+
 
 
     //
     // -- Now, an Identifier can start several different alternatives.  Check here for each.
     //    ----------------------------------------------------------------------------------
-    if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-        IdentifierLexeme idLex = std::get<IdentifierLexeme>(tokens.Payload());
+    if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
+        IdentifierLexeme idLex = std::get<IdentifierLexeme>(TokenStream::Get().Payload());
         const std::vector<Symbol *> *vec = scopes.Lookup(idLex.name);
 
         if (vec != nullptr) {
             TypeSymbol *type = nullptr;
 
             for (auto &sym : *vec) {
+                NamePtr name = nullptr;
                 if (sym->kind == Symbol::SymbolKind::Deleted) continue;
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
-                    if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
-                        if (tokens.Peek(2) == TokenType::TOK_DIGITS || tokens.Peek(2) == TokenType::TOK_DELTA) {
-                            if (ParseNameExpr(id)) {
+                    if (TokenStream::Get().Peek() == TokenType::TOK_APOSTROPHE) {
+                        if (TokenStream::Get().Peek(2) == TokenType::TOK_DIGITS || TokenStream::Get().Peek(2) == TokenType::TOK_DELTA) {
+                            name = ParseNameExpr();
+                            if (name) {
+                                p.At("digits/delta next");
                                 m.Commit();
-                                return true;
+
+                                return std::make_unique<NameExpr>(astLoc, std::move(name));;
                             }
                         }
-                        if (ParseQualifiedExpression()) {
+                        ExprPtr rv = ParseQualifiedExpression();
+                        if (rv) {
+                            p.At("Qualified Expression");
                             m.Commit();
-                            return true;
-                        } else if (ParseNameExpr(id)) {
-                            m.Commit();
-                            return true;
+
+                            return rv;
+                        } else {
+                            name = ParseNameExpr();
+                            if (name) {
+                                p.At("Name Expression");
+                                m.Commit();
+
+                                return std::make_unique<NameExpr>(astLoc, std::move(name));;
+                            }
                         }
                     }
-                    if (tokens.Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
-                        if (ParseTypeConversion()) {
+                    if (TokenStream::Get().Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
+                        ExprPtr rv = ParseTypeConversion();
+                        if (rv) {
+                            p.At("Type Conversion");
                             m.Commit();
-                            return true;
+
+                            return rv;
                         }
                     }
                 }
+
+
                 if (sym->kind == Symbol::SymbolKind::Subprogram) {
-                    if (ParseFunctionCall()) {
+                    name = ParseFunctionCall();
+                    if (name) {
+                        p.At("Function Call");
                         m.Commit();
-                        return true;
+
+                        return std::make_unique<NameExpr>(astLoc, std::move(name));;
                     }
                 }
-                if (ParseNameExpr(id)) {
+
+
+                name = ParseNameExpr();
+                if (name) {
+                    p.At("Name Expression 2");
                     m.Commit();
-                    return true;
+
+                    return std::make_unique<NameExpr>(astLoc, std::move(name));;
                 }
 
                 diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
@@ -167,28 +220,42 @@ bool Parser::ParsePrimary(void)
     //
     // -- Now, everything else will start with a TOK_LEFT_PAREN
     //    -----------------------------------------------------
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) {
+        p.At("No Paren");
+        return nullptr;
+    }
 
 
     //
     // -- If we have an expression followed by a TOK_RIGHT_PARENTHESIS, then we have a parenthetical expression
     //    -----------------------------------------------------------------------------------------------------
-    if (ParseExpression()) {
+    ExprPtr expr = ParseExpression();
+    if (expr) {
         if (Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
+            p.At("Parenthetical Expression");
             m.Commit();
-            return true;
+
+            return expr;
         }
     }
 
+
+    //
     // -- we want to reset here and try again with an aggregate -- the only thing left
+    //    ----------------------------------------------------------------------------
     m.Reset();
 
-    if (ParseAggregate()) {
+    expr = ParseAggregate();
+    if (expr) {
+        p.At("Aggregate");
         m.Commit();
-        return true;
+
+        return expr;
     }
 
-    return false;
+
+    p.At("Failed");
+    return nullptr;
 }
 
 

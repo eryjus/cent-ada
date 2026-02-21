@@ -36,7 +36,7 @@ subtype RED_PURPLE is RAINBOW;
 subtype INT is INTEGER;
 subtype SMALL_INT is INTEGER range -10 .. 10;
 subtype UP_TO_K is COLUMN range 1 .. K;
-subtype SQUARE is MATRIX(1 .. 10, 1 .. 10);
+subtype SQUARE_SUB is MATRIX(1 .. 10, 1 .. 10);
 
 type COORDINATE is
     record
@@ -87,10 +87,8 @@ DEL : constant := 1.0 / 2 ** (WORD_LENGTH - 1);
 type FRACTION is delta DEL range -1.0 .. 1.0 - DEL;
 
 type VECTOR is array(INTEGER range <>) of REAL;
-type BIT_VECTOR is array(INTEGER range <>) of BOOLEAN;
 type ROMAN is array(POSITIVE range <>) of ROMAN_DIGIT;
 
-type TABLE is array(1 .. 10) of INTEGER;
 type SCHEDULE is array(DAY) of BOOLEAN;
 type LINE is array(1 .. MAX_LINE_SIZE) of CHARACTER;
 
@@ -219,3 +217,4 @@ MY_CAR, YOUR_CAR, NEXT_CAR : CAR_NAME;
 
 
 subtype MALE is PERSON(SEX => M);
+

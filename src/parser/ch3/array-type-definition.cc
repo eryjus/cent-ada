@@ -22,14 +22,25 @@
 //
 // -- Parse an Array Type Definition
 //    ------------------------------
-bool Parser::ParseArrayTypeDefinition(Id &id)
+ArrayTypeSpecPtr Parser::ParseArrayTypeDefinition(Id &id)
 {
     Production p(*this, "array_type_definition");
+    ArrayTypeSpecPtr rv = nullptr;
 
-    if (ParseUnconstrainedArrayDefinition(id))    return true;
-    if (ParseConstrainedArrayDefinition(id))      return true;
+    rv = ParseUnconstrainedArrayDefinition(id);
+    if (rv) {
+        p.At("Unconstrained Array");
+        return rv;
+    }
 
-    return false;
+    rv = ParseConstrainedArrayDefinition(id);
+    if (rv) {
+        p.At("Constrained Array");
+        return rv;
+    }
+
+    p.At("no match");
+    return nullptr;
 }
 
 

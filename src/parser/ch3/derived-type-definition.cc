@@ -22,27 +22,30 @@
 //
 // -- Parse a Derived Type Definition
 //    -------------------------------
-bool Parser::ParseDerivedTypeDefinition(Id &id)
+DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
 {
     Production p(*this, "derived_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SimpleNamePtr name = nullptr;
+    SubtypeIndicationPtr type = nullptr;
 
 
     //
     // -- This is just a TOK_NEW with a Subtype Indication
     //    ------------------------------------------------
-    if (!Require(TokenType::TOK_NEW)) return false;
+    if (!Require(TokenType::TOK_NEW)) return nullptr;
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -53,18 +56,25 @@ bool Parser::ParseDerivedTypeDefinition(Id &id)
 
     scopes.Declare(std::make_unique<DerivedTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
+    name = std::make_unique<SimpleName>(astLoc, id);
 
 
-    if (!ParseSubtypeIndication()) return false;
+    //
+    // -- Get the subtype
+    //    ---------------
+    type = ParseSubtypeIndication();
+    if (!type) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<DerivedTypeSpec>(astLoc, /*std::move(name),*/ std::move(type));
 }
 
 

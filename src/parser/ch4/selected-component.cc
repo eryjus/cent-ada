@@ -22,18 +22,26 @@
 //
 // -- Parse a Selected Component
 //    --------------------------
-bool Parser::ParseSelectedComponent(void)
+SelectedNamePtr Parser::ParseSelectedComponent(void)
 {
     Production p(*this, "selected_component");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc =TokenStream::Get().SourceLocation();
+    NamePtr prefix = nullptr;
+    SelectedNamePtr selector = nullptr;
     std::string discard;
 
-    if (!ParsePrefix())                     return false;
-    if (!Require(TokenType::TOK_DOT))                  return false;
-    if (!ParseSelector())                   return false;
+
+    prefix = ParsePrefix();
+    if (!prefix)                                                    return nullptr;
+    if (!Require(TokenType::TOK_DOT))                               return nullptr;
+
+    selector = ParseSelector(prefix);
+    if (!selector) return nullptr;
+
 
     m.Commit();
-    return true;
+    return selector;
 }
 
 
@@ -43,16 +51,21 @@ bool Parser::ParseSelectedComponent(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-bool Parser::ParseName_SelectedComponentSuffix(void)
+SelectedNamePtr Parser::ParseName_SelectedComponentSuffix(NamePtr &prefix)
 {
     Production p(*this, "selected_component(suffix)");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SelectedNamePtr selector = nullptr;
 
-    if (!Require(TokenType::TOK_DOT))           return false;
-    if (!ParseSelector())                       return false;
+    if (!Require(TokenType::TOK_DOT)) return nullptr;
+
+    selector = ParseSelector(prefix);
+    if (!selector) return nullptr;
 
     m.Commit();
-    return true;
+
+    return selector;
 }
 
 

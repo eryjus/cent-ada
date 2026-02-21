@@ -1,0 +1,38 @@
+TypeDecl
+  name --> coordinate
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> integer
+      constraint: (null)
+TypeDecl
+  name --> local_coordinate
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> coordinate
+      constraint: (null)
+
+
+Listing for tst/declarations/tst00024.ada:
+==========================================
+     1   type COORDINATE is new INTEGER;
+     2
+     3   type LOCAL_COORDINATE is new COORDINATE;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Derived Type: coordinate : Derived
+Derived Type: local_coordinate : Derived
+-------------------

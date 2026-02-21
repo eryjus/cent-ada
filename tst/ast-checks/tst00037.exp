@@ -1,0 +1,50 @@
+TypeDecl
+  name --> suit
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> clubs
+      [1] --> diamonds
+      [2] --> hearts
+      [3] --> spades
+TypeDecl
+  name --> major
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> suit
+    constraint: RangeConstraint
+      range: Range
+        lower: NameExpr
+          name: SimpleName
+            id --> hearts
+        upper: NameExpr
+          name: SimpleName
+            id --> spades
+
+
+Listing for tst/declarations/tst00037.ada:
+==========================================
+     1   type SUIT is (CLUBS, DIAMONDS, HEARTS, SPADES);
+     2
+     3   subtype MAJOR is SUIT range HEARTS .. SPADES;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: suit : Enumeration
+   containing literals (clubs diamonds hearts spades )
+Enumeration Literal: clubs : EnumLiteral of type suit; value (0)
+Enumeration Literal: diamonds : EnumLiteral of type suit; value (1)
+Enumeration Literal: hearts : EnumLiteral of type suit; value (2)
+Enumeration Literal: spades : EnumLiteral of type suit; value (3)
+Subtype: major : Subtype
+-------------------

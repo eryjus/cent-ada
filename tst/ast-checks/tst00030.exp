@@ -1,0 +1,29 @@
+TypeDecl
+  name --> gender
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> m
+      [1] --> f
+
+
+Listing for tst/declarations/tst00030.ada:
+==========================================
+     1   type GENDER is (M, F);
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: gender : Enumeration
+   containing literals (m f )
+Enumeration Literal: m : EnumLiteral of type gender; value (0)
+Enumeration Literal: f : EnumLiteral of type gender; value (1)
+-------------------

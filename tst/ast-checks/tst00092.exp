@@ -1,0 +1,23 @@
+TypeDecl
+  name --> cell
+  discriminantPart === (null)
+  definition: (null)
+
+
+Listing for tst/declarations/tst00092.ada:
+==========================================
+     1   type CELL;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Incomplete Type: cell : Incomplete
+-------------------

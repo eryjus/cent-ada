@@ -23,30 +23,35 @@
 //
 // -- Parse an Unconstrained Array Definition
 //    ---------------------------------------
-bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
+ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "unconstrained_array_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc=astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    DiscreteRangeListPtr idxList = std::make_unique<DiscreteRangeList>();
+    IndexConstraintPtr indices = nullptr;
+    UnboundedRangePtr idx = nullptr;
+    SubtypeIndicationPtr compType = nullptr;
 
 
 
     //
     // -- Start parse with the first 2 required tokens
     //    --------------------------------------------
-    if (!Require(TokenType::TOK_ARRAY)) return false;
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_ARRAY)) return nullptr;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
         } else {
@@ -61,30 +66,34 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- now, there should be an index definition
     //    ----------------------------------------
-    if (!ParseIndexSubtypeDefinition()) return false;
-
+    idx = ParseIndexSubtypeDefinition();
+    if (!idx) return nullptr;
+    idxList->push_back(std::move(idx));
 
 
     //
     // -- now, some optional additional indices
     //    -------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseIndexSubtypeDefinition()) {
+        idx = ParseIndexSubtypeDefinition();
+        if (idx) {
+            idxList->push_back(std::move(idx));
+        } else {
             diags.Error(loc, DiagID::ExtraComma, { "index_subtype_definition" } );
             // -- continue on in hopes of finding more errors
 
             break;
         }
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
 
     //
     // -- The closing paren is required
     //    -----------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"array index subtype definition"});
         // -- continue on in hopes that this does not create a cascade of errors
@@ -95,8 +104,10 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Wrap up the rest of the production
     //    ----------------------------------
-    if (!Require(TokenType::TOK_OF)) return false;
-    if (!ParseComponentSubtypeIndication()) return false;
+    if (!Require(TokenType::TOK_OF)) return nullptr;
+
+    compType = ParseComponentSubtypeIndication();
+    if (!compType) return nullptr;
 
 
 
@@ -105,9 +116,15 @@ bool Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
 
+    NameListPtr list = std::make_unique<NameList>();
+    NamePtr name = std::make_unique<SimpleName>(astLoc, id);
+    list->push_back(std::move(name));
+    indices = std::make_unique<IndexConstraint>(astLoc, true, std::move(idxList));
+
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<ArrayTypeSpec>(astLoc, true, std::move(indices), std::move(compType));
 }
 
 

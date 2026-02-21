@@ -1,0 +1,119 @@
+TypeDecl
+  name --> month_name
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> jan
+      [1] --> feb
+      [2] --> mar
+      [3] --> apr
+      [4] --> may
+      [5] --> jun
+      [6] --> jul
+      [7] --> aug
+      [8] --> sep
+      [9] --> oct
+      [10] --> nov
+      [11] --> dec
+TypeDecl
+  name --> date
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> day
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 1
+                upper: IntLiteralExpr
+                  value --> 31
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> month
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> month_name
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> year
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 0
+                upper: IntLiteralExpr
+                  value --> 4000
+          initializer: (null)
+      variant part: (null)
+ObjectDeclaration
+  names ===
+    [0] --> tomorrow
+    [1] --> yesterday
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> date
+    constraint: (null)
+  initializer: (null)
+
+
+Listing for tst/declarations/tst00076.ada:
+==========================================
+     1   type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC);
+     2   type DATE is
+     3       record
+     4           DAY : INTEGER range 1 .. 31;
+     5           MONTH : MONTH_NAME;
+     6           YEAR : INTEGER range 0 .. 4000;
+     7       end record;
+     8   TOMORROW, YESTERDAY : DATE;
+     9
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: month_name : Enumeration
+   containing literals (jan feb mar apr may jun jul aug sep oct nov dec )
+Enumeration Literal: jan : EnumLiteral of type month_name; value (0)
+Enumeration Literal: feb : EnumLiteral of type month_name; value (1)
+Enumeration Literal: mar : EnumLiteral of type month_name; value (2)
+Enumeration Literal: apr : EnumLiteral of type month_name; value (3)
+Enumeration Literal: may : EnumLiteral of type month_name; value (4)
+Enumeration Literal: jun : EnumLiteral of type month_name; value (5)
+Enumeration Literal: jul : EnumLiteral of type month_name; value (6)
+Enumeration Literal: aug : EnumLiteral of type month_name; value (7)
+Enumeration Literal: sep : EnumLiteral of type month_name; value (8)
+Enumeration Literal: oct : EnumLiteral of type month_name; value (9)
+Enumeration Literal: nov : EnumLiteral of type month_name; value (10)
+Enumeration Literal: dec : EnumLiteral of type month_name; value (11)
+Record Type: date : Record
+   containing components (day month year )
+Object Symbol: tomorrow : Object
+Object Symbol: yesterday : Object
+-------------------
+
+Scope Name: date
+Scope ID  : 2
+-------------------
+Component Symbol: day : Component
+Component Symbol: month : Component
+Component Symbol: year : Component
+-------------------

@@ -22,19 +22,29 @@
 //
 // -- Parse a Simple Name, an identifier with not additional decorations
 //    ------------------------------------------------------------------
-bool Parser::ParseSimpleName(Id &id)
+NamePtr Parser::ParseSimpleName(void)
 {
     Production p(*this, "simple_name");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    SourceLoc_t astLoc = loc;
+    Id id;
 
-    if (!RequireIdent(id))  return false;
+    TOKEN;
+    if (!RequireIdent(id)) {
+        p.At("No ID");
+        return nullptr;
+    }
 
     if (scopes.Lookup(id.name) == nullptr) {
         diags.Error(loc, DiagID::UnknownName, { id.name } );
         // -- continue anyway
     }
 
+
     m.Commit();
-    return true;
+    p.At("Success");
+    TOKEN;
+
+    return std::make_unique<SimpleName>(astLoc, id);
 }

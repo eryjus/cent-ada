@@ -23,34 +23,45 @@
 //
 // -- Parse a Range
 //    -------------
-bool Parser::ParseRange(void)
+DiscreteRangePtr Parser::ParseRange(void)
 {
     Production p(*this, "range");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    AttributeNamePtr attr = nullptr;
+    ExprPtr from = nullptr;
+    ExprPtr to = nullptr;
 
 
     //
     // -- If we find a range attribute we're done
     //    ---------------------------------------
-    if (ParseRangeAttribute()) {
+    attr = ParseRangeAttribute();
+    if (attr) {
         m.Commit();
-        return true;
+
+        return std::make_unique<AttributeRange>(astLoc, std::move(attr));
     }
 
 
     //
     // -- otherwise, we have a range expression
     //    -------------------------------------
-    if (!ParseSimpleExpression()) return false;
-    if (!Require(TokenType::TOK_DOUBLE_DOT)) return false;
-    if (!ParseSimpleExpression()) return false;
+    from = ParseSimpleExpression();
+    if (!from) return nullptr;
+
+    if (!Require(TokenType::TOK_DOUBLE_DOT)) return nullptr;
+
+    to = ParseSimpleExpression();
+    if (!to) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+
+    return std::make_unique<Range>(astLoc, std::move(from), std::move(to));
 }
 
 

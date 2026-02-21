@@ -1,0 +1,366 @@
+//=================================================================================================================
+//  ast/expr.hh -- This header is used for defining the classes which are derived from Expr
+//
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
+//
+// ---------------------------------------------------------------------------------------------------------------
+//
+//     Date      Tracker  Version  Pgmr  Description
+//  -----------  -------  -------  ----  -------------------------------------------------------------------------
+//  2026-Jan-03  Initial   0.0.0   ADCL  Initial version
+//
+//=================================================================================================================
+
+
+
+#pragma once
+
+
+
+//
+// -- The common Expression node
+//    --------------------------
+class Expr : public ASTNode {
+    Expr(void) = delete;
+    Expr(const Expr &) = delete;
+    Expr &operator=(const Expr &) = delete;
+
+public:
+    Expr(SourceLoc_t l) : ASTNode(l) {}
+};
+
+
+
+//
+// -- A unary expression node
+//    -----------------------
+class UnaryExpr : public Expr {
+    UnaryExpr(void) = delete;
+    UnaryExpr(const UnaryExpr &) = delete;
+    UnaryExpr &operator=(const UnaryExpr &) = delete;
+
+
+public:
+    UnaryOper op;
+    ExprPtr expr;
+
+
+public:
+    UnaryExpr(SourceLoc_t loc, UnaryOper op, ExprPtr e) : Expr(loc), op(op), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- A binary expression node
+//    ------------------------
+class BinaryExpr : public Expr {
+    BinaryExpr(void) = delete;
+    BinaryExpr(const BinaryExpr &) = delete;
+    BinaryExpr &operator=(const BinaryExpr &) = delete;
+
+
+public:
+    BinaryOper op;
+    ExprPtr lhs;
+    ExprPtr rhs;
+
+
+public:
+    BinaryExpr(SourceLoc_t loc, BinaryOper op, ExprPtr l, ExprPtr r)
+            : Expr(loc), op(op), lhs(std::move(l)), rhs(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- A literal expression node
+//    -------------------------
+class LiteralExpr : public Expr {
+    LiteralExpr(void) = delete;
+    LiteralExpr(const LiteralExpr &) = delete;
+    LiteralExpr &operator=(const LiteralExpr &) = delete;
+
+
+public:
+    LiteralExpr(SourceLoc_t loc) : Expr(loc) {}
+};
+
+
+
+//
+// -- This is a NULL literal
+//    ----------------------
+class NullLiteralExpr : public LiteralExpr {
+    NullLiteralExpr(void) = delete;
+    NullLiteralExpr(const NullLiteralExpr &) = delete;
+    NullLiteralExpr &operator=(const NullLiteralExpr &) = delete;
+
+
+public:
+    NullLiteralExpr(SourceLoc_t loc) : LiteralExpr(loc) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is an int literal
+//    ----------------------
+class IntLiteralExpr : public LiteralExpr {
+    IntLiteralExpr(void) = delete;
+    IntLiteralExpr(const IntLiteralExpr &) = delete;
+    IntLiteralExpr &operator=(const IntLiteralExpr &) = delete;
+
+
+public:
+    std::string lexeme;
+
+
+public:
+    IntLiteralExpr(SourceLoc_t loc, std::string l) : LiteralExpr(loc), lexeme(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a real literal
+//    ----------------------
+class RealLiteralExpr : public LiteralExpr {
+    RealLiteralExpr(void) = delete;
+    RealLiteralExpr(const RealLiteralExpr &) = delete;
+    RealLiteralExpr &operator=(const RealLiteralExpr &) = delete;
+
+
+public:
+    std::string lexeme;
+
+
+public:
+    RealLiteralExpr(SourceLoc_t loc, std::string l) : LiteralExpr(loc), lexeme(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a string literal
+//    ------------------------
+class StringLiteralExpr : public LiteralExpr {
+    StringLiteralExpr(void) = delete;
+    StringLiteralExpr(const StringLiteralExpr &) = delete;
+    StringLiteralExpr &operator=(const StringLiteralExpr &) = delete;
+
+
+public:
+    std::string lexeme;
+
+
+public:
+    StringLiteralExpr(SourceLoc_t loc, std::string l) : LiteralExpr(loc), lexeme(l) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a name expression
+//    -------------------------
+class NameExpr : public Expr {
+    NameExpr(void) = delete;
+    NameExpr(const NameExpr &) = delete;
+    NameExpr &operator=(const NameExpr &) = delete;
+
+
+public:
+    NamePtr name;
+
+
+public:
+    NameExpr(SourceLoc_t loc, NamePtr n) : Expr(loc), name(std::move(n)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a range expression
+//    --------------------------
+class RangeExpr : public Expr {
+    RangeExpr(void) = delete;
+    RangeExpr(const RangeExpr &) = delete;
+    RangeExpr &operator=(const RangeExpr &) = delete;
+
+
+public:
+    DiscreteRangePtr range;
+
+
+public:
+    RangeExpr(SourceLoc_t loc, DiscreteRangePtr r) : Expr(loc), range(std::move(r)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is an aggregate expression
+//    -------------------------------
+class AggregateExpr : public Expr {
+    AggregateExpr(void) = delete;
+    AggregateExpr(const AggregateExpr &) = delete;
+    AggregateExpr &operator=(const AggregateExpr &) = delete;
+
+
+public:
+    ComponentAssociationListPtr list;
+
+
+public:
+    AggregateExpr(SourceLoc_t loc, ComponentAssociationListPtr l) : Expr(loc), list(std::move(l)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a qualified expression
+//    ------------------------------
+class QualifiedExpr : public Expr {
+    QualifiedExpr(void) = delete;
+    QualifiedExpr(const QualifiedExpr &) = delete;
+    QualifiedExpr &operator=(const QualifiedExpr &) = delete;
+
+
+public:
+    NamePtr id;
+    ExprPtr expr;
+
+
+public:
+    QualifiedExpr(SourceLoc_t loc, NamePtr i, ExprPtr e) : Expr(loc), id(std::move(i)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a type conversion
+//    -------------------------
+class TypeConversionExpr : public Expr {
+    TypeConversionExpr(void) = delete;
+    TypeConversionExpr(const TypeConversionExpr &) = delete;
+    TypeConversionExpr &operator=(const TypeConversionExpr &) = delete;
+
+
+public:
+    NamePtr id;
+    ExprPtr expr;
+
+
+public:
+    TypeConversionExpr(SourceLoc_t loc, NamePtr i, ExprPtr e) : Expr(loc), id(std::move(i)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a generic allocator
+//    ---------------------------
+class AllocatorExpr : public Expr {
+    AllocatorExpr(void) = delete;
+    AllocatorExpr(const AllocatorExpr &) = delete;
+    AllocatorExpr &operator=(const AllocatorExpr &) = delete;
+
+
+public:
+    AllocatorExpr(SourceLoc_t loc) : Expr(loc) {}
+};
+
+
+
+//
+// -- This is a Qualified Expression Allocator
+//    ----------------------------------------
+class QualExprAllocatorExpr : public AllocatorExpr {
+    QualExprAllocatorExpr(void) = delete;
+    QualExprAllocatorExpr(const QualExprAllocatorExpr &) = delete;
+    QualExprAllocatorExpr &operator=(const QualExprAllocatorExpr &) = delete;
+
+
+public:
+    QualifiedExprPtr expr;
+
+
+public:
+    QualExprAllocatorExpr(SourceLoc_t loc, QualifiedExprPtr e) : AllocatorExpr(loc), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- This is a Subtype Indication Allocator
+//    --------------------------------------
+class SubtypeIndicationAllocatorExpr : public AllocatorExpr {
+    SubtypeIndicationAllocatorExpr(void) = delete;
+    SubtypeIndicationAllocatorExpr(const SubtypeIndicationAllocatorExpr &) = delete;
+    SubtypeIndicationAllocatorExpr &operator=(const SubtypeIndicationAllocatorExpr &) = delete;
+
+
+public:
+    SubtypeIndicationPtr sub;
+
+
+public:
+    SubtypeIndicationAllocatorExpr(SourceLoc_t loc, SubtypeIndicationPtr s) : AllocatorExpr(loc), sub(std::move(s)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+
+

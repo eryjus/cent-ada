@@ -1,0 +1,1962 @@
+TypeDecl
+  name --> bit_vector
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> boolean
+      constraint: (null)
+ObjectDeclaration
+  names ===
+    [0] --> count
+    [1] --> sum
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> size
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 0
+        upper: IntLiteralExpr
+          value --> 10_000
+  initializer: IntLiteralExpr
+    value --> 0
+ObjectDeclaration
+  names ===
+    [0] --> sorted
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> boolean
+    constraint: (null)
+  initializer: NameExpr
+    name: SimpleName
+      id --> false
+ObjectDeclaration
+  names ===
+    [0] --> n
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 3
+ObjectDeclaration
+  names ===
+    [0] --> k
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 100
+TypeDecl
+  name --> color
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> white
+      [1] --> red
+      [2] --> orange
+      [3] --> yellow
+      [4] --> green
+      [5] --> blue
+      [6] --> purple
+      [7] --> brown
+      [8] --> black
+ObjectDeclaration
+  names ===
+    [0] --> color_table
+  constant --> false
+  typeSpec: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: NameExpr
+            name: SimpleName
+              id --> n
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> color
+      constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> limit
+  constant --> true
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: IntLiteralExpr
+    value --> 10_000
+ObjectDeclaration
+  names ===
+    [0] --> low_limit
+  constant --> true
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: BinaryExpr
+    op --> / (divide)
+    lhs: NameExpr
+      name: SimpleName
+        id --> limit
+    rhs: IntLiteralExpr
+      value --> 10
+ObjectDeclaration
+  names ===
+    [0] --> pi
+  constant --> true
+  typeSpec: (null)
+  initializer: RealLiteralExpr
+    value --> 3.14159_26536
+ObjectDeclaration
+  names ===
+    [0] --> two_pi
+  constant --> true
+  typeSpec: (null)
+  initializer: BinaryExpr
+    op --> * (times)
+    lhs: IntLiteralExpr
+      value --> 2
+    rhs: NameExpr
+      name: SimpleName
+        id --> pi
+ObjectDeclaration
+  names ===
+    [0] --> max
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 500
+ObjectDeclaration
+  names ===
+    [0] --> power_16
+  constant --> true
+  typeSpec: (null)
+  initializer: BinaryExpr
+    op --> ** (power)
+    lhs: IntLiteralExpr
+      value --> 2
+    rhs: IntLiteralExpr
+      value --> 16
+ObjectDeclaration
+  names ===
+    [0] --> one
+    [1] --> un
+    [2] --> eins
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 1
+TypeDecl
+  name --> column
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 72
+TypeDecl
+  name --> table
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 10
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> integer
+      constraint: (null)
+TypeDecl
+  name --> matrix
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+        [1]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> real
+      constraint: (null)
+TypeDecl
+  name --> rainbow
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> color
+    constraint: RangeConstraint
+      range: Range
+        lower: NameExpr
+          name: SimpleName
+            id --> red
+        upper: NameExpr
+          name: SimpleName
+            id --> purple
+TypeDecl
+  name --> red_purple
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> rainbow
+    constraint: (null)
+TypeDecl
+  name --> int
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+TypeDecl
+  name --> small_int
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: UnaryExpr
+          op --> - (minus)
+          operand: IntLiteralExpr
+            value --> 10
+        upper: IntLiteralExpr
+          value --> 10
+TypeDecl
+  name --> up_to_k
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> column
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: NameExpr
+          name: SimpleName
+            id --> k
+TypeDecl
+  name --> square_sub
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> matrix
+    constraint: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 10
+        [1]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 10
+TypeDecl
+  name --> coordinate
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> lat
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> real
+            constraint: (null)
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> long
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> real
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> local_coordinate
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> coordinate
+      constraint: (null)
+TypeDecl
+  name --> day
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> mon
+      [1] --> tue
+      [2] --> wed
+      [3] --> thu
+      [4] --> fri
+      [5] --> sat
+      [6] --> sun
+TypeDecl
+  name --> midweek
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> day
+      constraint: RangeConstraint
+        range: Range
+          lower: NameExpr
+            name: SimpleName
+              id --> tue
+          upper: NameExpr
+            name: SimpleName
+              id --> thu
+TypeDecl
+  name --> positive
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> integer
+      constraint: (null)
+TypeDecl
+  name --> counter
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> positive
+      constraint: (null)
+TypeDecl
+  name --> suit
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> clubs
+      [1] --> diamonds
+      [2] --> hearts
+      [3] --> spades
+TypeDecl
+  name --> gender
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> m
+      [1] --> f
+TypeDecl
+  name --> level
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> low
+      [1] --> medium
+      [2] --> urgent
+TypeDecl
+  name --> light
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> red
+      [1] --> amber
+      [2] --> green
+TypeDecl
+  name --> hexa
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> 'A'
+      [1] --> 'B'
+      [2] --> 'C'
+      [3] --> 'D'
+      [4] --> 'E'
+      [5] --> 'F'
+TypeDecl
+  name --> mixed
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> 'A'
+      [1] --> 'B'
+      [2] --> '*'
+      [3] --> none
+      [4] --> '?'
+      [5] --> '%'
+TypeDecl
+  name --> weekday
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> day
+    constraint: RangeConstraint
+      range: Range
+        lower: NameExpr
+          name: SimpleName
+            id --> mon
+        upper: NameExpr
+          name: SimpleName
+            id --> fri
+TypeDecl
+  name --> major
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> suit
+    constraint: RangeConstraint
+      range: Range
+        lower: NameExpr
+          name: SimpleName
+            id --> hearts
+        upper: NameExpr
+          name: SimpleName
+            id --> spades
+TypeDecl
+  name --> roman_digit
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> 'I'
+      [1] --> 'V'
+      [2] --> 'X'
+      [3] --> 'L'
+      [4] --> 'C'
+      [5] --> 'D'
+      [6] --> 'M'
+TypeDecl
+  name --> page_num
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 2_000
+ObjectDeclaration
+  names ===
+    [0] --> max_line_size
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 132
+TypeDecl
+  name --> line_size
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: NameExpr
+          name: SimpleName
+            id --> max_line_size
+TypeDecl
+  name --> column_ptr
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> line_size
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 10
+TypeDecl
+  name --> buffer_size
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 0
+        upper: NameExpr
+          name: SimpleName
+            id --> max
+TypeDecl
+  name --> coefficient
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Floating Point
+    digits: IntLiteralExpr
+      value --> 4
+    range: RangeConstraint
+      range: Range
+        lower: UnaryExpr
+          op --> - (minus)
+          operand: RealLiteralExpr
+            value --> 1.0
+        upper: RealLiteralExpr
+          value --> 1.0
+TypeDecl
+  name --> mass
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Floating Point
+    digits: IntLiteralExpr
+      value --> 7
+    range: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 1.0E35
+TypeDecl
+  name --> short_coeff
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> coefficient
+    constraint: RealConstraint
+      range: NumericTypeSpec
+        kind --> Floating Point
+        digits: IntLiteralExpr
+          value --> 5
+        range: (null)
+TypeDecl
+  name --> probability
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> real
+    constraint: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 1.0
+TypeDecl
+  name --> volt
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Fixed Point
+    delta: RealLiteralExpr
+      value --> 0.125
+    range: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 255.0
+TypeDecl
+  name --> rough_voltage
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> volt
+    constraint: RealConstraint
+      range: NumericTypeSpec
+        kind --> Fixed Point
+        delta: RealLiteralExpr
+          value --> 1.0
+        range: (null)
+ObjectDeclaration
+  names ===
+    [0] --> word_length
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 8
+ObjectDeclaration
+  names ===
+    [0] --> del
+  constant --> true
+  typeSpec: (null)
+  initializer: BinaryExpr
+    op --> / (divide)
+    lhs: RealLiteralExpr
+      value --> 1.0
+    rhs: BinaryExpr
+      op --> ** (power)
+      lhs: IntLiteralExpr
+        value --> 2
+      rhs: BinaryExpr
+        op --> - (minus)
+        lhs: NameExpr
+          name: SimpleName
+            id --> word_length
+        rhs: IntLiteralExpr
+          value --> 1
+TypeDecl
+  name --> fraction
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Fixed Point
+    delta: NameExpr
+      name: SimpleName
+        id --> del
+    range: RangeConstraint
+      range: Range
+        lower: UnaryExpr
+          op --> - (minus)
+          operand: RealLiteralExpr
+            value --> 1.0
+        upper: BinaryExpr
+          op --> - (minus)
+          lhs: RealLiteralExpr
+            value --> 1.0
+          rhs: NameExpr
+            name: SimpleName
+              id --> del
+TypeDecl
+  name --> vector
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> real
+      constraint: (null)
+TypeDecl
+  name --> roman
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> positive
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> roman_digit
+      constraint: (null)
+TypeDecl
+  name --> schedule
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: SubtypeRange
+          subtype: SubtypeIndication
+            type_mark: SimpleName
+              id --> day
+            constraint: (null)
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> boolean
+      constraint: (null)
+TypeDecl
+  name --> line
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: NameExpr
+            name: SimpleName
+              id --> max_line_size
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> character
+      constraint: (null)
+ObjectDeclaration
+  names ===
+    [0] --> grid
+  constant --> false
+  typeSpec: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 80
+        [1]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 100
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> boolean
+      constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> mix
+  constant --> false
+  typeSpec: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: SubtypeRange
+          subtype: SubtypeIndication
+            type_mark: SimpleName
+              id --> color
+            constraint: RangeConstraint
+              range: Range
+                lower: NameExpr
+                  name: SimpleName
+                    id --> red
+                upper: NameExpr
+                  name: SimpleName
+                    id --> green
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> boolean
+      constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> page
+  constant --> false
+  typeSpec: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 50
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> line
+      constraint: (null)
+  initializer: (null)
+TypeDecl
+  name --> month_name
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> jan
+      [1] --> feb
+      [2] --> mar
+      [3] --> apr
+      [4] --> may
+      [5] --> jun
+      [6] --> jul
+      [7] --> aug
+      [8] --> sep
+      [9] --> oct
+      [10] --> nov
+      [11] --> dec
+TypeDecl
+  name --> date
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> day
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 1
+                upper: IntLiteralExpr
+                  value --> 31
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> month
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> month_name
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> year
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 0
+                upper: IntLiteralExpr
+                  value --> 4000
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> complex
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> re
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> real
+            constraint: (null)
+          initializer: RealLiteralExpr
+            value --> 0.0
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> im
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> real
+            constraint: (null)
+          initializer: RealLiteralExpr
+            value --> 0.0
+      variant part: (null)
+ObjectDeclaration
+  names ===
+    [0] --> tomorrow
+    [1] --> yesterday
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> date
+    constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> a
+    [1] --> b
+    [2] --> c
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> complex
+    constraint: (null)
+  initializer: (null)
+TypeDecl
+  name --> buffer
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> size
+      type: SimpleName
+        id --> buffer_size
+      expr: IntLiteralExpr
+        value --> 100
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> pos
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> buffer_size
+            constraint: (null)
+          initializer: IntLiteralExpr
+            value --> 0
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> value
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> string
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> size
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> square
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> side
+      type: SimpleName
+        id --> integer
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> mat
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> matrix
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> side
+                [1]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> side
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> double_square
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> number
+      type: SimpleName
+        id --> integer
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> left
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> square
+            constraint: DiscriminantConstraint
+              list ===
+                [0]: DiscriminantAssociation
+                  name ===
+                  expr: NameExpr
+                    name: SimpleName
+                      id --> number
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> right
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> square
+            constraint: DiscriminantConstraint
+              list ===
+                [0]: DiscriminantAssociation
+                  name ===
+                  expr: NameExpr
+                    name: SimpleName
+                      id --> number
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> item
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> number
+      type: SimpleName
+        id --> positive
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> content
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> device
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> printer
+      [1] --> disk
+      [2] --> drum
+TypeDecl
+  name --> state
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> open
+      [1] --> closed
+TypeDecl
+  name --> cylinder_index
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 50
+TypeDecl
+  name --> track_number
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 120
+ObjectDeclaration
+  names ===
+    [0] --> page_size
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 55
+TypeDecl
+  name --> peripheral
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> unit
+      type: SimpleName
+        id --> device
+      expr: NameExpr
+        name: SimpleName
+          id --> disk
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> status
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> state
+            constraint: (null)
+          initializer: (null)
+      variant part: VariantPart
+        name: SimpleName
+          id --> unit
+        variants ===
+          [0]: Variant
+            choices ===
+              [0]: ExprChoice
+                expr: NameExpr
+                  name: SimpleName
+                    id --> printer
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> line_count
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> integer
+                    constraint: RangeConstraint
+                      range: Range
+                        lower: IntLiteralExpr
+                          value --> 1
+                        upper: NameExpr
+                          name: SimpleName
+                            id --> page_size
+                  initializer: (null)
+              variant part: (null)
+          [1]: Variant
+            choices ===
+              [0]: OthersChoice
+                others --> Others
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> cylinder
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> cylinder_index
+                    constraint: (null)
+                  initializer: (null)
+                [1]: ComponentDeclaration
+                  names ===
+                    [0] --> track
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> track_number
+                    constraint: (null)
+                  initializer: (null)
+              variant part: (null)
+TypeDecl
+  name --> drum_unit
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> peripheral
+    constraint: DiscriminantConstraint
+      list ===
+        [0]: DiscriminantAssociation
+          name ===
+          expr: NameExpr
+            name: SimpleName
+              id --> drum
+TypeDecl
+  name --> disk_unit
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> peripheral
+    constraint: DiscriminantConstraint
+      list ===
+        [0]: DiscriminantAssociation
+          name ===
+          expr: NameExpr
+            name: SimpleName
+              id --> disk
+ObjectDeclaration
+  names ===
+    [0] --> writer
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> peripheral
+    constraint: DiscriminantConstraint
+      list ===
+        [0]: DiscriminantAssociation
+          name ===
+            [0]: SimpleName
+              id --> unit
+          expr: NameExpr
+            name: SimpleName
+              id --> printer
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> archive
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> disk_unit
+    constraint: (null)
+  initializer: (null)
+TypeDecl
+  name --> frame
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> matrix
+      constraint: (null)
+TypeDecl
+  name --> buffer_name
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> buffer
+      constraint: (null)
+TypeDecl
+  name --> cell
+  discriminantPart === (null)
+  definition: (null)
+TypeDecl
+  name --> link
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> cell
+      constraint: (null)
+TypeDecl
+  name --> cell
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> value
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> succ
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> link
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> pred
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> link
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+ObjectDeclaration
+  names ===
+    [0] --> head
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> link
+    constraint: (null)
+  initializer: SubtypeIndicationAllocatorExpr
+    subtype: SubtypeIndication
+      type_mark: SimpleName
+        id --> cell
+      constraint: (null)
+ObjectDeclaration
+  names ===
+    [0] --> next
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> link
+    constraint: (null)
+  initializer: NameExpr
+    name: SelectedName
+      prefix: SimpleName
+        id --> head
+      selector: SimpleName
+        id --> succ
+      all --> false
+TypeDecl
+  name --> car
+  discriminantPart === (null)
+  definition: (null)
+TypeDecl
+  name --> person
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> sex
+      type: SimpleName
+        id --> gender
+      expr: (null)
+  definition: (null)
+TypeDecl
+  name --> person_name
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> person
+      constraint: (null)
+TypeDecl
+  name --> car_name
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> car
+      constraint: (null)
+TypeDecl
+  name --> car
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> number
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> owner
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> person_name
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> person
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> sex
+      type: SimpleName
+        id --> gender
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> name
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> string
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: IntLiteralExpr
+                    value --> 20
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> birth
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> date
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> age
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 1
+                upper: IntLiteralExpr
+                  value --> 130
+          initializer: (null)
+        [3]: ComponentDeclaration
+          names ===
+            [0] --> vehicle
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> car_name
+            constraint: (null)
+          initializer: (null)
+      variant part: VariantPart
+        name: SimpleName
+          id --> sex
+        variants ===
+          [0]: Variant
+            choices ===
+              [0]: ExprChoice
+                expr: NameExpr
+                  name: SimpleName
+                    id --> m
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> wife
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> person_name
+                    constraint: DiscriminantConstraint
+                      list ===
+                        [0]: DiscriminantAssociation
+                          name ===
+                            [0]: SimpleName
+                              id --> sex
+                          expr: NameExpr
+                            name: SimpleName
+                              id --> f
+                  initializer: (null)
+              variant part: (null)
+          [1]: Variant
+            choices ===
+              [0]: ExprChoice
+                expr: NameExpr
+                  name: SimpleName
+                    id --> f
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> husband
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> person_name
+                    constraint: DiscriminantConstraint
+                      list ===
+                        [0]: DiscriminantAssociation
+                          name ===
+                            [0]: SimpleName
+                              id --> sex
+                          expr: NameExpr
+                            name: SimpleName
+                              id --> m
+                  initializer: (null)
+              variant part: (null)
+ObjectDeclaration
+  names ===
+    [0] --> my_car
+    [1] --> your_car
+    [2] --> next_car
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> car_name
+    constraint: (null)
+  initializer: (null)
+TypeDecl
+  name --> male
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> person
+    constraint: DiscriminantConstraint
+      list ===
+        [0]: DiscriminantAssociation
+          name ===
+            [0]: SimpleName
+              id --> sex
+          expr: NameExpr
+            name: SimpleName
+              id --> m
+
+
+Listing for tst/declarations/tst00200.ada:
+==========================================
+     1   --
+     2   -- -- This is a complete list of examples from Chapter 3
+     3   --    --------------------------------------------------
+     4
+     5
+     6   type BIT_VECTOR is array(INTEGER range <>) of BOOLEAN;
+     7
+     8   COUNT, SUM : INTEGER;
+     9   SIZE : INTEGER range 0 .. 10_000 := 0;
+    10   SORTED : BOOLEAN := FALSE;
+    11
+    12   N : constant := 3;
+    13   K : constant := 100;
+    14
+    15   type COLOR is (WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, BROWN, BLACK);
+    16
+    17   COLOR_TABLE : array(1 .. N) of COLOR;
+    18   --OPTION := BIT_VECTOR(1 .. 10) := (others => TRUE);
+    19
+    20   LIMIT : constant INTEGER := 10_000;
+    21   LOW_LIMIT : constant INTEGER := LIMIT / 10;
+    22   --TOLLERANNCE : constant REAL := DISPERSION(1.15);
+    23
+    24   PI : constant := 3.14159_26536;
+    25   TWO_PI : constant := 2 * PI;
+    26   MAX : constant := 500;
+    27   POWER_16 : constant := 2 ** 16;
+    28   ONE, UN, EINS : constant := 1;
+    29
+    30   type COLUMN is range 1 .. 72;
+    31   type TABLE is array(1 .. 10) of INTEGER;
+    32   type MATRIX is array(INTEGER range <>, INTEGER range <>) of REAL;
+    33
+    34   subtype RAINBOW is COLOR range RED .. PURPLE;
+    35   subtype RED_PURPLE is RAINBOW;
+    36   subtype INT is INTEGER;
+    37   subtype SMALL_INT is INTEGER range -10 .. 10;
+    38   subtype UP_TO_K is COLUMN range 1 .. K;
+    39   subtype SQUARE_SUB is MATRIX(1 .. 10, 1 .. 10);
+    40
+    41   type COORDINATE is
+    42       record
+    43           LAT : REAL;
+    44           LONG : REAL;
+    45       end record;
+    46
+    47   type LOCAL_COORDINATE is new COORDINATE;
+    48   type DAY is (MON, TUE, WED, THU, FRI, SAT, SUN);
+    49   type MIDWEEK is new DAY range TUE .. THU;
+    50   type POSITIVE is new INTEGER;
+    51   type COUNTER is new POSITIVE;
+    52   --type SPECIAL_KEY is new KEY_MANAGER.KEY;
+    53
+    54   type SUIT is (CLUBS, DIAMONDS, HEARTS, SPADES);
+    55   type GENDER is (M, F);
+    56   type LEVEL is (LOW, MEDIUM, URGENT);
+    57   type LIGHT is (RED, AMBER, GREEN);
+    58
+    59   type HEXA is ('A', 'B', 'C', 'D', 'E', 'F');
+    60   type MIXED is ('A', 'B', '*', NONE, '?', '%');
+    61
+    62   subtype WEEKDAY is DAY range MON .. FRI;
+    63   subtype MAJOR is SUIT range HEARTS .. SPADES;
+    64
+    65   type ROMAN_DIGIT is ('I', 'V', 'X', 'L', 'C', 'D', 'M');
+    66
+    67   type PAGE_NUM is range 1 .. 2_000;
+    68   MAX_LINE_SIZE : constant := 132;
+    69   type LINE_SIZE is range 1 .. MAX_LINE_SIZE;
+    70
+    71   subtype COLUMN_PTR is LINE_SIZE range 1 .. 10;
+    72   subtype BUFFER_SIZE is INTEGER range 0 .. MAX;
+    73
+    74   type COEFFICIENT is digits 4 range -1.0 .. 1.0;
+    75   type MASS is digits 7 range 0.0 .. 1.0E35;
+    76
+    77   subtype SHORT_COEFF is COEFFICIENT digits 5;
+    78   subtype PROBABILITY is REAL range 0.0 .. 1.0;
+    79
+    80   type VOLT is delta 0.125 range 0.0 .. 255.0;
+    81
+    82   subtype ROUGH_VOLTAGE is VOLT delta 1.0;
+    83
+    84   WORD_LENGTH : constant := 8;
+    85
+    86   DEL : constant := 1.0 / 2 ** (WORD_LENGTH - 1);
+    87   type FRACTION is delta DEL range -1.0 .. 1.0 - DEL;
+    88
+    89   type VECTOR is array(INTEGER range <>) of REAL;
+    90   type ROMAN is array(POSITIVE range <>) of ROMAN_DIGIT;
+    91
+    92   type SCHEDULE is array(DAY) of BOOLEAN;
+    93   type LINE is array(1 .. MAX_LINE_SIZE) of CHARACTER;
+    94
+    95   GRID : array(1 .. 80, 1 .. 100) of BOOLEAN;
+    96   MIX : array(COLOR range RED .. GREEN) of BOOLEAN;
+    97   PAGE : array(1 .. 50) of LINE;
+    98
+    99   type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN,
+   100           JUL, AUG, SEP, OCT, NOV, DEC);
+   101
+   102   type DATE is
+   103       record
+   104           DAY : INTEGER range 1 ..31;
+   105           MONTH : MONTH_NAME;
+   106           YEAR : INTEGER range 0 .. 4000;
+   107       end record;
+   108
+   109
+   110   type COMPLEX is
+   111       record
+   112           RE : REAL := 0.0;
+   113           IM : REAL := 0.0;
+   114       end record;
+   115
+   116   TOMORROW, YESTERDAY : DATE;
+   117   A, B, C : COMPLEX;
+   118
+   119
+   120   type BUFFER(SIZE : BUFFER_SIZE := 100) is
+   121       record
+   122           POS : BUFFER_SIZE := 0;
+   123           VALUE : STRING(1 .. SIZE);
+   124       end record;
+   125
+   126   type SQUARE(SIDE : INTEGER) is
+   127       record
+   128           MAT : MATRIX(1 .. SIDE, 1 .. SIDE);
+   129       end record;
+   130
+   131   type DOUBLE_SQUARE(NUMBER : INTEGER) is
+   132       record
+   133           LEFT : SQUARE(NUMBER);
+   134           RIGHT : SQUARE(NUMBER);
+   135       end record;
+   136
+   137   type ITEM(NUMBER : POSITIVE) is
+   138       record
+   139           CONTENT : INTEGER;
+   140           -- no component depends on the discriminant
+   141       end record;
+   142
+   143
+   144   type DEVICE is (PRINTER, DISK, DRUM);
+   145   type STATE is (OPEN, CLOSED);
+   146   type CYLINDER_INDEX is range 1 .. 50;
+   147   type TRACK_NUMBER is range 1 .. 120;
+   148
+   149   PAGE_SIZE : constant := 55;
+   150
+   151   type PERIPHERAL(UNIT : DEVICE := DISK) is
+   152       record
+   153           STATUS : STATE;
+   154           case UNIT is
+   155               when PRINTER =>
+   156                   LINE_COUNT : INTEGER range 1 .. PAGE_SIZE;
+   157               when others =>
+   158                   CYLINDER : CYLINDER_INDEX;
+   159                   TRACK : TRACK_NUMBER;
+   160           end case;
+   161       end record;
+   162
+   163
+   164   subtype DRUM_UNIT is PERIPHERAL(DRUM);
+   165   subtype DISK_UNIT is PERIPHERAL(DISK);
+   166
+   167   WRITER : PERIPHERAL(UNIT => PRINTER);
+   168   ARCHIVE : DISK_UNIT;
+   169
+   170
+   171   type FRAME is access MATRIX;
+   172   type BUFFER_NAME is access BUFFER;
+   173
+   174
+   175   type CELL;
+   176   type LINK is access CELL;
+   177
+   178   type CELL is
+   179       record
+   180           VALUE : INTEGER;
+   181           SUCC : LINK;
+   182           PRED : LINK;
+   183       end record;
+   184
+   185   --HEAD : LINK := new CELL'(0, null, null);
+   186   HEAD : LINK := new CELL;
+   187   NEXT : LINK := HEAD.SUCC;
+   188
+   189
+   190   type CAR;
+   191
+   192   type PERSON(SEX : GENDER);
+   193
+   194   type PERSON_NAME is access PERSON;
+   195   type CAR_NAME is access CAR;
+   196
+   197   type CAR is
+   198       record
+   199           NUMBER : INTEGER;
+   200           OWNER : PERSON_NAME;
+   201       end record;
+   202
+   203   type PERSON(SEX : GENDER) is
+   204       record
+   205           NAME : STRING(1 .. 20);
+   206           BIRTH : DATE;
+   207           AGE : INTEGER range 1 .. 130;
+   208           VEHICLE : CAR_NAME;
+   209           case SEX is
+   210               when M => WIFE : PERSON_NAME(SEX => F);
+   211               when F => HUSBAND : PERSON_NAME(SEX => M);
+   212           end case;
+   213       end record;
+   214
+   215
+   216   MY_CAR, YOUR_CAR, NEXT_CAR : CAR_NAME;
+   217
+   218
+   219   subtype MALE is PERSON(SEX => M);
+   220
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Array Type: bit_vector : Array
+Object Symbol: count : Object
+Object Symbol: sum : Object
+Object Symbol: size : Object
+Object Symbol: sorted : Object
+Object Symbol: n : Object
+Object Symbol: k : Object
+Enumeration Type: color : Enumeration
+   containing literals (white red orange yellow green blue purple brown black )
+Enumeration Literal: white : EnumLiteral of type color; value (0)
+Enumeration Literal: red : EnumLiteral of type color; value (1)
+Enumeration Literal: orange : EnumLiteral of type color; value (2)
+Enumeration Literal: yellow : EnumLiteral of type color; value (3)
+Enumeration Literal: green : EnumLiteral of type color; value (4)
+Enumeration Literal: blue : EnumLiteral of type color; value (5)
+Enumeration Literal: purple : EnumLiteral of type color; value (6)
+Enumeration Literal: brown : EnumLiteral of type color; value (7)
+Enumeration Literal: black : EnumLiteral of type color; value (8)
+Object Symbol: color_table : Object
+Object Symbol: limit : Object
+Object Symbol: low_limit : Object
+Object Symbol: pi : Object
+Object Symbol: two_pi : Object
+Object Symbol: max : Object
+Object Symbol: power_16 : Object
+Object Symbol: one : Object
+Object Symbol: un : Object
+Object Symbol: eins : Object
+Integer Type: column : Integer
+Array Type: table : Array
+Array Type: matrix : Array
+Subtype: rainbow : Subtype
+Subtype: red_purple : Subtype
+Subtype: int : Subtype
+Subtype: small_int : Subtype
+Subtype: up_to_k : Subtype
+Subtype: square_sub : Subtype
+Record Type: coordinate : Record
+   containing components (lat long )
+Derived Type: local_coordinate : Derived
+Enumeration Type: day : Enumeration
+   containing literals (mon tue wed thu fri sat sun )
+Enumeration Literal: mon : EnumLiteral of type day; value (0)
+Enumeration Literal: tue : EnumLiteral of type day; value (1)
+Enumeration Literal: wed : EnumLiteral of type day; value (2)
+Enumeration Literal: thu : EnumLiteral of type day; value (3)
+Enumeration Literal: fri : EnumLiteral of type day; value (4)
+Enumeration Literal: sat : EnumLiteral of type day; value (5)
+Enumeration Literal: sun : EnumLiteral of type day; value (6)
+Derived Type: midweek : Derived
+Derived Type: positive : Derived
+Derived Type: counter : Derived
+Enumeration Type: suit : Enumeration
+   containing literals (clubs diamonds hearts spades )
+Enumeration Literal: clubs : EnumLiteral of type suit; value (0)
+Enumeration Literal: diamonds : EnumLiteral of type suit; value (1)
+Enumeration Literal: hearts : EnumLiteral of type suit; value (2)
+Enumeration Literal: spades : EnumLiteral of type suit; value (3)
+Enumeration Type: gender : Enumeration
+   containing literals (m f )
+Enumeration Literal: m : EnumLiteral of type gender; value (0)
+Enumeration Literal: f : EnumLiteral of type gender; value (1)
+Enumeration Type: level : Enumeration
+   containing literals (low medium urgent )
+Enumeration Literal: low : EnumLiteral of type level; value (0)
+Enumeration Literal: medium : EnumLiteral of type level; value (1)
+Enumeration Literal: urgent : EnumLiteral of type level; value (2)
+Enumeration Type: light : Enumeration
+   containing literals (red amber green )
+Enumeration Literal: red : EnumLiteral of type light; value (0)
+Enumeration Literal: amber : EnumLiteral of type light; value (1)
+Enumeration Literal: green : EnumLiteral of type light; value (2)
+Enumeration Type: hexa : Enumeration
+   containing literals ('A' 'B' 'C' 'D' 'E' 'F' )
+Enumeration Literal: 'A' : EnumLiteral of type hexa; value (0)
+Enumeration Literal: 'B' : EnumLiteral of type hexa; value (1)
+Enumeration Literal: 'C' : EnumLiteral of type hexa; value (2)
+Enumeration Literal: 'D' : EnumLiteral of type hexa; value (3)
+Enumeration Literal: 'E' : EnumLiteral of type hexa; value (4)
+Enumeration Literal: 'F' : EnumLiteral of type hexa; value (5)
+Enumeration Type: mixed : Enumeration
+   containing literals ('A' 'B' '*' none '?' '%' )
+Enumeration Literal: 'A' : EnumLiteral of type mixed; value (0)
+Enumeration Literal: 'B' : EnumLiteral of type mixed; value (1)
+Enumeration Literal: '*' : EnumLiteral of type mixed; value (2)
+Enumeration Literal: none : EnumLiteral of type mixed; value (3)
+Enumeration Literal: '?' : EnumLiteral of type mixed; value (4)
+Enumeration Literal: '%' : EnumLiteral of type mixed; value (5)
+Subtype: weekday : Subtype
+Subtype: major : Subtype
+Enumeration Type: roman_digit : Enumeration
+   containing literals ('I' 'V' 'X' 'L' 'C' 'D' 'M' )
+Enumeration Literal: 'I' : EnumLiteral of type roman_digit; value (0)
+Enumeration Literal: 'V' : EnumLiteral of type roman_digit; value (1)
+Enumeration Literal: 'X' : EnumLiteral of type roman_digit; value (2)
+Enumeration Literal: 'L' : EnumLiteral of type roman_digit; value (3)
+Enumeration Literal: 'C' : EnumLiteral of type roman_digit; value (4)
+Enumeration Literal: 'D' : EnumLiteral of type roman_digit; value (5)
+Enumeration Literal: 'M' : EnumLiteral of type roman_digit; value (6)
+Integer Type: page_num : Integer
+Object Symbol: max_line_size : Object
+Integer Type: line_size : Integer
+Subtype: column_ptr : Subtype
+Subtype: buffer_size : Subtype
+Real Type: coefficient : Real
+Real Type: mass : Real
+Subtype: short_coeff : Subtype
+Subtype: probability : Subtype
+Real Type: volt : Real
+Subtype: rough_voltage : Subtype
+Object Symbol: word_length : Object
+Object Symbol: del : Object
+Real Type: fraction : Real
+Array Type: vector : Array
+Array Type: roman : Array
+Array Type: schedule : Array
+Array Type: line : Array
+Object Symbol: grid : Object
+Object Symbol: mix : Object
+Object Symbol: page : Object
+Enumeration Type: month_name : Enumeration
+   containing literals (jan feb mar apr may jun jul aug sep oct nov dec )
+Enumeration Literal: jan : EnumLiteral of type month_name; value (0)
+Enumeration Literal: feb : EnumLiteral of type month_name; value (1)
+Enumeration Literal: mar : EnumLiteral of type month_name; value (2)
+Enumeration Literal: apr : EnumLiteral of type month_name; value (3)
+Enumeration Literal: may : EnumLiteral of type month_name; value (4)
+Enumeration Literal: jun : EnumLiteral of type month_name; value (5)
+Enumeration Literal: jul : EnumLiteral of type month_name; value (6)
+Enumeration Literal: aug : EnumLiteral of type month_name; value (7)
+Enumeration Literal: sep : EnumLiteral of type month_name; value (8)
+Enumeration Literal: oct : EnumLiteral of type month_name; value (9)
+Enumeration Literal: nov : EnumLiteral of type month_name; value (10)
+Enumeration Literal: dec : EnumLiteral of type month_name; value (11)
+Record Type: date : Record
+   containing components (day month year )
+Record Type: complex : Record
+   containing components (re im )
+Object Symbol: tomorrow : Object
+Object Symbol: yesterday : Object
+Object Symbol: a : Object
+Object Symbol: b : Object
+Object Symbol: c : Object
+Discriminant Symbol: size : Discriminant
+Record Type: buffer : Record
+   containing components (pos value )
+Discriminant Symbol: side : Discriminant
+Record Type: square : Record
+   containing components (mat )
+Discriminant Symbol: number : Discriminant
+Record Type: double_square : Record
+   containing components (left right )
+Discriminant Symbol: number : Discriminant
+Record Type: item : Record
+   containing components (content )
+Enumeration Type: device : Enumeration
+   containing literals (printer disk drum )
+Enumeration Literal: printer : EnumLiteral of type device; value (0)
+Enumeration Literal: disk : EnumLiteral of type device; value (1)
+Enumeration Literal: drum : EnumLiteral of type device; value (2)
+Enumeration Type: state : Enumeration
+   containing literals (open closed )
+Enumeration Literal: open : EnumLiteral of type state; value (0)
+Enumeration Literal: closed : EnumLiteral of type state; value (1)
+Integer Type: cylinder_index : Integer
+Integer Type: track_number : Integer
+Object Symbol: page_size : Object
+Discriminant Symbol: unit : Discriminant
+Record Type: peripheral : Record
+   containing components (status line_count cylinder track )
+Subtype: drum_unit : Subtype
+Subtype: disk_unit : Subtype
+Object Symbol: writer : Object
+Object Symbol: archive : Object
+Access Type: frame : Access
+Access Type: buffer_name : Access
+Access Type: link : Access
+Record Type: cell : Record
+   containing components (value succ pred )
+Object Symbol: head : Object
+Object Symbol: next : Object
+Discriminant Symbol: sex : Discriminant
+Access Type: person_name : Access
+Access Type: car_name : Access
+Record Type: car : Record
+   containing components (number owner )
+Discriminant Symbol: sex : Discriminant
+Record Type: person : Record
+   containing components (name birth age vehicle wife husband )
+Object Symbol: my_car : Object
+Object Symbol: your_car : Object
+Object Symbol: next_car : Object
+Subtype: male : Subtype
+-------------------
+
+Scope Name: coordinate
+Scope ID  : 2
+-------------------
+Component Symbol: lat : Component
+Component Symbol: long : Component
+-------------------
+
+Scope Name: date
+Scope ID  : 3
+-------------------
+Component Symbol: day : Component
+Component Symbol: month : Component
+Component Symbol: year : Component
+-------------------
+
+Scope Name: complex
+Scope ID  : 4
+-------------------
+Component Symbol: re : Component
+Component Symbol: im : Component
+-------------------
+
+Scope Name: buffer
+Scope ID  : 5
+-------------------
+Component Symbol: pos : Component
+Component Symbol: value : Component
+-------------------
+
+Scope Name: square
+Scope ID  : 6
+-------------------
+Component Symbol: mat : Component
+-------------------
+
+Scope Name: double_square
+Scope ID  : 7
+-------------------
+Component Symbol: left : Component
+Component Symbol: right : Component
+-------------------
+
+Scope Name: item
+Scope ID  : 8
+-------------------
+Component Symbol: content : Component
+-------------------
+
+Scope Name: peripheral
+Scope ID  : 9
+-------------------
+Component Symbol: status : Component
+Component Symbol: line_count : Component
+Component Symbol: cylinder : Component
+Component Symbol: track : Component
+-------------------
+
+Scope Name: cell
+Scope ID  : 10
+-------------------
+Component Symbol: value : Component
+Component Symbol: succ : Component
+Component Symbol: pred : Component
+-------------------
+
+Scope Name: car
+Scope ID  : 11
+-------------------
+Component Symbol: number : Component
+Component Symbol: owner : Component
+-------------------
+
+Scope Name: person
+Scope ID  : 12
+-------------------
+Component Symbol: name : Component
+Component Symbol: birth : Component
+Component Symbol: age : Component
+Component Symbol: vehicle : Component
+Component Symbol: wife : Component
+Component Symbol: husband : Component
+-------------------

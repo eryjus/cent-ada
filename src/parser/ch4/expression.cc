@@ -26,38 +26,55 @@
 //
 // -- Parse an Expression
 //    -------------------
-bool Parser::ParseExpression(void)
+ExprPtr Parser::ParseExpression(void)
 {
     Production p(*this, "expression");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    BinaryOper bop = BinaryOper::Unspecified;
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
     TokenType tok;
 
+    TOKEN;
 
-    if (!ParseRelation()) return false;
 
-    switch (tokens.Current()) {
-    case TokenType::TOK_AND:
-    case TokenType::TOK_AND_THEN:
-    case TokenType::TOK_OR:
-    case TokenType::TOK_OR_ELSE:
-    case TokenType::TOK_XOR:
-        tok = tokens.Current();
-        break;
-
-    default:
-        m.Commit();
-        return true;
+    lhs = ParseRelation();
+    if (!lhs) {
+        p.At("empty lhs");
+        return nullptr;
     }
+
+    switch (TokenStream::Get().Current()) {
+    case TokenType::TOK_AND:        bop = BinaryOper::And;      tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_AND_THEN:   bop = BinaryOper::AndThen;  tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_OR:         bop = BinaryOper::Or;       tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_OR_ELSE:    bop = BinaryOper::OrElse;   tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_XOR:        bop = BinaryOper::Xor;      tok = TokenStream::Get().Current();  break;
+    default:
+        p.At("lhs only");
+        m.Commit();
+        return lhs;
+    }
+
 
     while (Optional(tok)) {
-        if (!ParseRelation()) {
+        rhs = ParseRelation();
+        if (!rhs) {
             // -- TODO: maybe issue an error about missing a relation and return true instead???
-            return false;
+            p.At("no rhs");
+            return nullptr;
         }
+
+
+        lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
     }
 
+
+    p.At("only lhs");
     m.Commit();
-    return true;
+
+    return lhs;
 }
 
 

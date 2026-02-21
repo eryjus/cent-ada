@@ -24,14 +24,23 @@
 //
 // -- Parse a Type Declaration
 //    ------------------------
-bool Parser::ParseTypeDeclaration(void)
+TypeDeclPtr Parser::ParseTypeDeclaration(void)
 {
     Production p(*this, "type_declaration");
+    TypeDeclPtr rv = nullptr;
 
-    if (ParseFullTypeDeclaration())         return true;
-    if (ParseIncompleteTypeDeclaration())   return true;
-    if (ParsePrivateTypeDeclaration())      return true;
-    return false;
+
+    rv = ParseFullTypeDeclaration();
+    if (rv) return rv;
+
+    rv = ParseIncompleteTypeDeclaration();
+    if (rv) return rv;
+
+    rv = ParsePrivateTypeDeclaration();
+    if (rv) return rv;
+
+
+    return nullptr;
 }
 
 

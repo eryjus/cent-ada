@@ -26,6 +26,7 @@ bool Parser::ParseProperBody(void)
 {
     Production p(*this, "proper_body");
 
+
     if (ParseSubprogramBody())      return true;
     if (ParsePackageBody())         return true;
     if (ParseTaskBody())            return true;

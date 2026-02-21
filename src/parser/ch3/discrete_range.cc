@@ -22,14 +22,32 @@
 //
 // -- Parse Discrete Range
 //    --------------------
-bool Parser::ParseDiscreteRange(void)
+DiscreteRangePtr Parser::ParseDiscreteRange(void)
 {
     Production p(*this, "discrete_range");
+    DiscreteRangePtr rv;
+    SubtypeIndicationPtr sType = nullptr;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
-    if (ParseDiscreteSubtypeIndication())   return true;
-    if (ParseRange())                       return true;
 
-    return false;
+    //
+    // -- Try a subtype indication
+    //    ------------------------
+    sType = ParseDiscreteSubtypeIndication();
+    if (sType) return std::make_unique<SubtypeRange>(astLoc, std::move(sType));
+
+
+    //
+    // -- Try a range
+    //    -----------
+    rv = ParseRange();
+    if (rv) return rv;
+
+
+    //
+    // -- nothing found
+    //    -------------
+    return nullptr;
 }
 
 

@@ -22,31 +22,62 @@
 //
 // -- Parse a Simple Expression
 //    -------------------------
-bool Parser::ParseSimpleExpression(void)
+ExprPtr Parser::ParseSimpleExpression(void)
 {
     Production p(*this, "simple_expression");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    UnaryOper uop = UnaryOper::Unspecified;
+    BinaryOper bop = BinaryOper::Unspecified;
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
 
-    ParseUnaryAddingOperator();
-    if (!ParseTerm()) return false;
-    if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
+    uop = ParseUnaryAddingOperator();           // -- not required
+
+    lhs = ParseTerm();
+    if (!lhs) {
+        p.At("No lhs");
+        return nullptr;
+    }
+
+    if (uop != UnaryOper::Unspecified) {
+        lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
+    }
+
+    if (TokenStream::Get().Current() == TokenType::TOK_COMMA || TokenStream::Get().Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
+        p.At("Comma/Arrow next");
         m.Commit();
-        return true;
+
+        return lhs;
     }
 
 
-    while (ParseBinaryAddingOperator()) {
-        if (!ParseTerm()) return false;
-        if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
+    bop = ParseBinaryAddingOperator();
+    while (bop != BinaryOper::Unspecified) {
+        rhs = ParseTerm();
+        if (!rhs) {
+            p.At("lhs only");
+            return nullptr;
+        }
+
+        if (TokenStream::Get().Current() == TokenType::TOK_COMMA || TokenStream::Get().Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term
             m.Commit();
-            return true;
+
+            return std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
         }
+
+        lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
+        bop = ParseBinaryAddingOperator();
     }
 
+
+    p.At("Simple Expression chain");
+    TOKEN;
     m.Commit();
-    return true;
+
+    return lhs;
 }
 
 

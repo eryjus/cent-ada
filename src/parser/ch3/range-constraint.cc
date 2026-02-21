@@ -22,18 +22,22 @@
 //
 // -- Parse a Range Constraint
 //    ------------------------
-bool Parser::ParseRangeConstraint(void)
+RangeConstraintPtr Parser::ParseRangeConstraint(void)
 {
     Production p(*this, "range_constraint");
     MarkStream m(tokens, diags);
+    DiscreteRangePtr range = nullptr;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
 
     //
     // -- the range starts with the TOK_RANGE token
     //    -----------------------------------------
-    if (!Require(TokenType::TOK_RANGE)) return false;
-    SourceLoc_t loc = tokens.SourceLocation();
-    if (!ParseRange()) {
+    if (!Require(TokenType::TOK_RANGE)) return nullptr;
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+
+    range = ParseRange();
+    if (!range) {
         diags.Error(loc, DiagID::InvalidRangeConstraint);
     }
 
@@ -42,7 +46,8 @@ bool Parser::ParseRangeConstraint(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+
+    return std::make_unique<RangeConstraint>(astLoc, std::move(range));
 }
 
 

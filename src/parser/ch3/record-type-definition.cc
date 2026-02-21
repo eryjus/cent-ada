@@ -22,33 +22,36 @@
 //
 // -- Parse a Record Type Definition
 //    ------------------------------
-bool Parser::ParseRecordTypeDefinition(Id &id)
+RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
 {
     Production p(*this, "record_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    ComponentListPtr list = nullptr;
+    RecordTypeSymbolPtr recSym = nullptr;
 
 
 
     //
     // -- this production starts with a TOK_RECORD
     //    ----------------------------------------
-    if (!Require(TokenType::TOK_RECORD)) return false;
+    if (!Require(TokenType::TOK_RECORD)) return nullptr;
 
 
 
     //
     // -- Symbol table management
     //    -----------------------
-    std::unique_ptr<RecordTypeSymbol> recSym = std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope());
+    recSym = std::make_unique<RecordTypeSymbol>(id.name, id.loc, scopes.CurrentScope());
     RecordTypeSymbol *rec = recSym.get();
 
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -57,27 +60,35 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
         }
     }
 
+
+
     scopes.Declare(std::move(recSym));
-    scopes.PushScope(Scope::ScopeKind::Record, id.name);
+    Scope *last = scopes.PushScope(Scope::ScopeKind::Record, id.name);
+
 
 
     //
     // -- then is followed by a list of components
     //    ----------------------------------------
-    if (!ParseComponentList(rec)) return false;
+    list = ParseComponentList(rec);
+    if (!list) {
+        scopes.PopScope(last);      // -- TODO: figure out how to destroy the scope
+        return nullptr;
+    }
+
 
 
 
     //
     // -- and then by TOK_END and TOK_RECORD again
     //    ----------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_END)) {
         diags.Error(loc, DiagID::MissingEnd, { "record component list" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RECORD)) {
         diags.Error(loc, DiagID::MissingEndingTag, { "record" } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -89,10 +100,12 @@ bool Parser::ParseRecordTypeDefinition(Id &id)
     // -- Consider this parse to be good
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
-    scopes.PopScope();
-    return true;
+    scopes.PopScope(last);
+
+    return std::make_unique<RecordSpecification>(astLoc, std::move(list));
 }
 
 

@@ -22,25 +22,37 @@
 //
 // -- Parse a Type Conversion
 //    -----------------------
-bool Parser::ParseTypeConversion(void)
+ExprPtr Parser::ParseTypeConversion(void)
 {
     Production p(*this, "type_conversion");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    NamePtr id = nullptr;
+    ExprPtr expr = nullptr;
 
-    if (!ParseTypeMark())       return false;
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return false;
-    loc = tokens.SourceLocation();
-    if (!ParseExpression()) {
+
+    id = ParseTypeMark();
+    if (!id) return nullptr;
+
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return nullptr;
+    loc = TokenStream::Get().SourceLocation();
+
+
+    expr = ParseExpression();
+    if (!expr) {
         diags.Error(loc, DiagID::InvalidExpression, { "type conversion" } );
     }
-    loc = tokens.SourceLocation();
+
+
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
 
     m.Commit();
-    return true;
+
+    return std::make_unique<TypeConversionExpr>(astLoc, std::move(id), std::move(expr));
 }
 
 

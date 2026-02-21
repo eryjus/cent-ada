@@ -24,40 +24,63 @@
 //
 // -- Parse a Factor
 //    --------------
-bool Parser::ParseFactor(void)
+ExprPtr Parser::ParseFactor(void)
 {
     Production p(*this, "factor");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
 
     if (Require(TokenType::TOK_ABS)) {
-        loc = tokens.SourceLocation();
-        if (!ParsePrimary()) {
+        loc = TokenStream::Get().SourceLocation();
+
+        lhs = ParsePrimary();
+        if (!lhs) {
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "ABS" } );
         }
 
+        p.At("ABS");
         m.Commit();
-        return true;
+
+        return std::make_unique<UnaryExpr>(astLoc, UnaryOper::Abs, std::move(lhs));
     } else if (Require(TokenType::TOK_NOT)) {
-        loc = tokens.SourceLocation();
-        if (!ParsePrimary()) {
+        loc = TokenStream::Get().SourceLocation();
+
+        lhs = ParsePrimary();
+        if (!lhs) {
             diags.Error(loc, DiagID::InvalidPrimaryExpr, { "NOT" } );
         }
 
+        p.At("NOT");
         m.Commit();
-        return true;
-    } else {
-        if (!ParsePrimary())    return false;
 
-        if (Optional(TokenType::TOK_DOUBLE_STAR)) {
-            if (!ParsePrimary())    return false;
+        return std::make_unique<UnaryExpr>(astLoc, UnaryOper::Not, std::move(lhs));
+    } else {
+        lhs = ParsePrimary();
+        if (!lhs) {
+            p.At("No Primary");
+            return nullptr;
         }
 
+        if (Optional(TokenType::TOK_DOUBLE_STAR)) {
+            rhs = ParsePrimary();
+            if (!rhs) return nullptr;
+            p.At("STAR_STAR");
+            m.Commit();
+            return std::make_unique<BinaryExpr>(astLoc, BinaryOper::Power, std::move(lhs), std::move(rhs));
+        }
+
+        p.At("Single");
         m.Commit();
-        return true;
+
+        return lhs;
     }
 
-    return false;
+
+    p.At("Failed");
+    return nullptr;
 }
 
 

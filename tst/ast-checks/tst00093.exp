@@ -1,0 +1,33 @@
+TypeDecl
+  name --> cell
+  discriminantPart === (null)
+  definition: (null)
+TypeDecl
+  name --> link
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> cell
+      constraint: (null)
+
+
+Listing for tst/declarations/tst00093.ada:
+==========================================
+     1   type CELL;
+     2   type LINK is access CELL;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Incomplete Type: cell : Incomplete
+Access Type: link : Access
+-------------------

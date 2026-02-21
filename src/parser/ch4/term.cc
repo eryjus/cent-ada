@@ -22,19 +22,37 @@
 //
 // -- Parse a Term
 //    ------------
-bool Parser::ParseTerm(void)
+ExprPtr Parser::ParseTerm(void)
 {
     Production p(*this, "term");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    BinaryOper bop = BinaryOper::Unspecified;
+    ExprPtr lhs = nullptr;
+    ExprPtr rhs = nullptr;
 
-    if (!ParseFactor()) return false;
 
-    while (ParseMultiplyingOperator()) {
-        if (!ParseFactor()) return false;
+    lhs = ParseFactor();
+    if (!lhs) {
+        p.At("Failed");
+        return nullptr;
     }
 
+    bop = ParseMultiplyingOperator();
+    while (bop != BinaryOper::Unspecified) {
+        rhs = ParseFactor();
+        if (!rhs) return nullptr;
+
+        lhs = std::make_unique<BinaryExpr>(astLoc, bop, std::move(lhs), std::move(rhs));
+
+        bop = ParseMultiplyingOperator();
+    }
+
+
+    p.At("proper term");
     m.Commit();
-    return true;
+
+    return lhs;
 }
 
 

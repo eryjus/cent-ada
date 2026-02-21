@@ -26,23 +26,23 @@ ScopeManager::ScopeManager(void)
     Scope *declScope;
 
     stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, 0, "standard"));
-    declScope = stack.back().get();
+    current = declScope = stack.back().get();
 
 
     //
     // -- Take care of the internal fundamental types
     //    -------------------------------------------
-    Declare(std::make_unique<IntegerTypeSymbol>("integer", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<ArrayTypeSymbol>("array", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<RealTypeSymbol>("real", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<EnumTypeSymbol>("character", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<ArrayTypeSymbol>("string", tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<IntegerTypeSymbol>("integer", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<ArrayTypeSymbol>("array", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<RealTypeSymbol>("real", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<EnumTypeSymbol>("character", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<ArrayTypeSymbol>("string", TokenStream::Get().EmptyLocation(), declScope));
 
 
     //
     // -- Create the boolean enumeration
     //    ------------------------------
-    std::unique_ptr<EnumTypeSymbol> b = std::make_unique<EnumTypeSymbol>("boolean", tokens->EmptyLocation(), declScope);
+    std::unique_ptr<EnumTypeSymbol> b = std::make_unique<EnumTypeSymbol>("boolean", TokenStream::Get().EmptyLocation(), declScope);
     EnumTypeSymbol *bTyp = b.get();
     Declare(std::move(b));
 
@@ -52,7 +52,7 @@ ScopeManager::ScopeManager(void)
     Declare(std::move(f));
 
     std::unique_ptr<EnumLiteralSymbol> t;
-    t = std::make_unique<EnumLiteralSymbol>("true", bTyp, 1, tokens->EmptyLocation(), declScope);
+    t = std::make_unique<EnumLiteralSymbol>("true", bTyp, 1, TokenStream::Get().EmptyLocation(), declScope);
     bTyp->literals.push_back(t.get());
     Declare(std::move(t));
 
@@ -108,6 +108,7 @@ ScopeManager::ScopeManager(void)
     // -- Finally, create the scope for the global definitions
     //    ----------------------------------------------------
     stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "GLOBAL"));
+    current = stack.back().get();
 }
 
 
@@ -115,10 +116,14 @@ ScopeManager::ScopeManager(void)
 //
 // -- Create a new scope and push it onto the stack
 //    ---------------------------------------------
-void ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
+Scope *ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 {
-    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, CurrentScope()->Level() + 1, name));
+    Scope *rv = current;
+
+    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, stack.size(), name));
     current = stack.back().get();
+
+    return rv;
 }
 
 
@@ -126,13 +131,13 @@ void ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 //
 // -- Pop a scope from the stack, with a check that the global scope always remains
 //    -----------------------------------------------------------------------------
-void ScopeManager::PopScope(void)
+void ScopeManager::PopScope(Scope *last)
 {
     if (CurrentScope()->GetKind() == Scope::ScopeKind::Global) {
         exit(EXIT_FAILURE);
     }
 
-    current = current->Parent();
+    current = last;
 }
 
 
@@ -157,22 +162,22 @@ const std::vector<Symbol *> *ScopeManager::Lookup(std::string_view name) const
 //    -------------------------------
 void ScopeManager::Print(void) const
 {
-    std::cerr << "=========================================\n";
-    std::cerr << "=========================================\n";
-    std::cerr << "====   Printing Symbol Scope Stack   ====\n";
-    std::cerr << "=========================================\n";
-    std::cerr << "=========================================\n";
-    std::cerr << '\n';
+    std::cout << "=========================================\n";
+    std::cout << "=========================================\n";
+    std::cout << "====   Printing Symbol Scope Stack   ====\n";
+    std::cout << "=========================================\n";
+    std::cout << "=========================================\n";
+    std::cout << '\n';
 
     // -- Skip the 'standard' scope, which is always the first one
     for (auto it = stack.begin() + 1; it != stack.end(); it ++) {
-        std::cerr << "Scope Name: " << it->get()->Name() << '\n';
-        std::cerr << "Scope ID  : " << it->get()->Level() << '\n';
-        std::cerr << "-------------------\n";
+        std::cout << "Scope Name: " << it->get()->Name() << '\n';
+        std::cout << "Scope ID  : " << it->get()->Level() << '\n';
+        std::cout << "-------------------\n";
 
         it->get()->Print();
 
-        std::cerr << "-------------------\n\n";
+        std::cout << "-------------------\n\n";
     }
 }
 

@@ -1,0 +1,66 @@
+TypeDecl
+  name --> color
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> white
+      [1] --> red
+      [2] --> yellow
+      [3] --> green
+      [4] --> blue
+      [5] --> brown
+      [6] --> black
+ObjectDeclaration
+  names ===
+    [0] --> mix
+  constant --> false
+  typeSpec: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: SubtypeRange
+          subtype: SubtypeIndication
+            type_mark: SimpleName
+              id --> color
+            constraint: RangeConstraint
+              range: Range
+                lower: NameExpr
+                  name: SimpleName
+                    id --> red
+                upper: NameExpr
+                  name: SimpleName
+                    id --> green
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> boolean
+      constraint: (null)
+  initializer: (null)
+
+
+Listing for tst/declarations/tst00062.ada:
+==========================================
+     1   type COLOR is (WHITE, RED, YELLOW, GREEN, BLUE, BROWN, BLACK);
+     2   MIX : array(COLOR range RED .. GREEN) of BOOLEAN;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: color : Enumeration
+   containing literals (white red yellow green blue brown black )
+Enumeration Literal: white : EnumLiteral of type color; value (0)
+Enumeration Literal: red : EnumLiteral of type color; value (1)
+Enumeration Literal: yellow : EnumLiteral of type color; value (2)
+Enumeration Literal: green : EnumLiteral of type color; value (3)
+Enumeration Literal: blue : EnumLiteral of type color; value (4)
+Enumeration Literal: brown : EnumLiteral of type color; value (5)
+Enumeration Literal: black : EnumLiteral of type color; value (6)
+Object Symbol: mix : Object
+-------------------

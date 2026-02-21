@@ -22,45 +22,63 @@
 //
 // -- Parse a Component Declaration
 //    -----------------------------
-bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
+ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_declaration");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    SubtypeIndicationPtr type = nullptr;
+    ExprPtr expr = nullptr;
 
 
     //
     // -- Start by getting the list of identifiers
     //    ----------------------------------------
-    if (!ParseIdentifierList(idList.get())) return false;
+    idList = ParseIdentifierList();
+    if (!idList) {
+        p.At("no IdList");
+        return nullptr;
+    }
 
     for (int i = 0; i < idList->size(); i ++) {
-        std::unique_ptr<ComponentSymbol> sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
+        ComponentSymbolPtr sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
         rec->components.push_back(sym.get());
         scopes.Declare(std::move(sym));
     }
 
-    if (!Require(TokenType::TOK_COLON)) return false;
-    if (!ParseComponentSubtypeDefinition()) return false;
+    if (!Require(TokenType::TOK_COLON)) {
+        p.At("no TOK_COLON");
+        return nullptr;
+    }
+
+
+    type = ParseComponentSubtypeDefinition();
+    if (!type) {
+        p.At("No Component Subtype Definition");
+        return nullptr;
+    }
 
 
     //
     // -- find the optional default initialization value
     //    ----------------------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
-        loc = tokens.SourceLocation();
-        if (!ParseExpression()) {
+        loc = TokenStream::Get().SourceLocation();
+
+        expr = ParseExpression();
+        if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "component declaration assignment" } );
         }
 
         // -- continue on as if nothing happened
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
-        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, { "expression" } );
+        diags.Error(TokenStream::Get().SourceLocation(), DiagID::MissingSemicolon, { "component declaration" } );
         // -- continue on in hopes that this does not create a cascade of errors
 
     }
@@ -71,7 +89,8 @@ bool Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<ComponentDeclaration>(astLoc, std::move(idList), std::move(type), std::move(expr));
 }
 
 

@@ -28,11 +28,15 @@
 //
 // -- Parse a Choice
 //    --------------
-bool Parser::ParseChoice(void)
+ChoicePtr Parser::ParseChoice(void)
 {
     Production p(*this, "choice");
     MarkStream m(tokens, diags);
     Id id;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    DiscreteRangePtr range = nullptr;
+    NamePtr name = nullptr;
+    ExprPtr expr = nullptr;
 
 
     //
@@ -41,27 +45,32 @@ bool Parser::ParseChoice(void)
     //    the trivial deterministic options, where were placed first.
     //    ----------------------------------------------------------------------------
     if (Optional(TokenType::TOK_OTHERS)) {
+        p.At("TOK_OTHERS");
         m.Commit();
-        return true;
+        return std::make_unique<OthersChoice>(astLoc);
     }
 
-    if (ParseDiscreteRange()) {
+
+    range = ParseDiscreteRange();
+    if (range) {
+        p.At("Range");
         m.Commit();
-        return true;
+        return std::make_unique<RangeChoice>(astLoc, std::move(range));
     }
 
-    if (ParseSimpleName(id)) {
+
+    name = ParseSimpleName();
+    if (name) {
         //
         // -- This is required to be a component simple name
-        //
-        //    TODO: Check the type of the simple name
         //    ----------------------------------------------
         const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         if (vec != nullptr) {
             for (auto &sym : *vec) {
                 if (sym->kind == Symbol::SymbolKind::Component) {
+                    p.At("Component Simple Name");
                     m.Commit();
-                    return true;
+                    return std::make_unique<NameChoice>(astLoc, std::move(name));
                 }
             }
         }
@@ -69,14 +78,17 @@ bool Parser::ParseChoice(void)
         m.Reset();
     }
 
-    if (ParseSimpleExpression()) {
+    expr = ParseSimpleExpression();
+    if (expr) {
+        p.At("Expression");
         m.Commit();
-        return true;
+        return std::make_unique<ExprChoice>(astLoc, std::move(expr));
     }
 
-    diags.Error(tokens.SourceLocation(), DiagID::InvalidChoiceInVariant);
 
-    return false;
+    diags.Error(TokenStream::Get().SourceLocation(), DiagID::InvalidChoiceInVariant);
+
+    return nullptr;
 }
 
 

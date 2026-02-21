@@ -22,45 +22,52 @@
 //
 // -- Parse an Index Constraint
 //    -------------------------
-bool Parser::ParseIndexConstraint(void)
+IndexConstraintPtr Parser::ParseIndexConstraint(void)
 {
     Production p(*this, "index_constraint");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t loc, astLoc = TokenStream::Get().SourceLocation();      // -- only init astLoc
+    DiscreteRangePtr range = nullptr;
+    DiscreteRangeListPtr vec = std::make_unique<std::vector<DiscreteRangePtr>>();
 
 
     //
     // -- This production start with a paren
     //    ----------------------------------
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
 
 
     //
     // -- and then a range for the index
     //    ------------------------------
-    if (!ParseDiscreteRange()) return false;
+    range = ParseDiscreteRange();
+    if (!range) return nullptr;
+    vec->push_back(std::move(range));
+
 
 
     //
     // -- followed by any number of additional indices
     //    --------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseDiscreteRange()) {
+        range = ParseDiscreteRange();
+        if (!range) {
             diags.Error(loc, DiagID::ExtraComma, { "discrete_range" } );
 
             // -- continue on
             break;
         }
 
-        loc = tokens.SourceLocation();
+        vec->push_back(std::move(range));
+        loc = TokenStream::Get().SourceLocation();
     }
 
 
     //
     // -- The closing paren is required
     //    -----------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"discrete range"});
         // -- continue on in hopes that this does not create a cascade of errors
@@ -72,7 +79,8 @@ bool Parser::ParseIndexConstraint(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+
+    return std::make_unique<IndexConstraint>(astLoc, false, std::move(vec));
 }
 
 

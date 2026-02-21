@@ -26,9 +26,17 @@ bool Parser::ParseBody(void)
 {
     Production p(*this, "body");
 
-    if (ParseProperBody())  return true;
-    if (ParseBodyStub())    return true;
+    if (ParseProperBody()) {
+        p.At("Proper Body");
+        return true;
+    }
 
+    if (ParseBodyStub()) {
+        p.At("Body Stub");
+        return true;
+    }
+
+    p.At("no match");
     return false;
 }
 

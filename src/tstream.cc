@@ -21,6 +21,7 @@
 // -- This is used by the scanner to save additional info for a token
 //    ---------------------------------------------------------------
 int column = 1;
+TokenStream *TokenStream::singleton = nullptr;
 
 
 
@@ -28,8 +29,14 @@ int column = 1;
 // -- Construct the token stream.  This is done by scanning the entire file and
 //    turning each token into an element in the vector table.
 //    -------------------------------------------------------------------------
-TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
+void TokenStream::Factory(const char *fn)
 {
+    if (singleton) return;
+
+    singleton = new TokenStream();
+    singleton->filename = (fn?fn:"stdin");
+    singleton->loc = 0;
+
     extern TokenType yylex(void);
     extern FILE *yyin;
     extern YYSTYPE yylval;
@@ -45,15 +52,15 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
         std::cerr << "Unable to open file; using stdin.\n";
         std::cerr << "   Ctrl-c to stop; Ctrl-d for EOF\n";
         yyin = stdin;
-        sourceValid = false;
+        singleton->sourceValid = false;
     } else {
         static char buf[2048];
         while (fgets(buf, 2048, yyin)) {
-            source.push_back(std::string(buf));
+            singleton->source.push_back(std::string(buf));
         }
 
         fseek(yyin, 0, SEEK_SET);
-        sourceValid = true;
+        singleton->sourceValid = true;
     }
 
     TokenType tok = (TokenType)yylex();
@@ -64,24 +71,26 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
 
         if (tok == TokenType::TOK_AND) {
             TokenType tok2 = (TokenType)yylex();
+            YYSTYPE v2 = yylval;
 
             if (tok2 == TokenType::TOK_THEN) {
-                tokStream.push_back(new Token(filename, l, c, TokenType::TOK_AND_THEN, v));
+                singleton->tokStream.push_back(new Token(singleton->filename, l, c, TokenType::TOK_AND_THEN, v));
             } else {
-                tokStream.push_back(new Token(filename, l, c, tok, v));
-                tokStream.push_back(new Token(filename, l, c, tok2, v));
+                singleton->tokStream.push_back(new Token(singleton->filename, l, c, tok, v));
+                singleton->tokStream.push_back(new Token(singleton->filename, l, c, tok2, v2));
             }
         } else if (tok == TokenType::TOK_OR) {
             TokenType tok2 = (TokenType)yylex();
+            YYSTYPE v2 = yylval;
 
             if (tok2 == TokenType::TOK_ELSE) {
-                tokStream.push_back(new Token(filename, l, c, TokenType::TOK_OR_ELSE, v));
+                singleton->tokStream.push_back(new Token(singleton->filename, l, c, TokenType::TOK_OR_ELSE, v));
             } else {
-                tokStream.push_back(new Token(filename, l, c, tok, v));
-                tokStream.push_back(new Token(filename, l, c, tok2, v));
+                singleton->tokStream.push_back(new Token(singleton->filename, l, c, tok, v));
+                singleton->tokStream.push_back(new Token(singleton->filename, l, c, tok2, v2));
             }
         } else {
-            tokStream.push_back(new Token(filename, l, c, tok, v));
+            singleton->tokStream.push_back(new Token(singleton->filename, l, c, tok, v));
         }
 
         tok = (TokenType)yylex();
@@ -91,10 +100,10 @@ TokenStream::TokenStream(const char *fn) : filename(fn?fn:"stdin"), loc(0)
     //
     // -- add an EOF marker so that we can query it; yylval is irrelevant
     //    ---------------------------------------------------------------
-    tokStream.push_back(new Token(filename, source.size(), 0, TokenType::YYEOF, yylval));
+    singleton->tokStream.push_back(new Token(singleton->filename, singleton->source.size(), 0, TokenType::YYEOF, yylval));
 
     fclose(yyin);
-    Reset(0);
+    singleton->Reset(0);
 }
 
 
@@ -241,10 +250,12 @@ const char *TokenStream::tokenStr(TokenType tok) const
 //    ----------------
 void TokenStream::Listing(void)
 {
-    const char *line = "============================================================================================";
+//    const char *line = "============================================================================================";
+    const char *line = "==========================================";
 
     std::cout << "Listing for " << filename << ":\n";
-    std::cout << std::string(line).substr(0, filename.length() + 13) << '\n';
+//    std::cout << std::string(line).substr(0, filename.length() + 13) << '\n';
+    std::cout << line << '\n';
 
     for (int i = 0; i < source.size(); i ++) {
         std::cout << std::setw(6) << i + 1 << "   " << source[i];

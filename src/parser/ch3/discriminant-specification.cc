@@ -22,19 +22,23 @@
 //
 // -- Parse a Discriminant Specification
 //    ----------------------------------
-bool Parser::ParseDiscriminantSpecification(void)
+DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
 {
     Production p(*this, "discriminant_specification");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    NamePtr type = nullptr;
+    ExprPtr expr = nullptr;
 
 
     //
     // -- Get a list of identifiers
     //    -------------------------
-    if (!ParseIdentifierList(idList.get())) return false;
+    idList = ParseIdentifierList();
+    if (!idList) return nullptr;
 
 
     for (int i = 0; i < idList->size(); i ++) {
@@ -45,21 +49,23 @@ bool Parser::ParseDiscriminantSpecification(void)
     //
     // -- Get the TOK_COLON
     //    -----------------
-    if (!Require(TokenType::TOK_COLON)) return false;
+    if (!Require(TokenType::TOK_COLON)) return nullptr;
 
 
     //
     // -- Now get the type
     //    ----------------
-    if (!ParseTypeMark()) return false;
+    type = ParseTypeMark();
+    if (!type) return nullptr;
 
 
     //
     // -- Finally an optional assignment
     //    ------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
-        loc = tokens.SourceLocation();
-        if (!ParseExpression()) {
+        loc = TokenStream::Get().SourceLocation();
+        expr = ParseExpression();
+        if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
         }
     }
@@ -70,7 +76,8 @@ bool Parser::ParseDiscriminantSpecification(void)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<DiscriminantSpecification>(astLoc, std::move(idList), std::move(type), std::move(expr));
 }
 
 

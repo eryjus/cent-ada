@@ -1,4 +1,3 @@
-
 type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC);
 type DATE is
     record
@@ -7,3 +6,4 @@ type DATE is
         YEAR : INTEGER range 0 .. 4000;
     end record;
 TOMORROW, YESTERDAY : DATE;
+

@@ -1,0 +1,32 @@
+TypeDecl
+  name --> volt
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Fixed Point
+    delta: RealLiteralExpr
+      value --> 0.125
+    range: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 255.0
+
+
+Listing for tst/declarations/tst00050.ada:
+==========================================
+     1   type VOLT is delta 0.125 range 0.0 .. 255.0;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Real Type: volt : Real
+-------------------

@@ -1,0 +1,31 @@
+TypeDecl
+  name --> level
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> low
+      [1] --> medium
+      [2] --> urgent
+
+
+Listing for tst/declarations/tst00031.ada:
+==========================================
+     1   type LEVEL is (LOW, MEDIUM, URGENT);
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: level : Enumeration
+   containing literals (low medium urgent )
+Enumeration Literal: low : EnumLiteral of type level; value (0)
+Enumeration Literal: medium : EnumLiteral of type level; value (1)
+Enumeration Literal: urgent : EnumLiteral of type level; value (2)
+-------------------

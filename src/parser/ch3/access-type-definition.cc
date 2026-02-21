@@ -22,28 +22,34 @@
 //
 // -- Parse an Access Type Definition
 //    -------------------------------
-bool Parser::ParseAccessTypeDefinition(Id &id)
+AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
 {
     Production p(*this, "access_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SubtypeIndicationPtr type = nullptr;
+
 
 
     //
     // -- Parse the sequence
     //    ------------------
-    if (!Require(TokenType::TOK_ACCESS)) return false;
+    if (!Require(TokenType::TOK_ACCESS)) {
+        p.At("TOK_ACCESS");
+        return nullptr;
+    }
 
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -56,17 +62,32 @@ bool Parser::ParseAccessTypeDefinition(Id &id)
 
 
 
-    if (!ParseSubtypeIndication()) return false;
+    //
+    // -- Check for the optional Subtype Indication
+    //    -----------------------------------------
+    type = ParseSubtypeIndication();
+    if (!type) {
+        p.At("Subtype Indication");
+        return nullptr;
+    }
 
 
 
     //
-    // -- Consider this parse to be good
-    //    ------------------------------
+    // -- Consider this parse to be good; build the AST nodes
+    //    ---------------------------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
+
+
+    //
+    // -- Commit and Exit
+    //    ---------------
     s.Commit();
     m.Commit();
-    return true;
+
+    SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
+    return std::make_unique<AccessTypeSpec>(astLoc, std::move(type));
 }
 
 

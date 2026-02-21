@@ -1,0 +1,32 @@
+TypeDecl
+  name --> mass
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Floating Point
+    digits: IntLiteralExpr
+      value --> 7
+    range: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 1.0E35
+
+
+Listing for tst/declarations/tst00047.ada:
+==========================================
+     1   type MASS is digits 7 range 0.0 .. 1.0E35;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Real Type: mass : Real
+-------------------

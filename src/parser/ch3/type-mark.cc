@@ -21,14 +21,20 @@
 //
 // -- Parse a Type Mark
 //    -----------------
-bool Parser::ParseTypeMark(void)
+NamePtr Parser::ParseTypeMark(void)
 {
     Production p(*this, "type_mark");
+    NamePtr rv;
 
-    if (ParseTypeName())        return true;
-    if (ParseSubtypeName())     return true;
 
-    return false;
+    rv = ParseTypeName();
+    if (rv)  { p.At("type-name"); return rv; }
+
+    rv = ParseSubtypeName();
+    if (rv)  { p.At("subtype-name"); return rv; }
+
+    p.At("type-mark fails");
+    return nullptr;
 }
 
 

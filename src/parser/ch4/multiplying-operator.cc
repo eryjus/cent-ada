@@ -22,22 +22,18 @@
 //
 // -- Parse a Multiplying Operator
 //    ----------------------------
-bool Parser::ParseMultiplyingOperator(void)
+BinaryOper Parser::ParseMultiplyingOperator(void)
 {
     Production p(*this, "multiplying_operator");
     MarkStream m(tokens, diags);
 
-    switch (tokens.Current()) {
-    case TokenType::TOK_STAR:
-    case TokenType::TOK_SLASH:
-    case TokenType::TOK_MOD:
-    case TokenType::TOK_REM:
-        tokens.Advance();
-        m.Commit();
-        return true;
 
-    default:
-        return false;
+    switch (TokenStream::Get().Current()) {
+    case TokenType::TOK_STAR:       TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Times;
+    case TokenType::TOK_SLASH:      TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Divide;
+    case TokenType::TOK_MOD:        TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Mod;
+    case TokenType::TOK_REM:        TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Rem;
+    default:                                                        return BinaryOper::Unspecified;
     }
 }
 

@@ -1,35 +1,33 @@
 //=================================================================================================================
-//  parser/ch3/component-subtype-definition.cc -- Parse a component subtype definition
+//  ast/stmt.hh -- This header is used for defining the classes which are derived from Stmt
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
-//
-//  component_subtype_definition ::= subtype_indication
 //
 // ---------------------------------------------------------------------------------------------------------------
 //
 //     Date      Tracker  Version  Pgmr  Description
 //  -----------  -------  -------  ----  -------------------------------------------------------------------------
-//  2025-Dec-27  Initial   0.0.0   ADCL  Initial version
+//  2026-Jan-03  Initial   0.0.0   ADCL  Initial version
 //
 //=================================================================================================================
 
 
 
-#include "ada.hh"
+#pragma once
 
 
 
 //
-// -- Parse a Component Subtype Definition
-//    ------------------------------------
-bool Parser::ParseComponentSubtypeDefinition(void)
-{
-    Production p(*this, "component_subtype_definition");
+// -- The common Statement node
+//    -------------------------
+class Stmt : public ASTNode {
+    Stmt(void) = delete;
+    Stmt(const Stmt &) = delete;
+    Stmt &operator=(const Stmt &) = delete;
 
-    if (ParseSubtypeIndication())   return true;
-
-    return false;
-}
+public:
+    Stmt(SourceLoc_t l) : ASTNode(l) {}
+};
 
 
 

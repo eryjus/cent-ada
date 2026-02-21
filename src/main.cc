@@ -29,13 +29,6 @@ using ParseType_t = enum {
 
 
 //
-// -- The global token stream used for scanning
-//    -----------------------------------------
-TokenStream *tokens = nullptr;
-
-
-
-//
 // -- Global options
 //    --------------
 Options opts;
@@ -217,9 +210,9 @@ static int Scan(std::string filename)
 //    ---------------------------------------
 static int Tokenize(std::string filename)
 {
-    tokens = new TokenStream(filename.c_str());
-    tokens->Listing();
-    tokens->List();
+    TokenStream::Factory(filename.c_str());
+    TokenStream::Get().Listing();
+    TokenStream::Get().List();
 
     return EXIT_SUCCESS;
 }
@@ -231,21 +224,32 @@ static int Tokenize(std::string filename)
 //    ---------------------------
 static int Compile(std::string filename, ParseType_t type)
 {
-    tokens = new TokenStream(filename.c_str());
-    Parser *parser = new Parser(*tokens);
+    TokenStream::Factory(filename.c_str());
+    Parser *parser = new Parser(TokenStream::Get());
     diags.SetParser(parser);
     int cnt = 0;
     int rv = EXIT_SUCCESS;
+    NodePtr node = nullptr;
+    NodeListPtr pgm = std::make_unique<NodeList>();
+
 
     switch (type) {
     case COMPILE_TYPES:
-        while (tokens->Current() != TokenType::YYEOF) {
-            if(!parser->ParseBasicDeclaration()) {
-                std::cerr << "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m\n";
+        while (TokenStream::Get().Current() != TokenType::YYEOF) {
+            int loc = TokenStream::Get().Location();
+            node = parser->ParseBasicDeclaration();
+            if (!node) {
+                diags.Error(TokenStream::EmptyLocation(), DiagID::NoDeclaration, { } );
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {
-//                std::cerr << "Completed a Declaration\n";
+                std::cerr << "Completed a Declaration\n";
+            }
+
+            if (loc == TokenStream::Get().Location()) {
+                diags.Error(TokenStream::Get().SourceLocation(), DiagID::InternalError, { } );
+                rv = EXIT_FAILURE;
+                goto exit;
             }
         }
 
@@ -253,36 +257,109 @@ static int Compile(std::string filename, ParseType_t type)
 
 
     case COMPILE_EXPRS:
-        while (parser->ParseBasicDeclaration()) {}
+        {
+            NodePtr ast;
+
+            ast = parser->ParseBasicDeclaration();
+            while (ast) {
+                if (opts.checkAstInvariants) {
+                    assert(ast);
+                    ASTInvariant check;
+                    ast->Accept(check);
+                }
+
+                ast = parser->ParseBasicDeclaration();
+            }
+        }
+
         std::cerr << "\n";
         std::cerr << "********************************\n";
         std::cerr << "** Starting Expressions Parse **\n";
         std::cerr << "********************************\n\n";
-        if(!parser->ParseExpression()) {
+        node = parser->ParseExpression();
+        if(!node) {
             std::cerr << "\n\e[31;1mERROR: Unable to properly parse Expression\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
         }
 
-        std::cerr << "next token " << tokens->tokenStr(tokens->Current()) << '\n';
-        if (tokens->Current() != TokenType::YYEOF) {
-            std::cerr << "\n\e[31;1mERROR: Extra input in Expression parse\e[0m\n";
+        if (TokenStream::Get().Current() != TokenType::YYEOF) {
+            std::cerr << "\n\e[31;1mERROR: Extra input in Expression parse:\n";
+            while (TokenStream::Get().Current() != TokenType::YYEOF) {
+                std::cerr << "    " << TokenStream::Get().tokenStr(TokenStream::Get().Current()) << '\n';
+                TokenStream::Get().Advance();
+            }
+
+            std::cerr << "\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
         }
 
         break;
+
+
+    case COMPILE_FULL:
+        {
+            do {
+                int loc = TokenStream::Get().Location();
+                node = parser->ParseBasicDeclaration();
+                if (node) pgm->push_back(std::move(node));
+
+                if (loc == TokenStream::Get().Location() && TokenStream::Get().Current() != TokenType::YYEOF) {
+                    diags.Error(TokenStream::Get().SourceLocation(), DiagID::InternalError, { } );
+                    rv = EXIT_FAILURE;
+                    goto exit;
+                }
+            } while (TokenStream::Get().Current() != TokenType::YYEOF);
+
+
+
+            if (diags.Errors()) {
+                rv = EXIT_FAILURE;
+                goto exit;
+            }
+
+
+            ASTPrinter prt;
+            for (auto &decl : *pgm.get()) {
+                decl->Accept(prt);
+            }
+
+            std::cout << "\n\n";
+
+
+            opts.prtAst = false;
+            opts.dumpSymtab = true;
+            opts.listing = true;
+
+            rv = EXIT_SUCCESS;
+            goto exit;
+        }
 
 
     default:
         break;
     }
 
-    std::cerr << "Parse Complete.\n";
+    std::cerr << "\nParse Complete.\n\n";
 
 exit:
-    if (opts.listing) tokens->Listing();
-    if (opts.dumpSymtab) parser->Scopes()->Print();
+    diags.Flush();
+
+    if (diags.Errors() == 0) {
+        if (opts.listing) TokenStream::Get().Listing();
+        if (opts.dumpSymtab) parser->Scopes()->Print();
+
+        if (opts.prtAst) {
+            ASTPrinter prt;
+
+            assert(node);
+            node->Accept(prt);
+            std::cout << "\n\n";
+        }
+    }
+
+
 
     std::cerr << "   Errors  : " << diags.Errors() << '\n';
     std::cerr << "   Warnings: " << diags.Warnings() << '\n';
@@ -309,6 +386,9 @@ static void Usage(std::string pgm)
     std::cout << "                      process only declarations parts of the parser\n";
     std::cout << "      expressions, expr\n";
     std::cout << "                      process only expressions/declarations parts of the parser\n";
+    std::cout << "      invariants, invar\n";
+    std::cout << "                      same as 'expressions' but also check AST invariants\n";
+    std::cout << "      ast             parse the source and print the AST\n";
     std::cout << "\n";
     std::cout << "  options:\n";
     std::cout << "  -h, --help          print this screen and exit\n";
@@ -357,6 +437,11 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        if (arg == "--print-ast") {
+            opts.prtAst = true;
+            continue;
+        }
+
         if (arg == "scan") {
             action = ACT_SCAN;
             continue;
@@ -377,6 +462,22 @@ int main(int argc, char *argv[])
         if (arg == "expressions" || arg == "expr") {
             action = ACT_COMPILE;
             type = COMPILE_EXPRS;
+            continue;
+        }
+
+        if (arg == "invariants" || arg == "invar") {
+            action = ACT_COMPILE;
+            type = COMPILE_EXPRS;
+            opts.checkAstInvariants = true;
+            continue;
+        }
+
+        if (arg == "ast") {
+            action = ACT_COMPILE;
+            type = COMPILE_FULL;
+            opts.prtAst = true;
+            opts.listing = true;
+            opts.dumpSymtab = true;
             continue;
         }
 

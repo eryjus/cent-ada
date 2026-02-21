@@ -30,8 +30,8 @@ private:
 
 private:
     // -- these are only accessible from Parser
-    void PushScope(Scope::ScopeKind kind, std::string name);
-    void PopScope(void);
+    Scope *PushScope(Scope::ScopeKind kind, std::string name);
+    void PopScope(Scope *last);
 
 
 public:
@@ -45,7 +45,7 @@ public:
 
 public:
     const std::vector<Symbol *> *Lookup(std::string_view name) const;
-    Scope *CurrentScope(void) const { return stack[stack.size() - 1].get(); }
+    Scope *CurrentScope(void) const { return current; }
     bool IsLocalDefined(std::string_view name) const { return CurrentScope()->LocalLookup(name) != nullptr; }
     void Print(void) const;
     std::unique_ptr<Scope> Claim(void) {

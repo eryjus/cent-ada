@@ -22,39 +22,54 @@
 //
 // -- Parse a Selector
 //    ----------------
-bool Parser::ParseSelector(void)
+SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
 {
     Production p(*this, "selector");
     MarkStream m(tokens, diags);
-    Id id;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    NamePtr selector = nullptr;
+    SelectedNamePtr rv = nullptr;
+
 
     if (Optional(TokenType::TOK_ALL)) {
         m.Commit();
-        return true;
+
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), nullptr);
     }
 
-    if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
+
+    if (TokenStream::Get().Current() == TokenType::TOK_CHARACTER_LITERAL) {
+        CharacterLiteralNamePtr charSelector = std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(TokenStream::Get().Payload()));
+        TokenStream::Get().Advance();
         m.Commit();
-        return true;
+
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(charSelector));
     }
 
-    SourceLoc_t loc = tokens.SourceLocation();
-    if (m.CommitIf(ParseSimpleName(id))) {
-        if (!scopes.Lookup(id.name)) {
-            diags.Error(loc, DiagID::UnknownName, { "selector"} );
+
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    selector = ParseSimpleName();
+    if (selector) {
+        if (!scopes.Lookup(selector->GetName())) {
+            diags.Error(loc, DiagID::UnknownName, { std::string(selector->GetName()) } );
             // -- allow the parse to continue
         }
 
         m.Commit();
-        return true;
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));
     }
 
-    if (ParseOperatorSymbol()) {
+
+    selector = ParseOperatorSymbol();
+    if (selector) {
         m.Commit();
-        return true;
+
+        return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(selector));;
     }
 
-    return false;
+
+
+    return nullptr;
 }
 
 

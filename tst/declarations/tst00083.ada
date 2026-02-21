@@ -9,3 +9,4 @@ type BUFFER(SIZE : BUFFER_SIZE := 100) is
     end record;
 
 MESSAGE : BUFFER;
+

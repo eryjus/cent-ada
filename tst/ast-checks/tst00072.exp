@@ -1,0 +1,44 @@
+ObjectDeclaration
+  names ===
+    [0] --> question
+  constant --> true
+  typeSpec: (null)
+  initializer: StringLiteralExpr
+    value --> Who are you?
+ObjectDeclaration
+  names ===
+    [0] --> ask_twice
+  constant --> true
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> string
+    constraint: (null)
+  initializer: BinaryExpr
+    op --> & (concat)
+    lhs: NameExpr
+      name: SimpleName
+        id --> question
+    rhs: NameExpr
+      name: SimpleName
+        id --> question
+
+
+Listing for tst/declarations/tst00072.ada:
+==========================================
+     1   QUESTION : constant := "Who are you?  ";
+     2   ASK_TWICE : constant STRING := QUESTION & QUESTION;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: question : Object
+Object Symbol: ask_twice : Object
+-------------------

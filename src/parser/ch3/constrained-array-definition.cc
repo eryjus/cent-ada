@@ -24,17 +24,36 @@
 //    Constrained Array Definitions -- one with a single identifier and one with a
 //    list of identifiers.
 //    -------------------------------------------------------------------------------
-bool Parser::_HelpParseConstrainedArrayDefinition(void)
+ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdListPtr &list)
 {
+    // -- MarkStream is not needed here since this is a helper function.
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    NameListPtr names = std::make_unique<NameList>();
+    IndexConstraintPtr range = nullptr;
+    SubtypeIndicationPtr type = nullptr;
+
+    for (auto &id : *list) {
+        SimpleNamePtr name = std::make_unique<SimpleName>(astLoc, id);
+        names->push_back(std::move(name));
+    }
+
+
     //
     // -- Start parse with the TOK_ARRAY and carry right on through
     //    ---------------------------------------------------------
-    if (!Require(TokenType::TOK_ARRAY)) return false;
-    if (!ParseIndexConstraint()) return false;
-    if (!Require(TokenType::TOK_OF)) return false;
-    if (!ParseDiscreteSubtypeIndication()) return false;
+    if (!Require(TokenType::TOK_ARRAY)) return nullptr;
 
-    return true;
+    range = ParseIndexConstraint();
+
+    if (!range) return nullptr;
+
+    if (!Require(TokenType::TOK_OF)) return nullptr;
+
+    type = ParseDiscreteSubtypeIndication();
+    if (!type) return nullptr;
+
+
+    return std::make_unique<ArrayTypeSpec>(astLoc, false, std::move(range), std::move(type));
 }
 
 
@@ -42,7 +61,7 @@ bool Parser::_HelpParseConstrainedArrayDefinition(void)
 //
 // -- Parse a Constrained Array Definition
 //    ------------------------------------
-bool Parser::ParseConstrainedArrayDefinition(Id &id)
+ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "constrained_array_definition (id)");
     MarkStream m(tokens, diags);
@@ -55,9 +74,9 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(std::string_view(id.name))) {
+    if (scopes.IsLocalDefined(id.name)) {
         // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+        vec = scopes.CurrentScope()->LocalLookup(id.name);
 
         if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
             updateIncomplete = true;
@@ -69,18 +88,22 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
     ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
+    IdListPtr list = std::make_unique<IdList>();
+    list->push_back(id);
 
-    if (!_HelpParseConstrainedArrayDefinition()) return false;
-
+    ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
+    if (!rv) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
     m.Commit();
-    return true;
+
+    return rv;
 }
 
 
@@ -89,7 +112,7 @@ bool Parser::ParseConstrainedArrayDefinition(Id &id)
 //
 // -- Parse a Constrained Array Definition
 //    ------------------------------------
-bool Parser::ParseConstrainedArrayDefinition(IdList *list)
+ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdListPtr &list)
 {
     Production p(*this, "constrained_array_definition (list)");
     MarkStream m(tokens, diags);
@@ -97,16 +120,21 @@ bool Parser::ParseConstrainedArrayDefinition(IdList *list)
 
 
 
+#if 0
     //
     // -- Manage the symbol table
     //    -----------------------
+    std::cout << "Symbol List\n";
     for (auto &id : *list) {
+        std::cout << "Adding " << id.name << '\n';
         ObjectSymbol *type = scopes.Declare(std::make_unique<ObjectSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
+#endif
 
 
 
-    if (!_HelpParseConstrainedArrayDefinition()) return false;
+    ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
+    if (!rv) return nullptr;
 
 
     //
@@ -114,7 +142,8 @@ bool Parser::ParseConstrainedArrayDefinition(IdList *list)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return true;
+
+    return rv;
 }
 
 

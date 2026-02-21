@@ -1,0 +1,31 @@
+ObjectDeclaration
+  names ===
+    [0] --> count
+    [1] --> sum
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: (null)
+
+
+Listing for tst/declarations/tst00001.ada:
+==========================================
+     1   COUNT, SUM  : INTEGER;
+     2
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: count : Object
+Object Symbol: sum : Object
+-------------------

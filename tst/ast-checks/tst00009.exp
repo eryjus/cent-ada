@@ -1,0 +1,26 @@
+ObjectDeclaration
+  names ===
+    [0] --> pi
+  constant --> true
+  typeSpec: (null)
+  initializer: RealLiteralExpr
+    value --> 3.14159_26536
+
+
+Listing for tst/declarations/tst00009.ada:
+==========================================
+     1   PI : constant := 3.14159_26536;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: pi : Object
+-------------------

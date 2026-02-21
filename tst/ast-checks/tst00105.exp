@@ -1,0 +1,70 @@
+TypeDecl
+  name --> date
+  discriminantPart === (null)
+  definition: (null)
+TypeDecl
+  name --> date
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> year
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> mon
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> day
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+
+
+Listing for tst/declarations/tst00105.ada:
+==========================================
+     1   type DATE;
+     2
+     3   type DATE is
+     4       record
+     5           YEAR : INTEGER;
+     6           MON  : INTEGER;
+     7           DAY  : INTEGER;
+     8       end record;
+     9
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Record Type: date : Record
+   containing components (year mon day )
+-------------------
+
+Scope Name: date
+Scope ID  : 2
+-------------------
+Component Symbol: year : Component
+Component Symbol: mon : Component
+Component Symbol: day : Component
+-------------------

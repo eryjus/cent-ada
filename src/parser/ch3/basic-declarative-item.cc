@@ -24,15 +24,23 @@
 //
 // -- Parse a Basic Declarative Item
 //    ------------------------------
-bool Parser::ParseBasicDeclarativeItem(void)
+DeclPtr Parser::ParseBasicDeclarativeItem(void)
 {
     Production p(*this, "basic_declarative_item");
+    DeclPtr rv = nullptr;
 
-    if (ParseBasicDeclaration())        return true;
-    if (ParseRepresentationClause())    return true;
-    if (ParseUseClause())               return true;
+    rv = ParseBasicDeclaration();
+    if (rv) {
+        p.At("BasicDeclaration");
+        return rv;
+    }
 
-    return false;
+
+    if (ParseRepresentationClause())    { return nullptr; }
+    if (ParseUseClause())               { return nullptr; }
+
+
+    return nullptr;
 }
 
 

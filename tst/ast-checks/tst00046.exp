@@ -1,0 +1,27 @@
+TypeDecl
+  name --> my_real
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Floating Point
+    digits: IntLiteralExpr
+      value --> 8
+    range: (null)
+
+
+Listing for tst/declarations/tst00046.ada:
+==========================================
+     1   type MY_REAL is digits 8;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Real Type: my_real : Real
+-------------------

@@ -22,12 +22,14 @@
 //
 // -- Parse an Attribute Designator
 //    -----------------------------
-bool Parser::ParseAttributeDesignator(void)
+AttributeNamePtr Parser::ParseAttributeDesignator(NamePtr &prefix)
 {
     Production p(*this, "attribute_designator");
     MarkStream m(tokens, diags);
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    NamePtr name = nullptr;
+    ExprPtr expr = nullptr;
     Id id;
-    SourceLoc_t loc = tokens.SourceLocation();
 
 
     //
@@ -35,16 +37,24 @@ bool Parser::ParseAttributeDesignator(void)
     //    -----------------------------------------------------------------------------------
     if (Optional(TokenType::TOK_DIGITS)) {
         id = { "digits", loc };
+        name = std::make_unique<SimpleName>(loc, id);
     } else if (Optional(TokenType::TOK_DELTA)) {
         id = { "delta", loc };
+        name = std::make_unique<SimpleName>(loc, id);
     } else if (Optional(TokenType::TOK_RANGE)) {
         id = { "range", loc };
-    } else if (!ParseSimpleName(id))           return false;
+        name = std::make_unique<SimpleName>(loc, id);
+    } else {
+        name = ParseSimpleName();
+        if (!name) return nullptr;
+    }
+
 
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
-        if (!ParseExpression()) return false;
+        expr = ParseExpression();
+        if (!expr) return nullptr;
 
-        SourceLoc_t loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
         if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             diags.Error(loc, DiagID::MissingRightParen, { "expression"} );
             // -- allow to continue
@@ -52,7 +62,7 @@ bool Parser::ParseAttributeDesignator(void)
     }
 
     m.Commit();
-    return true;
+    return std::make_unique<AttributeName>(loc, std::move(prefix), std::move(name), std::move(expr));
 }
 
 

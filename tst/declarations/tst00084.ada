@@ -6,3 +6,4 @@ type SQUARE(SIDE : INTEGER) is
     end record;
 
 BASIS : SQUARE(5);
+

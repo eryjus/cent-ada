@@ -23,38 +23,45 @@
 //
 // -- Parse a Qualified Expression
 //    ----------------------------
-bool Parser::ParseQualifiedExpression(void)
+QualifiedExprPtr Parser::ParseQualifiedExpression(void)
 {
     Production p(*this, "qualified_expression");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    NamePtr id = nullptr;
+    ExprPtr expr = nullptr;
 
-    if (!ParseTypeMark())       return false;
-    if (!Require(TokenType::TOK_APOSTROPHE))   return false;
+    id = ParseTypeMark();
+    if (!id) return nullptr;
+    if (!Require(TokenType::TOK_APOSTROPHE))   return nullptr;
 
-    if (ParseAggregate()) {
+    expr = ParseAggregate();
+    if (expr) {
         m.Commit();
-        return true;
+        return std::make_unique<QualifiedExpr>(astLoc, std::move(id), std::move(expr));
     }
 
     if (Require(TokenType::TOK_LEFT_PARENTHESIS)) {
-        loc = tokens.SourceLocation();
-        if (!ParseExpression()) {
+        loc = TokenStream::Get().SourceLocation();
+        expr = ParseExpression();
+        if (!expr) {
             diags.Error(loc, DiagID::InvalidExpression, { "qualified expression" } );
         }
 
-        SourceLoc_t loc = tokens.SourceLocation();
+        SourceLoc_t loc = TokenStream::Get().SourceLocation();
         if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
             // -- continue anyway
         }
 
         m.Commit();
-        return true;
+
+        return std::make_unique<QualifiedExpr>(astLoc, std::move(id), std::move(expr));
     }
 
-    m.Commit();
-    return false;
+
+    return nullptr;
 }
 
 

@@ -28,18 +28,34 @@
 //
 // -- Parse a Type Definition
 //    ------------------------
-bool Parser::ParseTypeDefinition(Id &id)
+TypeSpecPtr Parser::ParseTypeDefinition(Id &id)
 {
     Production p(*this, "type_definition");
+    TypeSpecPtr rv = nullptr;
 
-    if (ParseEnumerationTypeDefinition(id)) return true;
-    if (ParseIntegerTypeDefinition(id))     return true;
-    if (ParseRealTypeDefinition(id))        return true;
-    if (ParseArrayTypeDefinition(id))       return true;
-    if (ParseRecordTypeDefinition(id))      return true;
-    if (ParseAccessTypeDefinition(id))      return true;
-    if (ParseDerivedTypeDefinition(id))     return true;
-    return false;
+    rv = ParseEnumerationTypeDefinition(id);
+    if (rv) return rv;
+
+    rv = ParseIntegerTypeDefinition(id);
+    if (rv) return rv;
+
+    rv = ParseRealTypeDefinition(id);
+    if (rv) return rv;
+
+    rv = ParseArrayTypeDefinition(id);
+    if (rv) return rv;
+
+    rv = ParseRecordTypeDefinition(id);
+    if (rv) return rv;
+
+    rv = ParseAccessTypeDefinition(id);
+    if (rv) return rv;
+
+    rv = ParseDerivedTypeDefinition(id);
+    if (rv) return rv;
+
+
+    return nullptr;
 }
 
 

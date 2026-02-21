@@ -51,33 +51,53 @@
 //
 // -- For Chapter 3, a `basic_declaration` is the top-level production
 //    ----------------------------------------------------------------
-bool Parser::ParseBasicDeclaration(void)
+DeclPtr Parser::ParseBasicDeclaration(void)
 {
     // -- This top-level production must Mark its location so it can output diags
-    MarkStream m(tokens, diags);
     Production p(*this, "basic_declaration");
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    DeclPtr rv = nullptr;
 
-    if (ParseObjectDeclaration())            { m.Commit(); return true; }
-    if (ParseNumberDeclaration())            { m.Commit(); return true; }
-    if (ParseTypeDeclaration())              { m.Commit(); return true; }
-    if (ParseSubtypeDeclaration())           { m.Commit(); return true; }
-    if (ParseSubprogramDeclaration())        { m.Commit(); return true; }
-    if (ParsePackageDeclaration())           { m.Commit(); return true; }
-    if (ParseTaskDeclaration())              { m.Commit(); return true; }
-    if (ParseGenericDeclaration())           { m.Commit(); return true; }
-    if (ParseExceptionDeclaration())         { m.Commit(); return true; }
-    if (ParseGenericInstantiation())         { m.Commit(); return true; }
-    if (ParseRenamingDeclaration())          { m.Commit(); return true; }
-    if (ParseDeferredConstantDeclaration())  { m.Commit(); return true; }
+
+    rv = ParseObjectDeclaration();
+    if (rv) {
+        p.At("Object");
+        return rv;
+    }
+
+    rv = ParseNumberDeclaration();
+    if (rv) {
+        p.At("Number");
+        return rv;
+    }
+
+    rv = ParseTypeDeclaration();
+    if (rv) {
+        p.At("Type");
+        return rv;
+    }
+
+    rv = ParseSubtypeDeclaration();
+    if (rv) {
+        p.At("Subtype");
+        return rv;
+    }
+
+    if (!ParseSubprogramDeclaration())        { return nullptr; }
+    if (!ParsePackageDeclaration())           { return nullptr; }
+    if (!ParseTaskDeclaration())              { return nullptr; }
+    if (!ParseGenericDeclaration())           { return nullptr; }
+    if (!ParseExceptionDeclaration())         { return nullptr; }
+    if (!ParseGenericInstantiation())         { return nullptr; }
+    if (!ParseRenamingDeclaration())          { return nullptr; }
+    if (!ParseDeferredConstantDeclaration())  { return nullptr; }
 
     if (opts.requireBasicDeclaration) {
         diags.Error(loc, DiagID::MissingBasicDeclaration);
-        m.Commit();
-        tokens.Recovery();
+        TokenStream::Get().Recovery();
     }
 
-    return false;
+    return nullptr;
 }
 
 

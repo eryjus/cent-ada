@@ -22,19 +22,22 @@
 //
 // -- Parse a Number Declaration
 //    --------------------------
-bool Parser::ParseNumberDeclaration(void)
+ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
 {
     Production p(*this, "number_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    std::unique_ptr<IdList> idList = std::make_unique<IdList>();
-    SourceLoc_t loc;
+    std::unique_ptr<IdList> idList;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    ExprPtr expr = nullptr;
 
 
     //
     // -- Get the list of identifiers
     //    ---------------------------
-    if (!ParseIdentifierList(idList.get())) return false;
+    idList = ParseIdentifierList();
+    if (!idList) return nullptr;
 
 
     //
@@ -56,9 +59,9 @@ bool Parser::ParseNumberDeclaration(void)
     //
     // -- there are 3 consecutive tokens required
     //    ---------------------------------------
-    if (!Require(TokenType::TOK_COLON)) return false;
-    if (!Require(TokenType::TOK_CONSTANT)) return false;
-    if (!Require(TokenType::TOK_ASSIGNMENT)) return false;
+    if (!Require(TokenType::TOK_COLON)) return nullptr;
+    if (!Require(TokenType::TOK_CONSTANT)) return nullptr;
+    if (!Require(TokenType::TOK_ASSIGNMENT)) return nullptr;
 
 
     //
@@ -66,14 +69,14 @@ bool Parser::ParseNumberDeclaration(void)
     //    the value must be static and must also evalueate to either a `universal_real`
     //    or a `universal_integer` type.
     //    -----------------------------------------------------------------------------
-    ParseUniversalStaticExpression();
+    expr = ParseUniversalStaticExpression();
 
 
 
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "expression" } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -85,7 +88,8 @@ bool Parser::ParseNumberDeclaration(void)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<ObjectDeclaration>(astLoc, std::move(idList), true, nullptr, std::move(expr));
 }
 
 

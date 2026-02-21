@@ -10,3 +10,4 @@ type BUFFER(SIZE : BUFFER_SIZE := 100) is
 
 
 LARGE : BUFFER(200);
+

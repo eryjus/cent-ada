@@ -4,3 +4,4 @@ type VAR_LINE(LENGTH : INTEGER) is
     end record;
 
 NULL_LINE : VAR_LINE(0);
+

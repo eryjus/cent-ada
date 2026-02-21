@@ -22,21 +22,23 @@
 //
 // -- Parse a Floating Point Constraint
 //    ---------------------------------
-bool Parser::ParseFloatingPointConstraint(Id &id)
+NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
 {
     Production p(*this, "floating_point_constraint");
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    ExprPtr size = nullptr;
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
     if (!id.name.empty()) {
-        if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        if (scopes.IsLocalDefined(id.name)) {
             // -- name is used in this scope is it a singleton and incomplete class?
-            vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+            vec = scopes.CurrentScope()->LocalLookup(id.name);
 
             if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
                 updateIncomplete = true;
@@ -44,6 +46,7 @@ bool Parser::ParseFloatingPointConstraint(Id &id)
                 diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
             }
         }
+
         scopes.Declare(std::make_unique<RealTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
@@ -52,13 +55,14 @@ bool Parser::ParseFloatingPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if (!ParseFloatingAccuracyDefinition()) return false;
+    size = ParseFloatingAccuracyDefinition();
+    if (!size) return nullptr;
 
 
     //
     // -- and then check on the optional Range Constraint
     //    -----------------------------------------------
-    ParseRangeConstraint();
+    RangeConstraintPtr range = ParseRangeConstraint();
 
 
 
@@ -66,8 +70,10 @@ bool Parser::ParseFloatingPointConstraint(Id &id)
     // -- The parse is good here
     //    ----------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+
     s.Commit();
-    return true;
+
+    return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FloatingPoint, std::move(size), std::move(range));
 }
 
 

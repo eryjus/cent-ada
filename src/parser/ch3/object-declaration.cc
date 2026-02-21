@@ -23,22 +23,40 @@
 //
 // -- Parse an Object Declaration
 //    ---------------------------
-bool Parser::ParseObjectDeclaration(void)
+ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
 {
     Production p(*this, "object_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    std::unique_ptr<IdList> idList = std::make_unique<IdList>();
+    std::unique_ptr<IdList> idList;
     bool isConstant = false;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc= astLoc;
+    TypeSpecPtr typeSpec = nullptr;
+    ExprPtr expr = nullptr;
     std::string where;
-    SourceLoc_t loc;
+
+
 
     //
     // -- Parse the common prefix
     //    -----------------------
-    if (!ParseIdentifierList(idList.get())) return false;
-    if (!Require(TokenType::TOK_COLON)) return false;
+    idList = ParseIdentifierList();
+
+    if (!idList) {
+        p.At("no IdList");
+        return nullptr;
+    }
+
+
+    if (!Require(TokenType::TOK_COLON)) {
+        p.At("no TOK_COLON");
+        return nullptr;
+    }
+
+
     isConstant = Optional(TokenType::TOK_CONSTANT);
+
 
 
     //
@@ -57,27 +75,36 @@ bool Parser::ParseObjectDeclaration(void)
     }
 
 
+
     //
     // -- Here is where the rules differ
     //    ------------------------------
-    if (ParseSubtypeIndication()) {
+    typeSpec = ParseSubtypeIndication();
+    if (typeSpec) {
         where = "subtype_indication";
-        // -- do something important here
-    } else if (ParseConstrainedArrayDefinition(idList.get())) {
-        where = "constrained_array_definition";
-        // -- do something important here
     } else {
-        // -- These are not the tokens we are looking for
-        return false;
+        typeSpec = ParseConstrainedArrayDefinition(idList);
+        if (typeSpec) {
+            where = "constrained_array_definition";
+        } else {
+            // -- These are not the tokens we are looking for
+            p.At("Type indication fail");
+            return nullptr;
+        }
     }
+
 
 
     //
     // -- Now, check for an optional assignment to an expression
     //    ------------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
+    TOKEN;
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
-        if (!ParseExpression()) {
+        TOKEN;
+        expr = ParseExpression();
+        TOKEN;
+        if (!expr) {
             diags.Error(loc, DiagID::MissingExpression, { "assignment" } );
         }
 
@@ -85,22 +112,29 @@ bool Parser::ParseObjectDeclaration(void)
     }
 
 
+
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
 
+
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    TOKEN;
+    p.At("proper obj decl");
+    TOKEN;
+
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<ObjectDeclaration>(loc, std::move(idList), isConstant, std::move(typeSpec), std::move(expr));
 }
 
 

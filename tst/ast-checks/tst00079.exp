@@ -1,0 +1,84 @@
+TypeDecl
+  name --> matrix
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+        [1]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> real
+      constraint: (null)
+TypeDecl
+  name --> square
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> side
+      type: SimpleName
+        id --> integer
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> mat
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> matrix
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> side
+                [1]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> side
+          initializer: (null)
+      variant part: (null)
+
+
+Listing for tst/declarations/tst00079.ada:
+==========================================
+     1   type MATRIX is array(INTEGER range <>, INTEGER range <>) of REAL;
+     2   type SQUARE(SIDE : INTEGER) is
+     3       record
+     4           MAT : MATRIX(1 .. SIDE, 1 .. SIDE);
+     5       end record;
+     6
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Array Type: matrix : Array
+Discriminant Symbol: side : Discriminant
+Record Type: square : Record
+   containing components (mat )
+-------------------
+
+Scope Name: square
+Scope ID  : 2
+-------------------
+Component Symbol: mat : Component
+-------------------

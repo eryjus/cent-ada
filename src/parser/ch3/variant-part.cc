@@ -22,44 +22,53 @@
 //
 // -- Parse a Variant Part
 //    --------------------
-bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
+VariantPartPtr Parser::ParseVariantPart(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant_part");
     MarkStream m(tokens, diags);
-    Id id;
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    VariantListPtr variants = std::make_unique<VariantList>();
+    NamePtr name = nullptr;
+    VariantPtr variant = nullptr;
 
 
     //
     // -- Start this off with a TOK_CASE token
     //    ------------------------------------
-    if (!Require(TokenType::TOK_CASE)) return false;
+    if (!Require(TokenType::TOK_CASE)) return nullptr;
 
 
     //
     // -- Check for a simple name
     //    -----------------------
-    loc = tokens.SourceLocation();
-    if (!ParseDiscriminantSimpleName(id)) return false;
+    loc = TokenStream::Get().SourceLocation();
+    name = ParseDiscriminantSimpleName();
+    if (!name) return nullptr;
 
 
     //
     // -- parse the variants
     //    ------------------
-    if (!Require(TokenType::TOK_IS)) return false;
-    if (!ParseVariant(rec)) return false;
+    if (!Require(TokenType::TOK_IS)) return nullptr;
 
-    while (ParseVariant(rec)) {
-        // -- for the moment, nothing is needed here
+    variant = ParseVariant(rec);
+    if (!variant) return nullptr;
+    variants->push_back(std::move(variant));
+
+    variant = ParseVariant(rec);
+    while (variant) {
+        variants->push_back(std::move(variant));
+        variant = ParseVariant(rec);
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_END)) {
         diags.Error(loc, DiagID::MissingEnd, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_CASE)) {
         diags.Error(loc, DiagID::MissingRightParen, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -76,7 +85,8 @@ bool Parser::ParseVariantPart(RecordTypeSymbol *rec)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+
+    return std::make_unique<VariantPart>(astLoc, std::move(name), std::move(variants));
 }
 
 

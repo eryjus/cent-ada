@@ -1,0 +1,31 @@
+TypeDecl
+  name --> column
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 72
+
+
+Listing for tst/declarations/tst00015.ada:
+==========================================
+     1   type COLUMN is range 1 .. 72;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Integer Type: column : Integer
+-------------------

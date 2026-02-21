@@ -28,19 +28,19 @@
 //
 // -- Parse a Later Declarative Item
 //    ------------------------------
-bool Parser::ParseLaterDeclarativeItem(void)
+NodePtr Parser::ParseLaterDeclarativeItem(void)
 {
     Production p(*this, "later_declarative_item");
 
-    if (ParseBody())                        return true;
-    if (ParseSubprogramDeclaration())       return true;
-    if (ParsePackageDeclaration())          return true;
-    if (ParseTaskDeclaration())             return true;
-    if (ParseGenericDeclaration())          return true;
-    if (ParseUseClause())                   return true;
-    if (ParseGenericInstantiation())        return true;
+    if (ParseBody())                        { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
+    if (ParseSubprogramDeclaration())       { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
+    if (ParsePackageDeclaration())          { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
+    if (ParseTaskDeclaration())             { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
+    if (ParseGenericDeclaration())          { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
+    if (ParseUseClause())                   { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
+    if (ParseGenericInstantiation())        { return nullptr; } // std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()); }
 
-    return false;
+    return nullptr;
 }
 
 

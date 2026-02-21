@@ -22,32 +22,34 @@
 //
 // -- Parse an Incomplete Type Declaration
 //    ------------------------------------
-bool Parser::ParseIncompleteTypeDeclaration(void)
+TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
 {
     Production p(*this, "incomplete_type_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    Id id;
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc= astLoc;
     std::string where = "incomplete type identifier";
+    DiscriminantSpecificationListPtr discriminant;
+    Id id;
 
 
     //
     // -- Start with the definitive tokens
     //    --------------------------------
-    if (!Require(TokenType::TOK_TYPE)) return false;
-    loc = tokens.SourceLocation();
+    if (!Require(TokenType::TOK_TYPE)) return nullptr;
+    loc = TokenStream::Get().SourceLocation();
 
 
     //
     // -- Get the name of the incomplete type declaration
     //    -----------------------------------------------
-    if (!RequireIdent(id)) return false;
+    if (!RequireIdent(id)) return nullptr;
 
     if (scopes.IsLocalDefined(id.name)) {
         diags.Error(loc, DiagID::DuplicateName, { id.name } );
 
-        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id.name));
+        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         SourceLoc_t loc2 = vec->at(0)->loc;
         diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {
@@ -58,13 +60,14 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- this is optional
     //    ----------------
-    if (ParseDiscriminantPart()) where = "discriminant part";
+    discriminant = ParseDiscriminantPart();
+    if (discriminant) where = "discriminant part";
 
 
     //
     // -- End with a semicolon
     //    --------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -76,7 +79,8 @@ bool Parser::ParseIncompleteTypeDeclaration(void)
     //    ------------------------------
     s.Commit();
     m.Commit();
-    return true;
+
+    return std::make_unique<TypeDecl>(astLoc, id, std::move(discriminant), nullptr);
 }
 
 

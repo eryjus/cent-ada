@@ -22,12 +22,14 @@
 //
 // -- Parse a Fixed Point Constraint
 //    ------------------------------
-bool Parser::ParseFixedPointConstraint(Id &id)
+NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
 {
     Production p(*this, "fixed_point_constraint");
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
+    SourceLoc_t astLoc= TokenStream::Get().SourceLocation();
+    ExprPtr size = nullptr;
 
 
 
@@ -35,9 +37,9 @@ bool Parser::ParseFixedPointConstraint(Id &id)
     // -- Manage the symbol table
     //    -----------------------
     if (!id.name.empty()) {
-        if (scopes.IsLocalDefined(std::string_view(id.name))) {
+        if (scopes.IsLocalDefined(id.name)) {
             // -- name is used in this scope is it a singleton and incomplete class?
-            vec = scopes.CurrentScope()->LocalLookup(std::string_view(id.name));
+            vec = scopes.CurrentScope()->LocalLookup(id.name);
 
             if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
                 updateIncomplete = true;
@@ -53,13 +55,14 @@ bool Parser::ParseFixedPointConstraint(Id &id)
     //
     // -- Check on the Floating Point Accuracy Definition
     //    -----------------------------------------------
-    if (!ParseFixedAccuracyDefinition()) return false;
+    size = ParseFixedAccuracyDefinition();
+    if (!size) return nullptr;
 
 
     //
     // -- and then check on the optional Range Constraint
     //    -----------------------------------------------
-    ParseRangeConstraint();
+    RangeConstraintPtr range = ParseRangeConstraint();
 
 
 
@@ -68,7 +71,8 @@ bool Parser::ParseFixedPointConstraint(Id &id)
     //    ----------------------
     if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
     s.Commit();
-    return true;
+
+    return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, std::move(size), std::move(range));
 }
 
 

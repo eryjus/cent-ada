@@ -1,0 +1,69 @@
+ObjectDeclaration
+  names ===
+    [0] --> n
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 10
+TypeDecl
+  name --> color
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> white
+      [1] --> red
+      [2] --> yellow
+      [3] --> green
+      [4] --> blue
+      [5] --> brown
+      [6] --> black
+ObjectDeclaration
+  names ===
+    [0] --> color_table
+  constant --> false
+  typeSpec: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: NameExpr
+            name: SimpleName
+              id --> n
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> color
+      constraint: (null)
+  initializer: (null)
+
+
+Listing for tst/declarations/tst00004.ada:
+==========================================
+     1   N : constant := 10;
+     2   type COLOR is (WHITE, RED, YELLOW, GREEN, BLUE, BROWN, BLACK);
+     3   COLOR_TABLE : ARRAY(1 .. N) of COLOR;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: n : Object
+Enumeration Type: color : Enumeration
+   containing literals (white red yellow green blue brown black )
+Enumeration Literal: white : EnumLiteral of type color; value (0)
+Enumeration Literal: red : EnumLiteral of type color; value (1)
+Enumeration Literal: yellow : EnumLiteral of type color; value (2)
+Enumeration Literal: green : EnumLiteral of type color; value (3)
+Enumeration Literal: blue : EnumLiteral of type color; value (4)
+Enumeration Literal: brown : EnumLiteral of type color; value (5)
+Enumeration Literal: black : EnumLiteral of type color; value (6)
+Object Symbol: color_table : Object
+-------------------

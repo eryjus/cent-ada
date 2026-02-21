@@ -22,31 +22,39 @@
 //
 // -- Parse a Subtype Declaration
 //    ---------------------------
-bool Parser::ParseSubtypeDeclaration(void)
+TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
 {
     Production p(*this, "subtype_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
     Id id;
     SourceLoc_t loc;
+    SourceLoc_t astLoc;
+    SubtypeIndicationPtr type = nullptr;
 
 
     //
     // -- start with a TOK_SUBTYPE token
     //    ------------------------------
-    if (!Require(TokenType::TOK_SUBTYPE)) return false;
+    if (!Require(TokenType::TOK_SUBTYPE)) {
+        p.At("no TOK_SUBTYPE");
+        return nullptr;
+    }
 
 
     //
     // -- Get the type name and check if its used
     //    ---------------------------------------
-    loc = tokens.SourceLocation();
-    if (!RequireIdent(id)) return false;
+    loc = TokenStream::Get().SourceLocation();
+    if (!RequireIdent(id)) {
+        p.At("no TOK_IDENT");
+        return nullptr;
+    }
 
     if (scopes.IsLocalDefined(id.name)) {
         diags.Error(loc, DiagID::DuplicateName, { id.name } );
 
-        const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(id.name));
+        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         SourceLoc_t loc2 = vec->at(0)->loc;
         diags.Error(loc, DiagID::DuplicateName2, { } );
     } else {
@@ -58,15 +66,23 @@ bool Parser::ParseSubtypeDeclaration(void)
     // -- The definition of the subtype; TOK_IS and the subtype_indication
     //    must be present for this production to be valid.
     //    ----------------------------------------------------------------
-    if (!Require(TokenType::TOK_IS)) return false;
-    if (!ParseSubtypeIndication()) return false;
+    if (!Require(TokenType::TOK_IS)) {
+        p.At("no TOK_IS");
+        return nullptr;
+    }
+
+    type = ParseSubtypeIndication();
+    if (!type) {
+        p.At("no Subtype Indication");
+        return nullptr;
+    }
 
 
 
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "subtype declaration" } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -76,9 +92,12 @@ bool Parser::ParseSubtypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
+    TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, std::move(type));
+
+    p.At("Success");
     s.Commit();
     m.Commit();
-    return true;
+    return std::move(rv);
 }
 
 

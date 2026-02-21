@@ -22,35 +22,44 @@
 //
 // -- Parse a Discriminant Constraint
 //    -------------------------------
-bool Parser::ParseDiscriminantConstraint(void)
+DiscriminantConstraintPtr Parser::ParseDiscriminantConstraint(void)
 {
     Production p(*this, "discriminant_constraint");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    DiscriminantAssociationListPtr list = std::make_unique<DiscriminantAssociationList>();
+    DiscriminantAssociationPtr assoc = nullptr;
 
 
     //
     // -- Start with the required left paren token and the first association
     //    ------------------------------------------------------------------
-    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return false;
-    if (!ParseDiscriminantAssociation()) return false;
+    if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
+    assoc = ParseDiscriminantAssociation();
+    if (!assoc) return nullptr;
 
+    list->push_back(std::move(assoc));
 
     //
     // -- now get the optionsl additional associations
     //    --------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if (!ParseDiscriminantAssociation()) {
+        assoc = ParseDiscriminantAssociation();
+
+        if (assoc) {
+            list->push_back(std::move(assoc));
+        } else {
             diags.Error(loc, DiagID::ExtraComma, { "discriminant association" } );
             // -- continue on in hopes of competing the parse
             break;
         }
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discriminant association" } );
         // -- continue on in hopes that this does not create a cascade of errors
@@ -61,7 +70,7 @@ bool Parser::ParseDiscriminantConstraint(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+    return std::make_unique<DiscriminantConstraint>(astLoc, std::move(list));
 }
 
 

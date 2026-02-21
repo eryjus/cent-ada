@@ -1,0 +1,54 @@
+TypeDecl
+  name --> gender
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> m
+      [1] --> f
+TypeDecl
+  name --> person
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> sex
+      type: SimpleName
+        id --> gender
+      expr: (null)
+  definition: (null)
+TypeDecl
+  name --> person_name
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> person
+      constraint: (null)
+
+
+Listing for tst/declarations/tst00099.ada:
+==========================================
+     1   type GENDER is (M, F);
+     2
+     3   type PERSON(SEX : GENDER);
+     4
+     5   type PERSON_NAME is access PERSON;
+     6
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: gender : Enumeration
+   containing literals (m f )
+Enumeration Literal: m : EnumLiteral of type gender; value (0)
+Enumeration Literal: f : EnumLiteral of type gender; value (1)
+Incomplete Type: person : Incomplete
+Discriminant Symbol: sex : Discriminant
+Access Type: person_name : Access
+-------------------

@@ -1,0 +1,342 @@
+TypeDecl
+  name --> gender
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> m
+      [1] --> f
+TypeDecl
+  name --> person
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> sex
+      type: SimpleName
+        id --> gender
+      expr: (null)
+  definition: (null)
+TypeDecl
+  name --> person_name
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> person
+      constraint: (null)
+TypeDecl
+  name --> month_name
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> jan
+      [1] --> feb
+      [2] --> mar
+      [3] --> apr
+      [4] --> may
+      [5] --> jun
+      [6] --> jul
+      [7] --> aug
+      [8] --> sep
+      [9] --> oct
+      [10] --> nov
+      [11] --> dec
+TypeDecl
+  name --> date
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> day
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 1
+                upper: IntLiteralExpr
+                  value --> 31
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> month
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> month_name
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> year
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 0
+                upper: IntLiteralExpr
+                  value --> 4000
+          initializer: (null)
+      variant part: (null)
+ObjectDeclaration
+  names ===
+    [0] --> tomorrow
+    [1] --> yesterday
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> date
+    constraint: (null)
+  initializer: (null)
+TypeDecl
+  name --> car
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> number
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> owner
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> person_name
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+TypeDecl
+  name --> car_name
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> car
+      constraint: (null)
+TypeDecl
+  name --> person
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> sex
+      type: SimpleName
+        id --> gender
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> name
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> string
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: IntLiteralExpr
+                    value --> 20
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> birth
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> date
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> age
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: RangeConstraint
+              range: Range
+                lower: IntLiteralExpr
+                  value --> 0
+                upper: IntLiteralExpr
+                  value --> 130
+          initializer: (null)
+        [3]: ComponentDeclaration
+          names ===
+            [0] --> vehicle
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> car_name
+            constraint: (null)
+          initializer: (null)
+      variant part: VariantPart
+        name: SimpleName
+          id --> sex
+        variants ===
+          [0]: Variant
+            choices ===
+              [0]: ExprChoice
+                expr: NameExpr
+                  name: SimpleName
+                    id --> m
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> wife
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> person_name
+                    constraint: DiscriminantConstraint
+                      list ===
+                        [0]: DiscriminantAssociation
+                          name ===
+                            [0]: SimpleName
+                              id --> sex
+                          expr: NameExpr
+                            name: SimpleName
+                              id --> f
+                  initializer: (null)
+              variant part: (null)
+          [1]: Variant
+            choices ===
+              [0]: ExprChoice
+                expr: NameExpr
+                  name: SimpleName
+                    id --> f
+            components: ComponentList
+              components ===
+                [0]: ComponentDeclaration
+                  names ===
+                    [0] --> husband
+                  type: SubtypeIndication
+                    type_mark: SimpleName
+                      id --> person_name
+                    constraint: DiscriminantConstraint
+                      list ===
+                        [0]: DiscriminantAssociation
+                          name ===
+                            [0]: SimpleName
+                              id --> sex
+                          expr: NameExpr
+                            name: SimpleName
+                              id --> m
+                  initializer: (null)
+              variant part: (null)
+
+
+Listing for tst/declarations/tst00102.ada:
+==========================================
+     1   type GENDER is (M, F);
+     2
+     3   type PERSON(SEX : GENDER);
+     4
+     5   type PERSON_NAME is access PERSON;
+     6
+     7   type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC);
+     8
+     9   type DATE is
+    10       record
+    11           DAY : INTEGER range 1 .. 31;
+    12           MONTH : MONTH_NAME;
+    13           YEAR : INTEGER range 0 .. 4000;
+    14       end record;
+    15   TOMORROW, YESTERDAY : DATE;
+    16
+    17   type CAR is
+    18       record
+    19           NUMBER : INTEGER;
+    20           OWNER : PERSON_NAME;
+    21       end record;
+    22
+    23   type CAR_NAME is access CAR;
+    24
+    25   type PERSON(SEX : GENDER) is
+    26       record
+    27           NAME : STRING(1 .. 20);
+    28           BIRTH : DATE;
+    29           AGE : INTEGER range 0 .. 130;
+    30           VEHICLE : CAR_NAME;
+    31           case sex is
+    32               when M => WIFE : PERSON_NAME(SEX => F);
+    33               when F => HUSBAND : PERSON_NAME(SEX => M);
+    34           end case;
+    35       end record;
+    36
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: gender : Enumeration
+   containing literals (m f )
+Enumeration Literal: m : EnumLiteral of type gender; value (0)
+Enumeration Literal: f : EnumLiteral of type gender; value (1)
+Discriminant Symbol: sex : Discriminant
+Access Type: person_name : Access
+Enumeration Type: month_name : Enumeration
+   containing literals (jan feb mar apr may jun jul aug sep oct nov dec )
+Enumeration Literal: jan : EnumLiteral of type month_name; value (0)
+Enumeration Literal: feb : EnumLiteral of type month_name; value (1)
+Enumeration Literal: mar : EnumLiteral of type month_name; value (2)
+Enumeration Literal: apr : EnumLiteral of type month_name; value (3)
+Enumeration Literal: may : EnumLiteral of type month_name; value (4)
+Enumeration Literal: jun : EnumLiteral of type month_name; value (5)
+Enumeration Literal: jul : EnumLiteral of type month_name; value (6)
+Enumeration Literal: aug : EnumLiteral of type month_name; value (7)
+Enumeration Literal: sep : EnumLiteral of type month_name; value (8)
+Enumeration Literal: oct : EnumLiteral of type month_name; value (9)
+Enumeration Literal: nov : EnumLiteral of type month_name; value (10)
+Enumeration Literal: dec : EnumLiteral of type month_name; value (11)
+Record Type: date : Record
+   containing components (day month year )
+Object Symbol: tomorrow : Object
+Object Symbol: yesterday : Object
+Record Type: car : Record
+   containing components (number owner )
+Access Type: car_name : Access
+Discriminant Symbol: sex : Discriminant
+Record Type: person : Record
+   containing components (name birth age vehicle wife husband )
+-------------------
+
+Scope Name: date
+Scope ID  : 2
+-------------------
+Component Symbol: day : Component
+Component Symbol: month : Component
+Component Symbol: year : Component
+-------------------
+
+Scope Name: car
+Scope ID  : 3
+-------------------
+Component Symbol: number : Component
+Component Symbol: owner : Component
+-------------------
+
+Scope Name: person
+Scope ID  : 4
+-------------------
+Component Symbol: name : Component
+Component Symbol: birth : Component
+Component Symbol: age : Component
+Component Symbol: vehicle : Component
+Component Symbol: wife : Component
+Component Symbol: husband : Component
+-------------------

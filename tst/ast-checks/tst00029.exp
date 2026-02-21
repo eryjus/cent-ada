@@ -1,0 +1,33 @@
+TypeDecl
+  name --> suit
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> clubs
+      [1] --> diamonds
+      [2] --> hearts
+      [3] --> spades
+
+
+Listing for tst/declarations/tst00029.ada:
+==========================================
+     1   type suit is (CLUBS, DIAMONDS, HEARTS, SPADES);
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: suit : Enumeration
+   containing literals (clubs diamonds hearts spades )
+Enumeration Literal: clubs : EnumLiteral of type suit; value (0)
+Enumeration Literal: diamonds : EnumLiteral of type suit; value (1)
+Enumeration Literal: hearts : EnumLiteral of type suit; value (2)
+Enumeration Literal: spades : EnumLiteral of type suit; value (3)
+-------------------

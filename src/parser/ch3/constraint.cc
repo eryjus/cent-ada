@@ -26,18 +26,71 @@
 //
 // -- Parse a Constraint
 //    ------------------
-bool Parser::ParseConstraint(void)
+ConstraintPtr Parser::ParseConstraint(void)
 {
     Production p(*this, "constraint");
+    NumericTypeSpecPtr real = nullptr;
+    ConstraintPtr rv = nullptr;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     Id id;
 
-    if (ParseRangeConstraint())             return true;
-    if (ParseFloatingPointConstraint(id))   return true;
-    if (ParseFixedPointConstraint(id))      return true;
-    if (ParseIndexConstraint())             return true;
-    if (ParseDiscriminantConstraint())      return true;
 
-    return false;
+    //
+    // -- Range Constraint
+    //    ----------------
+    rv = ParseRangeConstraint();
+    if (rv) {
+        p.At("Range");
+        return rv;
+    }
+
+
+    //
+    // -- Floating Point Constraint
+    //    -------------------------
+    real = ParseFloatingPointConstraint(id);
+    if (real) {
+        p.At("Float");
+        return std::make_unique<RealConstraint>(astLoc, std::move(real));
+    }
+
+
+    //
+    // -- Fixed Point Constraint
+    //    ----------------------
+    real = ParseFixedPointConstraint(id);
+    if (real) {
+        p.At("Fixed");
+        return std::make_unique<RealConstraint>(astLoc, std::move(real));
+    }
+
+
+    //
+    // -- Index Constraint
+    //    ----------------
+    rv = ParseIndexConstraint();
+    if (rv) {
+        p.At("Index");
+        return rv;
+    }
+
+
+    //
+    // -- Discriminant Constraint
+    //    -----------------------
+    rv = ParseDiscriminantConstraint();
+    if (rv) {
+        p.At("Discriminant");
+        return rv;
+    }
+
+
+    //
+    // -- None of the above
+    //    -----------------
+    p.At("failed");
+
+    return nullptr;
 }
 
 

@@ -44,6 +44,8 @@ enum class DiagID {
     InvalidExpression,
     MissingBasicDeclaration,
     UnknownError,
+    NoDeclaration,
+    InternalError,
 };
 
 
@@ -81,7 +83,7 @@ public:
     void Note(SourceLoc_t loc, DiagID id, std::vector<std::string> args = {}) {
         Emit("note", id, loc, args);
     }
-    void Debug(std::string s) { std::cerr << s << '\n'; }
+    void Debug(std::string_view s) { std::cerr << s << '\n'; }
 
 
 private:
@@ -108,3 +110,10 @@ public:
 //    --------------------------------------
 extern Diagnostics diags;
 
+
+#define __PRINT_TOKENS__ 0
+#if __PRINT_TOKENS__
+#define TOKEN std::cerr << "TOKEN: " << TokenStream::Get().tokenStr(TokenStream::Get().Current()) << '\n'
+#else
+#define TOKEN
+#endif

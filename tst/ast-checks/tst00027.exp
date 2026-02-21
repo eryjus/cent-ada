@@ -1,0 +1,28 @@
+TypeDecl
+  name --> key_manager
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+
+
+Listing for tst/declarations/tst00027.ada:
+==========================================
+     1   subtype KEY_MANAGER is INTEGER;
+     2
+     3   --type SPECIAL_KEY is new KEY_MANAGER.KEY;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Subtype: key_manager : Subtype
+-------------------

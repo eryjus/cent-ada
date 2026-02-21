@@ -22,18 +22,22 @@
 //
 // -- Parse an Index Subtype Definition
 //    ---------------------------------
-bool Parser::ParseIndexSubtypeDefinition(void)
+UnboundedRangePtr Parser::ParseIndexSubtypeDefinition(void)
 {
     Production p(*this, "index_subtype_definition");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    NamePtr id =nullptr;
 
 
     //
     // -- Get a type mark, and then the 2 required tokens to provide context
     //    ------------------------------------------------------------------
-    if (!ParseTypeMark()) return false;
-    if (!Require(TokenType::TOK_RANGE)) return false;
-    if (!Require(TokenType::TOK_BOX)) return false;
+    id = ParseTypeMark();
+    if (!id) return nullptr;
+
+    if (!Require(TokenType::TOK_RANGE)) return nullptr;
+    if (!Require(TokenType::TOK_BOX)) return nullptr;
 
 
 
@@ -41,7 +45,8 @@ bool Parser::ParseIndexSubtypeDefinition(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+
+    return std::make_unique<UnboundedRange>(astLoc, std::move(id));
 }
 
 

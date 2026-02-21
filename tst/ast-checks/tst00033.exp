@@ -1,0 +1,31 @@
+TypeDecl
+  name --> light
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> red
+      [1] --> amber
+      [2] --> green
+
+
+Listing for tst/declarations/tst00033.ada:
+==========================================
+     1   type LIGHT is (RED, AMBER, GREEN);
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: light : Enumeration
+   containing literals (red amber green )
+Enumeration Literal: red : EnumLiteral of type light; value (0)
+Enumeration Literal: amber : EnumLiteral of type light; value (1)
+Enumeration Literal: green : EnumLiteral of type light; value (2)
+-------------------

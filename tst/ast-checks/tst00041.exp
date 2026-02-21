@@ -1,0 +1,41 @@
+ObjectDeclaration
+  names ===
+    [0] --> max_line_size
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 132
+TypeDecl
+  name --> line_size
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: NameExpr
+          name: SimpleName
+            id --> max_line_size
+
+
+Listing for tst/declarations/tst00041.ada:
+==========================================
+     1   MAX_LINE_SIZE : constant := 132;
+     2   type LINE_SIZE is range 1 .. MAX_LINE_SIZE;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: max_line_size : Object
+Integer Type: line_size : Integer
+-------------------

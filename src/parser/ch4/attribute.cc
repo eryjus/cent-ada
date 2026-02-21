@@ -22,17 +22,27 @@
 //
 // -- Parse an Attribute
 //    ------------------
-bool Parser::ParseAttribute(void)
+AttributeNamePtr Parser::ParseAttribute(void)
 {
     Production p(*this, "attribute");
     MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    NamePtr prefix = nullptr;
+    NamePtr attr = nullptr;
 
-    if (!ParsePrefix())                             return false;
-    if (!Require(TokenType::TOK_APOSTROPHE))        return false;
-    if (!ParseAttributeDesignator())                return false;
+
+    prefix = ParsePrefix();
+    if (!prefix) return nullptr;
+
+    if (!Require(TokenType::TOK_APOSTROPHE)) return nullptr;
+
+    attr = ParseAttributeDesignator(prefix);
+    if (!attr) return nullptr;
+
 
     m.Commit();
-    return true;
+
+    return std::make_unique<AttributeName>(astLoc, std::move(prefix), std::move(attr), nullptr);
 }
 
 
@@ -42,16 +52,22 @@ bool Parser::ParseAttribute(void)
 //
 //    For this function, name has already been accounted for
 //    ------------------------------------------------------
-bool Parser::ParseName_AttributeSuffix(void)
+AttributeNamePtr Parser::ParseName_AttributeSuffix(NamePtr &prefix)
 {
     Production p(*this, "name(attribute)");
     MarkStream m(tokens, diags);
+    AttributeNamePtr attr = nullptr;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
-    if (!Require(TokenType::TOK_APOSTROPHE))        return false;
-    if (!ParseAttributeDesignator())                return false;
+    if (!Require(TokenType::TOK_APOSTROPHE)) return nullptr;
 
+    attr = ParseAttributeDesignator(prefix);
+    if (!attr) return nullptr;
+
+    p.At("committing");
     m.Commit();
-    return true;
+
+    return attr;
 }
 
 

@@ -24,11 +24,15 @@
 //
 // -- Parse a Component List
 //    ----------------------
-bool Parser::ParseComponentList(RecordTypeSymbol *rec)
+ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_list");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    ComponentDeclarationListPtr comps = std::make_unique<ComponentDeclarationList>();
+    ComponentDeclarationPtr decl = nullptr;
+    VariantPartPtr variant = nullptr;
 
 
 
@@ -36,7 +40,7 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
     // -- Handle the trivial case first: TOK_NULL;
     //    ----------------------------------------
     if (Require(TokenType::TOK_NULL)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
         if (!Require(TokenType::TOK_SEMICOLON)) {
             diags.Error(loc, DiagID::MissingSemicolon, { "TOK_NULL" } );
             // -- continue on in hopes that this does not create a cascade of errors
@@ -47,7 +51,7 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
         // -- Consider this parse to be good
         //    ------------------------------
         m.Commit();
-        return true;
+        return std::make_unique<ComponentList>(astLoc, std::move(comps), nullptr);
     }
 
 
@@ -62,16 +66,20 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
     //
     // -- Parse all component declarations
     //    --------------------------------
-    loc = tokens.SourceLocation();
-    while (ParseComponentDeclaration(rec)) {
+    loc = TokenStream::Get().SourceLocation();
+    decl = ParseComponentDeclaration(rec);
+    while (decl) {
+        comps->push_back(std::move(decl));
         declCnt ++;
+        decl = ParseComponentDeclaration(rec);
     }
 
 
     //
     // -- Check for the optional variant part
     //    -----------------------------------
-    if (ParseVariantPart(rec)) {
+    variant = ParseVariantPart(rec);
+    if (variant) {
         hasVariant = true;
     }
 
@@ -90,7 +98,8 @@ bool Parser::ParseComponentList(RecordTypeSymbol *rec)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
-    return true;
+
+    return std::make_unique<ComponentList>(astLoc, std::move(comps), std::move(variant));
 }
 
 

@@ -34,17 +34,26 @@
 //
 // -- Parse a Component Association
 //    -----------------------------
-bool Parser::ParseComponentAssociation(void)
+ComponentAssociationPtr Parser::ParseComponentAssociation(void)
 {
     Production p(*this, "component_association");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc;
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    ChoiceListPtr list = std::make_unique<ChoiceList>();
+    ChoicePtr choice = nullptr;
+    ExprPtr expr = nullptr;
 
 
-    if (ParseChoice()) {
+    choice = ParseChoice();
+    if (choice) {
+        list->push_back(std::move(choice));
         while (Optional(TokenType::TOK_VERTICAL_BAR)) {
-            loc = tokens.SourceLocation();
-            if (!ParseChoice()) {
+            loc = TokenStream::Get().SourceLocation();
+            choice = ParseChoice();
+            if (choice) {
+                list->push_back(std::move(choice));
+            } else {
                 diags.Error(loc, DiagID::ExtraVertialBar, { "component association" } );
             }
         }
@@ -54,11 +63,14 @@ bool Parser::ParseComponentAssociation(void)
         }
     }
 
-    if (!ParseExpression()) return false;
+
+    expr = ParseExpression();
+    if (!expr) return nullptr;
 
 
     m.Commit();
-    return true;
+
+    return std::make_unique<ComponentAssociation>(astLoc, std::move(list), std::move(expr));
 }
 
 
