@@ -120,7 +120,7 @@ Scope *ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 {
     Scope *rv = current;
 
-    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, CurrentScope()->Level() + 1, name));
+    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, stack.size(), name));
     current = stack.back().get();
 
     return rv;
