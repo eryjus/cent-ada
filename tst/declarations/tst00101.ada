@@ -9,3 +9,4 @@ type CAR is
         NUMBER : INTEGER;
         OWNER : PERSON_NAME;
     end record;
+

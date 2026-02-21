@@ -33,3 +33,4 @@ type PERSON(SEX : GENDER) is
             when F => HUSBAND : PERSON_NAME(SEX => M);
         end case;
     end record;
+

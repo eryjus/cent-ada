@@ -219,3 +219,4 @@ MY_CAR, YOUR_CAR, NEXT_CAR : CAR_NAME;
 
 
 subtype MALE is PERSON(SEX => M);
+
