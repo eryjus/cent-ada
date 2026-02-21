@@ -28,7 +28,7 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     Production p(*this, "unconstrained_array_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc=astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
@@ -74,7 +74,7 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- now, some optional additional indices
     //    -------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         idx = ParseIndexSubtypeDefinition();
         if (idx) {
@@ -86,14 +86,14 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
             break;
         }
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
 
     //
     // -- The closing paren is required
     //    -----------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"array index subtype definition"});
         // -- continue on in hopes that this does not create a cascade of errors

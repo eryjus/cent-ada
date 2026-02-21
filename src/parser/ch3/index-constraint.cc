@@ -26,7 +26,7 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
 {
     Production p(*this, "index_constraint");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc, astLoc = tokens.SourceLocation();      // -- only init astLoc
+    SourceLoc_t loc, astLoc = TokenStream::Get().SourceLocation();      // -- only init astLoc
     DiscreteRangePtr range = nullptr;
     DiscreteRangeListPtr vec = std::make_unique<std::vector<DiscreteRangePtr>>();
 
@@ -49,7 +49,7 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     //
     // -- followed by any number of additional indices
     //    --------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         range = ParseDiscreteRange();
         if (!range) {
@@ -60,14 +60,14 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
         }
 
         vec->push_back(std::move(range));
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
 
     //
     // -- The closing paren is required
     //    -----------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, {"discrete range"});
         // -- continue on in hopes that this does not create a cascade of errors

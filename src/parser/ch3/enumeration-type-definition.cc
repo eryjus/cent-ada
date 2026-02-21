@@ -27,7 +27,7 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     Production p(*this, "enumeration_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
@@ -65,7 +65,7 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     //
     // -- there may be any number of enumerations
     //    ---------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         if ((id = ParseEnumerationLiteralSpecification(type)).name == "") {
             diags.Error(loc, DiagID::ExtraComma, { "enumeration type definition" } );
@@ -75,14 +75,14 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
         }
 
         ids->push_back(id);
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
 
     //
     // -- end with a closing paren
     //    ------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "enumeration literal" } );
         // -- continue on in hopes that this does not create a cascade of errors

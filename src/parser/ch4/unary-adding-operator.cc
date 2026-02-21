@@ -28,9 +28,9 @@ UnaryOper Parser::ParseUnaryAddingOperator(void)
     MarkStream m(tokens, diags);
 
 
-    switch (tokens.Current()) {
-    case TokenType::TOK_PLUS:   tokens.Advance();  m.Commit();  return UnaryOper::Plus;
-    case TokenType::TOK_MINUS:  tokens.Advance();  m.Commit();  return UnaryOper::Minus;
+    switch (TokenStream::Get().Current()) {
+    case TokenType::TOK_PLUS:   TokenStream::Get().Advance();  m.Commit();  return UnaryOper::Plus;
+    case TokenType::TOK_MINUS:  TokenStream::Get().Advance();  m.Commit();  return UnaryOper::Minus;
     default:                                                    return UnaryOper::Unspecified;
     }
 }

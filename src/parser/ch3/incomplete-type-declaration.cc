@@ -27,7 +27,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     Production p(*this, "incomplete_type_declaration");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc= astLoc;
     std::string where = "incomplete type identifier";
     DiscriminantSpecificationListPtr discriminant;
@@ -38,7 +38,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     // -- Start with the definitive tokens
     //    --------------------------------
     if (!Require(TokenType::TOK_TYPE)) return nullptr;
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
 
 
     //
@@ -67,7 +67,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- End with a semicolon
     //    --------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors

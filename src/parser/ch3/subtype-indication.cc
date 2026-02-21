@@ -26,7 +26,7 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
 {
     Production p(*this, "subtype_indication");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     NamePtr id = nullptr;
     ConstraintPtr constraint = nullptr;
 
@@ -60,7 +60,7 @@ SubtypeIndicationPtr Parser::ParseSubtypeIndication(void)
 SubtypeIndicationPtr Parser::ParseDiscreteSubtypeIndication(void)
 {
     Production p(*this, "subtype_indication(discrete)");
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SubtypeIndicationPtr node = nullptr;
 
     node = ParseSubtypeIndication();

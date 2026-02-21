@@ -28,11 +28,11 @@ BinaryOper Parser::ParseMultiplyingOperator(void)
     MarkStream m(tokens, diags);
 
 
-    switch (tokens.Current()) {
-    case TokenType::TOK_STAR:       tokens.Advance();  m.Commit();  return BinaryOper::Times;
-    case TokenType::TOK_SLASH:      tokens.Advance();  m.Commit();  return BinaryOper::Divide;
-    case TokenType::TOK_MOD:        tokens.Advance();  m.Commit();  return BinaryOper::Mod;
-    case TokenType::TOK_REM:        tokens.Advance();  m.Commit();  return BinaryOper::Rem;
+    switch (TokenStream::Get().Current()) {
+    case TokenType::TOK_STAR:       TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Times;
+    case TokenType::TOK_SLASH:      TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Divide;
+    case TokenType::TOK_MOD:        TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Mod;
+    case TokenType::TOK_REM:        TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Rem;
     default:                                                        return BinaryOper::Unspecified;
     }
 }

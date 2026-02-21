@@ -28,7 +28,7 @@ ExprPtr Parser::ParseRelation(void)
 {
     Production p(*this, "relation");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     bool hasNot = false;
     BinaryOper bop = BinaryOper::Unspecified;
     NamePtr id = nullptr;
@@ -45,8 +45,8 @@ ExprPtr Parser::ParseRelation(void)
         return nullptr;
     }
 
-    if ((tokens.Current() == TokenType::TOK_NOT && tokens.Peek() == TokenType::TOK_IN)
-            || tokens.Current() == TokenType::TOK_IN) {
+    if ((TokenStream::Get().Current() == TokenType::TOK_NOT && TokenStream::Get().Peek() == TokenType::TOK_IN)
+            || TokenStream::Get().Current() == TokenType::TOK_IN) {
         if (Optional(TokenType::TOK_NOT)) hasNot = true;
         if (!Require(TokenType::TOK_IN))  return nullptr;
 

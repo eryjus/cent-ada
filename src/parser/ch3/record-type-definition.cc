@@ -27,7 +27,7 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     Production p(*this, "record_type_definition");
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
@@ -82,13 +82,13 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
     //
     // -- and then by TOK_END and TOK_RECORD again
     //    ----------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_END)) {
         diags.Error(loc, DiagID::MissingEnd, { "record component list" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RECORD)) {
         diags.Error(loc, DiagID::MissingEndingTag, { "record" } );
         // -- continue on in hopes that this does not create a cascade of errors

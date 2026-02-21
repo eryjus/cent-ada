@@ -30,7 +30,7 @@ ExprPtr Parser::ParseExpression(void)
 {
     Production p(*this, "expression");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     BinaryOper bop = BinaryOper::Unspecified;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
@@ -45,12 +45,12 @@ ExprPtr Parser::ParseExpression(void)
         return nullptr;
     }
 
-    switch (tokens.Current()) {
-    case TokenType::TOK_AND:        bop = BinaryOper::And;      tok = tokens.Current();  break;
-    case TokenType::TOK_AND_THEN:   bop = BinaryOper::AndThen;  tok = tokens.Current();  break;
-    case TokenType::TOK_OR:         bop = BinaryOper::Or;       tok = tokens.Current();  break;
-    case TokenType::TOK_OR_ELSE:    bop = BinaryOper::OrElse;   tok = tokens.Current();  break;
-    case TokenType::TOK_XOR:        bop = BinaryOper::Xor;      tok = tokens.Current();  break;
+    switch (TokenStream::Get().Current()) {
+    case TokenType::TOK_AND:        bop = BinaryOper::And;      tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_AND_THEN:   bop = BinaryOper::AndThen;  tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_OR:         bop = BinaryOper::Or;       tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_OR_ELSE:    bop = BinaryOper::OrElse;   tok = TokenStream::Get().Current();  break;
+    case TokenType::TOK_XOR:        bop = BinaryOper::Xor;      tok = TokenStream::Get().Current();  break;
     default:
         p.At("lhs only");
         m.Commit();

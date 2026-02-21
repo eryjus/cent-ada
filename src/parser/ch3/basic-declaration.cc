@@ -55,7 +55,7 @@ DeclPtr Parser::ParseBasicDeclaration(void)
 {
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "basic_declaration");
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     DeclPtr rv = nullptr;
 
 
@@ -94,7 +94,7 @@ DeclPtr Parser::ParseBasicDeclaration(void)
 
     if (opts.requireBasicDeclaration) {
         diags.Error(loc, DiagID::MissingBasicDeclaration);
-        tokens.Recovery();
+        TokenStream::Get().Recovery();
     }
 
     return nullptr;

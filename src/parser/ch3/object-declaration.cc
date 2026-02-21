@@ -30,7 +30,7 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     MarkSymbols s(scopes);
     std::unique_ptr<IdList> idList;
     bool isConstant = false;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc= astLoc;
     TypeSpecPtr typeSpec = nullptr;
     ExprPtr expr = nullptr;
@@ -98,7 +98,7 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Now, check for an optional assignment to an expression
     //    ------------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     TOKEN;
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
         TOKEN;
@@ -116,7 +116,7 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { where } );
         // -- continue on in hopes that this does not create a cascade of errors

@@ -26,7 +26,7 @@ NamePtr Parser::ParseSimpleName(void)
 {
     Production p(*this, "simple_name");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     SourceLoc_t astLoc = loc;
     Id id;
 

@@ -28,7 +28,7 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     MarkScope s(scopes);
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
-    SourceLoc_t astLoc= tokens.SourceLocation();
+    SourceLoc_t astLoc= TokenStream::Get().SourceLocation();
     ExprPtr size = nullptr;
 
 

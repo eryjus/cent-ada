@@ -27,7 +27,7 @@
 ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdListPtr &list)
 {
     // -- MarkStream is not needed here since this is a helper function.
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NameListPtr names = std::make_unique<NameList>();
     IndexConstraintPtr range = nullptr;
     SubtypeIndicationPtr type = nullptr;

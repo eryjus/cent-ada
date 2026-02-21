@@ -53,6 +53,7 @@ private:
 
 
 private:
+    static TokenStream *singleton;
     std::vector<Token *> tokStream;
     int loc;
     std::string filename;
@@ -64,7 +65,11 @@ public:
     const char *tokenStr(TokenType tok) const;
 
 public:
-    TokenStream(const char *fn);
+    static void Factory(const char *fn = nullptr);
+    static TokenStream &Get(void) { if (!singleton) { Factory(); } return *singleton; }
+
+
+
 
 public:
     void Advance(int n = 1) { loc += n; }
@@ -82,10 +87,6 @@ public:
     void List(void);
     SourceLoc_t SourceLocation(void);
     static SourceLoc_t EmptyLocation(void);
-
-
-public:
-//    std::string &GetErrMsg(void) const { return *(tokStream[loc]->payload.errMsg); }
 };
 
 

@@ -26,7 +26,7 @@ AttributeNamePtr Parser::ParseAttribute(void)
 {
     Production p(*this, "attribute");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr prefix = nullptr;
     NamePtr attr = nullptr;
 
@@ -57,7 +57,7 @@ AttributeNamePtr Parser::ParseName_AttributeSuffix(NamePtr &prefix)
     Production p(*this, "name(attribute)");
     MarkStream m(tokens, diags);
     AttributeNamePtr attr = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
     if (!Require(TokenType::TOK_APOSTROPHE)) return nullptr;
 

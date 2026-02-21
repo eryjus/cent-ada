@@ -192,23 +192,23 @@ public:
 public:
     // -- a token is illegal and if found is an illegal parse -- check only, never consumes
     bool Illegal(TokenType tok) {
-        if (tokens.Current() == tok) {
+        if (TokenStream::Get().Current() == tok) {
             return true;
         }
         return false;
     }
     // -- a token is optional and if found advance past it
     bool Optional(TokenType tok) {
-        if (tokens.Current() == tok) {
-            tokens.Advance();
+        if (TokenStream::Get().Current() == tok) {
+            TokenStream::Get().Advance();
             return true;
         }
         return false;
     }
     // -- a token is required to be next
     bool Require(TokenType tok) {
-        if (tokens.Current() == tok) {
-            tokens.Advance();
+        if (TokenStream::Get().Current() == tok) {
+            TokenStream::Get().Advance();
             return true;
         }
 
@@ -217,9 +217,9 @@ public:
     // -- DEPRECATED: An identifier is required to be next
     bool RequireIdent(std::string &id) {
         id = "";
-        if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-            id = std::get<IdentifierLexeme>(tokens.Payload()).name;
-            tokens.Advance();
+        if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
+            id = std::get<IdentifierLexeme>(TokenStream::Get().Payload()).name;
+            TokenStream::Get().Advance();
             return true;
         }
         return false;
@@ -228,11 +228,11 @@ public:
     // -- An identifier is required to be next
     bool RequireIdent(Id &id) {
         id.name = "";
-        id.loc = tokens.SourceLocation();
+        id.loc = TokenStream::Get().SourceLocation();
 
-        if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-            id.name = std::get<IdentifierLexeme>(tokens.Payload()).name;
-            tokens.Advance();
+        if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
+            id.name = std::get<IdentifierLexeme>(TokenStream::Get().Payload()).name;
+            TokenStream::Get().Advance();
             return true;
         }
         return false;

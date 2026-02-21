@@ -56,8 +56,8 @@ ExprPtr Parser::ParsePrimary(void)
 {
     Production p(*this, "primary");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation();
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
     TOKEN;
 
@@ -72,9 +72,9 @@ ExprPtr Parser::ParsePrimary(void)
     // -- The spec calls for a `numeric_literal` here.  I am going to split them out
     //    here rather than in the lexer.
     //    --------------------------------------------------------------------------
-    if (tokens.Current() == TokenType::TOK_UNIVERSAL_INT_LITERAL) {
-        std::string lit = std::get<IntLiteral>(tokens.Payload()).lexeme;
-        tokens.Advance();
+    if (TokenStream::Get().Current() == TokenType::TOK_UNIVERSAL_INT_LITERAL) {
+        std::string lit = std::get<IntLiteral>(TokenStream::Get().Payload()).lexeme;
+        TokenStream::Get().Advance();
         p.At("UNIVERSAL_INT_LITERAL");
         m.Commit();
 
@@ -82,9 +82,9 @@ ExprPtr Parser::ParsePrimary(void)
     }
 
 
-    if (tokens.Current() == TokenType::TOK_UNIVERSAL_REAL_LITERAL) {
-        std::string lit = std::get<RealLiteral>(tokens.Payload()).lexeme;
-        tokens.Advance();
+    if (TokenStream::Get().Current() == TokenType::TOK_UNIVERSAL_REAL_LITERAL) {
+        std::string lit = std::get<RealLiteral>(TokenStream::Get().Payload()).lexeme;
+        TokenStream::Get().Advance();
         p.At("UNIVERSAL_REAL_LITERAL");
         m.Commit();
 
@@ -92,9 +92,9 @@ ExprPtr Parser::ParsePrimary(void)
     }
 
 
-    if (tokens.Current() == TokenType::TOK_STRING_LITERAL) {
-        std::string lit = std::get<StringLiteral>(tokens.Payload()).lexeme;
-        tokens.Advance();
+    if (TokenStream::Get().Current() == TokenType::TOK_STRING_LITERAL) {
+        std::string lit = std::get<StringLiteral>(TokenStream::Get().Payload()).lexeme;
+        TokenStream::Get().Advance();
         p.At("UNIVERSAL_STRING_LITERAL");
         m.Commit();
 
@@ -102,7 +102,7 @@ ExprPtr Parser::ParsePrimary(void)
     }
 
 
-    if (tokens.Current() == TokenType::TOK_NEW) {
+    if (TokenStream::Get().Current() == TokenType::TOK_NEW) {
         AllocatorExprPtr rv = ParseAllocator();
         if (rv) {
             p.At("NEW");
@@ -115,7 +115,7 @@ ExprPtr Parser::ParsePrimary(void)
     }
 
 
-    if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
+    if (TokenStream::Get().Current() == TokenType::TOK_CHARACTER_LITERAL) {
         NamePtr name = ParseNameExpr();
         if (name) {
             p.At("Character Literal");
@@ -143,8 +143,8 @@ ExprPtr Parser::ParsePrimary(void)
     //
     // -- Now, an Identifier can start several different alternatives.  Check here for each.
     //    ----------------------------------------------------------------------------------
-    if (tokens.Current() == TokenType::TOK_IDENTIFIER) {
-        IdentifierLexeme idLex = std::get<IdentifierLexeme>(tokens.Payload());
+    if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
+        IdentifierLexeme idLex = std::get<IdentifierLexeme>(TokenStream::Get().Payload());
         const std::vector<Symbol *> *vec = scopes.Lookup(idLex.name);
 
         if (vec != nullptr) {
@@ -154,8 +154,8 @@ ExprPtr Parser::ParsePrimary(void)
                 NamePtr name = nullptr;
                 if (sym->kind == Symbol::SymbolKind::Deleted) continue;
                 if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
-                    if (tokens.Peek() == TokenType::TOK_APOSTROPHE) {
-                        if (tokens.Peek(2) == TokenType::TOK_DIGITS || tokens.Peek(2) == TokenType::TOK_DELTA) {
+                    if (TokenStream::Get().Peek() == TokenType::TOK_APOSTROPHE) {
+                        if (TokenStream::Get().Peek(2) == TokenType::TOK_DIGITS || TokenStream::Get().Peek(2) == TokenType::TOK_DELTA) {
                             name = ParseNameExpr();
                             if (name) {
                                 p.At("digits/delta next");
@@ -180,7 +180,7 @@ ExprPtr Parser::ParsePrimary(void)
                             }
                         }
                     }
-                    if (tokens.Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
+                    if (TokenStream::Get().Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
                         ExprPtr rv = ParseTypeConversion();
                         if (rv) {
                             p.At("Type Conversion");

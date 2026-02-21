@@ -27,7 +27,7 @@ DiscreteRangePtr Parser::ParseDiscreteRange(void)
     Production p(*this, "discrete_range");
     DiscreteRangePtr rv;
     SubtypeIndicationPtr sType = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
 
     //

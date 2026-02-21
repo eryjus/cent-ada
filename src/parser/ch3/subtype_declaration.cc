@@ -45,7 +45,7 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
     //
     // -- Get the type name and check if its used
     //    ---------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!RequireIdent(id)) {
         p.At("no TOK_IDENT");
         return nullptr;
@@ -82,7 +82,7 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "subtype declaration" } );
         // -- continue on in hopes that this does not create a cascade of errors

@@ -26,7 +26,7 @@ Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
 {
     Production p(*this, "enumeration_literal");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     EnumLiteralSymbol *sym= nullptr;
     YYSTYPE yy = yylval;      // in case we have a character liteal
     Id id;
@@ -37,7 +37,7 @@ Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
     //    -------------------------------------------
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         std::unique_ptr<EnumLiteralSymbol> sym;
-        id.name = std::get<CharLiteral>(tokens.Payload()).lexeme;
+        id.name = std::get<CharLiteral>(TokenStream::Get().Payload()).lexeme;
         sym = std::make_unique<EnumLiteralSymbol>(id.name, type, type->literals.size(), loc, scopes.CurrentScope());
         type->literals.push_back(sym.get());
         scopes.Declare(std::move(sym));
@@ -68,7 +68,7 @@ Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
         return id;
     }
 
-    return { "", tokens.EmptyLocation() };
+    return { "", TokenStream::Get().EmptyLocation() };
 }
 
 

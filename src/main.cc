@@ -29,13 +29,6 @@ using ParseType_t = enum {
 
 
 //
-// -- The global token stream used for scanning
-//    -----------------------------------------
-TokenStream *tokens = nullptr;
-
-
-
-//
 // -- Global options
 //    --------------
 Options opts;
@@ -217,9 +210,9 @@ static int Scan(std::string filename)
 //    ---------------------------------------
 static int Tokenize(std::string filename)
 {
-    tokens = new TokenStream(filename.c_str());
-    tokens->Listing();
-    tokens->List();
+    TokenStream::Factory(filename.c_str());
+    TokenStream::Get().Listing();
+    TokenStream::Get().List();
 
     return EXIT_SUCCESS;
 }
@@ -231,8 +224,8 @@ static int Tokenize(std::string filename)
 //    ---------------------------
 static int Compile(std::string filename, ParseType_t type)
 {
-    tokens = new TokenStream(filename.c_str());
-    Parser *parser = new Parser(*tokens);
+    TokenStream::Factory(filename.c_str());
+    Parser *parser = new Parser(TokenStream::Get());
     diags.SetParser(parser);
     int cnt = 0;
     int rv = EXIT_SUCCESS;
@@ -242,10 +235,10 @@ static int Compile(std::string filename, ParseType_t type)
 
     switch (type) {
     case COMPILE_TYPES:
-        while (tokens->Current() != TokenType::YYEOF) {
+        while (TokenStream::Get().Current() != TokenType::YYEOF) {
             node = parser->ParseBasicDeclaration();
             if (!node) {
-                diags.Error(tokens->EmptyLocation(), DiagID::NoDeclaration, { } );
+                diags.Error(TokenStream::Get().EmptyLocation(), DiagID::NoDeclaration, { } );
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {
@@ -283,11 +276,11 @@ static int Compile(std::string filename, ParseType_t type)
             goto exit;
         }
 
-        if (tokens->Current() != TokenType::YYEOF) {
+        if (TokenStream::Get().Current() != TokenType::YYEOF) {
             std::cerr << "\n\e[31;1mERROR: Extra input in Expression parse:\n";
-            while (tokens->Current() != TokenType::YYEOF) {
-                std::cerr << "    " << tokens->tokenStr(tokens->Current()) << '\n';
-                tokens->Advance();
+            while (TokenStream::Get().Current() != TokenType::YYEOF) {
+                std::cerr << "    " << TokenStream::Get().tokenStr(TokenStream::Get().Current()) << '\n';
+                TokenStream::Get().Advance();
             }
             std::cerr << "\e[0m\n";
             rv = EXIT_FAILURE;
@@ -303,7 +296,7 @@ static int Compile(std::string filename, ParseType_t type)
                 node = parser->ParseBasicDeclaration();
                 if (node) pgm->push_back(std::move(node));
                 TOKEN_PTR;
-            } while (tokens->Current() != TokenType::YYEOF);
+            } while (TokenStream::Get().Current() != TokenType::YYEOF);
 
 
 
@@ -338,7 +331,7 @@ static int Compile(std::string filename, ParseType_t type)
 
 exit:
     if (diags.Errors() == 0) {
-        if (opts.listing) tokens->Listing();
+        if (opts.listing) TokenStream::Get().Listing();
         if (opts.dumpSymtab) parser->Scopes()->Print();
 
         if (opts.prtAst) {

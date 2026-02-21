@@ -28,7 +28,7 @@ ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
 {
     Production p(*this, "component_list");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     ComponentDeclarationListPtr comps = std::make_unique<ComponentDeclarationList>();
     ComponentDeclarationPtr decl = nullptr;
@@ -40,7 +40,7 @@ ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
     // -- Handle the trivial case first: TOK_NULL;
     //    ----------------------------------------
     if (Require(TokenType::TOK_NULL)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
         if (!Require(TokenType::TOK_SEMICOLON)) {
             diags.Error(loc, DiagID::MissingSemicolon, { "TOK_NULL" } );
             // -- continue on in hopes that this does not create a cascade of errors
@@ -66,7 +66,7 @@ ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
     //
     // -- Parse all component declarations
     //    --------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     decl = ParseComponentDeclaration(rec);
     while (decl) {
         comps->push_back(std::move(decl));

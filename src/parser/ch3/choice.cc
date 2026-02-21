@@ -33,7 +33,7 @@ ChoicePtr Parser::ParseChoice(void)
     Production p(*this, "choice");
     MarkStream m(tokens, diags);
     Id id;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     DiscreteRangePtr range = nullptr;
     NamePtr name = nullptr;
     ExprPtr expr = nullptr;
@@ -86,7 +86,7 @@ ChoicePtr Parser::ParseChoice(void)
     }
 
 
-    diags.Error(tokens.SourceLocation(), DiagID::InvalidChoiceInVariant);
+    diags.Error(TokenStream::Get().SourceLocation(), DiagID::InvalidChoiceInVariant);
 
     return nullptr;
 }

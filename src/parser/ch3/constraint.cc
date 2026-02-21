@@ -31,7 +31,7 @@ ConstraintPtr Parser::ParseConstraint(void)
     Production p(*this, "constraint");
     NumericTypeSpecPtr real = nullptr;
     ConstraintPtr rv = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     Id id;
 
 

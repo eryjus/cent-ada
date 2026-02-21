@@ -269,6 +269,5 @@ using VariantListPtr = std::unique_ptr<VariantList>;
 //    ---------------------
 extern std::string strVal;
 extern int column;
-extern TokenStream *tokens;
 
 

@@ -26,7 +26,7 @@ ExprPtr Parser::ParseAggregate(void)
 {
     Production p(*this, "aggregate");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc= astLoc;
     ComponentAssociationListPtr list = std::make_unique<ComponentAssociationList>();
     ComponentAssociationPtr assoc = nullptr;
@@ -38,7 +38,7 @@ ExprPtr Parser::ParseAggregate(void)
 
     list->push_back(std::move(assoc));
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         assoc = ParseComponentAssociation();
         if (assoc) {
@@ -47,10 +47,10 @@ ExprPtr Parser::ParseAggregate(void)
             diags.Error(loc, DiagID::ExtraComma, { "component association" } );
         }
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "component_association" } );
     }

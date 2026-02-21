@@ -50,7 +50,7 @@ NodePtr Parser::ParseDeclarativePart(void)
     //    ------------------------------
     m.Commit();
 
-//    return std::move(std::make_unique<ASTNode>(tokens.EmptyLocation()));
+//    return std::move(std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()));
     return nullptr;
 }
 

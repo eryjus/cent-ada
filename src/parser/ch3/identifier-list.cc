@@ -26,7 +26,7 @@ IdListPtr Parser::ParseIdentifierList(void)
 {
     Production p(*this, "identifier_list");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     IdListPtr ids = std::make_unique<IdList>();
     Id id;
 
@@ -40,7 +40,7 @@ IdListPtr Parser::ParseIdentifierList(void)
     //
     // -- Read the first identifier in the list
     //    -------------------------------------
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     if (!RequireIdent(id)) return nullptr;
     ids->push_back(id);
 
@@ -48,7 +48,7 @@ IdListPtr Parser::ParseIdentifierList(void)
     //
     // -- Now, as long as we have a TOK_COMMA, expect another identifer
     //    -------------------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         if (!RequireIdent(id)) {
             diags.Error(loc, DiagID::ExtraComma, { "identifier_list" } );
@@ -57,7 +57,7 @@ IdListPtr Parser::ParseIdentifierList(void)
         }
 
         ids->push_back(id);
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
 

@@ -26,7 +26,7 @@ ExprPtr Parser::ParseSimpleExpression(void)
 {
     Production p(*this, "simple_expression");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     UnaryOper uop = UnaryOper::Unspecified;
     BinaryOper bop = BinaryOper::Unspecified;
     ExprPtr lhs = nullptr;
@@ -44,7 +44,7 @@ ExprPtr Parser::ParseSimpleExpression(void)
         lhs = std::make_unique<UnaryExpr>(astLoc, uop, std::move(lhs));
     }
 
-    if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW)  {
+    if (TokenStream::Get().Current() == TokenType::TOK_COMMA || TokenStream::Get().Current() == TokenType::TOK_ARROW)  {
         // -- at this point we already have a good Term
         p.At("Comma/Arrow next");
         m.Commit();
@@ -61,7 +61,7 @@ ExprPtr Parser::ParseSimpleExpression(void)
             return nullptr;
         }
 
-        if (tokens.Current() == TokenType::TOK_COMMA || tokens.Current() == TokenType::TOK_ARROW) {
+        if (TokenStream::Get().Current() == TokenType::TOK_COMMA || TokenStream::Get().Current() == TokenType::TOK_ARROW) {
             // -- at this point we already have a good Term
             m.Commit();
 

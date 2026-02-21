@@ -27,7 +27,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     Production p(*this, "full_type_definition");
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     DiscriminantSpecificationListPtr discriminant = nullptr;
     TypeSpecPtr type = nullptr;
     Id id;
@@ -42,7 +42,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Now we get the type name and check it for duplicates
     //    ----------------------------------------------------
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     if (!RequireIdent(id)) return nullptr;
 
 
@@ -52,7 +52,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
 
         if (vec->at(0)->kind != Symbol::SymbolKind::IncompleteType && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
             diags.Error(loc, DiagID::DuplicateName, { "Type Definition" } );
-            diags.Error(loc, DiagID::DuplicateName2, { tokens.SourceLine() } );
+            diags.Error(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
         }
     }
 
@@ -75,7 +75,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "type definition" } );
         // -- continue on in hopes that this does not create a cascade of errors

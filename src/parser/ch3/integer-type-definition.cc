@@ -29,7 +29,7 @@ TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     RangeConstraintPtr con = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
 
     //

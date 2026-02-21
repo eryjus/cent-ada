@@ -26,7 +26,7 @@ ExprPtr Parser::ParseTypeConversion(void)
 {
     Production p(*this, "type_conversion");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     NamePtr id = nullptr;
     ExprPtr expr = nullptr;
@@ -36,7 +36,7 @@ ExprPtr Parser::ParseTypeConversion(void)
     if (!id) return nullptr;
 
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS))     return nullptr;
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
 
 
     expr = ParseExpression();
@@ -45,7 +45,7 @@ ExprPtr Parser::ParseTypeConversion(void)
     }
 
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }

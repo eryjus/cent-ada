@@ -26,7 +26,7 @@ SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
 {
     Production p(*this, "selector");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr selector = nullptr;
     SelectedNamePtr rv = nullptr;
 
@@ -38,16 +38,16 @@ SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
     }
 
 
-    if (tokens.Current() == TokenType::TOK_CHARACTER_LITERAL) {
-        CharacterLiteralNamePtr charSelector = std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload()));
-        tokens.Advance();
+    if (TokenStream::Get().Current() == TokenType::TOK_CHARACTER_LITERAL) {
+        CharacterLiteralNamePtr charSelector = std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(TokenStream::Get().Payload()));
+        TokenStream::Get().Advance();
         m.Commit();
 
         return std::make_unique<SelectedName>(astLoc, std::move(prefix), std::move(charSelector));
     }
 
 
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     selector = ParseSimpleName();
     if (selector) {
         if (!scopes.Lookup(selector->GetName())) {

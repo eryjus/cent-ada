@@ -27,7 +27,7 @@ QualifiedExprPtr Parser::ParseQualifiedExpression(void)
 {
     Production p(*this, "qualified_expression");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     NamePtr id = nullptr;
     ExprPtr expr = nullptr;
@@ -43,13 +43,13 @@ QualifiedExprPtr Parser::ParseQualifiedExpression(void)
     }
 
     if (Require(TokenType::TOK_LEFT_PARENTHESIS)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
         expr = ParseExpression();
         if (!expr) {
             diags.Error(loc, DiagID::InvalidExpression, { "qualified expression" } );
         }
 
-        SourceLoc_t loc = tokens.SourceLocation();
+        SourceLoc_t loc = TokenStream::Get().SourceLocation();
         if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
             // -- continue anyway

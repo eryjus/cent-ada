@@ -27,7 +27,7 @@ DiscreteRangePtr Parser::ParseRange(void)
 {
     Production p(*this, "range");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     AttributeNamePtr attr = nullptr;
     ExprPtr from = nullptr;
     ExprPtr to = nullptr;

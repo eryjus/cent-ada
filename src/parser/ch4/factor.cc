@@ -28,13 +28,13 @@ ExprPtr Parser::ParseFactor(void)
 {
     Production p(*this, "factor");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;
 
     if (Require(TokenType::TOK_ABS)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
 
         lhs = ParsePrimary();
         if (!lhs) {
@@ -46,7 +46,7 @@ ExprPtr Parser::ParseFactor(void)
 
         return std::make_unique<UnaryExpr>(astLoc, UnaryOper::Abs, std::move(lhs));
     } else if (Require(TokenType::TOK_NOT)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
 
         lhs = ParsePrimary();
         if (!lhs) {

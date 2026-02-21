@@ -26,7 +26,7 @@ ExprPtr Parser::ParseTerm(void)
 {
     Production p(*this, "term");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     BinaryOper bop = BinaryOper::Unspecified;
     ExprPtr lhs = nullptr;
     ExprPtr rhs = nullptr;

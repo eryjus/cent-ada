@@ -1,5 +1,5 @@
 //=================================================================================================================
-//  tokens.hh -- This header defines the tokens used by the compiler
+//  TokenStream::Get().hh -- This header defines the tokens used by the compiler
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //

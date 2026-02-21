@@ -26,7 +26,7 @@ AttributeNamePtr Parser::ParseAttributeDesignator(NamePtr &prefix)
 {
     Production p(*this, "attribute_designator");
     MarkStream m(tokens, diags);
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     NamePtr name = nullptr;
     ExprPtr expr = nullptr;
     Id id;
@@ -54,7 +54,7 @@ AttributeNamePtr Parser::ParseAttributeDesignator(NamePtr &prefix)
         expr = ParseExpression();
         if (!expr) return nullptr;
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
         if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
             diags.Error(loc, DiagID::MissingRightParen, { "expression"} );
             // -- allow to continue

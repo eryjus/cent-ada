@@ -26,7 +26,7 @@ VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     ChoicePtr choice = nullptr;
     ChoiceListPtr choices = std::make_unique<ChoiceList>();
@@ -42,7 +42,7 @@ VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
     if (!choice) return nullptr;
     choices->push_back(std::move(choice));
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_VERTICAL_BAR)) {
         choice = ParseChoice();
         if (choice) {
@@ -52,7 +52,7 @@ VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
             break;
         }
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
 

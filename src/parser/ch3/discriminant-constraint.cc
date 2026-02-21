@@ -26,7 +26,7 @@ DiscriminantConstraintPtr Parser::ParseDiscriminantConstraint(void)
 {
     Production p(*this, "discriminant_constraint");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     DiscriminantAssociationListPtr list = std::make_unique<DiscriminantAssociationList>();
     DiscriminantAssociationPtr assoc = nullptr;
@@ -44,7 +44,7 @@ DiscriminantConstraintPtr Parser::ParseDiscriminantConstraint(void)
     //
     // -- now get the optionsl additional associations
     //    --------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
         assoc = ParseDiscriminantAssociation();
 
@@ -56,10 +56,10 @@ DiscriminantConstraintPtr Parser::ParseDiscriminantConstraint(void)
             break;
         }
 
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discriminant association" } );
         // -- continue on in hopes that this does not create a cascade of errors

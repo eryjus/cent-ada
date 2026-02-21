@@ -29,7 +29,7 @@ AllocatorExprPtr Parser::ParseAllocator(void)
     MarkStream m(tokens, diags);
     QualifiedExprPtr q = nullptr;
     SubtypeIndicationPtr s = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
     if (!Require(TokenType::TOK_NEW)) return nullptr;
 

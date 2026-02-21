@@ -26,7 +26,7 @@ UnboundedRangePtr Parser::ParseIndexSubtypeDefinition(void)
 {
     Production p(*this, "index_subtype_definition");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr id =nullptr;
 
 

@@ -112,8 +112,8 @@ extern Diagnostics diags;
 
 #define __PRINT_TOKENS__ 0
 #if __PRINT_TOKENS__
-#define TOKEN_PTR std::cerr << "TOKEN: " << tokens->tokenStr(tokens->Current()) << '\n'
-#define TOKEN std::cerr << "TOKEN: " << tokens.tokenStr(tokens.Current()) << '\n'
+#define TOKEN_PTR std::cerr << "TOKEN: " << TokenStream::Get().tokenStr(TokenStream::Get().Current()) << '\n'
+#define TOKEN std::cerr << "TOKEN: " << TokenStream::Get().tokenStr(TokenStream::Get().Current()) << '\n'
 #else
 #define TOKEN_PTR
 #define TOKEN

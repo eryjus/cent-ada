@@ -28,7 +28,7 @@ ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
     MarkStream m(tokens, diags);
     MarkSymbols s(scopes);
     std::unique_ptr<IdList> idList;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     ExprPtr expr = nullptr;
 
@@ -76,7 +76,7 @@ ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "expression" } );
         // -- continue on in hopes that this does not create a cascade of errors

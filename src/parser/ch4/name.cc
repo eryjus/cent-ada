@@ -37,13 +37,13 @@ NamePtr Parser::ParseNameNonExpr(void)
     // -- This top-level production must Mark its location so it can output diags
     Production p(*this, "name(non-expr)");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr rv = nullptr;
 
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         m.Commit();
 
-        return std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload()));
+        return std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(TokenStream::Get().Payload()));
     }
 
 
@@ -122,13 +122,13 @@ NamePtr Parser::ParseName_Base(void)
 {
     Production p(*this, "name(base)");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr rv = nullptr;
 
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
         m.Commit();
 
-        return std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(tokens.Payload()));
+        return std::make_unique<CharacterLiteralName>(astLoc, std::get<CharLiteral>(TokenStream::Get().Payload()));
     }
 
 
@@ -161,7 +161,7 @@ NamePtr Parser::ParseName_Postfix(NamePtr &prefix)
 {
     Production p(*this, "name(postfix)");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr rv = nullptr;
     SelectedNamePtr selected = nullptr;
     AttributeNamePtr attr = nullptr;
@@ -169,7 +169,7 @@ NamePtr Parser::ParseName_Postfix(NamePtr &prefix)
     if (Optional(TokenType::TOK_LEFT_PARENTHESIS)) {
         rv = ParseName_IndexOrSliceSuffix(prefix);
         if (rv) {
-            SourceLoc_t loc = tokens.SourceLocation();
+            SourceLoc_t loc = TokenStream::Get().SourceLocation();
             if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
                 diags.Error(loc, DiagID::MissingRightParen, { "index or selected component" } );
             }

@@ -28,7 +28,7 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     MarkStream m(tokens, diags);
     MarkScope s(scopes);
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     SubtypeIndicationPtr type = nullptr;
     ExprPtr expr = nullptr;
@@ -66,7 +66,7 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     // -- find the optional default initialization value
     //    ----------------------------------------------
     if (Optional(TokenType::TOK_ASSIGNMENT)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
 
         expr = ParseExpression();
         if (!expr) {
@@ -76,9 +76,9 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
         // -- continue on as if nothing happened
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_SEMICOLON)) {
-        diags.Error(tokens.SourceLocation(), DiagID::MissingSemicolon, { "component declaration" } );
+        diags.Error(TokenStream::Get().SourceLocation(), DiagID::MissingSemicolon, { "component declaration" } );
         // -- continue on in hopes that this does not create a cascade of errors
 
     }

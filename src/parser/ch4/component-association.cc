@@ -38,7 +38,7 @@ ComponentAssociationPtr Parser::ParseComponentAssociation(void)
 {
     Production p(*this, "component_association");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     ChoiceListPtr list = std::make_unique<ChoiceList>();
     ChoicePtr choice = nullptr;
@@ -49,7 +49,7 @@ ComponentAssociationPtr Parser::ParseComponentAssociation(void)
     if (choice) {
         list->push_back(std::move(choice));
         while (Optional(TokenType::TOK_VERTICAL_BAR)) {
-            loc = tokens.SourceLocation();
+            loc = TokenStream::Get().SourceLocation();
             choice = ParseChoice();
             if (choice) {
                 list->push_back(std::move(choice));

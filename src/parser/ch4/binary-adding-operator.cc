@@ -28,10 +28,10 @@ BinaryOper Parser::ParseBinaryAddingOperator(void)
     MarkStream m(tokens, diags);
 
 
-    switch (tokens.Current()) {
-    case TokenType::TOK_PLUS:       tokens.Advance();  m.Commit();  return BinaryOper::Plus;
-    case TokenType::TOK_MINUS:      tokens.Advance();  m.Commit();  return BinaryOper::Minus;
-    case TokenType::TOK_AMPERSAND:  tokens.Advance();  m.Commit();  return BinaryOper::Concatenate;
+    switch (TokenStream::Get().Current()) {
+    case TokenType::TOK_PLUS:       TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Plus;
+    case TokenType::TOK_MINUS:      TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Minus;
+    case TokenType::TOK_AMPERSAND:  TokenStream::Get().Advance();  m.Commit();  return BinaryOper::Concatenate;
     default:                                                        return BinaryOper::Unspecified;
     }
 }

@@ -27,7 +27,7 @@ IndexedNamePtr Parser::ParseIndexedComponent(void)
     Production p(*this, "indexed_component");
     MarkStream m(tokens, diags);
     ExprListPtr idx = std::make_unique<ExprList>();
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr pre = nullptr;
     ExprPtr expr = nullptr;
 
@@ -47,7 +47,7 @@ IndexedNamePtr Parser::ParseIndexedComponent(void)
         idx->push_back(std::move(expr));
     }
 
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "expression" } );
     }
@@ -70,7 +70,7 @@ NamePtr Parser::ParseName_IndexComponentSuffix(NamePtr &prefix)
     Production p(*this, "indexed_component(suffix)");
     MarkStream m(tokens, diags);
     ExprListPtr exprs = std::make_unique<ExprList>();
-    SourceLoc_t loc = tokens.SourceLocation(), astLoc = loc;
+    SourceLoc_t loc = TokenStream::Get().SourceLocation(), astLoc = loc;
     ExprPtr expr = nullptr;
 
     expr = ParseExpression();
@@ -78,7 +78,7 @@ NamePtr Parser::ParseName_IndexComponentSuffix(NamePtr &prefix)
     exprs->push_back(std::move(expr));
 
     while (Optional(TokenType::TOK_COMMA)) {
-        loc = tokens.SourceLocation();
+        loc = TokenStream::Get().SourceLocation();
         expr = ParseExpression();
         if (expr) {
             exprs->push_back(std::move(expr));

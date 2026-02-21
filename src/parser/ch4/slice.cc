@@ -26,7 +26,7 @@ SliceNamePtr Parser::ParseSlice(void)
 {
     Production p(*this, "slice");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     NamePtr pre = nullptr;
     DiscreteRangePtr range = nullptr;
 
@@ -40,7 +40,7 @@ SliceNamePtr Parser::ParseSlice(void)
     range = ParseDiscreteRange();
     if (!range) return nullptr;
 
-    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_RIGHT_PARENTHESIS)) {
         diags.Error(loc, DiagID::MissingRightParen, { "discrete_range" } );
     }
@@ -63,7 +63,7 @@ SliceNamePtr Parser::ParseName_SliceSuffix(NamePtr &prefix)
     Production p(*this, "slice(suffix)");
     MarkStream m(tokens, diags);
     DiscreteRangePtr range = nullptr;
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
 
 
     range = ParseDiscreteRange();

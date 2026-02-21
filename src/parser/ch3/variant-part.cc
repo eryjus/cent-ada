@@ -26,7 +26,7 @@ VariantPartPtr Parser::ParseVariantPart(RecordTypeSymbol *rec)
 {
     Production p(*this, "variant_part");
     MarkStream m(tokens, diags);
-    SourceLoc_t astLoc = tokens.SourceLocation();
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     VariantListPtr variants = std::make_unique<VariantList>();
     NamePtr name = nullptr;
@@ -42,7 +42,7 @@ VariantPartPtr Parser::ParseVariantPart(RecordTypeSymbol *rec)
     //
     // -- Check for a simple name
     //    -----------------------
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     name = ParseDiscriminantSimpleName();
     if (!name) return nullptr;
 
@@ -62,13 +62,13 @@ VariantPartPtr Parser::ParseVariantPart(RecordTypeSymbol *rec)
         variant = ParseVariant(rec);
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_END)) {
         diags.Error(loc, DiagID::MissingEnd, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors
     }
 
-    loc = tokens.SourceLocation();
+    loc = TokenStream::Get().SourceLocation();
     if (!Require(TokenType::TOK_CASE)) {
         diags.Error(loc, DiagID::MissingRightParen, { "variant part" } );
         // -- continue on in hopes that this does not create a cascade of errors

@@ -32,17 +32,17 @@ ScopeManager::ScopeManager(void)
     //
     // -- Take care of the internal fundamental types
     //    -------------------------------------------
-    Declare(std::make_unique<IntegerTypeSymbol>("integer", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<ArrayTypeSymbol>("array", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<RealTypeSymbol>("real", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<EnumTypeSymbol>("character", tokens->EmptyLocation(), declScope));
-    Declare(std::make_unique<ArrayTypeSymbol>("string", tokens->EmptyLocation(), declScope));
+    Declare(std::make_unique<IntegerTypeSymbol>("integer", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<ArrayTypeSymbol>("array", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<RealTypeSymbol>("real", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<EnumTypeSymbol>("character", TokenStream::Get().EmptyLocation(), declScope));
+    Declare(std::make_unique<ArrayTypeSymbol>("string", TokenStream::Get().EmptyLocation(), declScope));
 
 
     //
     // -- Create the boolean enumeration
     //    ------------------------------
-    std::unique_ptr<EnumTypeSymbol> b = std::make_unique<EnumTypeSymbol>("boolean", tokens->EmptyLocation(), declScope);
+    std::unique_ptr<EnumTypeSymbol> b = std::make_unique<EnumTypeSymbol>("boolean", TokenStream::Get().EmptyLocation(), declScope);
     EnumTypeSymbol *bTyp = b.get();
     Declare(std::move(b));
 
@@ -52,7 +52,7 @@ ScopeManager::ScopeManager(void)
     Declare(std::move(f));
 
     std::unique_ptr<EnumLiteralSymbol> t;
-    t = std::make_unique<EnumLiteralSymbol>("true", bTyp, 1, tokens->EmptyLocation(), declScope);
+    t = std::make_unique<EnumLiteralSymbol>("true", bTyp, 1, TokenStream::Get().EmptyLocation(), declScope);
     bTyp->literals.push_back(t.get());
     Declare(std::move(t));
 
