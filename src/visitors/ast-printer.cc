@@ -130,7 +130,6 @@ void ASTPrinter::Visit(const AggregateExpr &n)
 void ASTPrinter::Visit(const ArrayTypeSpec &n)
 {
     Entry("ArrayTypeSpec");
-    PrintField("unconstrained", (n.unconstrained?"true":"false"));
     PrintRequiredChild("indices", n.indices.get());
     PrintRequiredChild("component", n.component.get());
     Exit();
