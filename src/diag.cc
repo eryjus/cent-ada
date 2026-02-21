@@ -171,6 +171,7 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::MissingBasicDeclaration, "basic declaration is missing when required by command line parameters" },
     { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
     { DiagID::NoDeclaration, "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m" },
+    { DiagID::InternalError, "\e[31;1mFATAL: Internal Error consuming tokens; nothing consumed\e[0m" },
 };
 
 

@@ -236,13 +236,20 @@ static int Compile(std::string filename, ParseType_t type)
     switch (type) {
     case COMPILE_TYPES:
         while (TokenStream::Get().Current() != TokenType::YYEOF) {
+            int loc = TokenStream::Get().Location();
             node = parser->ParseBasicDeclaration();
             if (!node) {
-                diags.Error(TokenStream::Get().EmptyLocation(), DiagID::NoDeclaration, { } );
+                diags.Error(TokenStream::EmptyLocation(), DiagID::NoDeclaration, { } );
                 rv = EXIT_FAILURE;
                 goto exit;
             } else {
                 std::cerr << "Completed a Declaration\n";
+            }
+
+            if (loc == TokenStream::Get().Location()) {
+                diags.Error(TokenStream::Get().SourceLocation(), DiagID::InternalError, { } );
+                rv = EXIT_FAILURE;
+                goto exit;
             }
         }
 
@@ -282,6 +289,7 @@ static int Compile(std::string filename, ParseType_t type)
                 std::cerr << "    " << TokenStream::Get().tokenStr(TokenStream::Get().Current()) << '\n';
                 TokenStream::Get().Advance();
             }
+
             std::cerr << "\e[0m\n";
             rv = EXIT_FAILURE;
             goto exit;
@@ -293,9 +301,15 @@ static int Compile(std::string filename, ParseType_t type)
     case COMPILE_FULL:
         {
             do {
+                int loc = TokenStream::Get().Location();
                 node = parser->ParseBasicDeclaration();
                 if (node) pgm->push_back(std::move(node));
-                TOKEN_PTR;
+
+                if (loc == TokenStream::Get().Location() && TokenStream::Get().Current() != TokenType::YYEOF) {
+                    diags.Error(TokenStream::Get().SourceLocation(), DiagID::InternalError, { } );
+                    rv = EXIT_FAILURE;
+                    goto exit;
+                }
             } while (TokenStream::Get().Current() != TokenType::YYEOF);
 
 
@@ -330,6 +344,8 @@ static int Compile(std::string filename, ParseType_t type)
     std::cerr << "\nParse Complete.\n\n";
 
 exit:
+    diags.Flush();
+
     if (diags.Errors() == 0) {
         if (opts.listing) TokenStream::Get().Listing();
         if (opts.dumpSymtab) parser->Scopes()->Print();
