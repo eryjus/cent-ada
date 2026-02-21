@@ -1,0 +1,81 @@
+TypeDecl
+  name --> cell
+  discriminantPart === (null)
+  definition: (null)
+TypeDecl
+  name --> link
+  discriminantPart === (null)
+  definition: AccessTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> cell
+      constraint: (null)
+TypeDecl
+  name --> cell
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> value
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> succ
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> link
+            constraint: (null)
+          initializer: (null)
+        [2]: ComponentDeclaration
+          names ===
+            [0] --> pred
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> link
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+
+
+Listing for tst/declarations/tst00094.ada:
+==========================================
+     1   type CELL;
+     2
+     3   type LINK is access CELL;
+     4
+     5   type CELL is
+     6       record
+     7           VALUE : INTEGER;
+     8           SUCC : LINK;
+     9           PRED : LINK;
+    10       end record;
+    11
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Access Type: link : Access
+Record Type: cell : Record
+   containing components (value succ pred )
+-------------------
+
+Scope Name: cell
+Scope ID  : 2
+-------------------
+Component Symbol: value : Component
+Component Symbol: succ : Component
+Component Symbol: pred : Component
+-------------------

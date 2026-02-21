@@ -1,0 +1,30 @@
+ObjectDeclaration
+  names ===
+    [0] --> one
+    [1] --> un
+    [2] --> eins
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 1
+
+
+Listing for tst/declarations/tst00013.ada:
+==========================================
+     1   ONE, UN, EINS : constant := 1;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: one : Object
+Object Symbol: un : Object
+Object Symbol: eins : Object
+-------------------

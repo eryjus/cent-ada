@@ -1,0 +1,46 @@
+TypeDecl
+  name --> volt
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Fixed Point
+    delta: RealLiteralExpr
+      value --> 0.125
+    range: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 255.0
+TypeDecl
+  name --> rough_voltage
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> volt
+    constraint: RealConstraint
+      range: NumericTypeSpec
+        kind --> Fixed Point
+        delta: RealLiteralExpr
+          value --> 1.0
+        range: (null)
+
+
+Listing for tst/declarations/tst00051.ada:
+==========================================
+     1   type VOLT is delta 0.125 range 0.0 .. 255.0;
+     2   subtype ROUGH_VOLTAGE is VOLT delta 1.0;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Real Type: volt : Real
+Subtype: rough_voltage : Subtype
+-------------------

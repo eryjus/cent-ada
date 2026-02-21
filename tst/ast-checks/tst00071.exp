@@ -1,0 +1,29 @@
+ObjectDeclaration
+  names ===
+    [0] --> question
+  constant --> true
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> string
+    constraint: (null)
+  initializer: StringLiteralExpr
+    value --> How many characters?
+
+
+Listing for tst/declarations/tst00071.ada:
+==========================================
+     1   QUESTION : constant STRING := "How many characters?";
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: question : Object
+-------------------

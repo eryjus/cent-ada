@@ -1,0 +1,56 @@
+ObjectDeclaration
+  names ===
+    [0] --> k
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 40
+TypeDecl
+  name --> column
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 72
+TypeDecl
+  name --> up_to_k
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> column
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: NameExpr
+          name: SimpleName
+            id --> k
+
+
+Listing for tst/declarations/tst00021.ada:
+==========================================
+     1   K : constant := 40;
+     2   type COLUMN is range 1 .. 72;
+     3
+     4   subtype UP_TO_K is COLUMN range 1 .. K;
+     5
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: k : Object
+Integer Type: column : Integer
+Subtype: up_to_k : Subtype
+-------------------

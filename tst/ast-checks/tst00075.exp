@@ -1,0 +1,56 @@
+TypeDecl
+  name --> complex
+  discriminantPart === (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> re
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> real
+            constraint: (null)
+          initializer: RealLiteralExpr
+            value --> 0.0
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> im
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> real
+            constraint: (null)
+          initializer: RealLiteralExpr
+            value --> 0.0
+      variant part: (null)
+
+
+Listing for tst/declarations/tst00075.ada:
+==========================================
+     1   type COMPLEX is
+     2       record
+     3           RE : REAL := 0.0;
+     4           IM : REAL := 0.0;
+     5       end record;
+     6
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Record Type: complex : Record
+   containing components (re im )
+-------------------
+
+Scope Name: complex
+Scope ID  : 2
+-------------------
+Component Symbol: re : Component
+Component Symbol: im : Component
+-------------------

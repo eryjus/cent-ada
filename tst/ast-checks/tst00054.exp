@@ -1,0 +1,33 @@
+TypeDecl
+  name --> vector
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> real
+      constraint: (null)
+
+
+Listing for tst/declarations/tst00054.ada:
+==========================================
+     1   type VECTOR is array(INTEGER range <>) of REAL;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Array Type: vector : Array
+-------------------

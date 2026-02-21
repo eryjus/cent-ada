@@ -1,0 +1,30 @@
+ObjectDeclaration
+  names ===
+    [0] --> power_16
+  constant --> true
+  typeSpec: (null)
+  initializer: BinaryExpr
+    op --> ** (power)
+    lhs: IntLiteralExpr
+      value --> 2
+    rhs: IntLiteralExpr
+      value --> 16
+
+
+Listing for tst/declarations/tst00012.ada:
+==========================================
+     1   POWER_16 : constant := 2 ** 16;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: power_16 : Object
+-------------------

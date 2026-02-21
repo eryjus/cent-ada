@@ -1,0 +1,26 @@
+ObjectDeclaration
+  names ===
+    [0] --> max
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 500
+
+
+Listing for tst/declarations/tst00011.ada:
+==========================================
+     1   MAX : constant := 500;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: max : Object
+-------------------

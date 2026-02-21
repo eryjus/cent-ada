@@ -1,0 +1,47 @@
+TypeDecl
+  name --> positive
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: NameExpr
+          name: AttributeName
+            prefix: SimpleName
+              id --> integer
+            attribute: SimpleName
+              id --> last
+            expr: (null)
+TypeDecl
+  name --> counter
+  discriminantPart === (null)
+  definition: DerivedTypeSpec
+    type: SubtypeIndication
+      type_mark: SimpleName
+        id --> positive
+      constraint: (null)
+
+
+Listing for tst/declarations/tst00026.ada:
+==========================================
+     1   subtype POSITIVE is INTEGER range 1 .. INTEGER'LAST;
+     2
+     3   type COUNTER is new POSITIVE;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Subtype: positive : Subtype
+Derived Type: counter : Derived
+-------------------

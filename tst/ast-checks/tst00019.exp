@@ -1,0 +1,26 @@
+TypeDecl
+  name --> int
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+
+
+Listing for tst/declarations/tst00019.ada:
+==========================================
+     1   subtype INT is INTEGER;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Subtype: int : Subtype
+-------------------

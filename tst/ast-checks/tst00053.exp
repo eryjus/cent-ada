@@ -1,0 +1,49 @@
+ObjectDeclaration
+  names ===
+    [0] --> del
+  constant --> true
+  typeSpec: (null)
+  initializer: RealLiteralExpr
+    value --> 0.1
+TypeDecl
+  name --> fraction
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Fixed Point
+    delta: NameExpr
+      name: SimpleName
+        id --> del
+    range: RangeConstraint
+      range: Range
+        lower: UnaryExpr
+          op --> - (minus)
+          operand: RealLiteralExpr
+            value --> 1.0
+        upper: BinaryExpr
+          op --> - (minus)
+          lhs: RealLiteralExpr
+            value --> 1.0
+          rhs: NameExpr
+            name: SimpleName
+              id --> del
+
+
+Listing for tst/declarations/tst00053.ada:
+==========================================
+     1   DEL : constant := 0.1;
+     2   type FRACTION is delta DEL range -1.0 .. 1.0 - DEL;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: del : Object
+Real Type: fraction : Real
+-------------------

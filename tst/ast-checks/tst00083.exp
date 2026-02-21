@@ -1,0 +1,109 @@
+ObjectDeclaration
+  names ===
+    [0] --> max
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 65535
+TypeDecl
+  name --> buffer_size
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 0
+        upper: NameExpr
+          name: SimpleName
+            id --> max
+TypeDecl
+  name --> buffer
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> size
+      type: SimpleName
+        id --> buffer_size
+      expr: IntLiteralExpr
+        value --> 100
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> pos
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> buffer_size
+            constraint: (null)
+          initializer: IntLiteralExpr
+            value --> 0
+        [1]: ComponentDeclaration
+          names ===
+            [0] --> value
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> string
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> size
+          initializer: (null)
+      variant part: (null)
+ObjectDeclaration
+  names ===
+    [0] --> message
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> buffer
+    constraint: (null)
+  initializer: (null)
+
+
+Listing for tst/declarations/tst00083.ada:
+==========================================
+     1   MAX : constant := 65535;
+     2
+     3   subtype BUFFER_SIZE is INTEGER range 0 .. MAX;
+     4
+     5   type BUFFER(SIZE : BUFFER_SIZE := 100) is
+     6       record
+     7           POS : BUFFER_SIZE := 0;
+     8           VALUE : STRING(1 .. SIZE);
+     9       end record;
+    10
+    11   MESSAGE : BUFFER;
+    12
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: max : Object
+Subtype: buffer_size : Subtype
+Discriminant Symbol: size : Discriminant
+Record Type: buffer : Record
+   containing components (pos value )
+Object Symbol: message : Object
+-------------------
+
+Scope Name: buffer
+Scope ID  : 2
+-------------------
+Component Symbol: pos : Component
+Component Symbol: value : Component
+-------------------

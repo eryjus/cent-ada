@@ -1,0 +1,49 @@
+TypeDecl
+  name --> coefficient
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Floating Point
+    digits: IntLiteralExpr
+      value --> 10
+    range: RangeConstraint
+      range: Range
+        lower: UnaryExpr
+          op --> - (minus)
+          operand: RealLiteralExpr
+            value --> 1.0
+        upper: RealLiteralExpr
+          value --> 1.0
+TypeDecl
+  name --> short_coeff
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> coefficient
+    constraint: RealConstraint
+      range: NumericTypeSpec
+        kind --> Floating Point
+        digits: IntLiteralExpr
+          value --> 5
+        range: (null)
+
+
+Listing for tst/declarations/tst00048.ada:
+==========================================
+     1   type COEFFICIENT is digits 10 range -1.0 .. 1.0;
+     2
+     3   subtype SHORT_COEFF is COEFFICIENT digits 5;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Real Type: coefficient : Real
+Subtype: short_coeff : Subtype
+-------------------

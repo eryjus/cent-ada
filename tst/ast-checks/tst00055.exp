@@ -1,0 +1,36 @@
+TypeDecl
+  name --> matrix
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+        [1]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> real
+      constraint: (null)
+
+
+Listing for tst/declarations/tst00055.ada:
+==========================================
+     1   type MATRIX is array(INTEGER range <>, INTEGER range <>) of REAL;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Array Type: matrix : Array
+-------------------

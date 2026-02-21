@@ -1,0 +1,55 @@
+TypeDecl
+  name --> color
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> white
+      [1] --> red
+      [2] --> yellow
+      [3] --> green
+      [4] --> blue
+      [5] --> brown
+      [6] --> black
+TypeDecl
+  name --> cmyk
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> cyan
+      [1] --> magenta
+      [2] --> yellow
+      [3] --> black
+
+
+Listing for tst/declarations/tst00104.ada:
+==========================================
+     1   type COLOR is (WHITE, RED, YELLOW, GREEN, BLUE, BROWN, BLACK);
+     2   type CMYK is (CYAN, MAGENTA, YELLOW, BLACK);
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: color : Enumeration
+   containing literals (white red yellow green blue brown black )
+Enumeration Literal: white : EnumLiteral of type color; value (0)
+Enumeration Literal: red : EnumLiteral of type color; value (1)
+Enumeration Literal: yellow : EnumLiteral of type color; value (2)
+Enumeration Literal: green : EnumLiteral of type color; value (3)
+Enumeration Literal: blue : EnumLiteral of type color; value (4)
+Enumeration Literal: brown : EnumLiteral of type color; value (5)
+Enumeration Literal: black : EnumLiteral of type color; value (6)
+Enumeration Type: cmyk : Enumeration
+   containing literals (cyan magenta yellow black )
+Enumeration Literal: cyan : EnumLiteral of type cmyk; value (0)
+Enumeration Literal: magenta : EnumLiteral of type cmyk; value (1)
+Enumeration Literal: yellow : EnumLiteral of type cmyk; value (2)
+Enumeration Literal: black : EnumLiteral of type cmyk; value (3)
+-------------------

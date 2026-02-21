@@ -1,0 +1,71 @@
+TypeDecl
+  name --> positive
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: NameExpr
+          name: AttributeName
+            prefix: SimpleName
+              id --> integer
+            attribute: SimpleName
+              id --> last
+            expr: (null)
+TypeDecl
+  name --> item
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> number
+      type: SimpleName
+        id --> positive
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> content
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> integer
+            constraint: (null)
+          initializer: (null)
+      variant part: (null)
+
+
+Listing for tst/declarations/tst00081.ada:
+==========================================
+     1   subtype POSITIVE is INTEGER range 1 .. INTEGER'LAST;
+     2
+     3   type ITEM(NUMBER : POSITIVE) is
+     4       record
+     5           CONTENT : INTEGER;
+     6       end record;
+     7
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Subtype: positive : Subtype
+Discriminant Symbol: number : Discriminant
+Record Type: item : Record
+   containing components (content )
+-------------------
+
+Scope Name: item
+Scope ID  : 2
+-------------------
+Component Symbol: content : Component
+-------------------

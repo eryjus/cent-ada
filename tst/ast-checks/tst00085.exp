@@ -1,0 +1,31 @@
+TypeDecl
+  name --> device
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> printer
+      [1] --> disk
+      [2] --> drum
+
+
+Listing for tst/declarations/tst00085.ada:
+==========================================
+     1   type DEVICE is (PRINTER, DISK, DRUM);
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: device : Enumeration
+   containing literals (printer disk drum )
+Enumeration Literal: printer : EnumLiteral of type device; value (0)
+Enumeration Literal: disk : EnumLiteral of type device; value (1)
+Enumeration Literal: drum : EnumLiteral of type device; value (2)
+-------------------

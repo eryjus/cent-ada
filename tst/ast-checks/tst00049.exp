@@ -1,0 +1,31 @@
+TypeDecl
+  name --> probability
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> real
+    constraint: RangeConstraint
+      range: Range
+        lower: RealLiteralExpr
+          value --> 0.0
+        upper: RealLiteralExpr
+          value --> 1.0
+
+
+Listing for tst/declarations/tst00049.ada:
+==========================================
+     1   subtype PROBABILITY is REAL range 0.0 .. 1.0;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Subtype: probability : Subtype
+-------------------

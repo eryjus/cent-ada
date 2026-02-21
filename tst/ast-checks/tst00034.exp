@@ -1,0 +1,37 @@
+TypeDecl
+  name --> hexa
+  discriminantPart === (null)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> 'A'
+      [1] --> 'B'
+      [2] --> 'C'
+      [3] --> 'D'
+      [4] --> 'E'
+      [5] --> 'F'
+
+
+Listing for tst/declarations/tst00034.ada:
+==========================================
+     1   type HEXA is ('A', 'B', 'C', 'D', 'E', 'F');
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: hexa : Enumeration
+   containing literals ('A' 'B' 'C' 'D' 'E' 'F' )
+Enumeration Literal: 'A' : EnumLiteral of type hexa; value (0)
+Enumeration Literal: 'B' : EnumLiteral of type hexa; value (1)
+Enumeration Literal: 'C' : EnumLiteral of type hexa; value (2)
+Enumeration Literal: 'D' : EnumLiteral of type hexa; value (3)
+Enumeration Literal: 'E' : EnumLiteral of type hexa; value (4)
+Enumeration Literal: 'F' : EnumLiteral of type hexa; value (5)
+-------------------

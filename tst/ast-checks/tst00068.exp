@@ -1,0 +1,59 @@
+TypeDecl
+  name --> var_line
+  discriminantPart ===
+    [0]: DiscriminantSpecification
+      ids ===
+        [0] --> length
+      type: SimpleName
+        id --> integer
+      expr: (null)
+  definition: RecordSpecification
+    components: ComponentList
+      components ===
+        [0]: ComponentDeclaration
+          names ===
+            [0] --> image
+          type: SubtypeIndication
+            type_mark: SimpleName
+              id --> string
+            constraint: IndexConstraint
+              unconstrained --> false
+              indices ===
+                [0]: Range
+                  lower: IntLiteralExpr
+                    value --> 1
+                  upper: NameExpr
+                    name: SimpleName
+                      id --> length
+          initializer: (null)
+      variant part: (null)
+
+
+Listing for tst/declarations/tst00068.ada:
+==========================================
+     1   type VAR_LINE(LENGTH : INTEGER) is
+     2       record
+     3           IMAGE : STRING(1 .. LENGTH);
+     4       end record;
+     5
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Discriminant Symbol: length : Discriminant
+Record Type: var_line : Record
+   containing components (image )
+-------------------
+
+Scope Name: var_line
+Scope ID  : 2
+-------------------
+Component Symbol: image : Component
+-------------------

@@ -1,0 +1,34 @@
+ObjectDeclaration
+  names ===
+    [0] --> size
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 0
+        upper: IntLiteralExpr
+          value --> 10_000
+  initializer: IntLiteralExpr
+    value --> 0
+
+
+Listing for tst/declarations/tst00002.ada:
+==========================================
+     1   SIZE        : INTEGER range 0 .. 10_000 := 0;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: size : Object
+-------------------

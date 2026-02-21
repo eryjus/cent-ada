@@ -1,0 +1,41 @@
+ObjectDeclaration
+  names ===
+    [0] --> max
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 65535
+TypeDecl
+  name --> buffer_size
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 0
+        upper: NameExpr
+          name: SimpleName
+            id --> max
+
+
+Listing for tst/declarations/tst00044.ada:
+==========================================
+     1   MAX : constant := 65535;
+     2   subtype BUFFER_SIZE is INTEGER range 0 .. MAX;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: max : Object
+Subtype: buffer_size : Subtype
+-------------------

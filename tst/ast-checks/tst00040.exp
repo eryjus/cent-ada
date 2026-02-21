@@ -1,0 +1,31 @@
+TypeDecl
+  name --> page_num
+  discriminantPart === (null)
+  definition: NumericTypeSpec
+    kind --> Integer
+    size: (null)
+    range: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 2_000
+
+
+Listing for tst/declarations/tst00040.ada:
+==========================================
+     1   type PAGE_NUM is range 1 .. 2_000;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Integer Type: page_num : Integer
+-------------------

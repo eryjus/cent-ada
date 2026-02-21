@@ -1,0 +1,59 @@
+TypeDecl
+  name --> matrix
+  discriminantPart === (null)
+  definition: ArrayTypeSpec
+    indices: IndexConstraint
+      unconstrained --> true
+      indices ===
+        [0]: UnboundedRange
+          type: SimpleName
+            id --> integer
+        [1]: UnboundedRange
+          type: SimpleName
+            id --> integer
+    component: SubtypeIndication
+      type_mark: SimpleName
+        id --> real
+      constraint: (null)
+ObjectDeclaration
+  names ===
+    [0] --> rectangle
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> matrix
+    constraint: IndexConstraint
+      unconstrained --> false
+      indices ===
+        [0]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 20
+        [1]: Range
+          lower: IntLiteralExpr
+            value --> 1
+          upper: IntLiteralExpr
+            value --> 30
+  initializer: (null)
+
+
+Listing for tst/declarations/tst00065.ada:
+==========================================
+     1   type MATRIX is array(INTEGER range <>, INTEGER range <>) of REAL;
+     2   RECTANGLE : MATRIX(1 .. 20, 1 .. 30);
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Array Type: matrix : Array
+Object Symbol: rectangle : Object
+-------------------

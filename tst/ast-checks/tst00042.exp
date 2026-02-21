@@ -1,0 +1,33 @@
+TypeDecl
+  name --> small_int
+  discriminantPart === (null)
+  definition: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: UnaryExpr
+          op --> - (minus)
+          operand: IntLiteralExpr
+            value --> 10
+        upper: IntLiteralExpr
+          value --> 10
+
+
+Listing for tst/declarations/tst00042.ada:
+==========================================
+     1   subtype SMALL_INT is INTEGER range -10 .. 10;
+     2
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Subtype: small_int : Subtype
+-------------------

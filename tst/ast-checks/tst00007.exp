@@ -1,0 +1,43 @@
+ObjectDeclaration
+  names ===
+    [0] --> limit
+  constant --> true
+  typeSpec: (null)
+  initializer: IntLiteralExpr
+    value --> 100
+ObjectDeclaration
+  names ===
+    [0] --> low_limit
+  constant --> true
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: BinaryExpr
+    op --> / (divide)
+    lhs: NameExpr
+      name: SimpleName
+        id --> limit
+    rhs: IntLiteralExpr
+      value --> 10
+
+
+Listing for tst/declarations/tst00007.ada:
+==========================================
+     1   LIMIT : constant := 100;
+     2   LOW_LIMIT : constant INTEGER := LIMIT / 10;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: limit : Object
+Object Symbol: low_limit : Object
+-------------------
