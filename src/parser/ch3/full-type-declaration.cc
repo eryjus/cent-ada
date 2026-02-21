@@ -48,9 +48,6 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
 
     if (scopes.IsLocalDefined(id.name)) {
         std::vector<Symbol *> *vec = scopes.CurrentScope()->LocalLookup(id.name);
-        std::cout << "====  Checking for duplicate Symbol!!!\n";
-        std::cout << id.name << '\n';
-        std::cout << vec->at(0)->KindString() << '\n';
 
 
         if (vec->at(0)->kind != Symbol::SymbolKind::IncompleteType && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
