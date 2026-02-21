@@ -58,7 +58,7 @@ void SymbolPrinter::Visit(const RecordTypeSymbol &s) {
     out << "Record Type: " << s.name << " : " << s.CategoryString() << '\n';
     out << "   containing components (";
     for (auto &sym : s.components) out << sym->name << ' ';
-    out << "\b)\n";
+    out << ")\n";
 }
 
 

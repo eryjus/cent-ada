@@ -60,15 +60,22 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
         }
     }
 
+
+
     scopes.Declare(std::move(recSym));
-    scopes.PushScope(Scope::ScopeKind::Record, id.name);
+    Scope *last = scopes.PushScope(Scope::ScopeKind::Record, id.name);
+
 
 
     //
     // -- then is followed by a list of components
     //    ----------------------------------------
     list = ParseComponentList(rec);
-    if (!list) return nullptr;
+    if (!list) {
+        scopes.PopScope(last);      // -- TODO: figure out how to destroy the scope
+        return nullptr;
+    }
+
 
 
 
@@ -96,7 +103,7 @@ RecordSpecificationPtr Parser::ParseRecordTypeDefinition(Id &id)
 
     s.Commit();
     m.Commit();
-    scopes.PopScope();
+    scopes.PopScope(last);
 
     return std::make_unique<RecordSpecification>(astLoc, std::move(list));
 }

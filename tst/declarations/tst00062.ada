@@ -1,2 +1,3 @@
 type COLOR is (WHITE, RED, YELLOW, GREEN, BLUE, BROWN, BLACK);
 MIX : array(COLOR range RED .. GREEN) of BOOLEAN;
+

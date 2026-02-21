@@ -26,7 +26,7 @@ ScopeManager::ScopeManager(void)
     Scope *declScope;
 
     stack.push_back(std::make_unique<Scope>(nullptr, Scope::ScopeKind::Global, 0, "standard"));
-    declScope = stack.back().get();
+    current = declScope = stack.back().get();
 
 
     //
@@ -108,6 +108,7 @@ ScopeManager::ScopeManager(void)
     // -- Finally, create the scope for the global definitions
     //    ----------------------------------------------------
     stack.push_back(std::make_unique<Scope>(CurrentScope(), Scope::ScopeKind::Global, CurrentScope()->Level() + 1, "GLOBAL"));
+    current = stack.back().get();
 }
 
 
@@ -115,10 +116,14 @@ ScopeManager::ScopeManager(void)
 //
 // -- Create a new scope and push it onto the stack
 //    ---------------------------------------------
-void ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
+Scope *ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 {
+    Scope *rv = current;
+
     stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, CurrentScope()->Level() + 1, name));
     current = stack.back().get();
+
+    return rv;
 }
 
 
@@ -126,13 +131,13 @@ void ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 //
 // -- Pop a scope from the stack, with a check that the global scope always remains
 //    -----------------------------------------------------------------------------
-void ScopeManager::PopScope(void)
+void ScopeManager::PopScope(Scope *last)
 {
     if (CurrentScope()->GetKind() == Scope::ScopeKind::Global) {
         exit(EXIT_FAILURE);
     }
 
-    current = current->Parent();
+    current = last;
 }
 
 
