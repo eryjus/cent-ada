@@ -3,7 +3,7 @@
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
-//  assignment_statement ;;= variable_name := expression ;
+//  assignment_statement ::= variable_name := expression ;
 //
 // ---------------------------------------------------------------------------------------------------------------
 //

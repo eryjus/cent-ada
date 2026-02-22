@@ -72,6 +72,7 @@ public:
     virtual void Visit(const VariantPart &) = 0;
     virtual void Visit(const NullStmt &) = 0;
     virtual void Visit(const AssignStmt &) = 0;
+    virtual void Visit(const IfStmt &) = 0;
 };
 
 
@@ -168,6 +169,7 @@ protected:
     virtual void Visit(const VariantPart &) override;
     virtual void Visit(const NullStmt &) override;
     virtual void Visit(const AssignStmt &) override;
+    virtual void Visit(const IfStmt &) override;
 };
 
 
@@ -235,6 +237,7 @@ protected:
     virtual void Visit(const VariantPart &) override;
     virtual void Visit(const NullStmt &) override;
     virtual void Visit(const AssignStmt &) override;
+    virtual void Visit(const IfStmt &) override;
 };
 
 

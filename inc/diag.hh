@@ -23,31 +23,38 @@ class Parser;
 // -- These are the list of possible diagnostic messages
 //    --------------------------------------------------
 enum class DiagID {
+    InternalError,
+    UnknownError,
+    UnknownName,
+
     UnexpectedEOF,
     UnexpectedToken,
+
     MissingSemicolon,
     MissingRightParen,
     MissingEnd,
     MissingEndingTag,
     MissingRecordComponentDefinitions,
     MissingExpression,
+    MissingThen,
+    MissingRightLabelBracket,
+    MissingBasicDeclaration,
+
     InvalidChoiceInVariant,
-    DuplicateName,
-    DuplicateName2,
-    UnknownName,
-    ExtraComma,
-    ExtraSemicolon,
-    ExtraVertialBar,
     InvalidRangeConstraint,
     InvalidName,
     InvalidPrimaryExpr,
     InvalidExpression,
-    MissingBasicDeclaration,
-    UnknownError,
+
+    DuplicateName,
+    DuplicateName2,
+
+    ExtraComma,
+    ExtraSemicolon,
+    ExtraVertialBar,
     NoDeclaration,
-    InternalError,
+
     ExpectedStatement,
-    MissingRightLabelBracket,
 };
 
 

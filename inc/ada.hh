@@ -159,6 +159,7 @@ class VariantPart;
 class AttributeConstraint;
 class NullStmt;
 class AssignStmt;
+class IfStmt;
 
 
 
@@ -224,6 +225,7 @@ using AttributeConstraintPtr = std::unique_ptr<AttributeConstraint>;
 using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
 using NullStmtPtr = std::unique_ptr<NullStmt>;
 using AssignStmtPtr = std::unique_ptr<AssignStmt>;
+using IfStmtPtr = std::unique_ptr<IfStmt>;
 
 
 

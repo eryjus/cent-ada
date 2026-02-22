@@ -55,7 +55,6 @@ public:
 
 
 
-
 //
 // -- The Assignment Statement node
 //    -----------------------------
@@ -72,6 +71,42 @@ public:
 
 public:
     AssignStmt(SourceLoc_t l, NameListPtr lbls, NamePtr n, ExprPtr e) : Stmt(l, std::move(lbls)), name(std::move(n)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- The If Statement node
+//    ---------------------
+class IfStmt : public Stmt {
+    IfStmt(void) = delete;
+    IfStmt(const Stmt &) = delete;
+    IfStmt &operator=(const Stmt &) = delete;
+
+
+public:
+    ExprPtr cond;           // -- may be null if an `else` part
+    StmtListPtr stmts;
+    IfStmtPtr elsePart;     // -- only populated if the if statement has an elsif or else part
+
+
+public:
+    IfStmt(SourceLoc_t l, NameListPtr lbls, ExprPtr c, StmtListPtr s) : Stmt(l, std::move(lbls)), cond(std::move(c)), stmts(std::move(s)) {}
+    void AddElsif(ExprPtr c, StmtListPtr s) {
+        if (!elsePart) {
+            elsePart = std::make_unique<IfStmt>(loc, nullptr, std::move(c), std::move(s));
+            return;
+        }
+
+        IfStmt *wrk = elsePart.get();
+        while (wrk->elsePart) wrk = wrk->elsePart.get();
+        wrk->elsePart = std::make_unique<IfStmt>(loc, nullptr, std::move(c), std::move(s));
+    }
+    void AddElse(StmtListPtr s) { AddElsif(nullptr, std::move(s)); }
 
 
 public:

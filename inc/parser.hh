@@ -377,12 +377,13 @@ public:
     StmtPtr ParseAbortStatement(NameListPtr &labels);
     StmtPtr ParseRaiseStatement(NameListPtr &labels);
     StmtPtr ParseCodeStatement(NameListPtr &labels);
-    StmtPtr ParseIfStatement(NameListPtr &labels);
+    IfStmtPtr ParseIfStatement(NameListPtr &labels);
     StmtPtr ParseCaseStatement(NameListPtr &labels);
     StmtPtr ParseLoopStatement(NameListPtr &labels);
     StmtPtr ParseBlockStatement(NameListPtr &labels);
     StmtPtr ParseAcceptStatement(NameListPtr &labels);
     StmtPtr ParseSelectStatement(NameListPtr &labels);
+    ExprPtr ParseCondition(void) { return ParseExpression(); }
 
 
 
