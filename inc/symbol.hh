@@ -44,6 +44,7 @@ public:
         Pragma,
         IncompleteType,
         Deleted,
+        UndefinedLabel,
     };
 
 
@@ -88,6 +89,7 @@ public:
             "Pragma",
             "IncompleteType",
             "Deleted",
+            "UndefinedLabel",
         };
 
         return s[(int)kind];
@@ -452,6 +454,27 @@ class ComponentSymbol : public Symbol {
 
 public:
     ComponentSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::Component, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- A Label Symbol
+//    ------------------
+class LabelSymbol : public Symbol {
+    LabelSymbol(void) = delete;
+    LabelSymbol(const ObjectSymbol &) = delete;
+    LabelSymbol &operator=(const LabelSymbol &) = delete;
+
+
+public:
+    LabelSymbol(std::string n, SourceLoc_t l, Scope *d, bool defn = true) : Symbol(n, (defn?SymbolKind::Label:SymbolKind::UndefinedLabel), l, d) {}
 
 
 public:

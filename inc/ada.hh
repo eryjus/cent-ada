@@ -157,6 +157,7 @@ class UnboundedRange;
 class Variant;
 class VariantPart;
 class AttributeConstraint;
+class NullStmt;
 
 
 
@@ -220,6 +221,7 @@ using VariantPtr = std::unique_ptr<Variant>;
 using ComponentSymbolPtr = std::unique_ptr<ComponentSymbol>;
 using AttributeConstraintPtr = std::unique_ptr<AttributeConstraint>;
 using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
+using NullStmtPtr = std::unique_ptr<NullStmt>;
 
 
 
@@ -245,6 +247,8 @@ using NameList = std::vector<NamePtr>;
 using NameListPtr = std::unique_ptr<NameList>;
 using VariantList = std::vector<VariantPtr>;
 using VariantListPtr = std::unique_ptr<VariantList>;
+using StmtList = std::vector<StmtPtr>;
+using StmtListPtr = std::unique_ptr<StmtList>;
 
 
 

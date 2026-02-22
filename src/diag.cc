@@ -26,7 +26,7 @@ Diagnostics diags;
 //
 // -- Emit a diagnostic message
 //    -------------------------
-void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string> &args)
+void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string_view> &args)
 {
     assert(DiagMsgs.find(id) != DiagMsgs.end());
 
@@ -89,7 +89,7 @@ void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, con
 //
 // -- Format a diagnostic message
 //    ---------------------------
-std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string> args)
+std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string_view> args)
 {
     const std::string &fmt = tmpl;
     std::string out;
@@ -172,6 +172,8 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
     { DiagID::NoDeclaration, "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m" },
     { DiagID::InternalError, "\e[31;1mFATAL: Internal Error consuming tokens; nothing consumed\e[0m" },
+    { DiagID::ExpectedStatement, "\e[31;1mExpected a statement\e[0m" },
+    { DiagID::MissingRightLabelBracket, "\e[31;1mMissing the right Label Bracket adter ID {0}\e[0m" },
 };
 
 

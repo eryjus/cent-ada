@@ -25,8 +25,36 @@ class Stmt : public ASTNode {
     Stmt(const Stmt &) = delete;
     Stmt &operator=(const Stmt &) = delete;
 
+
 public:
-    Stmt(SourceLoc_t l) : ASTNode(l) {}
+    NameListPtr labels;
+
+
+public:
+    Stmt(SourceLoc_t l, NameListPtr lbls) : ASTNode(l), labels(std::move(lbls)) {}
+};
+
+
+
+//
+// -- The Null Statement node
+//    -----------------------
+class NullStmt : public Stmt {
+    NullStmt(void) = delete;
+    NullStmt(const Stmt &) = delete;
+    NullStmt &operator=(const Stmt &) = delete;
+
+
+public:
+    NameListPtr labels;
+
+
+public:
+    NullStmt(SourceLoc_t l, NameListPtr lbls) : Stmt(l, std::move(lbls)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
 };
 
 

@@ -70,6 +70,7 @@ public:
     virtual void Visit(const UnboundedRange &) = 0;
     virtual void Visit(const Variant &) = 0;
     virtual void Visit(const VariantPart &) = 0;
+    virtual void Visit(const NullStmt &) = 0;
 };
 
 
@@ -164,6 +165,7 @@ protected:
     virtual void Visit(const UnboundedRange &) override;
     virtual void Visit(const Variant &) override;
     virtual void Visit(const VariantPart &) override;
+    virtual void Visit(const NullStmt &) override;
 };
 
 
@@ -229,6 +231,7 @@ protected:
     virtual void Visit(const UnboundedRange &) override;
     virtual void Visit(const Variant &) override;
     virtual void Visit(const VariantPart &) override;
+    virtual void Visit(const NullStmt &) override;
 };
 
 

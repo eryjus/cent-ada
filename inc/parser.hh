@@ -357,6 +357,36 @@ public:
     UnaryOper ParseUnaryAddingOperator(void);
 
 
+
+    //
+    // -- Productions from Statements
+    //    ---------------------------
+    StmtListPtr ParseSequenceOfStatements(void);
+    StmtPtr ParseStatement(void);
+    StmtPtr ParseSimpleStatement(NameListPtr &labels);
+    StmtPtr ParseCompoundStatement(NameListPtr &labels);
+    NamePtr ParseLabel(void);
+    StmtPtr ParseNullStatement(NameListPtr &labels);
+    StmtPtr ParseAssignmentStatement(NameListPtr &labels);
+    StmtPtr ParseProcedureCallStatement(NameListPtr &labels);
+    StmtPtr ParseExitStatement(NameListPtr &labels);
+    StmtPtr ParseReturnStatement(NameListPtr &labels);
+    StmtPtr ParseGotoStatement(NameListPtr &labels);
+    StmtPtr ParseEntryCallStatement(NameListPtr &labels);
+    StmtPtr ParseDelayStatement(NameListPtr &labels);
+    StmtPtr ParseAbortStatement(NameListPtr &labels);
+    StmtPtr ParseRaiseStatement(NameListPtr &labels);
+    StmtPtr ParseCodeStatement(NameListPtr &labels);
+    StmtPtr ParseIfStatement(NameListPtr &labels);
+    StmtPtr ParseCaseStatement(NameListPtr &labels);
+    StmtPtr ParseLoopStatement(NameListPtr &labels);
+    StmtPtr ParseBlockStatement(NameListPtr &labels);
+    StmtPtr ParseAcceptStatement(NameListPtr &labels);
+    StmtPtr ParseSelectStatement(NameListPtr &labels);
+
+
+
+
     NamePtr ParseFunctionCall(void) { return nullptr; }
     NamePtr ParseOperatorSymbol(void) { return nullptr; }
     TypeDeclPtr ParsePrivateTypeDeclaration(void) { return nullptr; }
