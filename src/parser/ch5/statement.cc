@@ -27,7 +27,6 @@ StmtPtr Parser::ParseStatement(void)
 {
     Production p(*this, "statement");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     NameListPtr labels = std::make_unique<NameList>();
@@ -58,7 +57,6 @@ StmtPtr Parser::ParseStatement(void)
 
     p.At("Complete Statement");
     m.Commit();
-    s.Commit();
 
     return stmt;
 }

@@ -58,5 +58,9 @@ NamePtr Parser::ParseLabel(void)
     }
 
 
+    p.At("completed label");
+    m.Commit();
+    s.Commit();
+
     return label;
 }

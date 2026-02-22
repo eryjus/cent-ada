@@ -22,15 +22,12 @@
 //
 // -- Parse a null statement
 //    ----------------------
-StmtPtr Parser::ParseNullStatement(NameListPtr &labels)
+NullStmtPtr Parser::ParseNullStatement(NameListPtr &labels)
 {
     Production p(*this, "null_statement");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
-    std::vector<Symbol *> *vec = nullptr;
-    NamePtr label;
 
 
     if (!Require(TokenType::TOK_NULL)) return nullptr;

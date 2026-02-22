@@ -366,8 +366,8 @@ public:
     StmtPtr ParseSimpleStatement(NameListPtr &labels);
     StmtPtr ParseCompoundStatement(NameListPtr &labels);
     NamePtr ParseLabel(void);
-    StmtPtr ParseNullStatement(NameListPtr &labels);
-    StmtPtr ParseAssignmentStatement(NameListPtr &labels);
+    NullStmtPtr ParseNullStatement(NameListPtr &labels);
+    AssignStmtPtr ParseAssignmentStatement(NameListPtr &labels);
     StmtPtr ParseProcedureCallStatement(NameListPtr &labels);
     StmtPtr ParseExitStatement(NameListPtr &labels);
     StmtPtr ParseReturnStatement(NameListPtr &labels);

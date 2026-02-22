@@ -46,11 +46,32 @@ class NullStmt : public Stmt {
 
 
 public:
-    NameListPtr labels;
+    NullStmt(SourceLoc_t l, NameListPtr lbls) : Stmt(l, std::move(lbls)) {}
 
 
 public:
-    NullStmt(SourceLoc_t l, NameListPtr lbls) : Stmt(l, std::move(lbls)) {}
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+
+//
+// -- The Assignment Statement node
+//    -----------------------------
+class AssignStmt : public Stmt {
+    AssignStmt(void) = delete;
+    AssignStmt(const Stmt &) = delete;
+    AssignStmt &operator=(const Stmt &) = delete;
+
+
+public:
+    NamePtr name;
+    ExprPtr expr;
+
+
+public:
+    AssignStmt(SourceLoc_t l, NameListPtr lbls, NamePtr n, ExprPtr e) : Stmt(l, std::move(lbls)), name(std::move(n)), expr(std::move(e)) {}
 
 
 public:
