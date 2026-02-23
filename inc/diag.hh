@@ -41,6 +41,11 @@ enum class DiagID {
     MissingRightLabelBracket,
     MissingBasicDeclaration,
     MissingCaseAlternative,
+    MissingArrow,
+    MissingColon,
+    MissingLoop,
+    MissingName,
+    MissingEndingName,
 
     InvalidChoiceInVariant,
     InvalidRangeConstraint,
@@ -57,6 +62,7 @@ enum class DiagID {
     NoDeclaration,
 
     ExpectedStatement,
+    NameMismatch,
 };
 
 

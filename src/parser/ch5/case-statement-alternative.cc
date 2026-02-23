@@ -3,10 +3,7 @@
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
-//  case_statement ::= case expression is
-//                     case_statement_alternative
-//                     { case_statement_alternative }
-//                     end case ;
+//  case_statement_alternative ::= when choice { | choice } => sequence_of_statements
 //
 // ---------------------------------------------------------------------------------------------------------------
 //
@@ -55,8 +52,15 @@ CaseStmtAltPtr Parser::ParseCaseStatementAlternative(void)
     }
 
 statements:
+    if (!Require(TokenType::TOK_ARROW)) {
+        diags.Error(loc, DiagID::MissingArrow, { } );
+    }
+
+
     stmts = ParseSequenceOfStatements();
 
-
+    m.Commit();
     return std::make_unique<CaseStmtAlt>(astLoc, std::move(choices), std::move(stmts));
 }
+
+

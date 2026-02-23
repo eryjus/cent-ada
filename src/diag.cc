@@ -167,6 +167,11 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::MissingRightLabelBracket, "\e[31;1mMissing the right Label Bracket adter ID {0}\e[0m" },
     { DiagID::MissingBasicDeclaration, "Basic declaration is missing when required by command line parameters" },
     { DiagID::MissingCaseAlternative, "Case statement requires at least 1 alternative" },
+    { DiagID::MissingArrow, "Missing an arrow in a case statement alternative" },
+    { DiagID::MissingColon, "Missing colon after {0}" },
+    { DiagID::MissingLoop, "Missing loop keyword in {0} loop" },
+    { DiagID::MissingName, "Missing beginning {0} name, expected {1}" },
+    { DiagID::MissingEndingName, "Missing ending {0} name, expected {1}" },
 
     { DiagID::InvalidChoiceInVariant, "invalid choice in variant" },
     { DiagID::InvalidRangeConstraint, "invalid range constraint" },
@@ -183,6 +188,7 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::NoDeclaration, "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m" },
 
     { DiagID::ExpectedStatement, "\e[31;1mExpected a statement\e[0m" },
+    { DiagID::NameMismatch, "Name mismatch in {0}, started with {1} and ended with {2}" },
 };
 
 

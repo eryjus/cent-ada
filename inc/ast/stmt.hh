@@ -163,3 +163,31 @@ public:
 
 
 
+//
+// -- The Loop Statement node
+//    -----------------------
+class LoopStmt : public Stmt {
+    LoopStmt(void) = delete;
+    LoopStmt(const Stmt &) = delete;
+    LoopStmt &operator=(const Stmt &) = delete;
+
+
+
+public:
+    SimpleNamePtr name;         // -- may be nullptr
+    LoopType kind;
+    ExprPtr expr;               // -- nullptr when kind == LoopNone
+    StmtListPtr stmts;
+
+
+public:
+    LoopStmt(SourceLoc_t l, NameListPtr lbls, SimpleNamePtr n, LoopType k, ExprPtr e, StmtListPtr s)
+            : Stmt(l, std::move(lbls)), name(std::move(n)), kind(k), expr(std::move(e)), stmts(std::move(s)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+

@@ -115,5 +115,6 @@ IfStmtPtr Parser::ParseIfStatement(NameListPtr &labels)
     }
 
 
+    m.Commit();
     return rv;
 }

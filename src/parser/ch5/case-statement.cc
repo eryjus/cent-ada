@@ -83,5 +83,6 @@ CaseStmtPtr Parser::ParseCaseStatement(NameListPtr &labels)
     }
 
 
+    m.Commit();
     return std::make_unique<CaseStmt>(astLoc, std::move(labels), std::move(expr), std::move(alts));
 }

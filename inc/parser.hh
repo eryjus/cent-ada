@@ -349,7 +349,7 @@ public:
     NamePtr ParseNameExpr(void);
     NamePtr ParseNameNonExpr(void);
     NamePtr ParsePrefix(void);
-    NamePtr ParseSimpleName(void);
+    SimpleNamePtr ParseSimpleName(void);
     QualifiedExprPtr ParseQualifiedExpression(void);
     SelectedNamePtr ParseSelectedComponent(void);
     SelectedNamePtr ParseSelector(NamePtr &prefix);
@@ -379,12 +379,14 @@ public:
     StmtPtr ParseCodeStatement(NameListPtr &labels);
     IfStmtPtr ParseIfStatement(NameListPtr &labels);
     CaseStmtPtr ParseCaseStatement(NameListPtr &labels);
-    StmtPtr ParseLoopStatement(NameListPtr &labels);
+    LoopStmtPtr ParseLoopStatement(NameListPtr &labels);
     StmtPtr ParseBlockStatement(NameListPtr &labels);
     StmtPtr ParseAcceptStatement(NameListPtr &labels);
     StmtPtr ParseSelectStatement(NameListPtr &labels);
     ExprPtr ParseCondition(void) { return ParseExpression(); }
     CaseStmtAltPtr ParseCaseStatementAlternative(void);
+    ExprPtr ParseIterationScheme(LoopType &kind);
+    ExprPtr ParseLoopParameterSpecification(LoopType &kind);
 
 
 
@@ -398,7 +400,7 @@ public:
     SubtypeIndicationPtr ParseDiscreteSubtypeIndication(void);
     ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
     ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
-    NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
+    SimpleNamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
     SubtypeIndicationPtr ParseComponentSubtypeIndication(void) { return std::move(ParseSubtypeIndication()); }
 
 

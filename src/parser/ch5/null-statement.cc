@@ -37,5 +37,6 @@ NullStmtPtr Parser::ParseNullStatement(NameListPtr &labels)
         diags.Error(loc, DiagID::MissingSemicolon, { "NULL statement" } );
     }
 
+    m.Commit();
     return std::make_unique<NullStmt>(astLoc, std::move(labels));
 }
