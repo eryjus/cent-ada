@@ -115,3 +115,51 @@ public:
 
 
 
+//
+// -- Case Statement Alternative
+//    --------------------------
+class CaseStmtAlt : public ASTNode {
+    CaseStmtAlt(void) = delete;
+    CaseStmtAlt(const Stmt &) = delete;
+    CaseStmtAlt &operator=(const Stmt &) = delete;
+
+
+public:
+    ChoiceListPtr choices;
+    StmtListPtr stmts;
+
+
+public:
+    CaseStmtAlt(SourceLoc_t l, ChoiceListPtr c, StmtListPtr s) : ASTNode(l), choices(std::move(c)), stmts(std::move(s)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
+//
+// -- The Case Statement node
+//    -----------------------
+class CaseStmt : public Stmt {
+    CaseStmt(void) = delete;
+    CaseStmt(const Stmt &) = delete;
+    CaseStmt &operator=(const Stmt &) = delete;
+
+
+public:
+    ExprPtr expr;
+    CaseStmtAltListPtr alts;
+
+
+public:
+    CaseStmt(SourceLoc_t l, NameListPtr lbls, ExprPtr e, CaseStmtAltListPtr a) : Stmt(l, std::move(lbls)), expr(std::move(e)), alts(std::move(a)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+

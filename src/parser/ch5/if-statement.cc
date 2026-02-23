@@ -34,7 +34,6 @@ IfStmtPtr Parser::ParseIfStatement(NameListPtr &labels)
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
-    std::vector<Symbol *> *vec = nullptr;
     StmtListPtr stmts = nullptr;
     ExprPtr cond = nullptr;
     IfStmtPtr rv = nullptr;
@@ -101,6 +100,19 @@ IfStmtPtr Parser::ParseIfStatement(NameListPtr &labels)
         rv->AddElse(std::move(stmts));
     }
 
+
+    loc = TokenStream::Get().SourceLocation();
+    if (!Require(TokenType::TOK_END)) {
+        diags.Error(loc, DiagID::MissingEnd, { "if statement" } );
+    }
+
+    if (!Require(TokenType::TOK_IF)) {
+        diags.Error(loc, DiagID::MissingEndingTag, { "if" } );
+    }
+
+    if (!Require(TokenType::TOK_SEMICOLON)) {
+        diags.Error(loc, DiagID::MissingSemicolon, { "if statement" } );
+    }
 
 
     return rv;

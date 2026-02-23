@@ -37,8 +37,10 @@ enum class DiagID {
     MissingRecordComponentDefinitions,
     MissingExpression,
     MissingThen,
+    MissingIs,
     MissingRightLabelBracket,
     MissingBasicDeclaration,
+    MissingCaseAlternative,
 
     InvalidChoiceInVariant,
     InvalidRangeConstraint,

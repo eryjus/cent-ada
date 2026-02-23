@@ -163,8 +163,10 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
     { DiagID::MissingRecordComponentDefinitions, "a record definition requires at least 1 component" },
     { DiagID::MissingExpression, "Missing an expression after {0}" },
     { DiagID::MissingThen, "Missing 'then' in 'if' statement" },
+    { DiagID::MissingIs, "Missing 'is' in '{0}' statement" },
     { DiagID::MissingRightLabelBracket, "\e[31;1mMissing the right Label Bracket adter ID {0}\e[0m" },
-    { DiagID::MissingBasicDeclaration, "basic declaration is missing when required by command line parameters" },
+    { DiagID::MissingBasicDeclaration, "Basic declaration is missing when required by command line parameters" },
+    { DiagID::MissingCaseAlternative, "Case statement requires at least 1 alternative" },
 
     { DiagID::InvalidChoiceInVariant, "invalid choice in variant" },
     { DiagID::InvalidRangeConstraint, "invalid range constraint" },

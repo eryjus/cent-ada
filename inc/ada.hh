@@ -160,6 +160,8 @@ class AttributeConstraint;
 class NullStmt;
 class AssignStmt;
 class IfStmt;
+class CaseStmtAlt;
+class CaseStmt;
 
 
 
@@ -226,6 +228,8 @@ using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
 using NullStmtPtr = std::unique_ptr<NullStmt>;
 using AssignStmtPtr = std::unique_ptr<AssignStmt>;
 using IfStmtPtr = std::unique_ptr<IfStmt>;
+using CaseStmtAltPtr = std::unique_ptr<CaseStmtAlt>;
+using CaseStmtPtr = std::unique_ptr<CaseStmt>;
 
 
 
@@ -253,6 +257,8 @@ using VariantList = std::vector<VariantPtr>;
 using VariantListPtr = std::unique_ptr<VariantList>;
 using StmtList = std::vector<StmtPtr>;
 using StmtListPtr = std::unique_ptr<StmtList>;
+using CaseStmtAltList = std::vector<CaseStmtAltPtr>;
+using CaseStmtAltListPtr = std::unique_ptr<CaseStmtAltList>;
 
 
 

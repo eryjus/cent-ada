@@ -73,6 +73,8 @@ public:
     virtual void Visit(const NullStmt &) = 0;
     virtual void Visit(const AssignStmt &) = 0;
     virtual void Visit(const IfStmt &) = 0;
+    virtual void Visit(const CaseStmtAlt &) = 0;
+    virtual void Visit(const CaseStmt &) = 0;
 };
 
 
@@ -170,6 +172,8 @@ protected:
     virtual void Visit(const NullStmt &) override;
     virtual void Visit(const AssignStmt &) override;
     virtual void Visit(const IfStmt &) override;
+    virtual void Visit(const CaseStmtAlt &) override;
+    virtual void Visit(const CaseStmt &) override;
 };
 
 
@@ -238,6 +242,8 @@ protected:
     virtual void Visit(const NullStmt &) override;
     virtual void Visit(const AssignStmt &) override;
     virtual void Visit(const IfStmt &) override;
+    virtual void Visit(const CaseStmtAlt &) override;
+    virtual void Visit(const CaseStmt &) override;
 };
 
 
