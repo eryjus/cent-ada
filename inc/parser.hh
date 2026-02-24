@@ -370,7 +370,7 @@ public:
     AssignStmtPtr ParseAssignmentStatement(NameListPtr &labels);
     StmtPtr ParseProcedureCallStatement(NameListPtr &labels);
     ExitStmtPtr ParseExitStatement(NameListPtr &labels);
-    StmtPtr ParseReturnStatement(NameListPtr &labels);
+    ReturnStmtPtr ParseReturnStatement(NameListPtr &labels);
     StmtPtr ParseGotoStatement(NameListPtr &labels);
     StmtPtr ParseEntryCallStatement(NameListPtr &labels);
     StmtPtr ParseDelayStatement(NameListPtr &labels);

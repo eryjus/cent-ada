@@ -20,11 +20,11 @@
 
 
 //
-// -- Parse a null statement
+// -- Parse a exit statement
 //    ----------------------
 ExitStmtPtr Parser::ParseExitStatement(NameListPtr &labels)
 {
-    Production p(*this, "null_statement");
+    Production p(*this, "exit_statement");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;

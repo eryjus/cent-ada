@@ -245,3 +245,27 @@ public:
 
 
 
+//
+// -- The Return Statement node
+//    -------------------------
+class ReturnStmt : public Stmt {
+    ReturnStmt(void) = delete;
+    ReturnStmt(const Stmt &) = delete;
+    ReturnStmt &operator=(const ReturnStmt &) = delete;
+
+
+
+public:
+    ExprPtr expr;               // -- may be nullptr
+
+
+public:
+    ReturnStmt(SourceLoc_t l, NameListPtr lbls, ExprPtr e) : Stmt(l, std::move(lbls)), expr(std::move(e)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
