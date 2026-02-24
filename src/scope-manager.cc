@@ -149,13 +149,14 @@ const std::vector<Symbol *> *ScopeManager::Lookup(std::string_view name) const
 {
     Scope *current = CurrentScope();
 
+#if 0
     do {
         const std::vector<Symbol *> *vec = current->LocalLookup(name);
         if (vec) return vec;
         current = current->Parent();
     } while (current != nullptr);
 
-#if 0
+#else
     for (auto it = stack.rbegin(); it != stack.rend(); it ++) {
         const std::vector<Symbol *> *vec = it->get()->LocalLookup(name);
         if (vec) return vec;

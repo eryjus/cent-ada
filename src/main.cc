@@ -346,7 +346,7 @@ static int Compile(std::string filename, ParseType_t type)
 exit:
     diags.Flush();
 
-    if (diags.Errors() == 0) {
+//    if (diags.Errors() == 0) {
         if (opts.listing) TokenStream::Get().Listing();
         if (opts.dumpSymtab) parser->Scopes()->Print();
 
@@ -357,7 +357,7 @@ exit:
             node->Accept(prt);
             std::cout << "\n\n";
         }
-    }
+//    }
 
 
 
