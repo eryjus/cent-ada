@@ -1,5 +1,5 @@
 //=================================================================================================================
-//  parser/ch5/loop-statement.cc -- Parse a loop statement
+//  parser/ch5/block-statement.cc -- Parse a block statement
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
@@ -25,74 +25,83 @@
 //
 // -- Parse a case statement
 //    ----------------------
-LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
+BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
 {
     Production p(*this, "assignment_statement");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
-    SimpleNamePtr loopName = nullptr;
+    SimpleNamePtr blockName = nullptr;
     SimpleNamePtr endName = nullptr;
-    ExprPtr spec = nullptr;
+    DeclListPtr decls = nullptr;
     StmtListPtr stmts = nullptr;
-    LoopType kind = LoopType::LoopNone;
+
     Scope *scope = nullptr;
 
 
 
-    loopName = ParseSimpleName();
-    if (loopName) {
+    blockName = ParseSimpleName();
+    if (blockName) {
         loc = TokenStream::Get().SourceLocation();
 
         if (!Require(TokenType::TOK_COLON)) {
-            diags.Error(loc, DiagID::MissingColon, { "loop name" } );
+            diags.Error(loc, DiagID::MissingColon, { "block name" } );
         }
     }
 
 
-    spec = ParseIterationScheme(kind);
-
-    if (!Require(TokenType::TOK_LOOP)) {
-        if (kind == LoopType::LoopNone) return nullptr;
-
-        diags.Error(loc, DiagID::MissingColon, { kind == LoopType::LoopFor ? "for" : "while" } );
+    if (Require(TokenType::TOK_DECLARE)) {
+        decls = ParseDeclarativePart();
     }
+
+
+    if (!Require(TokenType::TOK_BEGIN)) return nullptr;
+
 
 
     //
     // -- For this block of statements, we need a pseudo scope
     //    ----------------------------------------------------
-    if (loopName) {
-        scope = scopes.PushScope(Scope::ScopeKind::Loop, std::string(loopName->GetName()));
+    if (blockName) {
+        scope = scopes.PushScope(Scope::ScopeKind::Loop, std::string(blockName->GetName()));
     }
 
     stmts = ParseSequenceOfStatements();
 
-    if (!Require(TokenType::TOK_END)) {
-        diags.Error(loc, DiagID::MissingEnd, { "loop statement" } );
+
+
+    //
+    // -- Exceptions are not defined yet, this is just a placeholder.
+    //    -----------------------------------------------------------
+    if (Optional(TokenType::TOK_EXCEPTION)) {
+        // -- TODO: need to fix the AST for exceptions
+        while (ParseExceptionHandler()) {}
     }
 
-    if (!Require(TokenType::TOK_LOOP)) {
-        diags.Error(loc, DiagID::MissingEndingTag, { "loop" } );
+
+
+
+    if (!Require(TokenType::TOK_END)) {
+        diags.Error(loc, DiagID::MissingEnd, { "block statement" } );
     }
 
     endName = ParseSimpleName();
 
     if (!Require(TokenType::TOK_SEMICOLON)) {
-        diags.Error(loc, DiagID::MissingSemicolon, { "loop statement" } );
+        diags.Error(loc, DiagID::MissingSemicolon, { "block statement" } );
     }
 
-    if (loopName || endName) {
-        if (loopName && !endName) {
-            diags.Error(loc, DiagID::MissingEndingName, { "loop", loopName->GetName() } );
+    if (blockName || endName) {
+        if (blockName && !endName) {
+            diags.Error(loc, DiagID::MissingEndingName, { "block", blockName->GetName() } );
         }
 
-        if (!loopName && endName) {
-            diags.Error(loc, DiagID::MissingName, { "loop", endName->GetName() } );
+        if (!blockName && endName) {
+            diags.Error(loc, DiagID::MissingName, { "block", endName->GetName() } );
         }
 
-        if (loopName && endName && loopName->GetName() != endName->GetName()) {
-            diags.Error(loc, DiagID::NameMismatch, { "loop", loopName->GetName(), endName->GetName() } );
+        if (blockName && endName && blockName->GetName() != endName->GetName()) {
+            diags.Error(loc, DiagID::NameMismatch, { "block", blockName->GetName(), endName->GetName() } );
         }
     }
 
@@ -100,14 +109,14 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     //
     // -- if we created a scope, pop it here
     //    ----------------------------------
-    if (loopName) {
+    if (blockName) {
         scopes.PopScope(scope);
     }
 
 
 
     m.Commit();
-    return std::make_unique<LoopStmt>(astLoc, std::move(labels), std::move(loopName), kind, std::move(spec), std::move(stmts));
+    return std::make_unique<BlockStmt>(astLoc, std::move(labels), std::move(blockName), std::move(decls), std::move(stmts), nullptr);
 }
 
 

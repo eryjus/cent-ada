@@ -291,8 +291,8 @@ public:
     IdListPtr ParseIdentifierList(void);
     IndexConstraintPtr ParseIndexConstraint(void);
     NamePtr ParseTypeMark(void);
-    NodePtr ParseDeclarativePart(void);
-    NodePtr ParseLaterDeclarativeItem(void);
+    DeclListPtr ParseDeclarativePart(void);
+    DeclPtr ParseLaterDeclarativeItem(void);
     ObjectDeclarationPtr ParseNumberDeclaration(void);
     NumericTypeSpecPtr ParseFixedPointConstraint(Id &id);
     NumericTypeSpecPtr ParseFloatingPointConstraint(Id &id);
@@ -380,7 +380,7 @@ public:
     IfStmtPtr ParseIfStatement(NameListPtr &labels);
     CaseStmtPtr ParseCaseStatement(NameListPtr &labels);
     LoopStmtPtr ParseLoopStatement(NameListPtr &labels);
-    StmtPtr ParseBlockStatement(NameListPtr &labels);
+    BlockStmtPtr ParseBlockStatement(NameListPtr &labels);
     StmtPtr ParseAcceptStatement(NameListPtr &labels);
     StmtPtr ParseSelectStatement(NameListPtr &labels);
     ExprPtr ParseCondition(void) { return ParseExpression(); }
@@ -391,10 +391,13 @@ public:
 
 
 
+
+
+
     NamePtr ParseFunctionCall(void) { return nullptr; }
     NamePtr ParseOperatorSymbol(void) { return nullptr; }
     TypeDeclPtr ParsePrivateTypeDeclaration(void) { return nullptr; }
-
+    NodePtr ParseExceptionHandler(void) { return nullptr; }
 
     AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
     SubtypeIndicationPtr ParseDiscreteSubtypeIndication(void);

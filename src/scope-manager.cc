@@ -120,7 +120,7 @@ Scope *ScopeManager::PushScope(Scope::ScopeKind kind, std::string name)
 {
     Scope *rv = current;
 
-    stack.push_back(std::make_unique<Scope>(CurrentScope()->Parent(), kind, stack.size(), name));
+    stack.push_back(std::make_unique<Scope>(CurrentScope(), kind, stack.size(), name));
     current = stack.back().get();
 
     return rv;
@@ -147,10 +147,20 @@ void ScopeManager::PopScope(Scope *last)
 //    -----------------------------------
 const std::vector<Symbol *> *ScopeManager::Lookup(std::string_view name) const
 {
+    Scope *current = CurrentScope();
+
+    do {
+        const std::vector<Symbol *> *vec = current->LocalLookup(name);
+        if (vec) return vec;
+        current = current->Parent();
+    } while (current != nullptr);
+
+#if 0
     for (auto it = stack.rbegin(); it != stack.rend(); it ++) {
         const std::vector<Symbol *> *vec = it->get()->LocalLookup(name);
         if (vec) return vec;
     }
+#endif
 
     return nullptr;
 }

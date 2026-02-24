@@ -170,6 +170,7 @@ class IfStmt;
 class CaseStmtAlt;
 class CaseStmt;
 class LoopStmt;
+class BlockStmt;
 
 
 
@@ -239,6 +240,7 @@ using IfStmtPtr = std::unique_ptr<IfStmt>;
 using CaseStmtAltPtr = std::unique_ptr<CaseStmtAlt>;
 using CaseStmtPtr = std::unique_ptr<CaseStmt>;
 using LoopStmtPtr = std::unique_ptr<LoopStmt>;
+using BlockStmtPtr = std::unique_ptr<BlockStmt>;
 
 
 
@@ -268,7 +270,8 @@ using StmtList = std::vector<StmtPtr>;
 using StmtListPtr = std::unique_ptr<StmtList>;
 using CaseStmtAltList = std::vector<CaseStmtAltPtr>;
 using CaseStmtAltListPtr = std::unique_ptr<CaseStmtAltList>;
-
+using DeclList = std::vector<DeclPtr>;
+using DeclListPtr = std::unique_ptr<DeclList>;
 
 
 

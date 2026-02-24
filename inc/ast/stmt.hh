@@ -191,3 +191,31 @@ public:
 
 
 
+//
+// -- The Block Statement node
+//    ------------------------
+class BlockStmt : public Stmt {
+    BlockStmt(void) = delete;
+    BlockStmt(const Stmt &) = delete;
+    BlockStmt &operator=(const Stmt &) = delete;
+
+
+
+public:
+    SimpleNamePtr name;         // -- may be nullptr
+    DeclListPtr decls;          // -- may be nullptr
+    StmtListPtr stmts;
+    NodeListPtr excepts;        // -- TODO!!!  may be nullptr
+
+
+public:
+    BlockStmt(SourceLoc_t l, NameListPtr lbls, SimpleNamePtr n, DeclListPtr d, StmtListPtr s, NodeListPtr x)
+            : Stmt(l, std::move(lbls)), name(std::move(n)), decls(std::move(d)), stmts(std::move(s)), excepts(std::move(x)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+
