@@ -368,21 +368,21 @@ public:
     NamePtr ParseLabel(void);
     NullStmtPtr ParseNullStatement(NameListPtr &labels);
     AssignStmtPtr ParseAssignmentStatement(NameListPtr &labels);
-    StmtPtr ParseProcedureCallStatement(NameListPtr &labels);
+    StmtPtr ParseProcedureCallStatement(NameListPtr &labels) { return nullptr; }
     ExitStmtPtr ParseExitStatement(NameListPtr &labels);
     ReturnStmtPtr ParseReturnStatement(NameListPtr &labels);
-    StmtPtr ParseGotoStatement(NameListPtr &labels);
-    StmtPtr ParseEntryCallStatement(NameListPtr &labels);
-    StmtPtr ParseDelayStatement(NameListPtr &labels);
-    StmtPtr ParseAbortStatement(NameListPtr &labels);
-    StmtPtr ParseRaiseStatement(NameListPtr &labels);
-    StmtPtr ParseCodeStatement(NameListPtr &labels);
+    GotoStmtPtr ParseGotoStatement(NameListPtr &labels);
+    StmtPtr ParseEntryCallStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseDelayStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseAbortStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseRaiseStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseCodeStatement(NameListPtr &labels) { return nullptr; }
     IfStmtPtr ParseIfStatement(NameListPtr &labels);
     CaseStmtPtr ParseCaseStatement(NameListPtr &labels);
     LoopStmtPtr ParseLoopStatement(NameListPtr &labels);
     BlockStmtPtr ParseBlockStatement(NameListPtr &labels);
-    StmtPtr ParseAcceptStatement(NameListPtr &labels);
-    StmtPtr ParseSelectStatement(NameListPtr &labels);
+    StmtPtr ParseAcceptStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseSelectStatement(NameListPtr &labels) { return nullptr; }
     ExprPtr ParseCondition(void) { return ParseExpression(); }
     CaseStmtAltPtr ParseCaseStatementAlternative(void);
     ExprPtr ParseIterationScheme(LoopType &kind);

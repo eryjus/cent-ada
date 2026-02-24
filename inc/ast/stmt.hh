@@ -269,3 +269,26 @@ public:
 
 
 
+//
+// -- The Goto Statement node
+//    -----------------------
+class GotoStmt : public Stmt {
+    GotoStmt(void) = delete;
+    GotoStmt(const Stmt &) = delete;
+    GotoStmt &operator=(const GotoStmt &) = delete;
+
+
+
+public:
+    NamePtr name;
+
+
+public:
+    GotoStmt(SourceLoc_t l, NameListPtr lbls, NamePtr n) : Stmt(l, std::move(lbls)), name(std::move(n)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
