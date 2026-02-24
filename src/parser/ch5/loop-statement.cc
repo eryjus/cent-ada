@@ -3,10 +3,10 @@
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
-//  case_statement ::= case expression is
-//                     case_statement_alternative
-//                     { case_statement_alternative }
-//                     end case ;
+//  loop_statement ::= [ loop_simple_name : ]
+//                        [ iteration_scheme ] loop
+//                        sequence_of_statements
+//                        end loop [ loop_simple_name ] ;
 //
 // ---------------------------------------------------------------------------------------------------------------
 //
@@ -64,6 +64,7 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     //    ----------------------------------------------------
     if (loopName) {
         scope = scopes.PushScope(Scope::ScopeKind::Loop, std::string(loopName->GetName()));
+        scopes.Declare(std::make_unique<LoopSymbol>(std::string(loopName->GetName()), astLoc, scope));
     }
 
     stmts = ParseSequenceOfStatements();

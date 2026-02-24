@@ -219,3 +219,29 @@ public:
 
 
 
+//
+// -- The Exit Statement node
+//    -----------------------
+class ExitStmt : public Stmt {
+    ExitStmt(void) = delete;
+    ExitStmt(const Stmt &) = delete;
+    ExitStmt &operator=(const Stmt &) = delete;
+
+
+
+public:
+    NamePtr name;               // -- may be nullptr
+    ExprPtr when;               // -- may be nullptr
+
+
+public:
+    ExitStmt(SourceLoc_t l, NameListPtr lbls, NamePtr n, ExprPtr w)
+            : Stmt(l, std::move(lbls)), name(std::move(n)), when(std::move(w)) {}
+
+
+public:
+    virtual void Accept(ASTVisitor &v) { v.Visit(*this); }
+};
+
+
+

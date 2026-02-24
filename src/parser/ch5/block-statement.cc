@@ -3,10 +3,11 @@
 //
 //        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
 //
-//  case_statement ::= case expression is
-//                     case_statement_alternative
-//                     { case_statement_alternative }
-//                     end case ;
+//  block_statement ::= [ block_simple_name : ]
+//                        [ delare declarative_part ]
+//                        begin
+//                          sequence_of_statements
+//                        end [ block_simple_name ] ;
 //
 // ---------------------------------------------------------------------------------------------------------------
 //
@@ -63,7 +64,9 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     // -- For this block of statements, we need a pseudo scope
     //    ----------------------------------------------------
     if (blockName) {
-        scope = scopes.PushScope(Scope::ScopeKind::Loop, std::string(blockName->GetName()));
+        scope = scopes.PushScope(Scope::ScopeKind::Block, std::string(blockName->GetName()));
+        scopes.Declare(std::make_unique<BlockSymbol>(std::string(blockName->GetName()), astLoc, scope));
+
     }
 
     stmts = ParseSequenceOfStatements();
@@ -90,6 +93,8 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     if (!Require(TokenType::TOK_SEMICOLON)) {
         diags.Error(loc, DiagID::MissingSemicolon, { "block statement" } );
     }
+
+
 
     if (blockName || endName) {
         if (blockName && !endName) {

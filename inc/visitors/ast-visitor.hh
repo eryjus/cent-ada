@@ -77,6 +77,7 @@ public:
     virtual void Visit(const CaseStmt &) = 0;
     virtual void Visit(const LoopStmt &) = 0;
     virtual void Visit(const BlockStmt &) = 0;
+    virtual void Visit(const ExitStmt &) = 0;
 };
 
 
@@ -178,6 +179,7 @@ protected:
     virtual void Visit(const CaseStmt &) override;
     virtual void Visit(const LoopStmt &) override;
     virtual void Visit(const BlockStmt &) override;
+    virtual void Visit(const ExitStmt &) override;
 };
 
 
@@ -250,6 +252,7 @@ protected:
     virtual void Visit(const CaseStmt &) override;
     virtual void Visit(const LoopStmt &) override;
     virtual void Visit(const BlockStmt &) override;
+    virtual void Visit(const ExitStmt &) override;
 };
 
 

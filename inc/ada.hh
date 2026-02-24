@@ -171,6 +171,7 @@ class CaseStmtAlt;
 class CaseStmt;
 class LoopStmt;
 class BlockStmt;
+class ExitStmt;
 
 
 
@@ -241,6 +242,7 @@ using CaseStmtAltPtr = std::unique_ptr<CaseStmtAlt>;
 using CaseStmtPtr = std::unique_ptr<CaseStmt>;
 using LoopStmtPtr = std::unique_ptr<LoopStmt>;
 using BlockStmtPtr = std::unique_ptr<BlockStmt>;
+using ExitStmtPtr = std::unique_ptr<ExitStmt>;
 
 
 
