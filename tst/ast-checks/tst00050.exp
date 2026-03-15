@@ -1,6 +1,6 @@
 TypeDecl
   name --> volt
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: RealLiteralExpr

@@ -762,6 +762,7 @@ void ASTPrinter::Visit(const VariantPart &n)
 void ASTPrinter::Visit(const NullStmt &n)
 {
     Entry("NullStatement");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     Exit();
 }
 
@@ -773,6 +774,7 @@ void ASTPrinter::Visit(const NullStmt &n)
 void ASTPrinter::Visit(const AssignStmt &n)
 {
     Entry("AssignStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintRequiredChild("name", n.name.get());
     PrintRequiredChild("expr", n.expr.get());
     Exit();
@@ -786,6 +788,7 @@ void ASTPrinter::Visit(const AssignStmt &n)
 void ASTPrinter::Visit(const IfStmt &n)
 {
     Entry("IfStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintOptionalChild("cond", n.cond.get());
     PrintList("stmts", *n.stmts.get());
     PrintOptionalChild("else", n.elsePart.get());
@@ -813,6 +816,7 @@ void ASTPrinter::Visit(const CaseStmtAlt &n)
 void ASTPrinter::Visit(const CaseStmt &n)
 {
     Entry("CaseStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintRequiredChild("expr", n.expr.get());
     PrintList("alts", *n.alts.get());
     Exit();
@@ -826,6 +830,7 @@ void ASTPrinter::Visit(const CaseStmt &n)
 void ASTPrinter::Visit(const LoopStmt &n)
 {
     Entry("LoopStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintRequiredChild("name", n.name.get());
     PrintField("kind", (n.kind == LoopType::LoopFor ? "For" : (n.kind == LoopType::LoopReverseFor ? "Reverse For" : (n.kind == LoopType::LoopWhile ? "While" : "None"))));
     PrintOptionalChild("expr", n.expr.get());
@@ -841,10 +846,11 @@ void ASTPrinter::Visit(const LoopStmt &n)
 void ASTPrinter::Visit(const BlockStmt &n)
 {
     Entry("BlockStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintRequiredChild("name", n.name.get());
     PrintList("decls", *n.decls.get());
     PrintList("stmts", *n.stmts.get());
-    PrintList("excepts", *n.excepts.get());
+    if (n.excepts) ("excepts", *n.excepts.get()); else NullList("excepts");
     Exit();
 }
 
@@ -856,6 +862,7 @@ void ASTPrinter::Visit(const BlockStmt &n)
 void ASTPrinter::Visit(const ExitStmt &n)
 {
     Entry("ExitStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintOptionalChild("name", n.name.get());
     PrintOptionalChild("when", n.when.get());
     Exit();
@@ -869,6 +876,7 @@ void ASTPrinter::Visit(const ExitStmt &n)
 void ASTPrinter::Visit(const ReturnStmt &n)
 {
     Entry("ReturnStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintOptionalChild("expr", n.expr.get());
     Exit();
 }
@@ -881,6 +889,7 @@ void ASTPrinter::Visit(const ReturnStmt &n)
 void ASTPrinter::Visit(const GotoStmt &n)
 {
     Entry("GotoStmt");
+    if (n.labels) PrintList("labels", *n.labels.get()); else NullList("labels");
     PrintRequiredChild("name", n.name.get());
     Exit();
 }

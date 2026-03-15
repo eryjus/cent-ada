@@ -1,0 +1,41 @@
+NullStatement
+  labels ===
+    [0]: SimpleName
+      id --> here
+    [1]: SimpleName
+      id --> aqui
+NullStatement
+  labels ===
+    [0]: SimpleName
+      id --> there
+NullStatement
+  labels ===
+    [0]: SimpleName
+      id --> everywhere
+
+
+Listing for tst/statements/tst00004.ada:
+==========================================
+     1   <<here>> <<aqui>>
+     2   null;
+     3   <<there>>
+     4   null;
+     5   <<everywhere>>
+     6   null;
+     7
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Label Symbol: here : Label
+Label Symbol: aqui : Label
+Label Symbol: there : Label
+Label Symbol: everywhere : Label
+-------------------

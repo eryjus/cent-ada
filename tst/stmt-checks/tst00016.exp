@@ -1,0 +1,70 @@
+ObjectDeclaration
+  names ===
+    [0] --> x
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: IntLiteralExpr
+    value --> 0
+LoopStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> main
+  kind --> None
+  expr: (null)
+  stmts ===
+    [0]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> x
+      expr: BinaryExpr
+        op --> + (plus)
+        lhs: NameExpr
+          name: SimpleName
+            id --> x
+        rhs: IntLiteralExpr
+          value --> 1
+    [1]: ExitStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> main
+      when: BinaryExpr
+        op --> = (equal)
+        lhs: NameExpr
+          name: SimpleName
+            id --> x
+        rhs: IntLiteralExpr
+          value --> 15
+
+
+Listing for tst/statements/tst00016.ada:
+==========================================
+     1   X : INTEGER := 0;
+     2
+     3   MAIN:
+     4       loop
+     5           X := X + 1;
+     6           exit MAIN when X = 15;
+     7       end loop MAIN;
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: x : Object
+Label Symbol: main : Label
+-------------------
+
+Scope Name: main
+Scope ID  : 2
+-------------------
+Loop Name: main : LoopName
+-------------------

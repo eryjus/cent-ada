@@ -1,6 +1,6 @@
 TypeDecl
   name --> coordinate
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -8,7 +8,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> local_coordinate
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName

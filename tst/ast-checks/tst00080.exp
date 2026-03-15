@@ -1,6 +1,6 @@
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -71,7 +71,7 @@ TypeDecl
             constraint: DiscriminantConstraint
               list ===
                 [0]: DiscriminantAssociation
-                  name ===
+                  name === (null/empty)
                   expr: NameExpr
                     name: SimpleName
                       id --> number
@@ -85,7 +85,7 @@ TypeDecl
             constraint: DiscriminantConstraint
               list ===
                 [0]: DiscriminantAssociation
-                  name ===
+                  name === (null/empty)
                   expr: NameExpr
                     name: SimpleName
                       id --> number

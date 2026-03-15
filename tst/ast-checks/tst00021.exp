@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 40
 TypeDecl
   name --> column
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -19,7 +19,7 @@ TypeDecl
           value --> 72
 TypeDecl
   name --> up_to_k
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> column

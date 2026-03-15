@@ -35,9 +35,18 @@ NamePtr Parser::ParseLabel(void)
 
     if (!Require(TokenType::TOK_LEFT_LABEL_BRACKET)) return nullptr;
 
-    label = ParseSimpleName();
-    if (!label) return nullptr;
+// TODO: Return to this production    label = ParseSimpleName();
+// Also TODO:         if (!label) return nullptr;
 
+    Id id;
+    loc = tokens.SourceLocation();
+    if (RequireIdent(id)) {
+        diags.Warning(loc, DiagID::LabelUsageWarning, { } );
+        label = std::make_unique<SimpleName>(astLoc, id);
+    }
+
+
+    if (!label) return nullptr;
 
     if (scopes.IsLocalDefined(label->GetName())) {
         vec = scopes.CurrentScope()->LocalLookup(label->GetName());
@@ -52,13 +61,15 @@ NamePtr Parser::ParseLabel(void)
 
     scopes.Declare(std::make_unique<LabelSymbol>(std::string(label->GetName()), astLoc, scopes.CurrentScope()));
 
+
     loc = TokenStream::Get().SourceLocation();
-    if (!Optional(TokenType::TOK_RIGHT_LABEL_BRACKET)) {
-        diags.Error(loc, DiagID::MissingRightLabelBracket, { label->GetName() } );
+    if (!Require(TokenType::TOK_RIGHT_LABEL_BRACKET)) {
+        diags.Error(loc, DiagID::MissingRightLabelBracket, { label ? label->GetName() : "" } );
     }
 
 
     p.At("completed label");
+    TOKEN;
     m.Commit();
     s.Commit();
 

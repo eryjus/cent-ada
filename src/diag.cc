@@ -189,6 +189,8 @@ const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
 
     { DiagID::ExpectedStatement, "\e[31;1mExpected a statement\e[0m" },
     { DiagID::NameMismatch, "Name mismatch in {0}, started with {1} and ended with {2}" },
+    { DiagID::LabelUsageWarning, "WARNING!! Label is defined as an identifier rather than a label_simple_name, "
+                "which is a temporary hack and MUST be resolved"},
 };
 
 

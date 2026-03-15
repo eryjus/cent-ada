@@ -24,7 +24,7 @@
 //    ----------------------
 CaseStmtAltPtr Parser::ParseCaseStatementAlternative(void)
 {
-    Production p(*this, "assignment_statement");
+    Production p(*this, "case_statement_alternative");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
@@ -34,6 +34,7 @@ CaseStmtAltPtr Parser::ParseCaseStatementAlternative(void)
 
 
 
+    p.At("Case WHEN");
     if (!Require(TokenType::TOK_WHEN)) return nullptr;
 
     loc = TokenStream::Get().SourceLocation();
@@ -59,6 +60,7 @@ statements:
 
     stmts = ParseSequenceOfStatements();
 
+    p.At("Complete Case stmt");
     m.Commit();
     return std::make_unique<CaseStmtAlt>(astLoc, std::move(choices), std::move(stmts));
 }

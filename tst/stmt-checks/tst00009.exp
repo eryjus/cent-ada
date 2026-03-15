@@ -1,0 +1,663 @@
+TypeDecl
+  name --> month_name
+  discriminantPart === (null/empty)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> january
+      [1] --> february
+      [2] --> march
+      [3] --> april
+      [4] --> may
+      [5] --> june
+      [6] --> july
+      [7] --> august
+      [8] --> september
+      [9] --> october
+      [10] --> november
+      [11] --> december
+ObjectDeclaration
+  names ===
+    [0] --> month
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> month_name
+    constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> day
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 31
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> year
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: (null)
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> day
+  expr: BinaryExpr
+    op --> + (plus)
+    lhs: NameExpr
+      name: SimpleName
+        id --> day
+    rhs: IntLiteralExpr
+      value --> 1
+IfStmt
+  labels === (null/empty)
+  cond: BinaryExpr
+    op --> AND
+    lhs: BinaryExpr
+      op --> = (equal)
+      lhs: NameExpr
+        name: SimpleName
+          id --> month
+      rhs: NameExpr
+        name: SimpleName
+          id --> january
+    rhs: BinaryExpr
+      op --> > (greater)
+      lhs: NameExpr
+        name: SimpleName
+          id --> day
+      rhs: IntLiteralExpr
+        value --> 31
+  stmts ===
+    [0]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> month
+      expr: NameExpr
+        name: SimpleName
+          id --> february
+    [1]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> day
+      expr: BinaryExpr
+        op --> - (minus)
+        lhs: NameExpr
+          name: SimpleName
+            id --> day
+        rhs: IntLiteralExpr
+          value --> 31
+  else: IfStmt
+    labels === (null/empty)
+    cond: BinaryExpr
+      op --> AND
+      lhs: BinaryExpr
+        op --> AND
+        lhs: BinaryExpr
+          op --> AND
+          lhs: BinaryExpr
+            op --> = (equal)
+            lhs: NameExpr
+              name: SimpleName
+                id --> month
+            rhs: NameExpr
+              name: SimpleName
+                id --> february
+          rhs: BinaryExpr
+            op --> > (greater)
+            lhs: NameExpr
+              name: SimpleName
+                id --> day
+            rhs: IntLiteralExpr
+              value --> 28
+        rhs: BinaryExpr
+          op --> = (equal)
+          lhs: BinaryExpr
+            op --> MOD
+            lhs: NameExpr
+              name: SimpleName
+                id --> year
+            rhs: IntLiteralExpr
+              value --> 4
+          rhs: IntLiteralExpr
+            value --> 0
+      rhs: BinaryExpr
+        op --> /= (not equal)
+        lhs: BinaryExpr
+          op --> MOD
+          lhs: NameExpr
+            name: SimpleName
+              id --> year
+          rhs: IntLiteralExpr
+            value --> 100
+        rhs: IntLiteralExpr
+          value --> 0
+    stmts ===
+      [0]: AssignStmt
+        labels === (null/empty)
+        name: SimpleName
+          id --> month
+        expr: NameExpr
+          name: SimpleName
+            id --> march
+      [1]: AssignStmt
+        labels === (null/empty)
+        name: SimpleName
+          id --> day
+        expr: BinaryExpr
+          op --> - (minus)
+          lhs: NameExpr
+            name: SimpleName
+              id --> day
+          rhs: IntLiteralExpr
+            value --> 28
+    else: IfStmt
+      labels === (null/empty)
+      cond: BinaryExpr
+        op --> AND
+        lhs: BinaryExpr
+          op --> = (equal)
+          lhs: NameExpr
+            name: SimpleName
+              id --> month
+          rhs: NameExpr
+            name: SimpleName
+              id --> february
+        rhs: BinaryExpr
+          op --> > (greater)
+          lhs: NameExpr
+            name: SimpleName
+              id --> day
+          rhs: IntLiteralExpr
+            value --> 29
+      stmts ===
+        [0]: AssignStmt
+          labels === (null/empty)
+          name: SimpleName
+            id --> month
+          expr: NameExpr
+            name: SimpleName
+              id --> march
+        [1]: AssignStmt
+          labels === (null/empty)
+          name: SimpleName
+            id --> day
+          expr: BinaryExpr
+            op --> - (minus)
+            lhs: NameExpr
+              name: SimpleName
+                id --> day
+            rhs: IntLiteralExpr
+              value --> 29
+      else: IfStmt
+        labels === (null/empty)
+        cond: BinaryExpr
+          op --> AND
+          lhs: BinaryExpr
+            op --> = (equal)
+            lhs: NameExpr
+              name: SimpleName
+                id --> month
+            rhs: NameExpr
+              name: SimpleName
+                id --> march
+          rhs: BinaryExpr
+            op --> > (greater)
+            lhs: NameExpr
+              name: SimpleName
+                id --> day
+            rhs: IntLiteralExpr
+              value --> 31
+        stmts ===
+          [0]: AssignStmt
+            labels === (null/empty)
+            name: SimpleName
+              id --> month
+            expr: NameExpr
+              name: SimpleName
+                id --> april
+          [1]: AssignStmt
+            labels === (null/empty)
+            name: SimpleName
+              id --> day
+            expr: BinaryExpr
+              op --> - (minus)
+              lhs: NameExpr
+                name: SimpleName
+                  id --> day
+              rhs: IntLiteralExpr
+                value --> 31
+        else: IfStmt
+          labels === (null/empty)
+          cond: BinaryExpr
+            op --> AND
+            lhs: BinaryExpr
+              op --> = (equal)
+              lhs: NameExpr
+                name: SimpleName
+                  id --> month
+              rhs: NameExpr
+                name: SimpleName
+                  id --> april
+            rhs: BinaryExpr
+              op --> > (greater)
+              lhs: NameExpr
+                name: SimpleName
+                  id --> day
+              rhs: IntLiteralExpr
+                value --> 30
+          stmts ===
+            [0]: AssignStmt
+              labels === (null/empty)
+              name: SimpleName
+                id --> month
+              expr: NameExpr
+                name: SimpleName
+                  id --> may
+            [1]: AssignStmt
+              labels === (null/empty)
+              name: SimpleName
+                id --> day
+              expr: BinaryExpr
+                op --> - (minus)
+                lhs: NameExpr
+                  name: SimpleName
+                    id --> day
+                rhs: IntLiteralExpr
+                  value --> 30
+          else: IfStmt
+            labels === (null/empty)
+            cond: BinaryExpr
+              op --> AND
+              lhs: BinaryExpr
+                op --> = (equal)
+                lhs: NameExpr
+                  name: SimpleName
+                    id --> month
+                rhs: NameExpr
+                  name: SimpleName
+                    id --> may
+              rhs: BinaryExpr
+                op --> > (greater)
+                lhs: NameExpr
+                  name: SimpleName
+                    id --> day
+                rhs: IntLiteralExpr
+                  value --> 31
+            stmts ===
+              [0]: AssignStmt
+                labels === (null/empty)
+                name: SimpleName
+                  id --> month
+                expr: NameExpr
+                  name: SimpleName
+                    id --> june
+              [1]: AssignStmt
+                labels === (null/empty)
+                name: SimpleName
+                  id --> day
+                expr: BinaryExpr
+                  op --> - (minus)
+                  lhs: NameExpr
+                    name: SimpleName
+                      id --> day
+                  rhs: IntLiteralExpr
+                    value --> 31
+            else: IfStmt
+              labels === (null/empty)
+              cond: BinaryExpr
+                op --> AND
+                lhs: BinaryExpr
+                  op --> = (equal)
+                  lhs: NameExpr
+                    name: SimpleName
+                      id --> month
+                  rhs: NameExpr
+                    name: SimpleName
+                      id --> june
+                rhs: BinaryExpr
+                  op --> > (greater)
+                  lhs: NameExpr
+                    name: SimpleName
+                      id --> day
+                  rhs: IntLiteralExpr
+                    value --> 30
+              stmts ===
+                [0]: AssignStmt
+                  labels === (null/empty)
+                  name: SimpleName
+                    id --> month
+                  expr: NameExpr
+                    name: SimpleName
+                      id --> july
+                [1]: AssignStmt
+                  labels === (null/empty)
+                  name: SimpleName
+                    id --> day
+                  expr: BinaryExpr
+                    op --> - (minus)
+                    lhs: NameExpr
+                      name: SimpleName
+                        id --> day
+                    rhs: IntLiteralExpr
+                      value --> 30
+              else: IfStmt
+                labels === (null/empty)
+                cond: BinaryExpr
+                  op --> AND
+                  lhs: BinaryExpr
+                    op --> = (equal)
+                    lhs: NameExpr
+                      name: SimpleName
+                        id --> month
+                    rhs: NameExpr
+                      name: SimpleName
+                        id --> july
+                  rhs: BinaryExpr
+                    op --> > (greater)
+                    lhs: NameExpr
+                      name: SimpleName
+                        id --> day
+                    rhs: IntLiteralExpr
+                      value --> 31
+                stmts ===
+                  [0]: AssignStmt
+                    labels === (null/empty)
+                    name: SimpleName
+                      id --> month
+                    expr: NameExpr
+                      name: SimpleName
+                        id --> august
+                  [1]: AssignStmt
+                    labels === (null/empty)
+                    name: SimpleName
+                      id --> day
+                    expr: BinaryExpr
+                      op --> - (minus)
+                      lhs: NameExpr
+                        name: SimpleName
+                          id --> day
+                      rhs: IntLiteralExpr
+                        value --> 31
+                else: IfStmt
+                  labels === (null/empty)
+                  cond: BinaryExpr
+                    op --> AND
+                    lhs: BinaryExpr
+                      op --> = (equal)
+                      lhs: NameExpr
+                        name: SimpleName
+                          id --> month
+                      rhs: NameExpr
+                        name: SimpleName
+                          id --> august
+                    rhs: BinaryExpr
+                      op --> > (greater)
+                      lhs: NameExpr
+                        name: SimpleName
+                          id --> day
+                      rhs: IntLiteralExpr
+                        value --> 31
+                  stmts ===
+                    [0]: AssignStmt
+                      labels === (null/empty)
+                      name: SimpleName
+                        id --> month
+                      expr: NameExpr
+                        name: SimpleName
+                          id --> september
+                    [1]: AssignStmt
+                      labels === (null/empty)
+                      name: SimpleName
+                        id --> day
+                      expr: BinaryExpr
+                        op --> - (minus)
+                        lhs: NameExpr
+                          name: SimpleName
+                            id --> day
+                        rhs: IntLiteralExpr
+                          value --> 31
+                  else: IfStmt
+                    labels === (null/empty)
+                    cond: BinaryExpr
+                      op --> AND
+                      lhs: BinaryExpr
+                        op --> = (equal)
+                        lhs: NameExpr
+                          name: SimpleName
+                            id --> month
+                        rhs: NameExpr
+                          name: SimpleName
+                            id --> september
+                      rhs: BinaryExpr
+                        op --> > (greater)
+                        lhs: NameExpr
+                          name: SimpleName
+                            id --> day
+                        rhs: IntLiteralExpr
+                          value --> 30
+                    stmts ===
+                      [0]: AssignStmt
+                        labels === (null/empty)
+                        name: SimpleName
+                          id --> month
+                        expr: NameExpr
+                          name: SimpleName
+                            id --> october
+                      [1]: AssignStmt
+                        labels === (null/empty)
+                        name: SimpleName
+                          id --> day
+                        expr: BinaryExpr
+                          op --> - (minus)
+                          lhs: NameExpr
+                            name: SimpleName
+                              id --> day
+                          rhs: IntLiteralExpr
+                            value --> 30
+                    else: IfStmt
+                      labels === (null/empty)
+                      cond: BinaryExpr
+                        op --> AND
+                        lhs: BinaryExpr
+                          op --> = (equal)
+                          lhs: NameExpr
+                            name: SimpleName
+                              id --> month
+                          rhs: NameExpr
+                            name: SimpleName
+                              id --> october
+                        rhs: BinaryExpr
+                          op --> > (greater)
+                          lhs: NameExpr
+                            name: SimpleName
+                              id --> day
+                          rhs: IntLiteralExpr
+                            value --> 31
+                      stmts ===
+                        [0]: AssignStmt
+                          labels === (null/empty)
+                          name: SimpleName
+                            id --> month
+                          expr: NameExpr
+                            name: SimpleName
+                              id --> november
+                        [1]: AssignStmt
+                          labels === (null/empty)
+                          name: SimpleName
+                            id --> day
+                          expr: BinaryExpr
+                            op --> - (minus)
+                            lhs: NameExpr
+                              name: SimpleName
+                                id --> day
+                            rhs: IntLiteralExpr
+                              value --> 31
+                      else: IfStmt
+                        labels === (null/empty)
+                        cond: BinaryExpr
+                          op --> AND
+                          lhs: BinaryExpr
+                            op --> = (equal)
+                            lhs: NameExpr
+                              name: SimpleName
+                                id --> month
+                            rhs: NameExpr
+                              name: SimpleName
+                                id --> november
+                          rhs: BinaryExpr
+                            op --> > (greater)
+                            lhs: NameExpr
+                              name: SimpleName
+                                id --> day
+                            rhs: IntLiteralExpr
+                              value --> 30
+                        stmts ===
+                          [0]: AssignStmt
+                            labels === (null/empty)
+                            name: SimpleName
+                              id --> month
+                            expr: NameExpr
+                              name: SimpleName
+                                id --> december
+                          [1]: AssignStmt
+                            labels === (null/empty)
+                            name: SimpleName
+                              id --> day
+                            expr: BinaryExpr
+                              op --> - (minus)
+                              lhs: NameExpr
+                                name: SimpleName
+                                  id --> day
+                              rhs: IntLiteralExpr
+                                value --> 30
+                        else: IfStmt
+                          labels === (null/empty)
+                          cond: BinaryExpr
+                            op --> AND
+                            lhs: BinaryExpr
+                              op --> = (equal)
+                              lhs: NameExpr
+                                name: SimpleName
+                                  id --> month
+                              rhs: NameExpr
+                                name: SimpleName
+                                  id --> december
+                            rhs: BinaryExpr
+                              op --> > (greater)
+                              lhs: NameExpr
+                                name: SimpleName
+                                  id --> day
+                              rhs: IntLiteralExpr
+                                value --> 31
+                          stmts ===
+                            [0]: AssignStmt
+                              labels === (null/empty)
+                              name: SimpleName
+                                id --> month
+                              expr: NameExpr
+                                name: SimpleName
+                                  id --> january
+                            [1]: AssignStmt
+                              labels === (null/empty)
+                              name: SimpleName
+                                id --> day
+                              expr: BinaryExpr
+                                op --> - (minus)
+                                lhs: NameExpr
+                                  name: SimpleName
+                                    id --> day
+                                rhs: IntLiteralExpr
+                                  value --> 31
+                          else: (null)
+
+
+Listing for tst/statements/tst00009.ada:
+==========================================
+     1   type MONTH_NAME is (JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY,
+     2           AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER);
+     3   MONTH : MONTH_NAME;
+     4   DAY : INTEGER range 1 .. 31;
+     5   YEAR : INTEGER;
+     6
+     7   DAY := DAY + 1;
+     8
+     9   if MONTH = JANUARY and DAY > 31 then
+    10       MONTH := FEBRUARY;
+    11       DAY := DAY - 31;
+    12   elsif MONTH = FEBRUARY and DAY > 28 and YEAR mod 4 = 0 and YEAR mod 100 /= 0 then
+    13       MONTH := MARCH;
+    14       DAY := DAY - 28;
+    15   elsif MONTH = FEBRUARY and DAY > 29 then
+    16       MONTH := MARCH;
+    17       DAY := DAY - 29;
+    18   elsif MONTH = MARCH and DAY > 31 then
+    19      MONTH := APRIL;
+    20      DAY := DAY - 31;
+    21   elsif MONTH = APRIL and DAY > 30 then
+    22      MONTH := MAY;
+    23      DAY := DAY - 30;
+    24   elsif MONTH = MAY and DAY > 31 then
+    25      MONTH := JUNE;
+    26      DAY := DAY - 31;
+    27   elsif MONTH = JUNE and DAY > 30 then
+    28      MONTH := JULY;
+    29      DAY := DAY - 30;
+    30   elsif MONTH = JULY and DAY > 31 then
+    31      MONTH := AUGUST;
+    32      DAY := DAY - 31;
+    33   elsif MONTH = AUGUST and DAY > 31 then
+    34      MONTH := SEPTEMBER;
+    35      DAY := DAY - 31;
+    36   elsif MONTH = SEPTEMBER and DAY > 30 then
+    37      MONTH := OCTOBER;
+    38      DAY := DAY - 30;
+    39   elsif MONTH = OCTOBER and DAY > 31 then
+    40      MONTH := NOVEMBER;
+    41      DAY := DAY - 31;
+    42   elsif MONTH = NOVEMBER and DAY > 30 then
+    43      MONTH := DECEMBER;
+    44      DAY := DAY - 30;
+    45   elsif MONTH = DECEMBER and DAY > 31 then
+    46      MONTH := JANUARY;
+    47      DAY := DAY - 31;
+    48   end if;
+    49
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: month_name : Enumeration
+   containing literals (january february march april may june july august september october november december )
+Enumeration Literal: january : EnumLiteral of type month_name; value (0)
+Enumeration Literal: february : EnumLiteral of type month_name; value (1)
+Enumeration Literal: march : EnumLiteral of type month_name; value (2)
+Enumeration Literal: april : EnumLiteral of type month_name; value (3)
+Enumeration Literal: may : EnumLiteral of type month_name; value (4)
+Enumeration Literal: june : EnumLiteral of type month_name; value (5)
+Enumeration Literal: july : EnumLiteral of type month_name; value (6)
+Enumeration Literal: august : EnumLiteral of type month_name; value (7)
+Enumeration Literal: september : EnumLiteral of type month_name; value (8)
+Enumeration Literal: october : EnumLiteral of type month_name; value (9)
+Enumeration Literal: november : EnumLiteral of type month_name; value (10)
+Enumeration Literal: december : EnumLiteral of type month_name; value (11)
+Object Symbol: month : Object
+Object Symbol: day : Object
+Object Symbol: year : Object
+-------------------

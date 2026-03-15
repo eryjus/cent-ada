@@ -1,6 +1,6 @@
 TypeDecl
   name --> complex
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===

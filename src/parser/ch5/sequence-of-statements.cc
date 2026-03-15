@@ -43,6 +43,7 @@ StmtListPtr Parser::ParseSequenceOfStatements(void)
 
     while (stmt) {
         rv->push_back(std::move(stmt));
+        if (tokens.Current() == TokenType::YYEOF) break;
         stmt = ParseStatement();
     }
 

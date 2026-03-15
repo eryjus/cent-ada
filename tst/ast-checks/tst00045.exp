@@ -1,6 +1,6 @@
 TypeDecl
   name --> coefficient
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr

@@ -52,6 +52,12 @@ ExitStmtPtr Parser::ParseExitStatement(NameListPtr &labels)
         }
     }
 
+
+    if (!Require(TokenType::TOK_SEMICOLON)) {
+        diags.Error(loc, DiagID::MissingSemicolon, { "exit statement" } );
+    }
+
+
     m.Commit();
 
     return std::make_unique<ExitStmt>(astLoc, std::move(labels), std::move(name), std::move(cond));

@@ -1,6 +1,6 @@
 TypeDecl
   name --> color
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> white
@@ -12,7 +12,7 @@ TypeDecl
       [6] --> black
 TypeDecl
   name --> cmyk
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> cyan

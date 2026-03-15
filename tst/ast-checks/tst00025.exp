@@ -1,6 +1,6 @@
 TypeDecl
   name --> day
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> mon
@@ -12,7 +12,7 @@ TypeDecl
       [6] --> sun
 TypeDecl
   name --> midweek
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName

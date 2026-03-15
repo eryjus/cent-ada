@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 132
 TypeDecl
   name --> line_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)

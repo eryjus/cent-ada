@@ -114,6 +114,10 @@ protected:
     // -- template to print a list
     template <typename T>
     void PrintList(const std::string &label, const std::vector<T> &list) {
+        if (list.size() == 0) {
+            NullList(label);
+            return;
+        }
         PrintDepth();
         depth ++;
         std::cout << label << " ===\n";
@@ -123,7 +127,7 @@ protected:
         }
         depth --;
     }
-    void NullList(const std::string &label) { PrintDepth(); std::cout << label << " === (null)\n"; }
+    void NullList(const std::string &label) { PrintDepth(); std::cout << label << " === (null/empty)\n"; }
 
 
     virtual void Visit(const AccessTypeSpec &) override;

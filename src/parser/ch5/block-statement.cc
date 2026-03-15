@@ -28,7 +28,7 @@
 //    ----------------------
 BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
 {
-    Production p(*this, "assignment_statement");
+    Production p(*this, "block_statement");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
@@ -36,19 +36,39 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     SimpleNamePtr endName = nullptr;
     DeclListPtr decls = nullptr;
     StmtListPtr stmts = nullptr;
-
     Scope *scope = nullptr;
+    std::vector<Symbol *> *vec = nullptr;
 
 
 
-    blockName = ParseSimpleName();
-    if (blockName) {
-        loc = TokenStream::Get().SourceLocation();
+    Id id;
+    loc = tokens.SourceLocation();
+    if (RequireIdent(id)) {
+        diags.Warning(loc, DiagID::LabelUsageWarning, { } );
+        blockName = std::make_unique<SimpleName>(astLoc, id);
 
+        loc = tokens.SourceLocation();
         if (!Require(TokenType::TOK_COLON)) {
             diags.Error(loc, DiagID::MissingColon, { "block name" } );
         }
     }
+
+
+    if (blockName) {
+        if (scopes.IsLocalDefined(blockName->GetName())) {
+            vec = scopes.CurrentScope()->LocalLookup(blockName->GetName());
+
+            if (vec->at(0)->kind != Symbol::SymbolKind::UndefinedLabel && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
+                diags.Error(loc, DiagID::DuplicateName, { "Statement Label" } );
+                diags.Error(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
+            } else if (vec->at(0)->kind == Symbol::SymbolKind::UndefinedLabel) {
+                vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+            }
+        }
+
+        scopes.Declare(std::make_unique<LabelSymbol>(std::string(blockName->GetName()), astLoc, scopes.CurrentScope()));
+    }
+
 
 
     if (Require(TokenType::TOK_DECLARE)) {

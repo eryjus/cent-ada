@@ -1,0 +1,25 @@
+GotoStmt
+  labels ===
+    [0]: SimpleName
+      id --> inf_loop
+  name: SimpleName
+    id --> inf_loop
+
+
+Listing for tst/statements/tst00020.ada:
+==========================================
+     1   <<INF_LOOP>>
+     2   goto INF_LOOP;
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Label Symbol: inf_loop : Label
+-------------------

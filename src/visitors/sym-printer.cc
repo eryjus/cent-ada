@@ -182,3 +182,31 @@ void SymbolPrinter::Visit(const IncompleteTypeSymbol &s) {
 }
 
 
+
+//
+// -- Make a visitor to print a LabelSymbol
+//    -------------------------------------
+void SymbolPrinter::Visit(const LabelSymbol &s) {
+    if (s.kind == Symbol::SymbolKind::Deleted) return;
+    out << "Label Symbol: " << s.name << " : " << s.KindString() << '\n';
+}
+
+
+//
+// -- Make a visitor to print a Loop Name
+//    -----------------------------------
+void SymbolPrinter::Visit(const LoopSymbol &s) {
+    if (s.kind == Symbol::SymbolKind::Deleted) return;
+    out << "Loop Name: " << s.name << " : " << s.KindString() << '\n';
+}
+
+
+//
+// -- Make a visitor to print a Block Name
+//    ------------------------------------
+void SymbolPrinter::Visit(const BlockSymbol &s) {
+    if (s.kind == Symbol::SymbolKind::Deleted) return;
+    out << "Block Name: " << s.name << " : " << s.KindString() << '\n';
+}
+
+

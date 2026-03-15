@@ -1,6 +1,6 @@
 TypeDecl
   name --> car
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 
 

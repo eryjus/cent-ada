@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 65535
 TypeDecl
   name --> buffer_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer

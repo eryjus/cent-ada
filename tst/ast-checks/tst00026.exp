@@ -1,6 +1,6 @@
 TypeDecl
   name --> positive
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -17,7 +17,7 @@ TypeDecl
             expr: (null)
 TypeDecl
   name --> counter
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName

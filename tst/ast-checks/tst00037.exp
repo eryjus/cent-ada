@@ -1,6 +1,6 @@
 TypeDecl
   name --> suit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> clubs
@@ -9,7 +9,7 @@ TypeDecl
       [3] --> spades
 TypeDecl
   name --> major
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> suit

@@ -1,10 +1,10 @@
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===

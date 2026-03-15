@@ -343,6 +343,11 @@ static int Compile(std::string filename, ParseType_t type)
         {
             int loc = TokenStream::Get().Location();
             StmtListPtr stmts;
+            node = parser->ParseBasicDeclaration();
+            while (node) {
+                if (node) pgm->push_back(std::move(node));
+                node = parser->ParseBasicDeclaration();
+            }
             stmts = parser->ParseSequenceOfStatements();
 
             if (diags.Errors()) {
@@ -354,6 +359,9 @@ static int Compile(std::string filename, ParseType_t type)
             ASTPrinter prt;
             for (auto &decl : *pgm.get()) {
                 decl->Accept(prt);
+            }
+            for (auto &stmt : *stmts.get()) {
+                stmt->Accept(prt);
             }
 
             std::cout << "\n\n";

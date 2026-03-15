@@ -1,6 +1,6 @@
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 
 

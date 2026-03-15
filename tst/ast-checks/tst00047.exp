@@ -1,6 +1,6 @@
 TypeDecl
   name --> mass
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr

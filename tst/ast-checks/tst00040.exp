@@ -1,6 +1,6 @@
 TypeDecl
   name --> page_num
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)

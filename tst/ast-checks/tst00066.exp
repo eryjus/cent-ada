@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 8
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true

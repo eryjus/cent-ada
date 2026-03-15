@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 132
 TypeDecl
   name --> line
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> false

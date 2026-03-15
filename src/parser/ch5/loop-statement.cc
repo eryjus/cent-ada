@@ -27,8 +27,9 @@
 //    ----------------------
 LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
 {
-    Production p(*this, "assignment_statement");
+    Production p(*this, "loop_statement");
     MarkStream m(tokens, diags);
+    MarkScope s(scopes);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     SimpleNamePtr loopName = nullptr;
@@ -37,25 +38,44 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     StmtListPtr stmts = nullptr;
     LoopType kind = LoopType::LoopNone;
     Scope *scope = nullptr;
+    std::vector<Symbol *> *vec = nullptr;
 
 
 
-    loopName = ParseSimpleName();
-    if (loopName) {
-        loc = TokenStream::Get().SourceLocation();
+    Id id;
+    loc = tokens.SourceLocation();
+    if (RequireIdent(id)) {
+        diags.Warning(loc, DiagID::LabelUsageWarning, { } );
+        loopName = std::make_unique<SimpleName>(astLoc, id);
 
+        loc = tokens.SourceLocation();
         if (!Require(TokenType::TOK_COLON)) {
             diags.Error(loc, DiagID::MissingColon, { "loop name" } );
         }
     }
 
 
+    if (loopName) {
+        if (scopes.IsLocalDefined(loopName->GetName())) {
+            vec = scopes.CurrentScope()->LocalLookup(loopName->GetName());
+
+            if (vec->at(0)->kind != Symbol::SymbolKind::UndefinedLabel && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
+                diags.Error(loc, DiagID::DuplicateName, { "Statement Label" } );
+                diags.Error(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
+            } else if (vec->at(0)->kind == Symbol::SymbolKind::UndefinedLabel) {
+                vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+            }
+        }
+
+        scopes.Declare(std::make_unique<LabelSymbol>(std::string(loopName->GetName()), astLoc, scopes.CurrentScope()));
+    }
+
+
     spec = ParseIterationScheme(kind);
 
     if (!Require(TokenType::TOK_LOOP)) {
-        if (kind == LoopType::LoopNone) return nullptr;
-
-        diags.Error(loc, DiagID::MissingColon, { kind == LoopType::LoopFor ? "for" : "while" } );
+        p.At("Missing Loop");
+        return nullptr;
     }
 
 
@@ -70,7 +90,7 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     stmts = ParseSequenceOfStatements();
 
     if (!Require(TokenType::TOK_END)) {
-        diags.Error(loc, DiagID::MissingEnd, { "loop statement" } );
+        diags.Error(loc, DiagID::MissingEnd, { "loop body" } );
     }
 
     if (!Require(TokenType::TOK_LOOP)) {
@@ -80,7 +100,7 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     endName = ParseSimpleName();
 
     if (!Require(TokenType::TOK_SEMICOLON)) {
-        diags.Error(loc, DiagID::MissingSemicolon, { "loop statement" } );
+        diags.Error(loc, DiagID::MissingSemicolon, { "loop prologue" } );
     }
 
     if (loopName || endName) {
@@ -106,8 +126,9 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     }
 
 
-
+    p.At("Complete loop");
     m.Commit();
+    s.Commit();
     return std::make_unique<LoopStmt>(astLoc, std::move(labels), std::move(loopName), kind, std::move(spec), std::move(stmts));
 }
 

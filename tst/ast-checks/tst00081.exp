@@ -1,6 +1,6 @@
 TypeDecl
   name --> positive
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer

@@ -174,6 +174,9 @@ class BlockStmt;
 class ExitStmt;
 class ReturnStmt;
 class GotoStmt;
+class LabelSymbol;
+class LoopSymbol;
+class BlockSymbol;
 
 
 

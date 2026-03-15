@@ -61,7 +61,7 @@ ExprPtr Parser::ParseLoopParameterSpecification(LoopType &kind)
     kind = (rev ? LoopType::LoopReverseFor : LoopType::LoopFor);
 
 
-
+    m.Commit();
     return std::make_unique<BinaryExpr>(astLoc, BinaryOper::In, std::move(lhs), std::move(rhs));
 }
 

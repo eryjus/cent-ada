@@ -1,6 +1,6 @@
 TypeDecl
   name --> volt
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: RealLiteralExpr
@@ -13,7 +13,7 @@ TypeDecl
           value --> 255.0
 TypeDecl
   name --> rough_voltage
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> volt

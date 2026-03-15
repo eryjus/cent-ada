@@ -1,6 +1,6 @@
 TypeDecl
   name --> level
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> low

@@ -1,0 +1,65 @@
+ObjectDeclaration
+  names ===
+    [0] --> x
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: IntLiteralExpr
+    value --> 25
+LoopStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> test_loop
+  kind --> While
+  expr: BinaryExpr
+    op --> > (greater)
+    lhs: NameExpr
+      name: SimpleName
+        id --> x
+    rhs: IntLiteralExpr
+      value --> 0
+  stmts ===
+    [0]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> x
+      expr: BinaryExpr
+        op --> - (minus)
+        lhs: NameExpr
+          name: SimpleName
+            id --> x
+        rhs: IntLiteralExpr
+          value --> 1
+
+
+Listing for tst/statements/tst00013.ada:
+==========================================
+     1   X : INTEGER := 25;
+     2
+     3   test_loop:
+     4      while x > 0 loop
+     5         X := X - 1;
+     6      end loop test_loop;
+     7
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: x : Object
+Label Symbol: test_loop : Label
+-------------------
+
+Scope Name: test_loop
+Scope ID  : 2
+-------------------
+Loop Name: test_loop : LoopName
+-------------------

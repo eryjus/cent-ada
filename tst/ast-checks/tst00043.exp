@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 132
 TypeDecl
   name --> line_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -20,7 +20,7 @@ TypeDecl
             id --> max_line_size
 TypeDecl
   name --> column_ptr
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> line_size

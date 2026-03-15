@@ -1,6 +1,6 @@
 TypeDecl
   name --> color
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> white

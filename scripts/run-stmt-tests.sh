@@ -41,7 +41,7 @@ for test in "${TESTS[@]}"; do
     fi
 
     if ! "$COMPILER" stmts "$test" 2> /dev/null > "$actual" ; then
-        printf "[  FAILED  ] %s\n" "$name"
+        printf "[  FAILED  ] %s compile\n" "$name"
         failures=$((failures + 1))
         rm -f "$actual"
         continue
@@ -59,7 +59,6 @@ for test in "${TESTS[@]}"; do
     cat "$expected" >> "$target"
     echo >> "$target"
     echo >> "$target"
-    #scripts/listing "$test" >> "$target"
 
     sed -i 's/[[:space:]]*$//' "$target"
     sed -i ':a;/^[ \n]*$/{$d;N;ba}' "$target"

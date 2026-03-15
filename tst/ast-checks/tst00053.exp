@@ -7,7 +7,7 @@ ObjectDeclaration
     value --> 0.1
 TypeDecl
   name --> fraction
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: NameExpr

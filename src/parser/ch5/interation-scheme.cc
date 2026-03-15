@@ -50,6 +50,7 @@ ExprPtr Parser::ParseIterationScheme(LoopType &kind)
     }
 
 
+    kind = LoopType::LoopNone;
     return nullptr;
 }
 

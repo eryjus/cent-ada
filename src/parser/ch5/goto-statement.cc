@@ -33,17 +33,23 @@ GotoStmtPtr Parser::ParseGotoStatement(NameListPtr &labels)
 
     if (!Require(TokenType::TOK_GOTO)) return nullptr;
 
-    name = ParseNameNonExpr();
+// TODO: Make this right again    name = ParseNameNonExpr();
+    Id id;
+    if (!RequireIdent(id)){
+        return nullptr;
+    }
+
+    loc = tokens.SourceLocation();
+    name = std::make_unique<SimpleName>(loc, id);
 
     if (name) {
         const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
 
-        if (!(vec->at(0) && vec->at(0)->kind == Symbol::SymbolKind::LoopName)) {
-            diags.Error(loc, DiagID::InvalidName, { "goto statement" } );
+        if (!(vec && vec->at(0) && vec->at(0)->kind == Symbol::SymbolKind::Label)) {
+            scopes.Declare(std::make_unique<LabelSymbol>(std::string(name->GetName()), astLoc, scopes.CurrentScope()));
         }
-    } else {
-        diags.Error(loc, DiagID::MissingName, { "goto statement" } );
     }
+
 
     m.Commit();
 

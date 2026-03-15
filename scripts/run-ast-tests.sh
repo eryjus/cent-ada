@@ -59,7 +59,6 @@ for test in "${TESTS[@]}"; do
     cat "$expected" >> "$target"
     echo >> "$target"
     echo >> "$target"
-    #scripts/listing "$test" >> "$target"
 
     sed -i 's/[[:space:]]*$//' "$target"
     sed -i ':a;/^[ \n]*$/{$d;N;ba}' "$target"

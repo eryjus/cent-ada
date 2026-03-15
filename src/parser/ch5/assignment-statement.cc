@@ -34,9 +34,16 @@ AssignStmtPtr Parser::ParseAssignmentStatement(NameListPtr &labels)
 
 
     name = ParseNameNonExpr();
-    if (!name) return nullptr;
+    if (!name) {
+        p.At("Assignment Target name");
+        return nullptr;
+    }
 
-    if (!Require(TokenType::TOK_ASSIGNMENT)) return nullptr;
+
+    if (!Require(TokenType::TOK_ASSIGNMENT)) {
+        p.At(":= symbol");
+        return nullptr;
+    }
 
     loc = TokenStream::Get().SourceLocation();
     expr = ParseExpression();

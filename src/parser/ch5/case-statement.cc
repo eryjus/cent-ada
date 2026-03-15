@@ -27,7 +27,7 @@
 //    ----------------------
 CaseStmtPtr Parser::ParseCaseStatement(NameListPtr &labels)
 {
-    Production p(*this, "assignment_statement");
+    Production p(*this, "case_statement");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;

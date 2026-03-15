@@ -1,6 +1,6 @@
 TypeDecl
   name --> coefficient
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr
@@ -15,7 +15,7 @@ TypeDecl
           value --> 1.0
 TypeDecl
   name --> short_coeff
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> coefficient

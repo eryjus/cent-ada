@@ -30,7 +30,7 @@
 //    ---------------------
 IfStmtPtr Parser::ParseIfStatement(NameListPtr &labels)
 {
-    Production p(*this, "assignment_statement");
+    Production p(*this, "if_statement");
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
@@ -39,6 +39,7 @@ IfStmtPtr Parser::ParseIfStatement(NameListPtr &labels)
     IfStmtPtr rv = nullptr;
 
 
+    p.At("No IF");
     if (!Require(TokenType::TOK_IF)) return nullptr;
 
     loc = TokenStream::Get().SourceLocation();
@@ -115,6 +116,7 @@ IfStmtPtr Parser::ParseIfStatement(NameListPtr &labels)
     }
 
 
+    p.At("Complete If");
     m.Commit();
     return rv;
 }

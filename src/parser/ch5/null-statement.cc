@@ -29,7 +29,7 @@ NullStmtPtr Parser::ParseNullStatement(NameListPtr &labels)
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
 
-
+    p.At("NULL token");
     if (!Require(TokenType::TOK_NULL)) return nullptr;
 
     loc = TokenStream::Get().SourceLocation();
@@ -37,6 +37,7 @@ NullStmtPtr Parser::ParseNullStatement(NameListPtr &labels)
         diags.Error(loc, DiagID::MissingSemicolon, { "NULL statement" } );
     }
 
+    p.At("complete NULL statement");
     m.Commit();
     return std::make_unique<NullStmt>(astLoc, std::move(labels));
 }

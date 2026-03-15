@@ -1,6 +1,6 @@
 TypeDecl
   name --> gender
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> m
@@ -17,7 +17,7 @@ TypeDecl
   definition: (null)
 TypeDecl
   name --> person_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName

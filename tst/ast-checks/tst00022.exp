@@ -1,6 +1,6 @@
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -17,7 +17,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> square
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> matrix

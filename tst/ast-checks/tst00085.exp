@@ -1,6 +1,6 @@
 TypeDecl
   name --> device
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> printer
