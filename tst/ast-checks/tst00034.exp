@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> hexa
   discriminantPart === (null/empty)
@@ -35,3 +37,6 @@ Enumeration Literal: 'D' : EnumLiteral of type hexa; value (3)
 Enumeration Literal: 'E' : EnumLiteral of type hexa; value (4)
 Enumeration Literal: 'F' : EnumLiteral of type hexa; value (5)
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> coefficient
   discriminantPart === (null/empty)
@@ -32,3 +34,6 @@ Scope ID  : 1
 -------------------
 Real Type: coefficient : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

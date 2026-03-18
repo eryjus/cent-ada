@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> day
   discriminantPart === (null/empty)
@@ -53,3 +55,6 @@ Enumeration Literal: sat : EnumLiteral of type day; value (5)
 Enumeration Literal: sun : EnumLiteral of type day; value (6)
 Subtype: weekday : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> gender
   discriminantPart === (null/empty)
@@ -57,3 +59,6 @@ Incomplete Type: person : Incomplete
 Discriminant Symbol: sex : Discriminant
 Subtype: male : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> bit_vector
   discriminantPart === (null/empty)
@@ -31,3 +33,6 @@ Scope ID  : 1
 -------------------
 Array Type: bit_vector : Array
 -------------------
+
+   Errors  : 0
+   Warnings: 0

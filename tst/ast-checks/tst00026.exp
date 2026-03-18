@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> positive
   discriminantPart === (null/empty)
@@ -45,3 +47,6 @@ Scope ID  : 1
 Subtype: positive : Subtype
 Derived Type: counter : Derived
 -------------------
+
+   Errors  : 0
+   Warnings: 0

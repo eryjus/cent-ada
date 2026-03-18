@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> date
   discriminantPart === (null/empty)
@@ -68,3 +70,6 @@ Component Symbol: year : Component
 Component Symbol: mon : Component
 Component Symbol: day : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

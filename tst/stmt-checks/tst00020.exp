@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 GotoStmt
   labels ===
     [0]: SimpleName
@@ -23,3 +25,6 @@ Scope ID  : 1
 -------------------
 Label Symbol: inf_loop : Label
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> a
@@ -47,3 +49,6 @@ Scope ID  : 1
 Object Symbol: a : Object
 Object Symbol: b : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

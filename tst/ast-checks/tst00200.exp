@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> bit_vector
   discriminantPart === (null/empty)
@@ -1960,3 +1962,6 @@ Component Symbol: vehicle : Component
 Component Symbol: wife : Component
 Component Symbol: husband : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

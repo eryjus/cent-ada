@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> pi
@@ -38,3 +40,6 @@ Scope ID  : 1
 Object Symbol: pi : Object
 Object Symbol: two_pi : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

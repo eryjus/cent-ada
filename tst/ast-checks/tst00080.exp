@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> matrix
   discriminantPart === (null/empty)
@@ -140,3 +142,6 @@ Scope ID  : 3
 Component Symbol: left : Component
 Component Symbol: right : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

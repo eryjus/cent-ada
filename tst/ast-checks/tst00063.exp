@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> max_line_size
@@ -63,3 +65,6 @@ Object Symbol: max_line_size : Object
 Array Type: line : Array
 Object Symbol: page : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

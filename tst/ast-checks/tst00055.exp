@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> matrix
   discriminantPart === (null/empty)
@@ -34,3 +36,6 @@ Scope ID  : 1
 -------------------
 Array Type: matrix : Array
 -------------------
+
+   Errors  : 0
+   Warnings: 0

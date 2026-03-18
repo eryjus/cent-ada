@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> month_name
   discriminantPart === (null/empty)
@@ -661,3 +663,6 @@ Object Symbol: month : Object
 Object Symbol: day : Object
 Object Symbol: year : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

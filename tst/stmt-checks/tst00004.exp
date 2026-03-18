@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 NullStatement
   labels ===
     [0]: SimpleName
@@ -39,3 +41,6 @@ Label Symbol: aqui : Label
 Label Symbol: there : Label
 Label Symbol: everywhere : Label
 -------------------
+
+   Errors  : 0
+   Warnings: 0

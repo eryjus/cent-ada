@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 GotoStmt
   labels === (null/empty)
   name: SimpleName
@@ -25,3 +27,6 @@ Scope ID  : 1
 -------------------
 Label Symbol: fwd_loop : Label
 -------------------
+
+   Errors  : 0
+   Warnings: 0

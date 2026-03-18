@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 NullStatement
   labels ===
     [0]: SimpleName
@@ -22,3 +24,6 @@ Scope ID  : 1
 -------------------
 Label Symbol: here : Label
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> key_manager
   discriminantPart === (null/empty)
@@ -26,3 +28,6 @@ Scope ID  : 1
 -------------------
 Subtype: key_manager : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

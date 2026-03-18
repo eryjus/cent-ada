@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> x
@@ -68,3 +70,6 @@ Scope ID  : 2
 -------------------
 Loop Name: main : LoopName
 -------------------
+
+   Errors  : 0
+   Warnings: 0

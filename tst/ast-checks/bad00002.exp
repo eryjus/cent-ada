@@ -1,0 +1,6 @@
+tst/declarations/bad00002.ada:1:4: error: FATAL: Internal Error consuming tokens; nothing consumed
+    tyoe LINE_SIZE is range 1 .. MAX_LINE_SIZE;
+
+       ^
+   Errors  : 1
+   Warnings: 0

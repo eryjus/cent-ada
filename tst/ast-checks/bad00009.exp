@@ -1,0 +1,6 @@
+error: expected ';' after type definition
+  in production `full_type_definition`
+  in production `type_declaration`
+  in production `basic_declaration`
+   Errors  : 1
+   Warnings: 0

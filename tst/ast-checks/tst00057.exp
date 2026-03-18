@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> positive
   discriminantPart === (null/empty)
@@ -72,3 +74,6 @@ Enumeration Literal: 'D' : EnumLiteral of type roman_digit; value (5)
 Enumeration Literal: 'M' : EnumLiteral of type roman_digit; value (6)
 Array Type: roman : Array
 -------------------
+
+   Errors  : 0
+   Warnings: 0

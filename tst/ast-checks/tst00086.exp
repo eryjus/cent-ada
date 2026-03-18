@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> state
   discriminantPart === (null/empty)
@@ -27,3 +29,6 @@ Enumeration Type: state : Enumeration
 Enumeration Literal: open : EnumLiteral of type state; value (0)
 Enumeration Literal: closed : EnumLiteral of type state; value (1)
 -------------------
+
+   Errors  : 0
+   Warnings: 0

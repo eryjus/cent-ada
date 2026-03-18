@@ -398,8 +398,8 @@ exit:
 
 
 exit2:
-    std::cerr << "   Errors  : " << diags.Errors() << '\n';
-    std::cerr << "   Warnings: " << diags.Warnings() << '\n';
+    std::cout << "   Errors  : " << diags.Errors() << '\n';
+    std::cout << "   Warnings: " << diags.Warnings() << '\n';
 
     if (diags.Errors() > 0) rv = EXIT_FAILURE;
 

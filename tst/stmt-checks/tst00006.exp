@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> color
   discriminantPart === (null/empty)
@@ -60,3 +62,6 @@ Enumeration Literal: brown : EnumLiteral of type color; value (7)
 Enumeration Literal: black : EnumLiteral of type color; value (8)
 Object Symbol: sky : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> page_size
@@ -204,3 +206,6 @@ Component Symbol: line_count : Component
 Component Symbol: cylinder : Component
 Component Symbol: track : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

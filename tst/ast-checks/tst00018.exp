@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> color
   discriminantPart === (null/empty)
@@ -64,3 +66,6 @@ Enumeration Literal: black : EnumLiteral of type color; value (6)
 Subtype: rainbow : Subtype
 Subtype: red_blue : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

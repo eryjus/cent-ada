@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 BlockStmt
   labels === (null/empty)
   name: SimpleName
@@ -91,3 +93,6 @@ Scope ID  : 2
 -------------------
 Block Name: swap : BlockName
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> i
@@ -72,3 +74,6 @@ Object Symbol: i : Object
 Object Symbol: j : Object
 Object Symbol: k : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

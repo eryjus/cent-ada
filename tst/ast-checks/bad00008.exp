@@ -1,0 +1,6 @@
+tst/declarations/bad00008.ada:5:6: error: FATAL: Internal Error consuming tokens; nothing consumed
+    OPTION : array(A .. B)
+
+         ^
+   Errors  : 1
+   Warnings: 0

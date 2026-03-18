@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> probability
   discriminantPart === (null/empty)
@@ -29,3 +31,6 @@ Scope ID  : 1
 -------------------
 Subtype: probability : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> coordinate
   discriminantPart === (null/empty)
@@ -36,3 +38,6 @@ Scope ID  : 1
 Derived Type: coordinate : Derived
 Derived Type: local_coordinate : Derived
 -------------------
+
+   Errors  : 0
+   Warnings: 0

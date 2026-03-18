@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 NullStatement
   labels === (null/empty)
 
@@ -18,3 +20,6 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 -------------------
+
+   Errors  : 0
+   Warnings: 0

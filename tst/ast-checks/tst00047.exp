@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> mass
   discriminantPart === (null/empty)
@@ -30,3 +32,6 @@ Scope ID  : 1
 -------------------
 Real Type: mass : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

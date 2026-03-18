@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> positive
   discriminantPart === (null/empty)
@@ -84,3 +86,6 @@ Enumeration Literal: 'M' : EnumLiteral of type roman_digit; value (6)
 Array Type: roman : Array
 Object Symbol: ninety_six : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

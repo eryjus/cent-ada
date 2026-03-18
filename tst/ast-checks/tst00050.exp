@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> volt
   discriminantPart === (null/empty)
@@ -30,3 +32,6 @@ Scope ID  : 1
 -------------------
 Real Type: volt : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

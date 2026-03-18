@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> max_line_size
@@ -39,3 +41,6 @@ Scope ID  : 1
 Object Symbol: max_line_size : Object
 Integer Type: line_size : Integer
 -------------------
+
+   Errors  : 0
+   Warnings: 0

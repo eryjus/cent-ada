@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> count
@@ -29,3 +31,6 @@ Scope ID  : 1
 Object Symbol: count : Object
 Object Symbol: sum : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

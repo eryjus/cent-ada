@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> int
   discriminantPart === (null/empty)
@@ -24,3 +26,6 @@ Scope ID  : 1
 -------------------
 Subtype: int : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0
