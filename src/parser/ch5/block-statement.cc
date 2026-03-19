@@ -44,7 +44,6 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     Id id;
     loc = tokens.SourceLocation();
     if (RequireIdent(id)) {
-        diags.Warning(loc, DiagID::LabelUsageWarning, { } );
         blockName = std::make_unique<SimpleName>(astLoc, id);
 
         loc = tokens.SourceLocation();

@@ -63,8 +63,6 @@ enum class DiagID {
 
     ExpectedStatement,
     NameMismatch,
-
-    LabelUsageWarning,
 };
 
 

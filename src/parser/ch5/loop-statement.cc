@@ -45,7 +45,6 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     Id id;
     loc = tokens.SourceLocation();
     if (RequireIdent(id)) {
-        diags.Warning(loc, DiagID::LabelUsageWarning, { } );
         loopName = std::make_unique<SimpleName>(astLoc, id);
 
         loc = tokens.SourceLocation();

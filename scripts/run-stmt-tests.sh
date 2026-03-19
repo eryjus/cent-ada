@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 
+##
+## -- Check the results of a test against expectations
+##    ------------------------------------------------
 function check_results() {
     cleaned=$(mktemp)
     cat "$actual" | ansifilter > "$cleaned"
@@ -24,6 +27,9 @@ function check_results() {
 }
 
 
+##
+## -- Try an expected successful test
+##    -------------------------------
 function try_success() {
     ##
     ## -- Perform the compile, capturing the $actual output
@@ -37,6 +43,10 @@ function try_success() {
 }
 
 
+
+##
+## -- Try an expected failure and confirm is fails properly
+##    -----------------------------------------------------
 function try_failure() {
     ##
     ## -- Perform the compile, capturing the $actual output

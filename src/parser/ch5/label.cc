@@ -41,7 +41,6 @@ NamePtr Parser::ParseLabel(void)
     Id id;
     loc = tokens.SourceLocation();
     if (RequireIdent(id)) {
-        diags.Warning(loc, DiagID::LabelUsageWarning, { } );
         label = std::make_unique<SimpleName>(astLoc, id);
     }
 
