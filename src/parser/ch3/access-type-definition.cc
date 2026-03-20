@@ -45,6 +45,17 @@ AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
 
 
     //
+    // -- Check for the optional Subtype Indication
+    //    -----------------------------------------
+    type = ParseSubtypeIndication();
+    if (!type) {
+        p.At("Subtype Indication");
+        return nullptr;
+    }
+
+
+
+    //
     // -- Manage the symbol table
     //    -----------------------
     if (scopes.IsLocalDefined(id.name)) {
@@ -59,17 +70,6 @@ AccessTypeSpecPtr Parser::ParseAccessTypeDefinition(Id &id)
     }
 
     scopes.Declare(std::make_unique<AccessTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
-
-
-
-    //
-    // -- Check for the optional Subtype Indication
-    //    -----------------------------------------
-    type = ParseSubtypeIndication();
-    if (!type) {
-        p.At("Subtype Indication");
-        return nullptr;
-    }
 
 
 

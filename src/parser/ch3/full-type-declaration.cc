@@ -45,16 +45,17 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     SourceLoc_t loc = TokenStream::Get().SourceLocation();
     if (!RequireIdent(id)) return nullptr;
 
-
+#if 0
     if (scopes.IsLocalDefined(id.name)) {
         std::vector<Symbol *> *vec = scopes.CurrentScope()->LocalLookup(id.name);
 
 
         if (vec->at(0)->kind != Symbol::SymbolKind::IncompleteType && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
             diags.Error(loc, DiagID::DuplicateName, { "Type Definition" } );
-            diags.Error(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
+            diags.Note(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
         }
     }
+#endif
 
 
     //

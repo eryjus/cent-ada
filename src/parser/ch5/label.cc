@@ -52,7 +52,7 @@ NamePtr Parser::ParseLabel(void)
 
         if (vec->at(0)->kind != Symbol::SymbolKind::UndefinedLabel && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
             diags.Error(loc, DiagID::DuplicateName, { "Statement Label" } );
-            diags.Error(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
+            diags.Note(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
         } else if (vec->at(0)->kind == Symbol::SymbolKind::UndefinedLabel) {
             vec->at(0)->kind = Symbol::SymbolKind::Deleted;
         }

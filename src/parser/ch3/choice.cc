@@ -31,7 +31,6 @@
 ChoicePtr Parser::ParseChoice(void)
 {
     Production p(*this, "choice");
-    MarkStream m(tokens, diags);
     Id id;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     DiscreteRangePtr range = nullptr;
@@ -39,56 +38,93 @@ ChoicePtr Parser::ParseChoice(void)
     ExprPtr expr = nullptr;
 
 
+
     //
-    // -- The orders of these have been changed to allow more complicated alternatives
-    //    happen before the simpler ones which may consume fewer tokens -- other than
-    //    the trivial deterministic options, where were placed first.
-    //    ----------------------------------------------------------------------------
-    if (Optional(TokenType::TOK_OTHERS)) {
-        p.At("TOK_OTHERS");
-        m.Commit();
-        return std::make_unique<OthersChoice>(astLoc);
+    // -- Try the trivial OTHERS token first
+    //    ----------------------------------
+    {
+        MarkStream m(tokens, diags);
+
+        if (Optional(TokenType::TOK_OTHERS)) {
+            p.At("TOK_OTHERS");
+            m.Commit();
+            return std::make_unique<OthersChoice>(astLoc);
+        }
     }
 
 
-    range = ParseDiscreteRange();
-    if (range) {
-        p.At("Range");
-        m.Commit();
-        return std::make_unique<RangeChoice>(astLoc, std::move(range));
+
+    //
+    // -- Try a discrete range
+    //    --------------------
+    {
+        MarkStream m(tokens, diags);
+
+        range = ParseDiscreteRange();
+        if (range) {
+            p.At("Range");
+            m.Commit();
+            return std::make_unique<RangeChoice>(astLoc, std::move(range));
+        }
     }
 
 
-    name = ParseSimpleName();
-    if (name) {
-        //
-        // -- This is required to be a component simple name
-        //    ----------------------------------------------
-        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-        if (vec != nullptr) {
-            for (auto &sym : *vec) {
-                if (sym->kind == Symbol::SymbolKind::Component) {
-                    p.At("Component Simple Name");
-                    m.Commit();
-                    return std::make_unique<NameChoice>(astLoc, std::move(name));
+
+    //
+    // -- Try a component simple name
+    //    ---------------------------
+    {
+        MarkStream m(tokens, diags);
+
+        name = ParseSimpleName();
+        if (name) {
+            //
+            // -- This is required to be a component simple name
+            //    ----------------------------------------------
+            const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
+            if (vec != nullptr) {
+                for (auto &sym : *vec) {
+                    if (sym->kind == Symbol::SymbolKind::Component) {
+                        p.At("Component Simple Name");
+                        m.Commit();
+                        return std::make_unique<NameChoice>(astLoc, std::move(name));
+                    }
                 }
             }
+
+            m.Reset();
         }
-
-        m.Reset();
     }
 
-    expr = ParseSimpleExpression();
-    if (expr) {
-        p.At("Expression");
+
+
+    //
+    // -- Try a simple expression
+    //    -----------------------
+    {
+        MarkStream m(tokens, diags);
+
+        expr = ParseSimpleExpression();
+        if (expr) {
+            p.At("Expression");
+            m.Commit();
+            return std::make_unique<ExprChoice>(astLoc, std::move(expr));
+        }
+    }
+
+
+
+    //
+    // -- prodection failes, so issue a failure
+    //    -------------------------------------
+    {
+        MarkStream m(tokens, diags);
+
+        diags.Error(TokenStream::Get().SourceLocation(), DiagID::InvalidChoiceInVariant);
         m.Commit();
-        return std::make_unique<ExprChoice>(astLoc, std::move(expr));
+
+        return nullptr;
     }
-
-
-    diags.Error(TokenStream::Get().SourceLocation(), DiagID::InvalidChoiceInVariant);
-
-    return nullptr;
 }
 
 

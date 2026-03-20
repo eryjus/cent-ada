@@ -33,6 +33,20 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
 
 
     //
+    // -- Check on the Floating Point Accuracy Definition
+    //    -----------------------------------------------
+    size = ParseFloatingAccuracyDefinition();
+    if (!size) return nullptr;
+
+
+    //
+    // -- and then check on the optional Range Constraint
+    //    -----------------------------------------------
+    RangeConstraintPtr range = ParseRangeConstraint();
+
+
+
+    //
     // -- Manage the symbol table
     //    -----------------------
     if (!id.name.empty()) {
@@ -49,20 +63,6 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
 
         scopes.Declare(std::make_unique<RealTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
-
-
-
-    //
-    // -- Check on the Floating Point Accuracy Definition
-    //    -----------------------------------------------
-    size = ParseFloatingAccuracyDefinition();
-    if (!size) return nullptr;
-
-
-    //
-    // -- and then check on the optional Range Constraint
-    //    -----------------------------------------------
-    RangeConstraintPtr range = ParseRangeConstraint();
 
 
 

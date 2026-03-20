@@ -1,0 +1,11 @@
+tst/declarations/bad00012.ada:6:11: error: duplicate name 'intptr' in the same scope
+    type INTPTR is access INTEGER;
+
+              ^
+  in production `access_type_definition`
+  in production `type_definition`
+  in production `full_type_definition`
+  in production `type_declaration`
+  in production `basic_declaration`
+   Errors  : 1
+   Warnings: 0
