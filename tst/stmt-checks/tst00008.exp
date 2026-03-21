@@ -1,0 +1,167 @@
+PRINTING THE AST STRUCTURE
+==========================
+TypeDecl
+  name --> month_name
+  discriminantPart === (null/empty)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> january
+      [1] --> february
+      [2] --> march
+      [3] --> april
+      [4] --> may
+      [5] --> june
+      [6] --> july
+      [7] --> august
+      [8] --> september
+      [9] --> october
+      [10] --> november
+      [11] --> december
+ObjectDeclaration
+  names ===
+    [0] --> month
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> month_name
+    constraint: (null)
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> day
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 31
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> year
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: (null)
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> month
+  expr: NameExpr
+    name: SimpleName
+      id --> december
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> day
+  expr: IntLiteralExpr
+    value --> 31
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> year
+  expr: IntLiteralExpr
+    value --> 2026
+IfStmt
+  labels === (null/empty)
+  cond: BinaryExpr
+    op --> AND
+    lhs: BinaryExpr
+      op --> = (equal)
+      lhs: NameExpr
+        name: SimpleName
+          id --> month
+      rhs: NameExpr
+        name: SimpleName
+          id --> december
+    rhs: BinaryExpr
+      op --> = (equal)
+      lhs: NameExpr
+        name: SimpleName
+          id --> day
+      rhs: IntLiteralExpr
+        value --> 31
+  stmts ===
+    [0]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> month
+      expr: NameExpr
+        name: SimpleName
+          id --> january
+    [1]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> day
+      expr: IntLiteralExpr
+        value --> 1
+    [2]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> year
+      expr: BinaryExpr
+        op --> + (plus)
+        lhs: NameExpr
+          name: SimpleName
+            id --> year
+        rhs: IntLiteralExpr
+          value --> 1
+  else: (null)
+
+
+Listing for tst/statements/tst00008.ada:
+==========================================
+     1   type MONTH_NAME is (JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY,
+     2           AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER);
+     3   MONTH : MONTH_NAME;
+     4   DAY : INTEGER range 1 .. 31;
+     5   YEAR : INTEGER;
+     6
+     7   MONTH := DECEMBER;
+     8   DAY := 31;
+     9   YEAR := 2026;
+    10
+    11   if MONTH = DECEMBER and DAY = 31 then
+    12       MONTH := JANUARY;
+    13       DAY := 1;
+    14       YEAR := YEAR + 1;
+    15   end if;
+    16
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: month_name : Enumeration
+   containing literals (january february march april may june july august september october november december )
+Enumeration Literal: january : EnumLiteral of type month_name; value (0)
+Enumeration Literal: february : EnumLiteral of type month_name; value (1)
+Enumeration Literal: march : EnumLiteral of type month_name; value (2)
+Enumeration Literal: april : EnumLiteral of type month_name; value (3)
+Enumeration Literal: may : EnumLiteral of type month_name; value (4)
+Enumeration Literal: june : EnumLiteral of type month_name; value (5)
+Enumeration Literal: july : EnumLiteral of type month_name; value (6)
+Enumeration Literal: august : EnumLiteral of type month_name; value (7)
+Enumeration Literal: september : EnumLiteral of type month_name; value (8)
+Enumeration Literal: october : EnumLiteral of type month_name; value (9)
+Enumeration Literal: november : EnumLiteral of type month_name; value (10)
+Enumeration Literal: december : EnumLiteral of type month_name; value (11)
+Object Symbol: month : Object
+Object Symbol: day : Object
+Object Symbol: year : Object
+-------------------
+
+   Errors  : 0
+   Warnings: 0

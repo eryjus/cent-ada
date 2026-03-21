@@ -1,10 +1,12 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -68,3 +70,6 @@ Component Symbol: year : Component
 Component Symbol: mon : Component
 Component Symbol: day : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

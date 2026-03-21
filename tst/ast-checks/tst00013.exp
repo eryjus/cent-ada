@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> one
@@ -28,3 +30,6 @@ Object Symbol: one : Object
 Object Symbol: un : Object
 Object Symbol: eins : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

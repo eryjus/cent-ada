@@ -291,8 +291,8 @@ public:
     IdListPtr ParseIdentifierList(void);
     IndexConstraintPtr ParseIndexConstraint(void);
     NamePtr ParseTypeMark(void);
-    NodePtr ParseDeclarativePart(void);
-    NodePtr ParseLaterDeclarativeItem(void);
+    DeclListPtr ParseDeclarativePart(void);
+    DeclPtr ParseLaterDeclarativeItem(void);
     ObjectDeclarationPtr ParseNumberDeclaration(void);
     NumericTypeSpecPtr ParseFixedPointConstraint(Id &id);
     NumericTypeSpecPtr ParseFloatingPointConstraint(Id &id);
@@ -349,7 +349,7 @@ public:
     NamePtr ParseNameExpr(void);
     NamePtr ParseNameNonExpr(void);
     NamePtr ParsePrefix(void);
-    NamePtr ParseSimpleName(void);
+    SimpleNamePtr ParseSimpleName(void);
     QualifiedExprPtr ParseQualifiedExpression(void);
     SelectedNamePtr ParseSelectedComponent(void);
     SelectedNamePtr ParseSelector(NamePtr &prefix);
@@ -357,16 +357,53 @@ public:
     UnaryOper ParseUnaryAddingOperator(void);
 
 
+
+    //
+    // -- Productions from Statements
+    //    ---------------------------
+    StmtListPtr ParseSequenceOfStatements(void);
+    StmtPtr ParseStatement(void);
+    StmtPtr ParseSimpleStatement(NameListPtr &labels);
+    StmtPtr ParseCompoundStatement(NameListPtr &labels);
+    NamePtr ParseLabel(void);
+    NullStmtPtr ParseNullStatement(NameListPtr &labels);
+    AssignStmtPtr ParseAssignmentStatement(NameListPtr &labels);
+    StmtPtr ParseProcedureCallStatement(NameListPtr &labels) { return nullptr; }
+    ExitStmtPtr ParseExitStatement(NameListPtr &labels);
+    ReturnStmtPtr ParseReturnStatement(NameListPtr &labels);
+    GotoStmtPtr ParseGotoStatement(NameListPtr &labels);
+    StmtPtr ParseEntryCallStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseDelayStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseAbortStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseRaiseStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseCodeStatement(NameListPtr &labels) { return nullptr; }
+    IfStmtPtr ParseIfStatement(NameListPtr &labels);
+    CaseStmtPtr ParseCaseStatement(NameListPtr &labels);
+    LoopStmtPtr ParseLoopStatement(NameListPtr &labels);
+    BlockStmtPtr ParseBlockStatement(NameListPtr &labels);
+    StmtPtr ParseAcceptStatement(NameListPtr &labels) { return nullptr; }
+    StmtPtr ParseSelectStatement(NameListPtr &labels) { return nullptr; }
+    ExprPtr ParseCondition(void) { return ParseExpression(); }
+    CaseStmtAltPtr ParseCaseStatementAlternative(void);
+    ExprPtr ParseIterationScheme(LoopType &kind);
+    ExprPtr ParseLoopParameterSpecification(LoopType &kind);
+
+
+
+
+
+
+
     NamePtr ParseFunctionCall(void) { return nullptr; }
     NamePtr ParseOperatorSymbol(void) { return nullptr; }
     TypeDeclPtr ParsePrivateTypeDeclaration(void) { return nullptr; }
-
+    NodePtr ParseExceptionHandler(void) { return nullptr; }
 
     AttributeNamePtr ParseRangeAttribute(void) { return std::move(ParseAttribute()); }
     SubtypeIndicationPtr ParseDiscreteSubtypeIndication(void);
     ExprPtr ParseStaticSimpleExpression(void) { return std::move(ParseSimpleExpression()); }
     ExprPtr ParseUniversalStaticExpression(void) { return std::move(ParseExpression()); }
-    NamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
+    SimpleNamePtr ParseDiscriminantSimpleName(void) { return std::move(ParseSimpleName()); }
     SubtypeIndicationPtr ParseComponentSubtypeIndication(void) { return std::move(ParseSubtypeIndication()); }
 
 

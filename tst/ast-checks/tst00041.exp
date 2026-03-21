@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> max_line_size
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 132
 TypeDecl
   name --> line_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -39,3 +41,6 @@ Scope ID  : 1
 Object Symbol: max_line_size : Object
 Integer Type: line_size : Integer
 -------------------
+
+   Errors  : 0
+   Warnings: 0

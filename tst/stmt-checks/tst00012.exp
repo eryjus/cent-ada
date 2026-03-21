@@ -1,0 +1,77 @@
+PRINTING THE AST STRUCTURE
+==========================
+ObjectDeclaration
+  names ===
+    [0] --> x
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: (null)
+LoopStmt
+  labels === (null/empty)
+  name: (null)
+  kind --> For
+  expr: BinaryExpr
+    op --> IN
+    lhs: NameExpr
+      name: SimpleName
+        id --> x
+    rhs: RangeExpr
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 10
+  stmts ===
+    [0]: IfStmt
+      labels === (null/empty)
+      cond: BinaryExpr
+        op --> = (equal)
+        lhs: NameExpr
+          name: SimpleName
+            id --> x
+        rhs: IntLiteralExpr
+          value --> 6
+      stmts ===
+        [0]: AssignStmt
+          labels === (null/empty)
+          name: SimpleName
+            id --> x
+          expr: BinaryExpr
+            op --> + (plus)
+            lhs: NameExpr
+              name: SimpleName
+                id --> x
+            rhs: IntLiteralExpr
+              value --> 2
+      else: (null)
+
+
+Listing for tst/statements/tst00012.ada:
+==========================================
+     1   X : INTEGER;
+     2
+     3   for X in 1 .. 10 loop
+     4      if X = 6 then
+     5         X := X + 2;
+     6      end if;
+     7   end loop;
+     8
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: x : Object
+-------------------
+
+   Errors  : 0
+   Warnings: 0

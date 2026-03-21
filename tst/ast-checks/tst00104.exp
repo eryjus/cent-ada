@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> color
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> white
@@ -12,7 +14,7 @@ TypeDecl
       [6] --> black
 TypeDecl
   name --> cmyk
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> cyan
@@ -53,3 +55,6 @@ Enumeration Literal: magenta : EnumLiteral of type cmyk; value (1)
 Enumeration Literal: yellow : EnumLiteral of type cmyk; value (2)
 Enumeration Literal: black : EnumLiteral of type cmyk; value (3)
 -------------------
+
+   Errors  : 0
+   Warnings: 0

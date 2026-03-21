@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> limit
@@ -27,3 +29,6 @@ Scope ID  : 1
 -------------------
 Object Symbol: limit : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

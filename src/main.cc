@@ -24,6 +24,8 @@ using ParseType_t = enum {
     COMPILE_FULL,
     COMPILE_TYPES,
     COMPILE_EXPRS,
+    COMPILE_AST,
+    COMPILE_STMTS,
 };
 
 
@@ -298,7 +300,7 @@ static int Compile(std::string filename, ParseType_t type)
         break;
 
 
-    case COMPILE_FULL:
+    case COMPILE_AST:
         {
             do {
                 int loc = TokenStream::Get().Location();
@@ -337,6 +339,41 @@ static int Compile(std::string filename, ParseType_t type)
         }
 
 
+    case COMPILE_STMTS:
+        {
+            int loc = TokenStream::Get().Location();
+            StmtListPtr stmts;
+            node = parser->ParseBasicDeclaration();
+            while (node) {
+                if (node) pgm->push_back(std::move(node));
+                node = parser->ParseBasicDeclaration();
+            }
+            stmts = parser->ParseSequenceOfStatements();
+
+            if (diags.Errors()) {
+                rv = EXIT_FAILURE;
+                goto exit;
+            }
+
+
+            ASTPrinter prt;
+            for (auto &decl : *pgm.get()) {
+                decl->Accept(prt);
+            }
+            for (auto &stmt : *stmts.get()) {
+                stmt->Accept(prt);
+            }
+
+            std::cout << "\n\n";
+
+            TokenStream::Get().Listing();
+            parser->Scopes()->Print();
+
+            rv = EXIT_SUCCESS;
+            goto exit2;
+        }
+
+
     default:
         break;
     }
@@ -360,9 +397,9 @@ exit:
     }
 
 
-
-    std::cerr << "   Errors  : " << diags.Errors() << '\n';
-    std::cerr << "   Warnings: " << diags.Warnings() << '\n';
+exit2:
+    std::cout << "   Errors  : " << diags.Errors() << '\n';
+    std::cout << "   Warnings: " << diags.Warnings() << '\n';
 
     if (diags.Errors() > 0) rv = EXIT_FAILURE;
 
@@ -389,6 +426,8 @@ static void Usage(std::string pgm)
     std::cout << "      invariants, invar\n";
     std::cout << "                      same as 'expressions' but also check AST invariants\n";
     std::cout << "      ast             parse the source and print the AST\n";
+    std::cout << "      statements, stmts\n";
+    std::cout << "                      parse the statements, dump the ast and the symbol table\n";
     std::cout << "\n";
     std::cout << "  options:\n";
     std::cout << "  -h, --help          print this screen and exit\n";
@@ -472,9 +511,18 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        if (arg == "statements" || arg == "stmts") {
+            action = ACT_COMPILE;
+            type = COMPILE_STMTS;
+            opts.prtAst = true;
+            opts.listing = true;
+            opts.dumpSymtab = true;
+            continue;
+        }
+
         if (arg == "ast") {
             action = ACT_COMPILE;
-            type = COMPILE_FULL;
+            type = COMPILE_AST;
             opts.prtAst = true;
             opts.listing = true;
             opts.dumpSymtab = true;

@@ -22,26 +22,32 @@
 //
 // -- Parse a Declarative Part
 //    ------------------------
-NodePtr Parser::ParseDeclarativePart(void)
+DeclListPtr Parser::ParseDeclarativePart(void)
 {
     Production p(*this, "declarative_part");
     MarkStream m(tokens, diags);
+    DeclPtr decl = nullptr;
+    DeclListPtr rv = std::make_unique<DeclList>();
 
 
 
     //
     // -- handle the basic declarative items
     //    ----------------------------------
-    while (ParseBasicDeclarativeItem()) {
-        // -- for now, nothing to be done here
+    decl = ParseBasicDeclarativeItem();
+    while (decl) {
+        rv->push_back(std::move(decl));
+        decl = ParseBasicDeclarativeItem();
     }
 
 
     //
     // -- handle the later declarative items
     //    ----------------------------------
+    decl = ParseLaterDeclarativeItem();
     while (ParseLaterDeclarativeItem()) {
-        // -- for now, nothing to be done here
+        rv->push_back(std::move(decl));
+        decl = ParseLaterDeclarativeItem();
     }
 
 
@@ -50,8 +56,8 @@ NodePtr Parser::ParseDeclarativePart(void)
     //    ------------------------------
     m.Commit();
 
-//    return std::move(std::make_unique<ASTNode>(TokenStream::Get().EmptyLocation()));
-    return nullptr;
+
+    return rv;
 }
 
 

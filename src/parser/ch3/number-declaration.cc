@@ -49,7 +49,7 @@ ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
 
             const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(idList->at(i).name));
             SourceLoc_t loc2 = vec->at(0)->loc;
-            diags.Error(loc, DiagID::DuplicateName2, { } );
+            diags.Note(loc, DiagID::DuplicateName2, { } );
         } else {
             scopes.Declare(std::make_unique<ObjectSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope()));
         }

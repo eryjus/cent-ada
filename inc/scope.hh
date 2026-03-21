@@ -31,6 +31,7 @@ public:
         Block,
         Enumeration,
         Record,
+        Loop,
     };
 
 

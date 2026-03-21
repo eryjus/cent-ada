@@ -44,6 +44,9 @@ public:
         Pragma,
         IncompleteType,
         Deleted,
+        UndefinedLabel,
+        LoopName,
+        BlockName,
     };
 
 
@@ -88,6 +91,9 @@ public:
             "Pragma",
             "IncompleteType",
             "Deleted",
+            "UndefinedLabel",
+            "LoopName",
+            "BlockName",
         };
 
         return s[(int)kind];
@@ -452,6 +458,69 @@ class ComponentSymbol : public Symbol {
 
 public:
     ComponentSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::Component, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- A Label Symbol
+//    ------------------
+class LabelSymbol : public Symbol {
+    LabelSymbol(void) = delete;
+    LabelSymbol(const ObjectSymbol &) = delete;
+    LabelSymbol &operator=(const LabelSymbol &) = delete;
+
+
+public:
+    LabelSymbol(std::string n, SourceLoc_t l, Scope *d, bool defn = true) : Symbol(n, (defn?SymbolKind::Label:SymbolKind::UndefinedLabel), l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- A Loop Symbol
+//    -------------
+class LoopSymbol : public Symbol {
+    LoopSymbol(void) = delete;
+    LoopSymbol(const ObjectSymbol &) = delete;
+    LoopSymbol &operator=(const LoopSymbol &) = delete;
+
+
+public:
+    LoopSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::LoopName, l, d) {}
+
+
+public:
+    virtual void Accept(SymbolVisitor &v) override {
+        v.Visit(*this);
+    }
+};
+
+
+
+//
+// -- A Block Symbol
+//    --------------
+class BlockSymbol : public Symbol {
+    BlockSymbol(void) = delete;
+    BlockSymbol(const ObjectSymbol &) = delete;
+    BlockSymbol &operator=(const BlockSymbol &) = delete;
+
+
+public:
+    BlockSymbol(std::string n, SourceLoc_t l, Scope *d) : Symbol(n, SymbolKind::BlockName, l, d) {}
 
 
 public:

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> complex
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -54,3 +56,6 @@ Scope ID  : 2
 Component Symbol: re : Component
 Component Symbol: im : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

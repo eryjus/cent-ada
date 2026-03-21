@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> del
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 0.1
 TypeDecl
   name --> fraction
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: NameExpr
@@ -47,3 +49,6 @@ Scope ID  : 1
 Object Symbol: del : Object
 Real Type: fraction : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

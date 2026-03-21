@@ -22,7 +22,7 @@
 //
 // -- Parse a Simple Name, an identifier with not additional decorations
 //    ------------------------------------------------------------------
-NamePtr Parser::ParseSimpleName(void)
+SimpleNamePtr Parser::ParseSimpleName(void)
 {
     Production p(*this, "simple_name");
     MarkStream m(tokens, diags);

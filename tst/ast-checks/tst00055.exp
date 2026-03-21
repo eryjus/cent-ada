@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -34,3 +36,6 @@ Scope ID  : 1
 -------------------
 Array Type: matrix : Array
 -------------------
+
+   Errors  : 0
+   Warnings: 0

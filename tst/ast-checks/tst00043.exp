@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> max_line_size
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 132
 TypeDecl
   name --> line_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -20,7 +22,7 @@ TypeDecl
             id --> max_line_size
 TypeDecl
   name --> column_ptr
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> line_size
@@ -53,3 +55,6 @@ Object Symbol: max_line_size : Object
 Integer Type: line_size : Integer
 Subtype: column_ptr : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

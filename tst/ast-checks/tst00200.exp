@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> bit_vector
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -64,7 +66,7 @@ ObjectDeclaration
     value --> 100
 TypeDecl
   name --> color
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> white
@@ -168,7 +170,7 @@ ObjectDeclaration
     value --> 1
 TypeDecl
   name --> column
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -180,7 +182,7 @@ TypeDecl
           value --> 72
 TypeDecl
   name --> table
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> false
@@ -196,7 +198,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -213,7 +215,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> rainbow
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> color
@@ -227,21 +229,21 @@ TypeDecl
             id --> purple
 TypeDecl
   name --> red_purple
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> rainbow
     constraint: (null)
 TypeDecl
   name --> int
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
     constraint: (null)
 TypeDecl
   name --> small_int
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -255,7 +257,7 @@ TypeDecl
           value --> 10
 TypeDecl
   name --> up_to_k
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> column
@@ -268,7 +270,7 @@ TypeDecl
             id --> k
 TypeDecl
   name --> square_sub
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> matrix
@@ -287,7 +289,7 @@ TypeDecl
             value --> 10
 TypeDecl
   name --> coordinate
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -310,7 +312,7 @@ TypeDecl
       variant part: (null)
 TypeDecl
   name --> local_coordinate
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -318,7 +320,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> day
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> mon
@@ -330,7 +332,7 @@ TypeDecl
       [6] --> sun
 TypeDecl
   name --> midweek
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -345,7 +347,7 @@ TypeDecl
               id --> thu
 TypeDecl
   name --> positive
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -353,7 +355,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> counter
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -361,7 +363,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> suit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> clubs
@@ -370,14 +372,14 @@ TypeDecl
       [3] --> spades
 TypeDecl
   name --> gender
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> m
       [1] --> f
 TypeDecl
   name --> level
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> low
@@ -385,7 +387,7 @@ TypeDecl
       [2] --> urgent
 TypeDecl
   name --> light
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> red
@@ -393,7 +395,7 @@ TypeDecl
       [2] --> green
 TypeDecl
   name --> hexa
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> 'A'
@@ -404,7 +406,7 @@ TypeDecl
       [5] --> 'F'
 TypeDecl
   name --> mixed
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> 'A'
@@ -415,7 +417,7 @@ TypeDecl
       [5] --> '%'
 TypeDecl
   name --> weekday
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> day
@@ -429,7 +431,7 @@ TypeDecl
             id --> fri
 TypeDecl
   name --> major
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> suit
@@ -443,7 +445,7 @@ TypeDecl
             id --> spades
 TypeDecl
   name --> roman_digit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> 'I'
@@ -455,7 +457,7 @@ TypeDecl
       [6] --> 'M'
 TypeDecl
   name --> page_num
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -474,7 +476,7 @@ ObjectDeclaration
     value --> 132
 TypeDecl
   name --> line_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -487,7 +489,7 @@ TypeDecl
             id --> max_line_size
 TypeDecl
   name --> column_ptr
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> line_size
@@ -499,7 +501,7 @@ TypeDecl
           value --> 10
 TypeDecl
   name --> buffer_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -512,7 +514,7 @@ TypeDecl
             id --> max
 TypeDecl
   name --> coefficient
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr
@@ -527,7 +529,7 @@ TypeDecl
           value --> 1.0
 TypeDecl
   name --> mass
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr
@@ -540,7 +542,7 @@ TypeDecl
           value --> 1.0E35
 TypeDecl
   name --> short_coeff
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> coefficient
@@ -552,7 +554,7 @@ TypeDecl
         range: (null)
 TypeDecl
   name --> probability
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> real
@@ -564,7 +566,7 @@ TypeDecl
           value --> 1.0
 TypeDecl
   name --> volt
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: RealLiteralExpr
@@ -577,7 +579,7 @@ TypeDecl
           value --> 255.0
 TypeDecl
   name --> rough_voltage
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> volt
@@ -616,7 +618,7 @@ ObjectDeclaration
           value --> 1
 TypeDecl
   name --> fraction
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: NameExpr
@@ -637,7 +639,7 @@ TypeDecl
               id --> del
 TypeDecl
   name --> vector
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -651,7 +653,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> roman
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -665,7 +667,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> schedule
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> false
@@ -681,7 +683,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> line
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> false
@@ -764,7 +766,7 @@ ObjectDeclaration
   initializer: (null)
 TypeDecl
   name --> month_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> jan
@@ -781,7 +783,7 @@ TypeDecl
       [11] --> dec
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -822,7 +824,7 @@ TypeDecl
       variant part: (null)
 TypeDecl
   name --> complex
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -961,7 +963,7 @@ TypeDecl
             constraint: DiscriminantConstraint
               list ===
                 [0]: DiscriminantAssociation
-                  name ===
+                  name === (null/empty)
                   expr: NameExpr
                     name: SimpleName
                       id --> number
@@ -975,7 +977,7 @@ TypeDecl
             constraint: DiscriminantConstraint
               list ===
                 [0]: DiscriminantAssociation
-                  name ===
+                  name === (null/empty)
                   expr: NameExpr
                     name: SimpleName
                       id --> number
@@ -1004,7 +1006,7 @@ TypeDecl
       variant part: (null)
 TypeDecl
   name --> device
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> printer
@@ -1012,14 +1014,14 @@ TypeDecl
       [2] --> drum
 TypeDecl
   name --> state
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> open
       [1] --> closed
 TypeDecl
   name --> cylinder_index
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -1031,7 +1033,7 @@ TypeDecl
           value --> 50
 TypeDecl
   name --> track_number
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -1122,27 +1124,27 @@ TypeDecl
               variant part: (null)
 TypeDecl
   name --> drum_unit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> peripheral
     constraint: DiscriminantConstraint
       list ===
         [0]: DiscriminantAssociation
-          name ===
+          name === (null/empty)
           expr: NameExpr
             name: SimpleName
               id --> drum
 TypeDecl
   name --> disk_unit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> peripheral
     constraint: DiscriminantConstraint
       list ===
         [0]: DiscriminantAssociation
-          name ===
+          name === (null/empty)
           expr: NameExpr
             name: SimpleName
               id --> disk
@@ -1174,7 +1176,7 @@ ObjectDeclaration
   initializer: (null)
 TypeDecl
   name --> frame
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -1182,7 +1184,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> buffer_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -1190,11 +1192,11 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 TypeDecl
   name --> link
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -1202,7 +1204,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -1261,7 +1263,7 @@ ObjectDeclaration
       all --> false
 TypeDecl
   name --> car
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 TypeDecl
   name --> person
@@ -1275,7 +1277,7 @@ TypeDecl
   definition: (null)
 TypeDecl
   name --> person_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -1283,7 +1285,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> car_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -1291,7 +1293,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> car
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -1435,7 +1437,7 @@ ObjectDeclaration
   initializer: (null)
 TypeDecl
   name --> male
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> person
@@ -1960,3 +1962,6 @@ Component Symbol: vehicle : Component
 Component Symbol: wife : Component
 Component Symbol: husband : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

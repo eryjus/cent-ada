@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> key_manager
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -26,3 +28,6 @@ Scope ID  : 1
 -------------------
 Subtype: key_manager : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

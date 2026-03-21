@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> column
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -29,3 +31,6 @@ Scope ID  : 1
 -------------------
 Integer Type: column : Integer
 -------------------
+
+   Errors  : 0
+   Warnings: 0

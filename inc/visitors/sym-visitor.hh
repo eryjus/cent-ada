@@ -38,6 +38,9 @@ public:
     virtual void Visit(const ObjectSymbol &) = 0;
     virtual void Visit(const ComponentSymbol &) = 0;
     virtual void Visit(const IncompleteTypeSymbol &) = 0;
+    virtual void Visit(const LabelSymbol &) = 0;
+    virtual void Visit(const LoopSymbol &) = 0;
+    virtual void Visit(const BlockSymbol &) = 0;
 };
 
 
@@ -71,6 +74,9 @@ public:
     virtual void Visit(const ObjectSymbol &s) override;
     virtual void Visit(const ComponentSymbol &s) override;
     virtual void Visit(const IncompleteTypeSymbol &s) override;
+    virtual void Visit(const LabelSymbol &) override;
+    virtual void Visit(const LoopSymbol &) override;
+    virtual void Visit(const BlockSymbol &) override;
 };
 
 

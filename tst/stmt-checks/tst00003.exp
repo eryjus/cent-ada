@@ -1,0 +1,29 @@
+PRINTING THE AST STRUCTURE
+==========================
+NullStatement
+  labels ===
+    [0]: SimpleName
+      id --> here
+
+
+Listing for tst/statements/tst00003.ada:
+==========================================
+     1   <<here>>
+     2   null;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Label Symbol: here : Label
+-------------------
+
+   Errors  : 0
+   Warnings: 0

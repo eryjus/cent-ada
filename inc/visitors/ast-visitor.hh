@@ -70,6 +70,16 @@ public:
     virtual void Visit(const UnboundedRange &) = 0;
     virtual void Visit(const Variant &) = 0;
     virtual void Visit(const VariantPart &) = 0;
+    virtual void Visit(const NullStmt &) = 0;
+    virtual void Visit(const AssignStmt &) = 0;
+    virtual void Visit(const IfStmt &) = 0;
+    virtual void Visit(const CaseStmtAlt &) = 0;
+    virtual void Visit(const CaseStmt &) = 0;
+    virtual void Visit(const LoopStmt &) = 0;
+    virtual void Visit(const BlockStmt &) = 0;
+    virtual void Visit(const ExitStmt &) = 0;
+    virtual void Visit(const ReturnStmt &) = 0;
+    virtual void Visit(const GotoStmt &) = 0;
 };
 
 
@@ -104,6 +114,10 @@ protected:
     // -- template to print a list
     template <typename T>
     void PrintList(const std::string &label, const std::vector<T> &list) {
+        if (list.size() == 0) {
+            NullList(label);
+            return;
+        }
         PrintDepth();
         depth ++;
         std::cout << label << " ===\n";
@@ -113,7 +127,7 @@ protected:
         }
         depth --;
     }
-    void NullList(const std::string &label) { PrintDepth(); std::cout << label << " === (null)\n"; }
+    void NullList(const std::string &label) { PrintDepth(); std::cout << label << " === (null/empty)\n"; }
 
 
     virtual void Visit(const AccessTypeSpec &) override;
@@ -164,6 +178,16 @@ protected:
     virtual void Visit(const UnboundedRange &) override;
     virtual void Visit(const Variant &) override;
     virtual void Visit(const VariantPart &) override;
+    virtual void Visit(const NullStmt &) override;
+    virtual void Visit(const AssignStmt &) override;
+    virtual void Visit(const IfStmt &) override;
+    virtual void Visit(const CaseStmtAlt &) override;
+    virtual void Visit(const CaseStmt &) override;
+    virtual void Visit(const LoopStmt &) override;
+    virtual void Visit(const BlockStmt &) override;
+    virtual void Visit(const ExitStmt &) override;
+    virtual void Visit(const ReturnStmt &) override;
+    virtual void Visit(const GotoStmt &) override;
 };
 
 
@@ -229,6 +253,16 @@ protected:
     virtual void Visit(const UnboundedRange &) override;
     virtual void Visit(const Variant &) override;
     virtual void Visit(const VariantPart &) override;
+    virtual void Visit(const NullStmt &) override;
+    virtual void Visit(const AssignStmt &) override;
+    virtual void Visit(const IfStmt &) override;
+    virtual void Visit(const CaseStmtAlt &) override;
+    virtual void Visit(const CaseStmt &) override;
+    virtual void Visit(const LoopStmt &) override;
+    virtual void Visit(const BlockStmt &) override;
+    virtual void Visit(const ExitStmt &) override;
+    virtual void Visit(const ReturnStmt &) override;
+    virtual void Visit(const GotoStmt &) override;
 };
 
 

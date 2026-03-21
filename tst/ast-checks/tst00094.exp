@@ -1,10 +1,12 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 TypeDecl
   name --> link
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -12,7 +14,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -79,3 +81,6 @@ Component Symbol: value : Component
 Component Symbol: succ : Component
 Component Symbol: pred : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

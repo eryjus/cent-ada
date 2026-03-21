@@ -1,0 +1,40 @@
+PRINTING THE AST STRUCTURE
+==========================
+ObjectDeclaration
+  names ===
+    [0] --> x
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: (null)
+  initializer: (null)
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> x
+  expr: IntLiteralExpr
+    value --> 1
+
+
+Listing for tst/statements/tst00005.ada:
+==========================================
+     1   X : INTEGER;
+     2   X := 1;
+     3
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: x : Object
+-------------------
+
+   Errors  : 0
+   Warnings: 0

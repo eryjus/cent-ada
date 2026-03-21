@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> power_16
@@ -28,3 +30,6 @@ Scope ID  : 1
 -------------------
 Object Symbol: power_16 : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> gender
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> m
@@ -41,3 +43,6 @@ Enumeration Literal: f : EnumLiteral of type gender; value (1)
 Incomplete Type: person : Incomplete
 Discriminant Symbol: sex : Discriminant
 -------------------
+
+   Errors  : 0
+   Warnings: 0

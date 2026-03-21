@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> positive
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -69,3 +71,6 @@ Scope ID  : 2
 -------------------
 Component Symbol: content : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

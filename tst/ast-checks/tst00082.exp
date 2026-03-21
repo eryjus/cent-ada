@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> max
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 65535
 TypeDecl
   name --> buffer_size
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -67,7 +69,7 @@ ObjectDeclaration
     constraint: DiscriminantConstraint
       list ===
         [0]: DiscriminantAssociation
-          name ===
+          name === (null/empty)
           expr: IntLiteralExpr
             value --> 200
   initializer: (null)
@@ -113,3 +115,6 @@ Scope ID  : 2
 Component Symbol: pos : Component
 Component Symbol: value : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> gender
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> m
@@ -17,7 +19,7 @@ TypeDecl
   definition: (null)
 TypeDecl
   name --> person_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -25,7 +27,7 @@ TypeDecl
       constraint: (null)
 TypeDecl
   name --> month_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> jan
@@ -42,7 +44,7 @@ TypeDecl
       [11] --> dec
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -93,7 +95,7 @@ ObjectDeclaration
   initializer: (null)
 TypeDecl
   name --> car
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -116,7 +118,7 @@ TypeDecl
       variant part: (null)
 TypeDecl
   name --> car_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -340,3 +342,6 @@ Component Symbol: vehicle : Component
 Component Symbol: wife : Component
 Component Symbol: husband : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

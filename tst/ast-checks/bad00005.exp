@@ -1,0 +1,7 @@
+tst/declarations/bad00005.ada:5:19: error: Missing an expression after assignment
+    SORTED : BOOLEAN := ;
+                      ^
+  in production `object_declaration`
+  in production `basic_declaration`
+   Errors  : 1
+   Warnings: 0

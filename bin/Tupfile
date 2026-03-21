@@ -1,1 +1,1 @@
-: ../obj/*.o |> gcc -o %o %f -lstdc++ |> ada-cc
+: ../obj/*.o | ../lib/libc-ada.a |> gcc -o %o %f -L ../lib -lstdc++ -lc-ada |> ada-cc

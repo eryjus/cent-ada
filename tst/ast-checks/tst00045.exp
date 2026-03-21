@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> coefficient
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr
@@ -32,3 +34,6 @@ Scope ID  : 1
 -------------------
 Real Type: coefficient : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

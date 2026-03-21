@@ -1,10 +1,12 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 TypeDecl
   name --> link
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: AccessTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -31,3 +33,6 @@ Scope ID  : 1
 Incomplete Type: cell : Incomplete
 Access Type: link : Access
 -------------------
+
+   Errors  : 0
+   Warnings: 0

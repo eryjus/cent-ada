@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> positive
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -17,7 +19,7 @@ TypeDecl
             expr: (null)
 TypeDecl
   name --> roman_digit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> 'I'
@@ -29,7 +31,7 @@ TypeDecl
       [6] --> 'M'
 TypeDecl
   name --> roman
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -72,3 +74,6 @@ Enumeration Literal: 'D' : EnumLiteral of type roman_digit; value (5)
 Enumeration Literal: 'M' : EnumLiteral of type roman_digit; value (6)
 Array Type: roman : Array
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,0 +1,67 @@
+PRINTING THE AST STRUCTURE
+==========================
+TypeDecl
+  name --> color
+  discriminantPart === (null/empty)
+  definition: EnumerationTypeSpec
+    literals ===
+      [0] --> white
+      [1] --> red
+      [2] --> orange
+      [3] --> yellow
+      [4] --> green
+      [5] --> blue
+      [6] --> purple
+      [7] --> brown
+      [8] --> black
+ObjectDeclaration
+  names ===
+    [0] --> sky
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> color
+    constraint: (null)
+  initializer: (null)
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> sky
+  expr: NameExpr
+    name: SimpleName
+      id --> blue
+
+
+Listing for tst/statements/tst00006.ada:
+==========================================
+     1   type color is (white, red, orange, yellow, green, blue, purple, brown, black);
+     2   sky : color;
+     3   sky := blue;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Enumeration Type: color : Enumeration
+   containing literals (white red orange yellow green blue purple brown black )
+Enumeration Literal: white : EnumLiteral of type color; value (0)
+Enumeration Literal: red : EnumLiteral of type color; value (1)
+Enumeration Literal: orange : EnumLiteral of type color; value (2)
+Enumeration Literal: yellow : EnumLiteral of type color; value (3)
+Enumeration Literal: green : EnumLiteral of type color; value (4)
+Enumeration Literal: blue : EnumLiteral of type color; value (5)
+Enumeration Literal: purple : EnumLiteral of type color; value (6)
+Enumeration Literal: brown : EnumLiteral of type color; value (7)
+Enumeration Literal: black : EnumLiteral of type color; value (8)
+Object Symbol: sky : Object
+-------------------
+
+   Errors  : 0
+   Warnings: 0

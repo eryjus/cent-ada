@@ -77,6 +77,13 @@ enum class BinaryOper {
 };
 
 
+enum class LoopType {
+    LoopNone,
+    LoopWhile,
+    LoopFor,
+    LoopReverseFor,
+};
+
 
 //
 // -- Here are quite a few forward declarations
@@ -157,6 +164,19 @@ class UnboundedRange;
 class Variant;
 class VariantPart;
 class AttributeConstraint;
+class NullStmt;
+class AssignStmt;
+class IfStmt;
+class CaseStmtAlt;
+class CaseStmt;
+class LoopStmt;
+class BlockStmt;
+class ExitStmt;
+class ReturnStmt;
+class GotoStmt;
+class LabelSymbol;
+class LoopSymbol;
+class BlockSymbol;
 
 
 
@@ -220,6 +240,16 @@ using VariantPtr = std::unique_ptr<Variant>;
 using ComponentSymbolPtr = std::unique_ptr<ComponentSymbol>;
 using AttributeConstraintPtr = std::unique_ptr<AttributeConstraint>;
 using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
+using NullStmtPtr = std::unique_ptr<NullStmt>;
+using AssignStmtPtr = std::unique_ptr<AssignStmt>;
+using IfStmtPtr = std::unique_ptr<IfStmt>;
+using CaseStmtAltPtr = std::unique_ptr<CaseStmtAlt>;
+using CaseStmtPtr = std::unique_ptr<CaseStmt>;
+using LoopStmtPtr = std::unique_ptr<LoopStmt>;
+using BlockStmtPtr = std::unique_ptr<BlockStmt>;
+using ExitStmtPtr = std::unique_ptr<ExitStmt>;
+using ReturnStmtPtr = std::unique_ptr<ReturnStmt>;
+using GotoStmtPtr = std::unique_ptr<GotoStmt>;
 
 
 
@@ -245,6 +275,13 @@ using NameList = std::vector<NamePtr>;
 using NameListPtr = std::unique_ptr<NameList>;
 using VariantList = std::vector<VariantPtr>;
 using VariantListPtr = std::unique_ptr<VariantList>;
+using StmtList = std::vector<StmtPtr>;
+using StmtListPtr = std::unique_ptr<StmtList>;
+using CaseStmtAltList = std::vector<CaseStmtAltPtr>;
+using CaseStmtAltListPtr = std::unique_ptr<CaseStmtAltList>;
+using DeclList = std::vector<DeclPtr>;
+using DeclListPtr = std::unique_ptr<DeclList>;
+
 
 
 

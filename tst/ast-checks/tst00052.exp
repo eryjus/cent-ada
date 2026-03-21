@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> word_length
@@ -46,3 +48,6 @@ Scope ID  : 1
 Object Symbol: word_length : Object
 Object Symbol: del : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

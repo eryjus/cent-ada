@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> positive
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -17,7 +19,7 @@ TypeDecl
             expr: (null)
 TypeDecl
   name --> counter
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: DerivedTypeSpec
     type: SubtypeIndication
       type_mark: SimpleName
@@ -45,3 +47,6 @@ Scope ID  : 1
 Subtype: positive : Subtype
 Derived Type: counter : Derived
 -------------------
+
+   Errors  : 0
+   Warnings: 0

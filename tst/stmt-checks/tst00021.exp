@@ -1,0 +1,32 @@
+PRINTING THE AST STRUCTURE
+==========================
+GotoStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> fwd_loop
+
+
+Listing for tst/statements/tst00021.ada:
+==========================================
+     1   goto FWD_LOOP;
+     2   null;
+     3
+     4   <<FWD_LOOP>>
+     5   null;
+     6
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Label Symbol: fwd_loop : Label
+-------------------
+
+   Errors  : 0
+   Warnings: 0

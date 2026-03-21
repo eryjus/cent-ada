@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> page_size
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 66
 TypeDecl
   name --> device
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> printer
@@ -15,14 +17,14 @@ TypeDecl
       [2] --> drum
 TypeDecl
   name --> state
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> open
       [1] --> closed
 TypeDecl
   name --> cylinder_index
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -34,7 +36,7 @@ TypeDecl
           value --> 99
 TypeDecl
   name --> track_number
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> integer
@@ -118,14 +120,14 @@ TypeDecl
               variant part: (null)
 TypeDecl
   name --> disk_unit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> peripheral
     constraint: DiscriminantConstraint
       list ===
         [0]: DiscriminantAssociation
-          name ===
+          name === (null/empty)
           expr: NameExpr
             name: SimpleName
               id --> disk
@@ -192,3 +194,6 @@ Component Symbol: line_count : Component
 Component Symbol: cylinder : Component
 Component Symbol: track : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,0 +1,68 @@
+//=================================================================================================================
+//  parser/ch5/case-statement-alternative.cc -- Parse a case statement alternative
+//
+//        Copyright (c)  2025-2026 -- Adam Clark; See LICENSE.md
+//
+//  case_statement_alternative ::= when choice { | choice } => sequence_of_statements
+//
+// ---------------------------------------------------------------------------------------------------------------
+//
+//     Date      Tracker  Version  Pgmr  Description
+//  -----------  -------  -------  ----  -------------------------------------------------------------------------
+//  2026-Feb-22  Initial   0.0.0   ADCL  Initial version
+//
+//=================================================================================================================
+
+
+
+#include "ada.hh"
+
+
+
+//
+// -- Parse a case statement
+//    ----------------------
+CaseStmtAltPtr Parser::ParseCaseStatementAlternative(void)
+{
+    Production p(*this, "case_statement_alternative");
+    MarkStream m(tokens, diags);
+    SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    SourceLoc_t loc = astLoc;
+    ChoiceListPtr choices = std::make_unique<ChoiceList>();
+    ChoicePtr choice = nullptr;
+    StmtListPtr stmts = nullptr;
+
+
+
+    p.At("Case WHEN");
+    if (!Require(TokenType::TOK_WHEN)) return nullptr;
+
+    loc = TokenStream::Get().SourceLocation();
+    choice = ParseChoice();
+    if (!choice) {
+        diags.Error(loc, DiagID::InvalidChoiceInVariant, { } );
+        goto statements;
+    } else {
+        choices->push_back(std::move(choice));
+    }
+
+
+    while (TokenStream::Get().Current() == TokenType::TOK_VERTICAL_BAR) {
+        TokenStream::Get().Advance();
+        choice = ParseChoice();
+    }
+
+statements:
+    if (!Require(TokenType::TOK_ARROW)) {
+        diags.Error(loc, DiagID::MissingArrow, { } );
+    }
+
+
+    stmts = ParseSequenceOfStatements();
+
+    p.At("Complete Case stmt");
+    m.Commit();
+    return std::make_unique<CaseStmtAlt>(astLoc, std::move(choices), std::move(stmts));
+}
+
+

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> gender
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> m
@@ -17,7 +19,7 @@ TypeDecl
   definition: (null)
 TypeDecl
   name --> male
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> person
@@ -57,3 +59,6 @@ Incomplete Type: person : Incomplete
 Discriminant Symbol: sex : Discriminant
 Subtype: male : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

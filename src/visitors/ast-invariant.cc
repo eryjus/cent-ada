@@ -65,6 +65,16 @@ void ASTInvariant::Visit(const UnaryExpr &n) { assert(n.expr); }
 void ASTInvariant::Visit(const UnboundedRange &n) { assert(n.type); }
 void ASTInvariant::Visit(const Variant &n) { assert(n.components); }
 void ASTInvariant::Visit(const VariantPart &n) { assert(n.name); assert(n.variants); assert(n.variants->size()); }
+void ASTInvariant::Visit(const NullStmt &) { }
+void ASTInvariant::Visit(const AssignStmt &n) { assert(n.name); assert(n.expr); }
+void ASTInvariant::Visit(const IfStmt &n) { assert(n.stmts); }
+void ASTInvariant::Visit(const CaseStmtAlt &n) { assert(n.choices); assert(n.choices->size() > 1); assert(n.stmts); assert(n.stmts->size() > 1); }
+void ASTInvariant::Visit(const CaseStmt &n) { assert(n.expr); assert(n.alts); assert(n.alts->size() > 1); }
+void ASTInvariant::Visit(const LoopStmt &n) { assert(n.name); assert(n.stmts); assert(n.stmts->size() > 1); }
+void ASTInvariant::Visit(const BlockStmt &n) { assert(n.name); assert(n.stmts); assert(n.stmts->size() > 1); }
+void ASTInvariant::Visit(const ExitStmt &) { }
+void ASTInvariant::Visit(const ReturnStmt &n) { assert(n.expr); }
+void ASTInvariant::Visit(const GotoStmt &n) { assert(n.name); }
 
 
 

@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> question
@@ -42,3 +44,6 @@ Scope ID  : 1
 Object Symbol: question : Object
 Object Symbol: ask_twice : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

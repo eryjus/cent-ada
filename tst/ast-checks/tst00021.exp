@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> k
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 40
 TypeDecl
   name --> column
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Integer
     size: (null)
@@ -19,7 +21,7 @@ TypeDecl
           value --> 72
 TypeDecl
   name --> up_to_k
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> column
@@ -54,3 +56,6 @@ Object Symbol: k : Object
 Integer Type: column : Integer
 Subtype: up_to_k : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> cell
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: (null)
 
 
@@ -21,3 +23,6 @@ Scope ID  : 1
 -------------------
 Incomplete Type: cell : Incomplete
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,0 +1,6 @@
+tst/declarations/bad00003.ada:1:7: error: FATAL: Internal Error consuming tokens; nothing consumed
+    ILLEGAL : SQUARE;
+
+          ^
+   Errors  : 1
+   Warnings: 0

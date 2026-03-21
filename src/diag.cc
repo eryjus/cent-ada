@@ -26,7 +26,7 @@ Diagnostics diags;
 //
 // -- Emit a diagnostic message
 //    -------------------------
-void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string> &args)
+void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string_view> &args)
 {
     assert(DiagMsgs.find(id) != DiagMsgs.end());
 
@@ -89,7 +89,7 @@ void Diagnostics::Emit(const std::string &level, DiagID id, SourceLoc_t loc, con
 //
 // -- Format a diagnostic message
 //    ---------------------------
-std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string> args)
+std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string_view> args)
 {
     const std::string &fmt = tmpl;
     std::string out;
@@ -149,29 +149,46 @@ std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string>
 // -- The last thing in this source will be the list of messages
 //    ----------------------------------------------------------
 const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
+    { DiagID::InternalError, "\e[31;1mFATAL: Internal Error consuming tokens; nothing consumed\e[0m" },
+    { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
+    { DiagID::UnknownName, "the name '{0}' is not known" },
+
     { DiagID::UnexpectedEOF, "unexpected EOF in `{0}`" },
     { DiagID::UnexpectedToken, "unexpected token in `{0}`; expected {1}" },
+
     { DiagID::MissingSemicolon, "expected ';' after {0}" },
     { DiagID::MissingRightParen, "expected ')' after {0}" },
     { DiagID::MissingEnd, "expected 'end' after {0}" },
     { DiagID::MissingEndingTag, "after an 'end', expected to see {0}" },
     { DiagID::MissingRecordComponentDefinitions, "a record definition requires at least 1 component" },
     { DiagID::MissingExpression, "Missing an expression after {0}" },
+    { DiagID::MissingThen, "Missing 'then' in 'if' statement" },
+    { DiagID::MissingIs, "Missing 'is' in '{0}' statement" },
+    { DiagID::MissingRightLabelBracket, "\e[31;1mMissing the right Label Bracket adter ID {0}\e[0m" },
+    { DiagID::MissingBasicDeclaration, "Basic declaration is missing when required by command line parameters" },
+    { DiagID::MissingCaseAlternative, "Case statement requires at least 1 alternative" },
+    { DiagID::MissingArrow, "Missing an arrow in a case statement alternative" },
+    { DiagID::MissingColon, "Missing colon after {0}" },
+    { DiagID::MissingLoop, "Missing loop keyword in {0} loop" },
+    { DiagID::MissingName, "Missing beginning {0} name, expected {1}" },
+    { DiagID::MissingEndingName, "Missing ending {0} name, expected {1}" },
+
     { DiagID::InvalidChoiceInVariant, "invalid choice in variant" },
-    { DiagID::DuplicateName, "duplicate name '{0}' in the same scope" },
-    { DiagID::DuplicateName2, "the previous declaration was here" },
-    { DiagID::UnknownName, "the name '{0}' is not known" },
-    { DiagID::ExtraComma, "extra comma (,) in {0}"},
-    { DiagID::ExtraSemicolon, "extra semicolon (;) in {0}"},
-    { DiagID::ExtraVertialBar, "extra vertical bar (|) in {0}"},
     { DiagID::InvalidRangeConstraint, "invalid range constraint" },
     { DiagID::InvalidName, "invalid name {0} in {1}" },
     { DiagID::InvalidPrimaryExpr, "invalid primary expression after {0}" },
     { DiagID::InvalidExpression, "invalid expression in {0}" },
-    { DiagID::MissingBasicDeclaration, "basic declaration is missing when required by command line parameters" },
-    { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
+
+    { DiagID::DuplicateName, "duplicate name '{0}' in the same scope" },
+    { DiagID::DuplicateName2, "the previous declaration was here" },
+
+    { DiagID::ExtraComma, "extra comma (,) in {0}"},
+    { DiagID::ExtraSemicolon, "extra semicolon (;) in {0}"},
+    { DiagID::ExtraVertialBar, "extra vertical bar (|) in {0}"},
     { DiagID::NoDeclaration, "\e[31;1mERROR: Unable to properly parse Basic Declaration\e[0m" },
-    { DiagID::InternalError, "\e[31;1mFATAL: Internal Error consuming tokens; nothing consumed\e[0m" },
+
+    { DiagID::ExpectedStatement, "\e[31;1mExpected a statement\e[0m" },
+    { DiagID::NameMismatch, "Name mismatch in {0}, started with {1} and ended with {2}" },
 };
 
 

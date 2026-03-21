@@ -1,0 +1,14 @@
+tst/declarations/bad00004.ada:2:3: error: duplicate name 'int' in the same scope
+    INT : INTEGER := 42;
+
+      ^
+  in production `object_declaration`
+  in production `basic_declaration`
+tst/declarations/bad00004.ada:2:3: note: the previous declaration was here
+    INT : INTEGER := 42;
+
+      ^
+  in production `object_declaration`
+  in production `basic_declaration`
+   Errors  : 1
+   Warnings: 0

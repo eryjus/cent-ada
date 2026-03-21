@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -71,7 +73,7 @@ TypeDecl
             constraint: DiscriminantConstraint
               list ===
                 [0]: DiscriminantAssociation
-                  name ===
+                  name === (null/empty)
                   expr: NameExpr
                     name: SimpleName
                       id --> number
@@ -85,7 +87,7 @@ TypeDecl
             constraint: DiscriminantConstraint
               list ===
                 [0]: DiscriminantAssociation
-                  name ===
+                  name === (null/empty)
                   expr: NameExpr
                     name: SimpleName
                       id --> number
@@ -140,3 +142,6 @@ Scope ID  : 3
 Component Symbol: left : Component
 Component Symbol: right : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

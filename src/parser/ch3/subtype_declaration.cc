@@ -56,7 +56,7 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
 
         const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
         SourceLoc_t loc2 = vec->at(0)->loc;
-        diags.Error(loc, DiagID::DuplicateName2, { } );
+        diags.Note(loc, DiagID::DuplicateName2, { } );
     } else {
         scopes.Declare(std::make_unique<SubtypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }

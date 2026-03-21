@@ -1,0 +1,98 @@
+PRINTING THE AST STRUCTURE
+==========================
+BlockStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> swap
+  decls ===
+    [0]: ObjectDeclaration
+      names ===
+        [0] --> x
+      constant --> false
+      typeSpec: SubtypeIndication
+        type_mark: SimpleName
+          id --> integer
+        constraint: (null)
+      initializer: IntLiteralExpr
+        value --> 9
+    [1]: ObjectDeclaration
+      names ===
+        [0] --> y
+      constant --> false
+      typeSpec: SubtypeIndication
+        type_mark: SimpleName
+          id --> integer
+        constraint: (null)
+      initializer: IntLiteralExpr
+        value --> 6
+    [2]: ObjectDeclaration
+      names ===
+        [0] --> temp
+      constant --> false
+      typeSpec: SubtypeIndication
+        type_mark: SimpleName
+          id --> integer
+        constraint: (null)
+      initializer: (null)
+  stmts ===
+    [0]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> temp
+      expr: NameExpr
+        name: SimpleName
+          id --> x
+    [1]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> x
+      expr: NameExpr
+        name: SimpleName
+          id --> y
+    [2]: AssignStmt
+      labels === (null/empty)
+      name: SimpleName
+        id --> y
+      expr: NameExpr
+        name: SimpleName
+          id --> temp
+  excepts === (null/empty)
+
+
+Listing for tst/statements/tst00015.ada:
+==========================================
+     1   SWAP:
+     2       declare
+     3           X : INTEGER := 9;
+     4           Y : INTEGER := 6;
+     5           TEMP : INTEGER;
+     6       begin
+     7           TEMP := X;
+     8           X := Y;
+     9           Y := TEMP;
+    10       end swap;
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Label Symbol: swap : Label
+Object Symbol: x : Object
+Object Symbol: y : Object
+Object Symbol: temp : Object
+-------------------
+
+Scope Name: swap
+Scope ID  : 2
+-------------------
+Block Name: swap : BlockName
+-------------------
+
+   Errors  : 0
+   Warnings: 0

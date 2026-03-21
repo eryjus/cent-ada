@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> volt
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Fixed Point
     delta: RealLiteralExpr
@@ -30,3 +32,6 @@ Scope ID  : 1
 -------------------
 Real Type: volt : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

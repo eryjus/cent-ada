@@ -1,3 +1,5 @@
+PRINTING THE AST STRUCTURE
+==========================
 ObjectDeclaration
   names ===
     [0] --> n
@@ -7,7 +9,7 @@ ObjectDeclaration
     value --> 8
 TypeDecl
   name --> matrix
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> true
@@ -68,3 +70,6 @@ Object Symbol: n : Object
 Array Type: matrix : Array
 Object Symbol: inverse : Object
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> roman_digit
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> 'I'
@@ -37,3 +39,6 @@ Enumeration Literal: 'C' : EnumLiteral of type roman_digit; value (4)
 Enumeration Literal: 'D' : EnumLiteral of type roman_digit; value (5)
 Enumeration Literal: 'M' : EnumLiteral of type roman_digit; value (6)
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -23,29 +23,46 @@ class Parser;
 // -- These are the list of possible diagnostic messages
 //    --------------------------------------------------
 enum class DiagID {
+    InternalError,
+    UnknownError,
+    UnknownName,
+
     UnexpectedEOF,
     UnexpectedToken,
+
     MissingSemicolon,
     MissingRightParen,
     MissingEnd,
     MissingEndingTag,
     MissingRecordComponentDefinitions,
     MissingExpression,
+    MissingThen,
+    MissingIs,
+    MissingRightLabelBracket,
+    MissingBasicDeclaration,
+    MissingCaseAlternative,
+    MissingArrow,
+    MissingColon,
+    MissingLoop,
+    MissingName,
+    MissingEndingName,
+
     InvalidChoiceInVariant,
-    DuplicateName,
-    DuplicateName2,
-    UnknownName,
-    ExtraComma,
-    ExtraSemicolon,
-    ExtraVertialBar,
     InvalidRangeConstraint,
     InvalidName,
     InvalidPrimaryExpr,
     InvalidExpression,
-    MissingBasicDeclaration,
-    UnknownError,
+
+    DuplicateName,
+    DuplicateName2,
+
+    ExtraComma,
+    ExtraSemicolon,
+    ExtraVertialBar,
     NoDeclaration,
-    InternalError,
+
+    ExpectedStatement,
+    NameMismatch,
 };
 
 
@@ -72,23 +89,23 @@ public:
 
     // -- public interface functions
 public:
-    void Error(SourceLoc_t loc, DiagID id, std::vector<std::string> args = {}) {
+    void Error(SourceLoc_t loc, DiagID id, std::vector<std::string_view> args = {}) {
         errors ++;
         Emit("error", id, loc, args);
     }
-    void Warning(SourceLoc_t loc, DiagID id, std::vector<std::string> args = {}) {
+    void Warning(SourceLoc_t loc, DiagID id, std::vector<std::string_view> args = {}) {
         warnings ++;
         Emit("warning", id, loc, args);
     }
-    void Note(SourceLoc_t loc, DiagID id, std::vector<std::string> args = {}) {
+    void Note(SourceLoc_t loc, DiagID id, std::vector<std::string_view> args = {}) {
         Emit("note", id, loc, args);
     }
     void Debug(std::string_view s) { std::cerr << s << '\n'; }
 
 
 private:
-    void Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string> &args);
-    std::string Format(std::string tmpl, const std::vector<std::string> args);
+    void Emit(const std::string &level, DiagID id, SourceLoc_t loc, const std::vector<std::string_view> &args);
+    std::string Format(std::string tmpl, const std::vector<std::string_view> args);
 
 
 public:

@@ -1,0 +1,31 @@
+PRINTING THE AST STRUCTURE
+==========================
+NullStatement
+  labels === (null/empty)
+NullStatement
+  labels === (null/empty)
+NullStatement
+  labels === (null/empty)
+
+
+Listing for tst/statements/tst00002.ada:
+==========================================
+     1   null;
+     2   null;
+     3   null;
+     4
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+-------------------
+
+   Errors  : 0
+   Warnings: 0

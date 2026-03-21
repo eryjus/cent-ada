@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> mixed
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> 'A'
@@ -37,3 +39,6 @@ Enumeration Literal: none : EnumLiteral of type mixed; value (4)
 Enumeration Literal: '?' : EnumLiteral of type mixed; value (5)
 Enumeration Literal: '%' : EnumLiteral of type mixed; value (6)
 -------------------
+
+   Errors  : 0
+   Warnings: 0

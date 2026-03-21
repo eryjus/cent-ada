@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> month_name
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> jan
@@ -17,7 +19,7 @@ TypeDecl
       [11] --> dec
 TypeDecl
   name --> date
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: RecordSpecification
     components: ComponentList
       components ===
@@ -104,3 +106,6 @@ Component Symbol: day : Component
 Component Symbol: month : Component
 Component Symbol: year : Component
 -------------------
+
+   Errors  : 0
+   Warnings: 0

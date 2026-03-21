@@ -1,0 +1,14 @@
+tst/declarations/bad00011.ada:6:3: error: duplicate name 'one' in the same scope
+    ONE : INTEGER := 2;
+
+      ^
+  in production `object_declaration`
+  in production `basic_declaration`
+tst/declarations/bad00011.ada:6:3: note: the previous declaration was here
+    ONE : INTEGER := 2;
+
+      ^
+  in production `object_declaration`
+  in production `basic_declaration`
+   Errors  : 1
+   Warnings: 0

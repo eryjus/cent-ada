@@ -1,0 +1,79 @@
+PRINTING THE AST STRUCTURE
+==========================
+ObjectDeclaration
+  names ===
+    [0] --> i
+    [1] --> j
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 10
+  initializer: (null)
+ObjectDeclaration
+  names ===
+    [0] --> k
+  constant --> false
+  typeSpec: SubtypeIndication
+    type_mark: SimpleName
+      id --> integer
+    constraint: RangeConstraint
+      range: Range
+        lower: IntLiteralExpr
+          value --> 1
+        upper: IntLiteralExpr
+          value --> 20
+  initializer: (null)
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> i
+  expr: NameExpr
+    name: SimpleName
+      id --> j
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> k
+  expr: NameExpr
+    name: SimpleName
+      id --> j
+AssignStmt
+  labels === (null/empty)
+  name: SimpleName
+    id --> j
+  expr: NameExpr
+    name: SimpleName
+      id --> k
+
+
+Listing for tst/statements/tst00007.ada:
+==========================================
+     1   I, J : INTEGER range 1 .. 10;
+     2   K : INTEGER range 1 .. 20;
+     3   I := J;
+     4   K := J;
+     5   J := K;
+
+
+=========================================
+=========================================
+====   Printing Symbol Scope Stack   ====
+=========================================
+=========================================
+
+Scope Name: GLOBAL
+Scope ID  : 1
+-------------------
+Object Symbol: i : Object
+Object Symbol: j : Object
+Object Symbol: k : Object
+-------------------
+
+   Errors  : 0
+   Warnings: 0

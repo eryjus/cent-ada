@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> color
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> white
@@ -12,7 +14,7 @@ TypeDecl
       [6] --> black
 TypeDecl
   name --> rainbow
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> color
@@ -26,7 +28,7 @@ TypeDecl
             id --> blue
 TypeDecl
   name --> red_blue
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> rainbow
@@ -64,3 +66,6 @@ Enumeration Literal: black : EnumLiteral of type color; value (6)
 Subtype: rainbow : Subtype
 Subtype: red_blue : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

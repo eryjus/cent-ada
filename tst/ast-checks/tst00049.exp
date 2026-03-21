@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> probability
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: SubtypeIndication
     type_mark: SimpleName
       id --> real
@@ -29,3 +31,6 @@ Scope ID  : 1
 -------------------
 Subtype: probability : Subtype
 -------------------
+
+   Errors  : 0
+   Warnings: 0

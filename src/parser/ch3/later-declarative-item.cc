@@ -28,7 +28,7 @@
 //
 // -- Parse a Later Declarative Item
 //    ------------------------------
-NodePtr Parser::ParseLaterDeclarativeItem(void)
+DeclPtr Parser::ParseLaterDeclarativeItem(void)
 {
     Production p(*this, "later_declarative_item");
 

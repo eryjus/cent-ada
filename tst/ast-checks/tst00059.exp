@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> day
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> mon
@@ -12,7 +14,7 @@ TypeDecl
       [6] --> sun
 TypeDecl
   name --> my_schedule
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: ArrayTypeSpec
     indices: IndexConstraint
       unconstrained --> false
@@ -55,3 +57,6 @@ Enumeration Literal: sat : EnumLiteral of type day; value (5)
 Enumeration Literal: sun : EnumLiteral of type day; value (6)
 Array Type: my_schedule : Array
 -------------------
+
+   Errors  : 0
+   Warnings: 0

@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> my_real
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: NumericTypeSpec
     kind --> Floating Point
     digits: IntLiteralExpr
@@ -25,3 +27,6 @@ Scope ID  : 1
 -------------------
 Real Type: my_real : Real
 -------------------
+
+   Errors  : 0
+   Warnings: 0

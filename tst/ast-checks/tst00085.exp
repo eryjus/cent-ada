@@ -1,6 +1,8 @@
+PRINTING THE AST STRUCTURE
+==========================
 TypeDecl
   name --> device
-  discriminantPart === (null)
+  discriminantPart === (null/empty)
   definition: EnumerationTypeSpec
     literals ===
       [0] --> printer
@@ -29,3 +31,6 @@ Enumeration Literal: printer : EnumLiteral of type device; value (0)
 Enumeration Literal: disk : EnumLiteral of type device; value (1)
 Enumeration Literal: drum : EnumLiteral of type device; value (2)
 -------------------
+
+   Errors  : 0
+   Warnings: 0
