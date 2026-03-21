@@ -18,6 +18,7 @@
 //    ----------------------------------------------------
 #include "ada.hh"
 
+extern "C" void *yy_scan_string (const char *yy_str);
 
 
 //
@@ -85,6 +86,7 @@ public:
     int Location(void) const { return loc; }
     void Listing(void);
     void List(void);
+    void ScanString(const std::string &str) { yy_scan_string(str.c_str()); }
     SourceLoc_t SourceLocation(void);
     static SourceLoc_t EmptyLocation(void);
 };

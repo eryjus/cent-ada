@@ -1,0 +1,3 @@
+include_rules
+
+: ../src/*.cc | ../../lib/libc-ada.a |> gcc -I ../../inc/ -L ../../lib/ -o %o %f -lgtest_main -lgtest -lc-ada -lstdc++ -lm |> test

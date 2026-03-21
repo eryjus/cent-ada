@@ -47,6 +47,7 @@ test-stmts: all
 ## DO NOT USE IN CI as undesirable results will occur
 .PHONY: test
 test: all
+	gtest/bin/test || true
 	echo "== Running ALL tests =="
 	echo "Types:"
 	./scripts/run-type-tests.sh | grep FAILED --color=always || true

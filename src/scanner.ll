@@ -31,6 +31,7 @@
     extern int column;
     extern std::string strVal;
     std::string ToLower(const char *s);
+    void ScanString(const std::string &s);
 
     #include "tokens.hh"
 %}
@@ -354,4 +355,15 @@ std::string ToLower(const char *s)
     }
 
     return rv;
+}
+
+
+
+//
+// -- Helper function to scan from a string rather than stdin
+//    -------------------------------------------------------
+void ScanString(const std::string &s)
+{
+    yy_scan_string(s.c_str());
+    BEGIN(INITIAL);
 }
