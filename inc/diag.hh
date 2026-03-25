@@ -12,59 +12,15 @@
 //=================================================================================================================
 
 
+#pragma once
+
+#include <unordered_map>
+
 
 //
 // -- a forward declaration needed to keep the compiler quite
 //    -------------------------------------------------------
 class Parser;
-
-
-//
-// -- These are the list of possible diagnostic messages
-//    --------------------------------------------------
-enum class DiagID {
-    InternalError,
-    UnknownError,
-    UnknownName,
-
-    UnexpectedEOF,
-    UnexpectedToken,
-
-    MissingSemicolon,
-    MissingRightParen,
-    MissingEnd,
-    MissingEndingTag,
-    MissingRecordComponentDefinitions,
-    MissingExpression,
-    MissingThen,
-    MissingIs,
-    MissingRightLabelBracket,
-    MissingBasicDeclaration,
-    MissingCaseAlternative,
-    MissingArrow,
-    MissingColon,
-    MissingLoop,
-    MissingName,
-    MissingEndingName,
-
-    InvalidChoiceInVariant,
-    InvalidRangeConstraint,
-    InvalidName,
-    InvalidPrimaryExpr,
-    InvalidExpression,
-
-    DuplicateName,
-    DuplicateName2,
-
-    ExtraComma,
-    ExtraSemicolon,
-    ExtraVertialBar,
-    NoDeclaration,
-
-    ExpectedStatement,
-    NameMismatch,
-};
-
 
 
 //

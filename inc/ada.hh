@@ -35,6 +35,12 @@
 
 
 
+//
+// -- Get the enumeration definitions before anything else
+//    ----------------------------------------------------
+#include "enum.hh"
+
+
 
 //
 // -- Inlcude the tokens and then clean up some types
@@ -42,48 +48,6 @@
 #include "tokens.hh"
 extern YYSTYPE yylval;
 
-
-
-enum class UnaryOper {
-    Unspecified,
-    Plus,
-    Minus,
-    Abs,
-    Not,
-};
-
-
-enum class BinaryOper {
-    Unspecified,
-    And,
-    AndThen,
-    Or,
-    OrElse,
-    Xor,
-    Equal,
-    NotEqual,
-    LessThan,
-    LessEqual,
-    GreaterThan,
-    GreaterEqual,
-    Plus,
-    Minus,
-    Concatenate,
-    Times,
-    Divide,
-    Mod,
-    Rem,
-    Power,
-    In,
-};
-
-
-enum class LoopType {
-    LoopNone,
-    LoopWhile,
-    LoopFor,
-    LoopReverseFor,
-};
 
 
 //

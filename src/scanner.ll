@@ -25,15 +25,19 @@
     #include <string>
     #include <iostream>
     #include <variant>
+    #include <memory>
 
     #define YY_DECL TokenType yylex(void)
+
+    #include "enum.hh"
+    #include "tokens.hh"
+
 
     extern int column;
     extern std::string strVal;
     std::string ToLower(const char *s);
     void ScanString(const std::string &s);
-
-    #include "tokens.hh"
+    bool ValidateBasedNumber(DiagID &diag);
 %}
 
 
@@ -84,7 +88,6 @@ WS          [ \t]
 \<          { column ++; return TokenType::TOK_LESS_THAN; }
 =           { column ++; return TokenType::TOK_EQUAL; }
 \>          { column ++; return TokenType::TOK_GREATER_THAN; }
-_           { column ++; return TokenType::TOK_UNDERLINE; }
 \|          { column ++; return TokenType::TOK_VERTICAL_BAR; }
 !           { column ++; return TokenType::TOK_EXCLAMATION_MARK; }
 \$          { column ++; return TokenType::TOK_DOLLAR; }
@@ -187,11 +190,272 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
 
 
 
-        /*
-         * -- handle other identifiers which are not keywords
-         *    -----------------------------------------------
-         */
-{LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
+       /*
+        * -- This is a special case of a single '_' char, which is illegal
+        *    -------------------------------------------------------------
+        */
+{UNDERLINE} {
+                column += strlen(yytext);
+                std::string lower = ToLower(yytext);
+                yylval = ScannerError { DiagID::IllegalIdentifier, { lower, "Identifier cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+
+
+       /*
+        * -- These rules will handle all universal integer literals
+        *    ------------------------------------------------------
+        */
+{DIGIT}({UNDERLINE}?{DIGIT})*#[0-9A-Z]({UNDERLINE}?[0-9A-Z])*#(e[+-]?{DIGIT}({UNDERLINE}?{DIGIT})*)? {
+                column += strlen(yytext);
+                DiagID diag;
+
+                if (ValidateBasedNumber(diag)) {
+                    yylval = IntLiteral { std::string(yytext) };
+                    return TokenType::TOK_UNIVERSAL_INT_LITERAL;
+                } else {
+                    yylval = ScannerError { diag, { std::string(yytext) } };
+                    return TokenType::TOK_ERROR;
+                }
+            }
+{DIGIT}({UNDERLINE}?{DIGIT})*(e[+-]?{DIGIT}({UNDERLINE}?{DIGIT})*)? {
+                column += strlen(yytext);
+                yylval = IntLiteral { std::string(yytext) };
+                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
+            }
+
+
+
+       /*
+        * -- These are the possible error constructs around integers
+        *    -------------------------------------------------------
+        */
+
+       /* -- Underline to start the base */
+{UNDERLINE}+{DIGIT}({UNDERLINE}|{DIGIT})*#({UNDERLINE}|{HEXDIGIT})*#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer base cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the integer part */
+{DIGIT}({UNDERLINE}|{DIGIT})*#{UNDERLINE}+{DIGIT}({UNDERLINE}|{HEXDIGIT})*#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the integer part */
+{UNDERLINE}+{DIGIT}({UNDERLINE}|{DIGIT})*(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the exponent part */
+{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#(e[+-]?{UNDERLINE}+{DIGIT}({UNDERLINE}|{DIGIT})*)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer exponent part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the exponent part */
+{DIGIT}({UNDERLINE}|{DIGIT})*e[+-]?{UNDERLINE}+{DIGIT}({UNDERLINE}|{DIGIT})* {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer exponent part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Missing the exponent part */
+{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#(e[+-]?) {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer exponent part missing" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Missing the exponent part */
+{DIGIT}({UNDERLINE}|{DIGIT})*(e[+-]?) {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer exponent part missing" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Multiple the exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#{HEXDIGIT}({UNDERLINE}?{HEXDIGIT})*#(e[+-]?{DIGIT}({UNDERLINE}?{DIGIT})*)(e[+-]?{DIGIT}({UNDERLINE}?{DIGIT})*)+ {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer exponent part repeated" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Multiple the exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*(e[+-]?{DIGIT}({UNDERLINE}|{DIGIT})*)(e[+-]?{DIGIT}({UNDERLINE}|{DIGIT})*)+ {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalInteger, { std::string(yytext), "Integer exponent part repeated" } };
+                return TokenType::TOK_ERROR;
+            }
+
+
+
+
+       /*
+        * -- These rules will handle all universal real literals
+        *    ---------------------------------------------------
+        */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*(e[+-]?{DIGIT}({UNDERLINE}?{DIGIT})*)? {
+                column += strlen(yytext);
+                yylval = RealLiteral { std::string(yytext) };
+                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
+            }
+{DIGIT}({UNDERLINE}?{DIGIT})*#[0-9A-Z]({UNDERLINE}?[0-9A-Z])*\.[0-9A-Z]({UNDERLINE}?[0-9A-Z])*#(e[+-]?{DIGIT}({UNDERLINE}?{DIGIT})*)? {
+                column += strlen(yytext);
+                DiagID diag;
+
+                if (ValidateBasedNumber(diag)) {
+                    yylval = RealLiteral { std::string(yytext) };
+                    return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
+                } else {
+                    yylval = ScannerError { diag, { std::string(yytext) } };
+                    return TokenType::TOK_ERROR;
+                }
+            }
+
+
+
+
+       /*
+        * -- These are the possible error constructs around reals
+        *    ----------------------------------------------------
+        */
+
+       /* -- Underline to start the base */
+{UNDERLINE}+{DIGIT}({UNDERLINE}?{DIGIT})*#({UNDERLINE}|{HEXDIGIT})*\.({UNDERLINE}|{HEXDIGIT})*#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real base cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the real whole part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#{UNDERLINE}+({UNDERLINE}|{HEXDIGIT})*\.({UNDERLINE}|{HEXDIGIT})*#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real whole part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the real whole part */
+{UNDERLINE}+({UNDERLINE}|{DIGIT})*\.({UNDERLINE}|{DIGIT})*(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real whole part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real whole part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#[0-9A-Z]({UNDERLINE}|[0-9A-Z])*{UNDERLINE}+\.({UNDERLINE}|[0-9A-Z])*#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real whole part cannot end with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real whole part */
+{DIGIT}({UNDERLINE}|{DIGIT})*{UNDERLINE}+\.({UNDERLINE}|{DIGIT})*(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real whole part cannot end with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the real decimal part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{UNDERLINE}({UNDERLINE}|{HEXDIGIT})*#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real decimal part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the real decimal part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{UNDERLINE}({UNDERLINE}|{DIGIT})*(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real decimal part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real decimal part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#{HEXDIGIT}({UNDERLINE}?{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*{UNDERLINE}#(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real decimal part cannot end with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real decimal part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*{UNDERLINE}(e[+-]?({UNDERLINE}|{DIGIT})+)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real decimal part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the real exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#{HEXDIGIT}({UNDERLINE}?{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}?{HEXDIGIT})*#e[+-]?{UNDERLINE}({UNDERLINE}|{DIGIT})* {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to start the real exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*e[+-]?{UNDERLINE}({UNDERLINE}|{DIGIT})* {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*#{HEXDIGIT}({UNDERLINE}?{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}?{HEXDIGIT})*#e[+-]?{DIGIT}({UNDERLINE}|{DIGIT})*{UNDERLINE} {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part cannot end with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*e[+-]?{DIGIT}({UNDERLINE}|{DIGIT})*{UNDERLINE} {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part cannot end with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- Underline to end the real exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*(e[+-]?{UNDERLINE}({UNDERLINE}|{DIGIT})*)? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- missing exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*e[+-]? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part missing" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- missing exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*e[+-]? {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part missing" } };
+                return TokenType::TOK_ERROR;
+            }
+
+       /* -- repeated exponent part */
+{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*(e[+-]?{DIGIT}({UNDERLINE}|{DIGIT})*)(e[+-]?{DIGIT}({UNDERLINE}|{DIGIT})*)+ {
+                column += strlen(yytext);
+                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part repeated" } };
+                return TokenType::TOK_ERROR;
+            }
+
+
+
+
+
+       /*
+        * -- handle other identifiers which are not keywords
+        *    -----------------------------------------------
+        */
+{LETTER}({UNDERLINE}?({LETTER}|{DIGIT}))* {
                 column += strlen(yytext);
                 std::string lower = ToLower(yytext);
                 yylval = IdentifierLexeme { lower };
@@ -200,86 +464,37 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
 
 
 
-        /*
-         * -- These rules will handle all universal integer literals
-         *    ------------------------------------------------------
-         */
-{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*# {
-                column += strlen(yytext);
-                yylval = IntLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
-            }
-{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = IntLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
-            }
-{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = IntLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
-            }
 
-{DIGIT}({UNDERLINE}|{DIGIT})* {
+       /*
+        * -- These are the possible error constructs around identifiers
+        *    ----------------------------------------------------------
+        */
+{UNDERLINE}({UNDERLINE}?({LETTER}|{DIGIT}))*{UNDERLINE}? {
                 column += strlen(yytext);
-                yylval = IntLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
+                std::string lower = ToLower(yytext);
+                yylval = ScannerError { DiagID::IllegalIdentifier, { lower, "Identifier cannot begin with an '_'" } };
+                return TokenType::TOK_ERROR;
             }
-{DIGIT}({UNDERLINE}|{DIGIT})*e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
+{LETTER}({UNDERLINE}?({LETTER}|{DIGIT}))*{UNDERLINE} {
                 column += strlen(yytext);
-                yylval = IntLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
+                std::string lower = ToLower(yytext);
+                yylval = ScannerError { DiagID::IllegalIdentifier, { lower, "Identifier cannot end with an '_'" } };
+                return TokenType::TOK_ERROR;
             }
-{DIGIT}({UNDERLINE}|{DIGIT})*e-{DIGIT}({UNDERLINE}|{DIGIT})* {
+{LETTER}({UNDERLINE}{UNDERLINE}+({LETTER}|{DIGIT}))* {
                 column += strlen(yytext);
-                yylval = IntLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_INT_LITERAL;
+                std::string lower = ToLower(yytext);
+                yylval = ScannerError { DiagID::IllegalIdentifier, { lower, "Identifier cannot contain multiple consecutive '_' characters" } };
+                return TokenType::TOK_ERROR;
             }
 
 
 
-        /*
-         * -- These rules will handle all universal real literals
-         *    ---------------------------------------------------
-         */
-{DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = RealLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
-            }
-{DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = RealLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
-            }
-{DIGIT}({UNDERLINE}|{DIGIT})*\.{DIGIT}({UNDERLINE}|{DIGIT})*e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = RealLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
-            }
 
-{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*# {
-                column += strlen(yytext);
-                yylval = RealLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
-            }
-{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e\+?{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = RealLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
-            }
-{DIGIT}({UNDERLINE}|{DIGIT})*#{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*\.{HEXDIGIT}({UNDERLINE}|{HEXDIGIT})*#e-{DIGIT}({UNDERLINE}|{DIGIT})* {
-                column += strlen(yytext);
-                yylval = RealLiteral { std::string(yytext) };
-                return TokenType::TOK_UNIVERSAL_REAL_LITERAL;
-            }
-
-
-
-        /*
-         * -- Handle a character literal
-         *    --------------------------
-         */
+       /*
+        * -- Handle a character literal
+        *    --------------------------
+        */
 \'.\'       {
                 column += strlen(yytext);
                 yylval = CharLiteral { std::string(yytext), yytext[1] };
@@ -288,21 +503,31 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
 
 
 
-        /*
-         * -- Handle a string literal
-         *    -----------------------
-         */
+       /*
+        * -- Handle a string literal
+        *    -----------------------
+        */
 <str>\"     { column ++; BEGIN(INITIAL); yylval = StringLiteral { strVal }; return TokenType::TOK_STRING_LITERAL; }
-<str>{LF}   { column = 0; BEGIN(INITIAL); yylval = StringLiteral { strVal }; return TokenType::TOK_ERROR; }
 <str>\"\"   { column += 2; strVal += '"'; }
 <str>.      { column ++; strVal += yytext[0]; }
+<str>{LF}   {
+                column = 0;
+                BEGIN(INITIAL);
+                yylval = ScannerError { DiagID::IllegalString, { std::string(strVal), "End-of-line found in string" } };
+                return TokenType::TOK_ERROR;
+            }
+<str><<EOF>> {
+                BEGIN(INITIAL);
+                yylval = ScannerError { DiagID::IllegalString, { std::string(strVal), "End-of-file found in string" } };
+                return TokenType::TOK_ERROR;
+            }
 
 
 
-        /*
-         * -- determine which pragma name we are parsing and its args
-         *    -------------------------------------------------------
-         */
+       /*
+        * -- determine which pragma name we are parsing and its args
+        *    -------------------------------------------------------
+        */
 <prg>{WS}   { column ++; }
 <prg>{LF}   { column = 0; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
 <prg>{LETTER}({UNDERLINE}|{LETTER}|{DIGIT})* {
@@ -311,6 +536,7 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
                 return TokenType::TOK_PRAGMA_NAME;
             }
 <prg>.      { column ++; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
+<prg><<EOF>>  { return TokenType::YYEOF; }
 
 <arg>{WS}   { column ++; }
 <arg>;      { column ++; BEGIN(INITIAL); return TokenType::TOK_SEMICOLON; }
@@ -325,17 +551,17 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
                 return TokenType::TOK_IDENTIFIER;
             }
 <arg>.      { column ++; BEGIN(INITIAL); return TokenType::TOK_ERROR; }
+<arg><<EOF>>  { return TokenType::YYEOF; }
 
 
 
-        /*
-         * -- Handle EOF
-         *    ----------
-         */
-<*><<EOF>>  { return TokenType::YYEOF; }
+       /*
+        * -- Handle EOF
+        *    ----------
+        */
 '           { column ++; return TokenType::TOK_APOSTROPHE; }
-#           { column ++; return TokenType::TOK_SHARP; }
 .           { column ++; return TokenType::TOK_ERROR; }
+<<EOF>>     { return TokenType::YYEOF; }
 
 
 %%
@@ -348,7 +574,7 @@ YYSTYPE yylval;
 
 std::string ToLower(const char *s)
 {
-    std::string rv;
+    std::string rv = "";
 
     for (int i = 0; i < strlen(s); i ++) {
         rv.push_back(s[i] >= 'A' && s[i] <= 'Z' ? s[i] - 'A' + 'a' : s[i]);
@@ -367,3 +593,71 @@ void ScanString(const std::string &s)
     yy_scan_string(s.c_str());
     BEGIN(INITIAL);
 }
+
+
+
+//
+// -- Check a based number and determine if the digits are valid
+//    (Assumes a structurally correct based number)
+//    ----------------------------------------------------------
+bool ValidateBasedNumber(DiagID &diag)
+{
+    int i;
+    int base = 0;
+
+    // -- collect the base first
+    for (i = 0; i < strlen(yytext); i ++) {
+        if (yytext[i] == '_') continue;
+        if (yytext[i] == '#') break;
+        if (yytext[i] < '0' || yytext[i] > '9') {
+            diag = DiagID::IllegalBase;
+            return false;
+        }
+
+        base = base * 10 + (yytext[i] - '0');
+    }
+
+    if (base < 2 || base > 16) {
+        diag = DiagID::IllegalBase;
+        return false;
+    }
+
+    // -- now, check the digits against the base
+    for (i ++; i < strlen(yytext); i ++) {
+        if (yytext[i] == '_') continue;
+        if (yytext[i] == '.') continue;
+        if (yytext[i] == '#') return true;
+        if (yytext[i] >= '0' && yytext[i] <= '9') {
+            if (yytext[i] - '0' >= base) {
+                diag = DiagID::IllegalDigit;
+                return false;
+            }
+
+            continue;
+        }
+
+        if (yytext[i] >= 'a' && yytext[i] <= 'f') {
+            if (yytext[i] - 'a' + 10 >= base) {
+                diag = DiagID::IllegalDigit;
+                return false;
+            }
+
+            continue;
+        }
+
+        if (yytext[i] >= 'A' && yytext[i] <= 'F') {
+            if (yytext[i] - 'A' + 10 >= base) {
+                diag = DiagID::IllegalDigit;
+                return false;
+            }
+
+            continue;
+        }
+
+        diag = DiagID::IllegalDigit;
+        return false;
+    }
+
+    return true;
+}
+

@@ -149,6 +149,15 @@ std::string Diagnostics::Format(std::string tmpl, const std::vector<std::string_
 // -- The last thing in this source will be the list of messages
 //    ----------------------------------------------------------
 const std::unordered_map<DiagID, std::string> Diagnostics::DiagMsgs = {
+    { DiagID::IllegalIdentifier, "The identifier \"{0}\" is does not match the Ada requirements\n        {1}" },
+    { DiagID::IllegalInteger, "The integer \"{0}\" is does not match the Ada requirements\n        {1}" },
+    { DiagID::IllegalReal, "The real \"{0}\" is does not match the Ada requirements\n        {1}" },
+    { DiagID::IllegalString, "The string \"{0}\" is not terminated\n        {1}" },
+    { DiagID::IllegalBase, "The numeric literal \"{0}\" does not have a valid base from 2 to 16"},
+    { DiagID::IllegalDigit, "The numeric literal \"{0}\" contains an invalid digit outside the bounds of the base"},
+
+
+
     { DiagID::InternalError, "\e[31;1mFATAL: Internal Error consuming tokens; nothing consumed\e[0m" },
     { DiagID::UnknownError, "there was an unknown error in file {0} in function {1} on line {2}" },
     { DiagID::UnknownName, "the name '{0}' is not known" },
