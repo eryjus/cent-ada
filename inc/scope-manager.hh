@@ -48,12 +48,6 @@ public:
     Scope *CurrentScope(void) const { return current; }
     bool IsLocalDefined(std::string_view name) const { return CurrentScope()->LocalLookup(name) != nullptr; }
     void Print(void) const;
-    std::unique_ptr<Scope> Claim(void) {
-        std::unique_ptr<Scope> rv = std::move(stack.back());
-        stack.pop_back();
-        current = rv->Parent();
-        return std::move(rv);
-    }
 };
 
 

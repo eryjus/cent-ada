@@ -260,6 +260,7 @@ using DeclListPtr = std::unique_ptr<DeclList>;
 #include "symbol.hh"
 #include "scope.hh"
 #include "scope-manager.hh"
+#include "sym-tab.hh"
 #include "parser.hh"
 #include "ast.hh"
 

@@ -1,8 +1,0 @@
-
-"Message of the day"
-""
-" "
-"A"
-""""
-"Characters such as $, %. and } are allowed in string literals"
-

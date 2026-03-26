@@ -20,7 +20,6 @@ extern TokenType yylex(void);
 extern FILE *yyin;
 extern YYSTYPE yylval;
 extern int yylineno;
-extern "C" void *yy_scan_string(const char *);
 extern void ScanString(const std::string &s);
 
 
