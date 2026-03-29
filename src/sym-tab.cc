@@ -152,6 +152,20 @@ SymbolTable::Symbol *SymbolTable::GlobalLookup(std::string n, SymbolKind k, std:
 
 
 //
+// -- Mark the symbol table's current position
+//    ----------------------------------------
+void SymbolTable::Checkpoint::Rollback(void)
+{
+    if (committed) return;
+
+    current = curScope;
+    current->stack.resize(currentcount);
+    table.resize(scopecount);
+}
+
+
+
+//
 // -- Construct the initial symbol table
 //    ----------------------------------
 SymbolTable::SymbolTable(void)

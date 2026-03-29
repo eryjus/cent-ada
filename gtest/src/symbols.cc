@@ -57,6 +57,7 @@ protected:
     void TestPushPop(std::string n) {
         // -- given
         SymbolTable &table = SymbolTable::Get();
+        std::string scope = table.CurrentScope();
 
         // -- when
         SymbolTable::Scope *sc = table.Push(n);
@@ -71,6 +72,7 @@ protected:
         ASSERT_TRUE(table.current->parent->parent);
         EXPECT_EQ(table.current->parent->parent->name, "standard");
         ASSERT_FALSE(table.current->parent->parent->parent);
+        EXPECT_EQ(n, table.CurrentScope());
 
         // -- also when
         table.Pop();
@@ -82,6 +84,115 @@ protected:
         ASSERT_TRUE(table.current->parent);
         EXPECT_EQ(table.current->parent->name, "standard");
         ASSERT_FALSE(table.current->parent->parent);
+        EXPECT_EQ(scope, table.CurrentScope());
+    }
+
+
+    //
+    // -- Test Rollback of symbols
+    //    ------------------------
+    void TestRollbackSyms(std::string n) {
+        // -- given
+        SymbolTable &table = SymbolTable::Get();
+        std::string scope = table.CurrentScope();
+
+        {
+            // -- when
+            SymbolTable::Checkpoint cp;
+            SymbolTable::Declare( { }, n, SymbolTable::SymbolKind::Object);
+
+            // -- then
+            ASSERT_TRUE(LocalTest(table, n));
+
+            // -- and when not a committed symbol
+        }
+
+        // -- then
+        EXPECT_EQ(scope, table.CurrentScope());
+        EXPECT_FALSE(LocalTest(table, n));
+    }
+
+
+
+    //
+    // -- Test Rollback of scopes
+    //    -----------------------
+    void TestRollbackScope(std::string n) {
+        // -- given
+        SymbolTable &table = SymbolTable::Get();
+        std::string scope = table.CurrentScope();
+
+        {
+            // -- when
+            SymbolTable::Checkpoint cp;
+            SymbolTable::Push("new_scope");
+            SymbolTable::Declare( { }, n, SymbolTable::SymbolKind::Object);
+
+            // -- then
+            ASSERT_TRUE(LocalTest(table, n));
+            EXPECT_EQ("new_scope", table.CurrentScope());
+
+            // -- and when not a committed symbol
+        }
+
+        // -- then
+        EXPECT_FALSE(LocalTest(table, n));
+        EXPECT_EQ(scope, table.CurrentScope());
+    }
+
+
+    //
+    // -- Test Commit of symbols
+    //    ----------------------
+    void TestCommitSyms(std::string n) {
+        // -- given
+        SymbolTable &table = SymbolTable::Get();
+        std::string scope = table.CurrentScope();
+
+        {
+            // -- when
+            SymbolTable::Checkpoint cp;
+            SymbolTable::Declare( { }, n, SymbolTable::SymbolKind::Object);
+
+            // -- then
+            ASSERT_TRUE(LocalTest(table, n));
+
+            // -- and when
+            cp.Commit();
+        }
+
+        // -- then
+        EXPECT_EQ(scope, table.CurrentScope());
+        EXPECT_TRUE(LocalTest(table, n));
+    }
+
+
+
+    //
+    // -- Test Commit of scopes
+    //    ---------------------
+    void TestCommitScope(std::string n) {
+        // -- given
+        SymbolTable &table = SymbolTable::Get();
+        std::string scope = table.CurrentScope();
+
+        {
+            // -- when
+            SymbolTable::Checkpoint cp;
+            SymbolTable::Push("new_scope");
+            SymbolTable::Declare( { }, n, SymbolTable::SymbolKind::Object);
+
+            // -- then
+            ASSERT_TRUE(LocalTest(table, n));
+            EXPECT_EQ("new_scope", table.CurrentScope());
+
+            // -- and when
+            cp.Commit();
+        }
+
+        // -- then
+        EXPECT_TRUE(LocalTest(table, n));
+        EXPECT_EQ(scope, table.CurrentScope());
     }
 };
 
@@ -140,4 +251,10 @@ TEST_F(TestSyms, value) { TestStandardSymbol("value", SymbolTable::SymbolKind::A
 TEST_F(TestSyms, width) { TestStandardSymbol("width", SymbolTable::SymbolKind::Attribute); }
 
 TEST_F(TestSyms, pushpop) { TestPushPop("test"); }
+
+TEST_F(TestSyms, rollback_symbol1) { TestRollbackSyms("test"); }
+TEST_F(TestSyms, rollback_symbol2) { TestRollbackSyms("integer"); }
+TEST_F(TestSyms, rollback_scope1) { TestRollbackScope("test"); }
+TEST_F(TestSyms, rollback_scope2) { TestRollbackScope("integer"); }
+
 

@@ -72,6 +72,31 @@ public:
 
 
     //
+    // -- This is a structure for checkpointing, commit, and rollback
+    //    -----------------------------------------------------------
+    class Checkpoint {
+    private:
+        Scope *curScope;
+        unsigned long scopecount;
+        unsigned long currentcount;
+        bool committed;
+
+    public:
+        Checkpoint(void) :
+                curScope(current),
+                scopecount(table.size()),
+                currentcount(current->stack.size()),
+                committed(false) {}
+
+        ~Checkpoint() { Rollback(); }
+
+    public:
+        void Commit(void) { committed = true; }
+        void Rollback(void);
+    };
+
+
+    //
     // -- The current scope
     //    -----------------
     static Scope *current;
@@ -89,6 +114,9 @@ public:
     static Symbol *Declare(SourceLoc_t l, std::string n, SymbolKind k, std::string t = "");
     static Symbol *LocalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
     static Symbol *GlobalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
+
+    // -- for testing
+    static std::string CurrentScope(void) { return current->name; }
 
 
 private:
