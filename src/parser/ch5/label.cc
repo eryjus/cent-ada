@@ -29,7 +29,6 @@ NamePtr Parser::ParseLabel(void)
     SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
-    std::vector<Symbol *> *vec = nullptr;
     NamePtr label = nullptr;
 
 

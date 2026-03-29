@@ -30,7 +30,6 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc=astLoc;
-    std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     DiscreteRangeListPtr idxList = std::make_unique<DiscreteRangeList>();
     IndexConstraintPtr indices = nullptr;

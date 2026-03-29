@@ -26,7 +26,6 @@ DiscriminantAssociationPtr Parser::ParseDiscriminantAssociation(void)
 {
     Production p(*this, "disriminant_association");
     MarkStream m(tokens, diags);
-    std::vector<Symbol *> *vec = nullptr;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     NameListPtr names = std::make_unique<NameList>();

@@ -26,7 +26,6 @@ NumericTypeSpecPtr Parser::ParseFloatingPointConstraint(Id &id)
 {
     Production p(*this, "floating_point_constraint");
     SymbolTable::Checkpoint cp;
-    std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     ExprPtr size = nullptr;

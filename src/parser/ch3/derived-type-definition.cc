@@ -27,7 +27,6 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
     Production p(*this, "derived_type_definition");
     MarkStream m(tokens, diags);
     SymbolTable::Checkpoint cp;
-    std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SimpleNamePtr name = nullptr;

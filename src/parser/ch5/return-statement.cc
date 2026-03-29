@@ -34,6 +34,11 @@ ReturnStmtPtr Parser::ParseReturnStatement(NameListPtr &labels)
 
     expr = ParseExpression();
 
+    loc = TokenStream::Get().SourceLocation();
+    if (!Optional(TokenType::TOK_SEMICOLON)) {
+        diags.Error(loc, DiagID::MissingSemicolon, { "return statement" } );
+    }
+
     m.Commit();
 
     return std::make_unique<ReturnStmt>(astLoc, std::move(labels), std::move(expr));

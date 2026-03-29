@@ -33,7 +33,6 @@ GotoStmtPtr Parser::ParseGotoStatement(NameListPtr &labels)
 
     if (!Require(TokenType::TOK_GOTO)) return nullptr;
 
-// TODO: Make this right again    name = ParseNameNonExpr();
     Id id;
     if (!RequireIdent(id)){
         return nullptr;

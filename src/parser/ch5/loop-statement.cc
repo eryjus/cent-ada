@@ -37,7 +37,6 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     ExprPtr spec = nullptr;
     StmtListPtr stmts = nullptr;
     LoopType kind = LoopType::LoopNone;
-    std::vector<Symbol *> *vec = nullptr;
 
 
 

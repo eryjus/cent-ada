@@ -28,7 +28,6 @@ AssignStmtPtr Parser::ParseAssignmentStatement(NameListPtr &labels)
     MarkStream m(tokens, diags);
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
-    std::vector<Symbol *> *vec = nullptr;
     NamePtr name = nullptr;
     ExprPtr expr = nullptr;
 

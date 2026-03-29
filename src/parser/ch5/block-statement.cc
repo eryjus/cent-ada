@@ -37,7 +37,6 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     SimpleNamePtr endName = nullptr;
     DeclListPtr decls = nullptr;
     StmtListPtr stmts = nullptr;
-    std::vector<Symbol *> *vec = nullptr;
 
 
 

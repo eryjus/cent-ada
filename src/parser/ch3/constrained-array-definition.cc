@@ -65,7 +65,6 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     Production p(*this, "constrained_array_definition (id)");
     MarkStream m(tokens, diags);
     SymbolTable::Checkpoint cp;
-    std::vector<Symbol *> *vec;
     SourceLoc_t loc = tokens.SourceLocation();
     bool updateIncomplete = false;
     Symbol *sym = nullptr;

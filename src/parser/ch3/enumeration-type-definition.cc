@@ -29,7 +29,6 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
-    std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     IdListPtr ids = std::make_unique<IdList>();
     Symbol *sym = nullptr;

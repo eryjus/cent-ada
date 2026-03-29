@@ -94,71 +94,6 @@ private:
 
 
 private:
-#if 0
-    class MarkScope {
-        MarkScope(const MarkScope &) = delete;
-        MarkScope &operator=(const MarkScope &) = delete;
-
-
-    private:
-        ScopeManager &mgr;
-        bool committed = false;
-        size_t stackCkpt;
-        size_t scopeCkpt;
-
-
-    public:
-        MarkScope(ScopeManager &m) : mgr(m) {
-            stackCkpt = m.stack.size();
-            scopeCkpt = m.CurrentScope()->Checkpoint();
-        }
-        ~MarkScope() {
-            if (!committed) {
-                // -- roll back any added scopes
-                while (mgr.stack.size() > stackCkpt) {
-                    { // -- this creates a local scope in the loop to own the pointer for a short time
-                        std::unique_ptr<Scope> s = std::move(mgr.stack.back());
-                        mgr.stack.pop_back();
-                    }
-
-                    // -- should be nothing else to do
-                }
-
-
-                // -- rollback the symbols added in the original scope
-                mgr.CurrentScope()->Rollback(scopeCkpt);
-            }
-        }
-
-
-    public:
-        Scope *Commit(void) { committed = true; return mgr.CurrentScope(); }
-    };
-
-
-
-private:
-    class MarkSymbols {
-    private:
-        ScopeManager &mgr;
-        size_t checkpoint;
-        bool committed;
-
-    public:
-        MarkSymbols(ScopeManager &m) : mgr(m), checkpoint(mgr.CurrentScope()->Checkpoint()), committed(false) {}
-        ~MarkSymbols() {
-            if (!committed) {
-                mgr.CurrentScope()->Rollback(checkpoint);
-            }
-        }
-
-    public:
-        void Commit(void) { committed = true; }
-    };
-#endif
-
-
-private:
     class Production {
     private:
         Parser &parser;
@@ -217,17 +152,6 @@ public:
 
         return false;
     }
-    // -- DEPRECATED: An identifier is required to be next
-    bool RequireIdent(std::string &id) {
-        id = "";
-        if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
-            id = std::get<IdentifierLexeme>(TokenStream::Get().Payload()).name;
-            TokenStream::Get().Advance();
-            return true;
-        }
-        return false;
-    }
-
     // -- An identifier is required to be next
     bool RequireIdent(Id &id) {
         id.name = "";
@@ -244,7 +168,6 @@ public:
     std::string Last(void) { if (stack.size() == 0) return "top level"; return stack[stack.size() - 1]; }
     void Push(std::string p) { stack.push_back(p); }
     void Pop(void) { stack.pop_back(); }
-//    const ScopeManager *Scopes(void) const { return &scopes; }
     std::string UnwindStack(void) {
         std::string rv = "";
         for (auto it = stack.rbegin(); it != stack.rend(); ++it) {

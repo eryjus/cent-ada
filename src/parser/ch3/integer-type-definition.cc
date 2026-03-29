@@ -26,7 +26,6 @@ TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
 {
     Production p(*this, "integer_type_definition");
     SymbolTable::Checkpoint cp;
-    std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     RangeConstraintPtr con = nullptr;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();

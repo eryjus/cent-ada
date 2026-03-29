@@ -31,7 +31,6 @@ StmtPtr Parser::ParseStatement(void)
     SourceLoc_t loc = astLoc;
     NameListPtr labels = std::make_unique<NameList>();
     StmtPtr stmt = nullptr;
-    std::vector<Symbol *> *vec = nullptr;
     NamePtr label;
 
 
