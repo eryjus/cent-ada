@@ -7,5 +7,14 @@ tst/declarations/bad00012.ada:6:11: error: duplicate name 'intptr' in the same s
   in production `full_type_definition`
   in production `type_declaration`
   in production `basic_declaration`
+tst/declarations/bad00012.ada:5:21: note: the previous declaration was here
+    type INTPTR is access INTEGER;
+
+                        ^
+  in production `access_type_definition`
+  in production `type_definition`
+  in production `full_type_definition`
+  in production `type_declaration`
+  in production `basic_declaration`
    Errors  : 1
    Warnings: 0

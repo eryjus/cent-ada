@@ -26,7 +26,7 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
 {
     Production p(*this, "derived_type_definition");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
@@ -43,18 +43,17 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(id.name)) {
-        // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(id.name);
-
-        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+    Symbol *sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
             updateIncomplete = true;
         } else {
             diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         }
+    } else {
+        symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::Type);
     }
-
-    scopes.Declare(std::make_unique<DerivedTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
     name = std::make_unique<SimpleName>(astLoc, id);
 
@@ -69,9 +68,9 @@ DerivedTypeSpecPtr Parser::ParseDerivedTypeDefinition(Id &id)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+    if (updateIncomplete) sym->kind = SymbolTable::SymbolKind::Type;
 
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<DerivedTypeSpec>(astLoc, /*std::move(name),*/ std::move(type));

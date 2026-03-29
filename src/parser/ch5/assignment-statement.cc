@@ -59,7 +59,7 @@ AssignStmtPtr Parser::ParseAssignmentStatement(NameListPtr &labels)
     //
     // -- We will accept the production and check for a valid name
     //    --------------------------------------------------------
-    if (!scopes.Lookup(name->GetName())) {
+    if (!symTab.GlobalLookup(name->GetName())) {
         diags.Error(astLoc, DiagID::UnknownName, { name->GetName() } );
     }
 

@@ -27,7 +27,7 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "unconstrained_array_definition");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc=astLoc;
     std::vector<Symbol *> *vec;
@@ -36,6 +36,7 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     IndexConstraintPtr indices = nullptr;
     UnboundedRangePtr idx = nullptr;
     SubtypeIndicationPtr compType = nullptr;
+    Symbol *sym = nullptr;
 
 
 
@@ -49,18 +50,17 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(id.name)) {
-        // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(id.name);
-        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+    sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
             updateIncomplete = true;
         } else {
             diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         }
+    } else {
+        symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::Type);
     }
-
-    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
-
 
 
     //
@@ -114,14 +114,13 @@ ArrayTypeSpecPtr Parser::ParseUnconstrainedArrayDefinition(Id &id)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
-
+    if (updateIncomplete) sym->kind = SymbolTable::SymbolKind::Type;
     NameListPtr list = std::make_unique<NameList>();
     NamePtr name = std::make_unique<SimpleName>(astLoc, id);
     list->push_back(std::move(name));
     indices = std::make_unique<IndexConstraint>(astLoc, true, std::move(idxList));
 
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<ArrayTypeSpec>(astLoc, true, std::move(indices), std::move(compType));

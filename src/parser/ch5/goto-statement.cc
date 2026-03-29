@@ -43,11 +43,20 @@ GotoStmtPtr Parser::ParseGotoStatement(NameListPtr &labels)
     name = std::make_unique<SimpleName>(loc, id);
 
     if (name) {
-        const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
+        Symbol *sym = symTab.GlobalLookup(name->GetName());
 
-        if (!(vec && vec->at(0) && vec->at(0)->kind == Symbol::SymbolKind::Label)) {
-            scopes.Declare(std::make_unique<LabelSymbol>(std::string(name->GetName()), astLoc, scopes.CurrentScope()));
+        if (sym) {
+            if (sym->kind != SymbolTable::SymbolKind::Label) {
+                diags.Error(id.loc, DiagID::InvalidName, { "goto statement" } );
+            }
+        } else {
+            symTab.Declare(id.loc, id.name, SymbolTable::SymbolKind::UndefinedLabel);
         }
+    }
+
+
+    if (!Require(TokenType::TOK_SEMICOLON)) {
+        diags.Error(loc, DiagID::MissingSemicolon, { "goto statement" } );
     }
 
 

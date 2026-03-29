@@ -17,7 +17,7 @@
 #include "ada.hh"
 
 
-
+#if 0
 //
 // -- Construct the Scope Manager
 //    ---------------------------
@@ -192,5 +192,5 @@ void ScopeManager::Print(void) const
     }
 }
 
-
+#endif
 

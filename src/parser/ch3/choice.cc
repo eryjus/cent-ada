@@ -81,14 +81,12 @@ ChoicePtr Parser::ParseChoice(void)
             //
             // -- This is required to be a component simple name
             //    ----------------------------------------------
-            const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-            if (vec != nullptr) {
-                for (auto &sym : *vec) {
-                    if (sym->kind == Symbol::SymbolKind::Component) {
-                        p.At("Component Simple Name");
-                        m.Commit();
-                        return std::make_unique<NameChoice>(astLoc, std::move(name));
-                    }
+            Symbol *sym = symTab.LocalLookup(id.name);
+            if (sym) {
+                if (sym->kind == SymbolTable::SymbolKind::Component) {
+                    p.At("Component Simple Name");
+                    m.Commit();
+                    return std::make_unique<NameChoice>(astLoc, std::move(name));
                 }
             }
 

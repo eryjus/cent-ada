@@ -23,6 +23,7 @@
 SymbolTable *SymbolTable::symTab = nullptr;
 std::vector<std::unique_ptr<SymbolTable::Scope>> SymbolTable::table;
 SymbolTable::Scope *SymbolTable::current = nullptr;
+SymbolTable &symTab = SymbolTable::Get();
 
 
 
@@ -166,11 +167,69 @@ void SymbolTable::Checkpoint::Rollback(void)
 
 
 //
+// -- return the string representation of the symbol kind
+//    ---------------------------------------------------
+std::string SymbolTable::Symbol::to_string(void) const
+{
+    switch(kind) {
+    default:                            return "Unknown";
+    case SymbolKind::Object:            return "Object";
+    case SymbolKind::Type:              return "Type";
+    case SymbolKind::Subprogram:        return "Subprogram";
+    case SymbolKind::EnumLiteral:       return "EnumLiteral";
+    case SymbolKind::Component:         return "Component";
+    case SymbolKind::Package:           return "Package";
+    case SymbolKind::Label:             return "Label";
+    case SymbolKind::Discriminant:      return "Discriminant";
+    case SymbolKind::Attribute:         return "Attribute";
+    case SymbolKind::Pragma:            return "Pragma";
+    case SymbolKind::IncompleteType:    return "IncompleteType";
+    case SymbolKind::Deleted:           return "Deleted";
+    case SymbolKind::UndefinedLabel:    return "UndefinedLabel";
+    case SymbolKind::LoopName:          return "LoopName";
+    case SymbolKind::BlockName:         return "BlockName";
+    }
+}
+
+
+
+//
+// -- Print the symbol Table
+//    ----------------------
+void SymbolTable::Print(void)
+{
+    std::cout << "=========================================\n";
+    std::cout << "=========================================\n";
+    std::cout << "====   Printing Symbol Scope Stack   ====\n";
+    std::cout << "=========================================\n";
+    std::cout << "=========================================\n";
+    std::cout << '\n';
+
+    for (int i = 1; i < table.size(); i ++) {
+        std::cout << "Scope Name: " << table[i]->name << "\n";
+        std::cout << "Scope ID  : " << i << '\n';
+        std::cout << "-------------------\n";
+
+        for (auto &sym : table[i]->stack) {
+            std::cout << sym->to_string() << " Symbol: " << sym->symName << " : " << sym->to_string();
+            if (sym->typeName != "") std::cout << " of type " << sym->typeName;
+            std::cout << '\n';
+        }
+
+        std::cout << "-------------------\n";
+        std::cout << '\n';
+    }
+
+}
+
+
+
+//
 // -- Construct the initial symbol table
 //    ----------------------------------
 SymbolTable::SymbolTable(void)
 {
-    Push("standard");
+    Push("STANDARD");
 
 
     //
@@ -184,7 +243,7 @@ SymbolTable::SymbolTable(void)
 
 
     //
-    // -- Create the Boolean Enumeration
+    // -- Create the Boolean Type
     //    ------------------------------
     Declare({}, "boolean", SymbolKind::Type);
     Declare({}, "false", SymbolKind::EnumLiteral, "boolean");
@@ -239,6 +298,6 @@ SymbolTable::SymbolTable(void)
     //
     // -- Finally, push the global scope
     //    ------------------------------
-    Push("global");
+    Push("GLOBAL");
 }
 

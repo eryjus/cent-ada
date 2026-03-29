@@ -25,11 +25,12 @@
 TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
 {
     Production p(*this, "integer_type_definition");
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     RangeConstraintPtr con = nullptr;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
+    Symbol *sym = nullptr;
 
 
     //
@@ -39,26 +40,25 @@ TypeSpecPtr Parser::ParseIntegerTypeDefinition(Id &id)
     if (!con) return nullptr;
 
 
-    if (scopes.IsLocalDefined(id.name)) {
-        // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(id.name);
-
-        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
-            updateIncomplete = true;
+    sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
+            sym->kind = SymbolTable::SymbolKind::Type;
         } else {
             diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         }
+    } else {
+        symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::Type);
     }
-
-    scopes.Declare(std::make_unique<IntegerTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
     //
     // -- Consider this parse complete
     //    ----------------------------
-    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+    if (updateIncomplete) sym->kind = SymbolTable::SymbolKind::Type;
 
-    s.Commit();
+    cp.Commit();
 
     return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::Integer, nullptr, std::move(con));
 }

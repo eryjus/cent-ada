@@ -4,8 +4,8 @@ tst/declarations/bad00011.ada:6:3: error: duplicate name 'one' in the same scope
       ^
   in production `object_declaration`
   in production `basic_declaration`
-tst/declarations/bad00011.ada:6:3: note: the previous declaration was here
-    ONE : INTEGER := 2;
+tst/declarations/bad00011.ada:5:3: note: the previous declaration was here
+    ONE : INTEGER := 1;
 
       ^
   in production `object_declaration`

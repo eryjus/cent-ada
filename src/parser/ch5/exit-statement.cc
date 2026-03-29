@@ -30,6 +30,7 @@ ExitStmtPtr Parser::ParseExitStatement(NameListPtr &labels)
     SourceLoc_t loc = astLoc;
     NamePtr name = nullptr;
     ExprPtr cond = nullptr;
+    Symbol *sym = nullptr;
 
     if (!Require(TokenType::TOK_EXIT)) return nullptr;
 
@@ -45,9 +46,9 @@ ExitStmtPtr Parser::ParseExitStatement(NameListPtr &labels)
     }
 
     if (name) {
-        const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
+        sym = symTab.GlobalLookup(name->GetName());
 
-        if (!(vec->at(0) && vec->at(0)->kind == Symbol::SymbolKind::LoopName)) {
+        if (!(sym && sym->kind == SymbolTable::SymbolKind::LoopName)) {
             diags.Error(loc, DiagID::InvalidName, { "exit statement" } );
         }
     }

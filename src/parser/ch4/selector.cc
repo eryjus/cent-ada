@@ -50,7 +50,7 @@ SelectedNamePtr Parser::ParseSelector(NamePtr &prefix)
     SourceLoc_t loc = TokenStream::Get().SourceLocation();
     selector = ParseSimpleName();
     if (selector) {
-        if (!scopes.Lookup(selector->GetName())) {
+        if (!symTab.GlobalLookup(selector->GetName())) {
             diags.Error(loc, DiagID::UnknownName, { std::string(selector->GetName()) } );
             // -- allow the parse to continue
         }

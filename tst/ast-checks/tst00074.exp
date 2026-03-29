@@ -81,30 +81,23 @@ Listing for tst/declarations/tst00074.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: month_name : Enumeration
-   containing literals (jan feb mar apr may jun jul aug sep oct nov dec )
-Enumeration Literal: jan : EnumLiteral of type month_name; value (0)
-Enumeration Literal: feb : EnumLiteral of type month_name; value (1)
-Enumeration Literal: mar : EnumLiteral of type month_name; value (2)
-Enumeration Literal: apr : EnumLiteral of type month_name; value (3)
-Enumeration Literal: may : EnumLiteral of type month_name; value (4)
-Enumeration Literal: jun : EnumLiteral of type month_name; value (5)
-Enumeration Literal: jul : EnumLiteral of type month_name; value (6)
-Enumeration Literal: aug : EnumLiteral of type month_name; value (7)
-Enumeration Literal: sep : EnumLiteral of type month_name; value (8)
-Enumeration Literal: oct : EnumLiteral of type month_name; value (9)
-Enumeration Literal: nov : EnumLiteral of type month_name; value (10)
-Enumeration Literal: dec : EnumLiteral of type month_name; value (11)
-Record Type: date : Record
-   containing components (day month year )
--------------------
-
-Scope Name: date
-Scope ID  : 2
--------------------
-Component Symbol: day : Component
-Component Symbol: month : Component
-Component Symbol: year : Component
+Type Symbol: month_name : Type
+EnumLiteral Symbol: jan : EnumLiteral of type month_name
+EnumLiteral Symbol: feb : EnumLiteral of type month_name
+EnumLiteral Symbol: mar : EnumLiteral of type month_name
+EnumLiteral Symbol: apr : EnumLiteral of type month_name
+EnumLiteral Symbol: may : EnumLiteral of type month_name
+EnumLiteral Symbol: jun : EnumLiteral of type month_name
+EnumLiteral Symbol: jul : EnumLiteral of type month_name
+EnumLiteral Symbol: aug : EnumLiteral of type month_name
+EnumLiteral Symbol: sep : EnumLiteral of type month_name
+EnumLiteral Symbol: oct : EnumLiteral of type month_name
+EnumLiteral Symbol: nov : EnumLiteral of type month_name
+EnumLiteral Symbol: dec : EnumLiteral of type month_name
+Type Symbol: date : Type
+Component Symbol: day : Component of type date
+Component Symbol: month : Component of type date
+Component Symbol: year : Component of type date
 -------------------
 
    Errors  : 0

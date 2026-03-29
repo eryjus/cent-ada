@@ -62,13 +62,13 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: x : Object
-Label Symbol: main : Label
+LoopName Symbol: main : LoopName
 -------------------
 
 Scope Name: main
 Scope ID  : 2
 -------------------
-Loop Name: main : LoopName
+LoopName Symbol: main : LoopName
 -------------------
 
    Errors  : 0

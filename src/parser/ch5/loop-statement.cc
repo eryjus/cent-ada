@@ -29,7 +29,7 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
 {
     Production p(*this, "loop_statement");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     SimpleNamePtr loopName = nullptr;
@@ -37,7 +37,6 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     ExprPtr spec = nullptr;
     StmtListPtr stmts = nullptr;
     LoopType kind = LoopType::LoopNone;
-    Scope *scope = nullptr;
     std::vector<Symbol *> *vec = nullptr;
 
 
@@ -55,18 +54,17 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
 
 
     if (loopName) {
-        if (scopes.IsLocalDefined(loopName->GetName())) {
-            vec = scopes.CurrentScope()->LocalLookup(loopName->GetName());
-
-            if (vec->at(0)->kind != Symbol::SymbolKind::UndefinedLabel && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
-                diags.Error(loc, DiagID::DuplicateName, { "Statement Label" } );
-                diags.Note(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
-            } else if (vec->at(0)->kind == Symbol::SymbolKind::UndefinedLabel) {
-                vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+        Symbol *sym = symTab.LocalLookup(id.name);
+        if (sym) {
+            if (sym->kind != SymbolTable::SymbolKind::UndefinedLabel && sym->kind != SymbolTable::SymbolKind::Deleted) {
+                diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+                diags.Note(sym->loc, DiagID::DuplicateName2, { } );
+            } else {
+                sym->kind = SymbolTable::SymbolKind::LoopName;
             }
+        } else {
+            symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::LoopName);
         }
-
-        scopes.Declare(std::make_unique<LabelSymbol>(std::string(loopName->GetName()), astLoc, scopes.CurrentScope()));
     }
 
 
@@ -82,8 +80,8 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     // -- For this block of statements, we need a pseudo scope
     //    ----------------------------------------------------
     if (loopName) {
-        scope = scopes.PushScope(Scope::ScopeKind::Loop, std::string(loopName->GetName()));
-        scopes.Declare(std::make_unique<LoopSymbol>(std::string(loopName->GetName()), astLoc, scope));
+        symTab.Push(loopName->GetName());
+        symTab.Declare(astLoc, loopName->GetName(), SymbolTable::SymbolKind::LoopName);
     }
 
     stmts = ParseSequenceOfStatements();
@@ -121,13 +119,13 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     // -- if we created a scope, pop it here
     //    ----------------------------------
     if (loopName) {
-        scopes.PopScope(scope);
+        symTab.Pop();
     }
 
 
     p.At("Complete loop");
+    cp.Commit();
     m.Commit();
-    s.Commit();
     return std::make_unique<LoopStmt>(astLoc, std::move(labels), std::move(loopName), kind, std::move(spec), std::move(stmts));
 }
 

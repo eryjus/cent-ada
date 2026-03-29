@@ -22,7 +22,7 @@
 //
 // -- Parse a Variant Part
 //    --------------------
-VariantPartPtr Parser::ParseVariantPart(RecordTypeSymbol *rec)
+VariantPartPtr Parser::ParseVariantPart(Symbol *rec)
 {
     Production p(*this, "variant_part");
     MarkStream m(tokens, diags);

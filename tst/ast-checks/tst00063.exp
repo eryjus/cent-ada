@@ -62,7 +62,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: max_line_size : Object
-Array Type: line : Array
+Type Symbol: line : Type
 Object Symbol: page : Object
 -------------------
 

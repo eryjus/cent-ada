@@ -1,4 +1,7 @@
-error: expected ';' after subtype_indication
+tst/declarations/bad00001.ada:1:15: error: expected ';' after subtype_indication
+    COUNT : INTEGER
+
+                  ^
   in production `object_declaration`
   in production `basic_declaration`
    Errors  : 1

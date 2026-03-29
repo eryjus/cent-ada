@@ -52,8 +52,8 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: max_line_size : Object
-Integer Type: line_size : Integer
-Subtype: column_ptr : Subtype
+Type Symbol: line_size : Type
+Type Symbol: column_ptr : Type
 -------------------
 
    Errors  : 0

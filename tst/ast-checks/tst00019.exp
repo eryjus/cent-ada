@@ -24,7 +24,7 @@ Listing for tst/declarations/tst00019.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Subtype: int : Subtype
+Type Symbol: int : Type
 -------------------
 
    Errors  : 0

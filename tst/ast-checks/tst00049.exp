@@ -29,7 +29,7 @@ Listing for tst/declarations/tst00049.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Subtype: probability : Subtype
+Type Symbol: probability : Type
 -------------------
 
    Errors  : 0

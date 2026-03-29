@@ -39,7 +39,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: max : Object
-Subtype: buffer_size : Subtype
+Type Symbol: buffer_size : Type
 -------------------
 
    Errors  : 0

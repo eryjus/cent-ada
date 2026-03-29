@@ -1685,24 +1685,23 @@ Listing for tst/declarations/tst00200.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Array Type: bit_vector : Array
+Type Symbol: bit_vector : Type
 Object Symbol: count : Object
 Object Symbol: sum : Object
 Object Symbol: size : Object
 Object Symbol: sorted : Object
 Object Symbol: n : Object
 Object Symbol: k : Object
-Enumeration Type: color : Enumeration
-   containing literals (white red orange yellow green blue purple brown black )
-Enumeration Literal: white : EnumLiteral of type color; value (0)
-Enumeration Literal: red : EnumLiteral of type color; value (1)
-Enumeration Literal: orange : EnumLiteral of type color; value (2)
-Enumeration Literal: yellow : EnumLiteral of type color; value (3)
-Enumeration Literal: green : EnumLiteral of type color; value (4)
-Enumeration Literal: blue : EnumLiteral of type color; value (5)
-Enumeration Literal: purple : EnumLiteral of type color; value (6)
-Enumeration Literal: brown : EnumLiteral of type color; value (7)
-Enumeration Literal: black : EnumLiteral of type color; value (8)
+Type Symbol: color : Type
+EnumLiteral Symbol: white : EnumLiteral of type color
+EnumLiteral Symbol: red : EnumLiteral of type color
+EnumLiteral Symbol: orange : EnumLiteral of type color
+EnumLiteral Symbol: yellow : EnumLiteral of type color
+EnumLiteral Symbol: green : EnumLiteral of type color
+EnumLiteral Symbol: blue : EnumLiteral of type color
+EnumLiteral Symbol: purple : EnumLiteral of type color
+EnumLiteral Symbol: brown : EnumLiteral of type color
+EnumLiteral Symbol: black : EnumLiteral of type color
 Object Symbol: color_table : Object
 Object Symbol: limit : Object
 Object Symbol: low_limit : Object
@@ -1713,254 +1712,177 @@ Object Symbol: power_16 : Object
 Object Symbol: one : Object
 Object Symbol: un : Object
 Object Symbol: eins : Object
-Integer Type: column : Integer
-Array Type: table : Array
-Array Type: matrix : Array
-Subtype: rainbow : Subtype
-Subtype: red_purple : Subtype
-Subtype: int : Subtype
-Subtype: small_int : Subtype
-Subtype: up_to_k : Subtype
-Subtype: square_sub : Subtype
-Record Type: coordinate : Record
-   containing components (lat long )
-Derived Type: local_coordinate : Derived
-Enumeration Type: day : Enumeration
-   containing literals (mon tue wed thu fri sat sun )
-Enumeration Literal: mon : EnumLiteral of type day; value (0)
-Enumeration Literal: tue : EnumLiteral of type day; value (1)
-Enumeration Literal: wed : EnumLiteral of type day; value (2)
-Enumeration Literal: thu : EnumLiteral of type day; value (3)
-Enumeration Literal: fri : EnumLiteral of type day; value (4)
-Enumeration Literal: sat : EnumLiteral of type day; value (5)
-Enumeration Literal: sun : EnumLiteral of type day; value (6)
-Derived Type: midweek : Derived
-Derived Type: positive : Derived
-Derived Type: counter : Derived
-Enumeration Type: suit : Enumeration
-   containing literals (clubs diamonds hearts spades )
-Enumeration Literal: clubs : EnumLiteral of type suit; value (0)
-Enumeration Literal: diamonds : EnumLiteral of type suit; value (1)
-Enumeration Literal: hearts : EnumLiteral of type suit; value (2)
-Enumeration Literal: spades : EnumLiteral of type suit; value (3)
-Enumeration Type: gender : Enumeration
-   containing literals (m f )
-Enumeration Literal: m : EnumLiteral of type gender; value (0)
-Enumeration Literal: f : EnumLiteral of type gender; value (1)
-Enumeration Type: level : Enumeration
-   containing literals (low medium urgent )
-Enumeration Literal: low : EnumLiteral of type level; value (0)
-Enumeration Literal: medium : EnumLiteral of type level; value (1)
-Enumeration Literal: urgent : EnumLiteral of type level; value (2)
-Enumeration Type: light : Enumeration
-   containing literals (red amber green )
-Enumeration Literal: red : EnumLiteral of type light; value (0)
-Enumeration Literal: amber : EnumLiteral of type light; value (1)
-Enumeration Literal: green : EnumLiteral of type light; value (2)
-Enumeration Type: hexa : Enumeration
-   containing literals ('A' 'B' 'C' 'D' 'E' 'F' )
-Enumeration Literal: 'A' : EnumLiteral of type hexa; value (0)
-Enumeration Literal: 'B' : EnumLiteral of type hexa; value (1)
-Enumeration Literal: 'C' : EnumLiteral of type hexa; value (2)
-Enumeration Literal: 'D' : EnumLiteral of type hexa; value (3)
-Enumeration Literal: 'E' : EnumLiteral of type hexa; value (4)
-Enumeration Literal: 'F' : EnumLiteral of type hexa; value (5)
-Enumeration Type: mixed : Enumeration
-   containing literals ('A' 'B' '*' none '?' '%' )
-Enumeration Literal: 'A' : EnumLiteral of type mixed; value (0)
-Enumeration Literal: 'B' : EnumLiteral of type mixed; value (1)
-Enumeration Literal: '*' : EnumLiteral of type mixed; value (2)
-Enumeration Literal: none : EnumLiteral of type mixed; value (3)
-Enumeration Literal: '?' : EnumLiteral of type mixed; value (4)
-Enumeration Literal: '%' : EnumLiteral of type mixed; value (5)
-Subtype: weekday : Subtype
-Subtype: major : Subtype
-Enumeration Type: roman_digit : Enumeration
-   containing literals ('I' 'V' 'X' 'L' 'C' 'D' 'M' )
-Enumeration Literal: 'I' : EnumLiteral of type roman_digit; value (0)
-Enumeration Literal: 'V' : EnumLiteral of type roman_digit; value (1)
-Enumeration Literal: 'X' : EnumLiteral of type roman_digit; value (2)
-Enumeration Literal: 'L' : EnumLiteral of type roman_digit; value (3)
-Enumeration Literal: 'C' : EnumLiteral of type roman_digit; value (4)
-Enumeration Literal: 'D' : EnumLiteral of type roman_digit; value (5)
-Enumeration Literal: 'M' : EnumLiteral of type roman_digit; value (6)
-Integer Type: page_num : Integer
+Type Symbol: column : Type
+Type Symbol: table : Type
+Type Symbol: matrix : Type
+Type Symbol: rainbow : Type
+Type Symbol: red_purple : Type
+Type Symbol: int : Type
+Type Symbol: small_int : Type
+Type Symbol: up_to_k : Type
+Type Symbol: square_sub : Type
+Type Symbol: coordinate : Type
+Component Symbol: lat : Component of type coordinate
+Component Symbol: long : Component of type coordinate
+Type Symbol: local_coordinate : Type
+Type Symbol: day : Type
+EnumLiteral Symbol: mon : EnumLiteral of type day
+EnumLiteral Symbol: tue : EnumLiteral of type day
+EnumLiteral Symbol: wed : EnumLiteral of type day
+EnumLiteral Symbol: thu : EnumLiteral of type day
+EnumLiteral Symbol: fri : EnumLiteral of type day
+EnumLiteral Symbol: sat : EnumLiteral of type day
+EnumLiteral Symbol: sun : EnumLiteral of type day
+Type Symbol: midweek : Type
+Type Symbol: positive : Type
+Type Symbol: counter : Type
+Type Symbol: suit : Type
+EnumLiteral Symbol: clubs : EnumLiteral of type suit
+EnumLiteral Symbol: diamonds : EnumLiteral of type suit
+EnumLiteral Symbol: hearts : EnumLiteral of type suit
+EnumLiteral Symbol: spades : EnumLiteral of type suit
+Type Symbol: gender : Type
+EnumLiteral Symbol: m : EnumLiteral of type gender
+EnumLiteral Symbol: f : EnumLiteral of type gender
+Type Symbol: level : Type
+EnumLiteral Symbol: low : EnumLiteral of type level
+EnumLiteral Symbol: medium : EnumLiteral of type level
+EnumLiteral Symbol: urgent : EnumLiteral of type level
+Type Symbol: light : Type
+EnumLiteral Symbol: red : EnumLiteral of type light
+EnumLiteral Symbol: amber : EnumLiteral of type light
+EnumLiteral Symbol: green : EnumLiteral of type light
+Type Symbol: hexa : Type
+EnumLiteral Symbol: 'A' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'B' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'C' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'D' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'E' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'F' : EnumLiteral of type hexa
+Type Symbol: mixed : Type
+EnumLiteral Symbol: 'A' : EnumLiteral of type mixed
+EnumLiteral Symbol: 'B' : EnumLiteral of type mixed
+EnumLiteral Symbol: '*' : EnumLiteral of type mixed
+EnumLiteral Symbol: none : EnumLiteral of type mixed
+EnumLiteral Symbol: '?' : EnumLiteral of type mixed
+EnumLiteral Symbol: '%' : EnumLiteral of type mixed
+Type Symbol: weekday : Type
+Type Symbol: major : Type
+Type Symbol: roman_digit : Type
+EnumLiteral Symbol: 'I' : EnumLiteral of type roman_digit
+EnumLiteral Symbol: 'V' : EnumLiteral of type roman_digit
+EnumLiteral Symbol: 'X' : EnumLiteral of type roman_digit
+EnumLiteral Symbol: 'L' : EnumLiteral of type roman_digit
+EnumLiteral Symbol: 'C' : EnumLiteral of type roman_digit
+EnumLiteral Symbol: 'D' : EnumLiteral of type roman_digit
+EnumLiteral Symbol: 'M' : EnumLiteral of type roman_digit
+Type Symbol: page_num : Type
 Object Symbol: max_line_size : Object
-Integer Type: line_size : Integer
-Subtype: column_ptr : Subtype
-Subtype: buffer_size : Subtype
-Real Type: coefficient : Real
-Real Type: mass : Real
-Subtype: short_coeff : Subtype
-Subtype: probability : Subtype
-Real Type: volt : Real
-Subtype: rough_voltage : Subtype
+Type Symbol: line_size : Type
+Type Symbol: column_ptr : Type
+Type Symbol: buffer_size : Type
+Type Symbol: coefficient : Type
+Type Symbol: mass : Type
+Type Symbol: short_coeff : Type
+Type Symbol: probability : Type
+Type Symbol: volt : Type
+Type Symbol: rough_voltage : Type
 Object Symbol: word_length : Object
 Object Symbol: del : Object
-Real Type: fraction : Real
-Array Type: vector : Array
-Array Type: roman : Array
-Array Type: schedule : Array
-Array Type: line : Array
+Type Symbol: fraction : Type
+Type Symbol: vector : Type
+Type Symbol: roman : Type
+Type Symbol: schedule : Type
+Type Symbol: line : Type
 Object Symbol: grid : Object
 Object Symbol: mix : Object
 Object Symbol: page : Object
-Enumeration Type: month_name : Enumeration
-   containing literals (jan feb mar apr may jun jul aug sep oct nov dec )
-Enumeration Literal: jan : EnumLiteral of type month_name; value (0)
-Enumeration Literal: feb : EnumLiteral of type month_name; value (1)
-Enumeration Literal: mar : EnumLiteral of type month_name; value (2)
-Enumeration Literal: apr : EnumLiteral of type month_name; value (3)
-Enumeration Literal: may : EnumLiteral of type month_name; value (4)
-Enumeration Literal: jun : EnumLiteral of type month_name; value (5)
-Enumeration Literal: jul : EnumLiteral of type month_name; value (6)
-Enumeration Literal: aug : EnumLiteral of type month_name; value (7)
-Enumeration Literal: sep : EnumLiteral of type month_name; value (8)
-Enumeration Literal: oct : EnumLiteral of type month_name; value (9)
-Enumeration Literal: nov : EnumLiteral of type month_name; value (10)
-Enumeration Literal: dec : EnumLiteral of type month_name; value (11)
-Record Type: date : Record
-   containing components (day month year )
-Record Type: complex : Record
-   containing components (re im )
+Type Symbol: month_name : Type
+EnumLiteral Symbol: jan : EnumLiteral of type month_name
+EnumLiteral Symbol: feb : EnumLiteral of type month_name
+EnumLiteral Symbol: mar : EnumLiteral of type month_name
+EnumLiteral Symbol: apr : EnumLiteral of type month_name
+EnumLiteral Symbol: may : EnumLiteral of type month_name
+EnumLiteral Symbol: jun : EnumLiteral of type month_name
+EnumLiteral Symbol: jul : EnumLiteral of type month_name
+EnumLiteral Symbol: aug : EnumLiteral of type month_name
+EnumLiteral Symbol: sep : EnumLiteral of type month_name
+EnumLiteral Symbol: oct : EnumLiteral of type month_name
+EnumLiteral Symbol: nov : EnumLiteral of type month_name
+EnumLiteral Symbol: dec : EnumLiteral of type month_name
+Type Symbol: date : Type
+Component Symbol: day : Component of type date
+Component Symbol: month : Component of type date
+Component Symbol: year : Component of type date
+Type Symbol: complex : Type
+Component Symbol: re : Component of type complex
+Component Symbol: im : Component of type complex
 Object Symbol: tomorrow : Object
 Object Symbol: yesterday : Object
 Object Symbol: a : Object
 Object Symbol: b : Object
 Object Symbol: c : Object
-Discriminant Symbol: size : Discriminant
-Record Type: buffer : Record
-   containing components (pos value )
-Discriminant Symbol: side : Discriminant
-Record Type: square : Record
-   containing components (mat )
-Discriminant Symbol: number : Discriminant
-Record Type: double_square : Record
-   containing components (left right )
-Discriminant Symbol: number : Discriminant
-Record Type: item : Record
-   containing components (content )
-Enumeration Type: device : Enumeration
-   containing literals (printer disk drum )
-Enumeration Literal: printer : EnumLiteral of type device; value (0)
-Enumeration Literal: disk : EnumLiteral of type device; value (1)
-Enumeration Literal: drum : EnumLiteral of type device; value (2)
-Enumeration Type: state : Enumeration
-   containing literals (open closed )
-Enumeration Literal: open : EnumLiteral of type state; value (0)
-Enumeration Literal: closed : EnumLiteral of type state; value (1)
-Integer Type: cylinder_index : Integer
-Integer Type: track_number : Integer
+Discriminant Symbol: size : Discriminant of type buffer_size
+Type Symbol: buffer : Type
+Component Symbol: pos : Component of type buffer
+Component Symbol: value : Component of type buffer
+Discriminant Symbol: side : Discriminant of type integer
+Type Symbol: square : Type
+Component Symbol: mat : Component of type square
+Discriminant Symbol: number : Discriminant of type integer
+Type Symbol: double_square : Type
+Component Symbol: left : Component of type double_square
+Component Symbol: right : Component of type double_square
+Discriminant Symbol: number : Discriminant of type positive
+Type Symbol: item : Type
+Component Symbol: content : Component of type item
+Type Symbol: device : Type
+EnumLiteral Symbol: printer : EnumLiteral of type device
+EnumLiteral Symbol: disk : EnumLiteral of type device
+EnumLiteral Symbol: drum : EnumLiteral of type device
+Type Symbol: state : Type
+EnumLiteral Symbol: open : EnumLiteral of type state
+EnumLiteral Symbol: closed : EnumLiteral of type state
+Type Symbol: cylinder_index : Type
+Type Symbol: track_number : Type
 Object Symbol: page_size : Object
-Discriminant Symbol: unit : Discriminant
-Record Type: peripheral : Record
-   containing components (status line_count cylinder track )
-Subtype: drum_unit : Subtype
-Subtype: disk_unit : Subtype
+Discriminant Symbol: unit : Discriminant of type device
+Type Symbol: peripheral : Type
+Component Symbol: status : Component of type peripheral
+Component Symbol: line_count : Component of type peripheral
+Component Symbol: cylinder : Component of type peripheral
+Component Symbol: track : Component of type peripheral
+Type Symbol: drum_unit : Type
+Type Symbol: disk_unit : Type
 Object Symbol: writer : Object
 Object Symbol: archive : Object
-Access Type: frame : Access
-Access Type: buffer_name : Access
-Access Type: link : Access
-Record Type: cell : Record
-   containing components (value succ pred )
+Type Symbol: frame : Type
+Type Symbol: buffer_name : Type
+Type Symbol: cell : Type
+Type Symbol: link : Type
+Component Symbol: value : Component of type cell
+Component Symbol: succ : Component of type cell
+Component Symbol: pred : Component of type cell
 Object Symbol: head : Object
 Object Symbol: next : Object
-Discriminant Symbol: sex : Discriminant
-Access Type: person_name : Access
-Access Type: car_name : Access
-Record Type: car : Record
-   containing components (number owner )
-Discriminant Symbol: sex : Discriminant
-Record Type: person : Record
-   containing components (name birth age vehicle wife husband )
+Type Symbol: car : Type
+Type Symbol: person : Type
+Discriminant Symbol: sex : Discriminant of type gender
+Type Symbol: person_name : Type
+Type Symbol: car_name : Type
+Component Symbol: number : Component of type car
+Component Symbol: owner : Component of type car
+Discriminant Symbol: sex : Discriminant of type gender
+Component Symbol: name : Component of type person
+Component Symbol: birth : Component of type person
+Component Symbol: age : Component of type person
+Component Symbol: vehicle : Component of type person
+Component Symbol: wife : Component of type person
+Component Symbol: husband : Component of type person
 Object Symbol: my_car : Object
 Object Symbol: your_car : Object
 Object Symbol: next_car : Object
-Subtype: male : Subtype
--------------------
-
-Scope Name: coordinate
-Scope ID  : 2
--------------------
-Component Symbol: lat : Component
-Component Symbol: long : Component
--------------------
-
-Scope Name: date
-Scope ID  : 3
--------------------
-Component Symbol: day : Component
-Component Symbol: month : Component
-Component Symbol: year : Component
--------------------
-
-Scope Name: complex
-Scope ID  : 4
--------------------
-Component Symbol: re : Component
-Component Symbol: im : Component
--------------------
-
-Scope Name: buffer
-Scope ID  : 5
--------------------
-Component Symbol: pos : Component
-Component Symbol: value : Component
--------------------
-
-Scope Name: square
-Scope ID  : 6
--------------------
-Component Symbol: mat : Component
--------------------
-
-Scope Name: double_square
-Scope ID  : 7
--------------------
-Component Symbol: left : Component
-Component Symbol: right : Component
--------------------
-
-Scope Name: item
-Scope ID  : 8
--------------------
-Component Symbol: content : Component
--------------------
-
-Scope Name: peripheral
-Scope ID  : 9
--------------------
-Component Symbol: status : Component
-Component Symbol: line_count : Component
-Component Symbol: cylinder : Component
-Component Symbol: track : Component
--------------------
-
-Scope Name: cell
-Scope ID  : 10
--------------------
-Component Symbol: value : Component
-Component Symbol: succ : Component
-Component Symbol: pred : Component
--------------------
-
-Scope Name: car
-Scope ID  : 11
--------------------
-Component Symbol: number : Component
-Component Symbol: owner : Component
--------------------
-
-Scope Name: person
-Scope ID  : 12
--------------------
-Component Symbol: name : Component
-Component Symbol: birth : Component
-Component Symbol: age : Component
-Component Symbol: vehicle : Component
-Component Symbol: wife : Component
-Component Symbol: husband : Component
+Type Symbol: male : Type
 -------------------
 
    Errors  : 0

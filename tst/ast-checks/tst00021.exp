@@ -53,8 +53,8 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: k : Object
-Integer Type: column : Integer
-Subtype: up_to_k : Subtype
+Type Symbol: column : Type
+Type Symbol: up_to_k : Type
 -------------------
 
    Errors  : 0

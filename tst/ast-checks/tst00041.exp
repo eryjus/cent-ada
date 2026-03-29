@@ -39,7 +39,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: max_line_size : Object
-Integer Type: line_size : Integer
+Type Symbol: line_size : Type
 -------------------
 
    Errors  : 0

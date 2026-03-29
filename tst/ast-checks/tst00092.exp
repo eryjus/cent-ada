@@ -21,7 +21,7 @@ Listing for tst/declarations/tst00092.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Incomplete Type: cell : Incomplete
+IncompleteType Symbol: cell : IncompleteType
 -------------------
 
    Errors  : 0

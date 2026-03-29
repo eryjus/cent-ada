@@ -36,7 +36,7 @@ SimpleNamePtr Parser::ParseSimpleName(void)
         return nullptr;
     }
 
-    if (scopes.Lookup(id.name) == nullptr) {
+    if (symTab.GlobalLookup(id.name) == nullptr) {
         diags.Error(loc, DiagID::UnknownName, { id.name } );
         // -- continue anyway
     }

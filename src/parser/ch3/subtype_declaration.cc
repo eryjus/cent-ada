@@ -26,10 +26,10 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
 {
     Production p(*this, "subtype_declaration");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
+    SymbolTable::Checkpoint cp;
     Id id;
-    SourceLoc_t loc;
-    SourceLoc_t astLoc;
+    SourceLoc_t loc = tokens.SourceLocation();
+    SourceLoc_t astLoc = loc;
     SubtypeIndicationPtr type = nullptr;
 
 
@@ -51,14 +51,16 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
         return nullptr;
     }
 
-    if (scopes.IsLocalDefined(id.name)) {
-        diags.Error(loc, DiagID::DuplicateName, { id.name } );
-
-        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-        SourceLoc_t loc2 = vec->at(0)->loc;
-        diags.Note(loc, DiagID::DuplicateName2, { } );
+    Symbol *sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
+            sym->kind = SymbolTable::SymbolKind::Type;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
+        }
     } else {
-        scopes.Declare(std::make_unique<SubtypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+        symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::Type);
     }
 
 
@@ -95,7 +97,7 @@ TypeDeclPtr Parser::ParseSubtypeDeclaration(void)
     TypeDeclPtr rv = std::make_unique<TypeDecl>(astLoc, id, nullptr, std::move(type));
 
     p.At("Success");
-    s.Commit();
+    cp.Commit();
     m.Commit();
     return std::move(rv);
 }

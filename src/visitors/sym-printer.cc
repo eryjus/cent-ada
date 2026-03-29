@@ -21,12 +21,14 @@
 // -- Make a visitor to print a Symbol
 //    --------------------------------
 void SymbolPrinter::Visit(const Symbol &s) {
-    if (s.kind == Symbol::SymbolKind::Deleted) return;
-    out << "Symbol: " << s.name << " : " << s.KindString() << " (May need a new Visitor)\n";
+    if (s.kind == SymbolTable::SymbolKind::Deleted) return;
+    out << "Symbol: " << s.symName << " : " << s.to_string();
+    if (s.typeName != "") out << "of type " << s.typeName;
+    out << '\n';
 }
 
 
-
+#if 0
 //
 // -- Make a visitor to print a TypeSymbol
 //    ------------------------------------
@@ -209,4 +211,4 @@ void SymbolPrinter::Visit(const BlockSymbol &s) {
     out << "Block Name: " << s.name << " : " << s.KindString() << '\n';
 }
 
-
+#endif

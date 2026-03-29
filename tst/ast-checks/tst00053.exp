@@ -47,7 +47,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: del : Object
-Real Type: fraction : Real
+Type Symbol: fraction : Type
 -------------------
 
    Errors  : 0

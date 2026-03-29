@@ -29,15 +29,14 @@ Listing for tst/declarations/tst00035.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: mixed : Enumeration
-   containing literals ('A' 'B' '*' b none '?' '%' )
-Enumeration Literal: 'A' : EnumLiteral of type mixed; value (0)
-Enumeration Literal: 'B' : EnumLiteral of type mixed; value (1)
-Enumeration Literal: '*' : EnumLiteral of type mixed; value (2)
-Enumeration Literal: b : EnumLiteral of type mixed; value (3)
-Enumeration Literal: none : EnumLiteral of type mixed; value (4)
-Enumeration Literal: '?' : EnumLiteral of type mixed; value (5)
-Enumeration Literal: '%' : EnumLiteral of type mixed; value (6)
+Type Symbol: mixed : Type
+EnumLiteral Symbol: 'A' : EnumLiteral of type mixed
+EnumLiteral Symbol: 'B' : EnumLiteral of type mixed
+EnumLiteral Symbol: '*' : EnumLiteral of type mixed
+EnumLiteral Symbol: b : EnumLiteral of type mixed
+EnumLiteral Symbol: none : EnumLiteral of type mixed
+EnumLiteral Symbol: '?' : EnumLiteral of type mixed
+EnumLiteral Symbol: '%' : EnumLiteral of type mixed
 -------------------
 
    Errors  : 0

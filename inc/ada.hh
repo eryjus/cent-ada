@@ -54,41 +54,41 @@ extern YYSTYPE yylval;
 // -- Here are quite a few forward declarations
 //    -----------------------------------------
 class AccessTypeSpec;
-class AccessTypeSymbol;
+//class AccessTypeSymbol;
 class AggregateExpr;
 class AllocatorExpr;
 class ArrayTypeSpec;
-class ArrayTypeSymbol;
+//class ArrayTypeSymbol;
 class ASTNode;
 class AttributeName;
 class AttributeRange;
-class AttributeSymbol;
+//class AttributeSymbol;
 class BinaryExpr;
 class CharacterLiteralName;
 class Choice;
 class ComponentAssociation;
 class ComponentDeclaration;
 class ComponentList;
-class ComponentSymbol;
+//class ComponentSymbol;
 class Constraint;
 class Decl;
 class DerivedTypeSpec;
-class DerivedTypeSymbol;
+//class DerivedTypeSymbol;
 class DiscreteRange;
 class DiscriminantAssociation;
 class DiscriminantConstraint;
 class DiscriminantSpecification;
-class DiscriminantSymbol;
+//class DiscriminantSymbol;
 class EnumerationTypeSpec;
-class EnumLiteralSymbol;
-class EnumTypeSymbol;
+//class EnumLiteralSymbol;
+//class EnumTypeSymbol;
 class Expr;
 class ExprChoice;
 class IdentifierList;
-class IncompleteTypeSymbol;
+//class IncompleteTypeSymbol;
 class IndexConstraint;
 class IndexedName;
-class IntegerTypeSymbol;
+//class IntegerTypeSymbol;
 class IntLiteralExpr;
 class Name;
 class NameChoice;
@@ -96,7 +96,7 @@ class NameExpr;
 class NullLiteralExpr;
 class NumericTypeSpec;
 class ObjectDeclaration;
-class ObjectSymbol;
+//class ObjectSymbol;
 class OthersChoice;
 class QualExprAllocatorExpr;
 class QualifiedExpr;
@@ -106,9 +106,9 @@ class RangeConstraint;
 class RangeExpr;
 class RealConstraint;
 class RealLiteralExpr;
-class RealTypeSymbol;
+//class RealTypeSymbol;
 class RecordSpecification;
-class RecordTypeSymbol;
+//class RecordTypeSymbol;
 class SelectedName;
 class SimpleName;
 class SliceName;
@@ -117,13 +117,13 @@ class StringLiteralExpr;
 class SubtypeIndication;
 class SubtypeIndicationAllocatorExpr;
 class SubtypeRange;
-class SubtypeSymbol;
-class Symbol;
+//class SubtypeSymbol;
+//class Symbol;
 class SymbolVisitor;
 class TypeConversionExpr;
 class TypeDecl;
 class TypeSpec;
-class TypeSymbol;
+//class TypeSymbol;
 class UnaryExpr;
 class UnboundedRange;
 class Variant;
@@ -139,9 +139,9 @@ class BlockStmt;
 class ExitStmt;
 class ReturnStmt;
 class GotoStmt;
-class LabelSymbol;
-class LoopSymbol;
-class BlockSymbol;
+//class LabelSymbol;
+//class LoopSymbol;
+//class BlockSymbol;
 
 
 
@@ -202,9 +202,8 @@ using UnaryExprPtr = std::unique_ptr<UnaryExpr>;
 using UnboundedRangePtr = std::unique_ptr<UnboundedRange>;
 using VariantPartPtr = std::unique_ptr<VariantPart>;
 using VariantPtr = std::unique_ptr<Variant>;
-using ComponentSymbolPtr = std::unique_ptr<ComponentSymbol>;
+//using ComponentSymbolPtr = std::unique_ptr<ComponentSymbol>;
 using AttributeConstraintPtr = std::unique_ptr<AttributeConstraint>;
-using RecordTypeSymbolPtr = std::unique_ptr<RecordTypeSymbol>;
 using NullStmtPtr = std::unique_ptr<NullStmt>;
 using AssignStmtPtr = std::unique_ptr<AssignStmt>;
 using IfStmtPtr = std::unique_ptr<IfStmt>;
@@ -256,11 +255,11 @@ using DeclListPtr = std::unique_ptr<DeclList>;
 #include "options.hh"
 #include "tstream.hh"
 #include "diag.hh"
-#include "visitors.hh"
+#include "sym-tab.hh"
 #include "symbol.hh"
+#include "visitors.hh"
 #include "scope.hh"
 #include "scope-manager.hh"
-#include "sym-tab.hh"
 #include "parser.hh"
 #include "ast.hh"
 

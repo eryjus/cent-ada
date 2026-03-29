@@ -24,7 +24,7 @@
 //
 // -- Parse a Component List
 //    ----------------------
-ComponentListPtr Parser::ParseComponentList(RecordTypeSymbol *rec)
+ComponentListPtr Parser::ParseComponentList(Symbol *rec)
 {
     Production p(*this, "component_list");
     MarkStream m(tokens, diags);

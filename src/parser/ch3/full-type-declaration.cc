@@ -26,7 +26,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
 {
     Production p(*this, "full_type_definition");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     DiscriminantSpecificationListPtr discriminant = nullptr;
     TypeSpecPtr type = nullptr;
@@ -45,17 +45,6 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     SourceLoc_t loc = TokenStream::Get().SourceLocation();
     if (!RequireIdent(id)) return nullptr;
 
-#if 0
-    if (scopes.IsLocalDefined(id.name)) {
-        std::vector<Symbol *> *vec = scopes.CurrentScope()->LocalLookup(id.name);
-
-
-        if (vec->at(0)->kind != Symbol::SymbolKind::IncompleteType && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
-            diags.Error(loc, DiagID::DuplicateName, { "Type Definition" } );
-            diags.Note(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
-        }
-    }
-#endif
 
 
     //
@@ -86,7 +75,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<TypeDecl>(astLoc, id, std::move(discriminant), std::move(type));

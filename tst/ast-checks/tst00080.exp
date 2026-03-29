@@ -121,26 +121,14 @@ Listing for tst/declarations/tst00080.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Array Type: matrix : Array
-Discriminant Symbol: side : Discriminant
-Record Type: square : Record
-   containing components (mat )
-Discriminant Symbol: number : Discriminant
-Record Type: double_square : Record
-   containing components (left right )
--------------------
-
-Scope Name: square
-Scope ID  : 2
--------------------
-Component Symbol: mat : Component
--------------------
-
-Scope Name: double_square
-Scope ID  : 3
--------------------
-Component Symbol: left : Component
-Component Symbol: right : Component
+Type Symbol: matrix : Type
+Discriminant Symbol: side : Discriminant of type integer
+Type Symbol: square : Type
+Component Symbol: mat : Component of type square
+Discriminant Symbol: number : Discriminant of type integer
+Type Symbol: double_square : Type
+Component Symbol: left : Component of type double_square
+Component Symbol: right : Component of type double_square
 -------------------
 
    Errors  : 0

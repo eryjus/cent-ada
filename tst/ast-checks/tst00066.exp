@@ -67,7 +67,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: n : Object
-Array Type: matrix : Array
+Type Symbol: matrix : Type
 Object Symbol: inverse : Object
 -------------------
 

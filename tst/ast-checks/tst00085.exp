@@ -25,11 +25,10 @@ Listing for tst/declarations/tst00085.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: device : Enumeration
-   containing literals (printer disk drum )
-Enumeration Literal: printer : EnumLiteral of type device; value (0)
-Enumeration Literal: disk : EnumLiteral of type device; value (1)
-Enumeration Literal: drum : EnumLiteral of type device; value (2)
+Type Symbol: device : Type
+EnumLiteral Symbol: printer : EnumLiteral of type device
+EnumLiteral Symbol: disk : EnumLiteral of type device
+EnumLiteral Symbol: drum : EnumLiteral of type device
 -------------------
 
    Errors  : 0

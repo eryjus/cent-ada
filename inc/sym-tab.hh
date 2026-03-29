@@ -56,6 +56,8 @@ public:
         SymbolKind kind;
         SourceLoc_t loc;
         std::string typeName;
+
+        std::string to_string(void) const;
     };
 
 
@@ -96,9 +98,11 @@ public:
     };
 
 
+
     //
-    // -- The current scope
-    //    -----------------
+    // -- This is the current scope
+    //    -------------------------
+public:
     static Scope *current;
 
 
@@ -114,6 +118,7 @@ public:
     static Symbol *Declare(SourceLoc_t l, std::string n, SymbolKind k, std::string t = "");
     static Symbol *LocalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
     static Symbol *GlobalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
+    static void Print(void);
 
     // -- for testing
     static std::string CurrentScope(void) { return current->name; }
@@ -134,4 +139,7 @@ private:
     SymbolTable(void);
 };
 
+
+using Symbol = SymbolTable::Symbol;
+extern SymbolTable &symTab;
 

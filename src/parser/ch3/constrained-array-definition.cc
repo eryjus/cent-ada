@@ -52,7 +52,6 @@ ArrayTypeSpecPtr Parser::_HelpParseConstrainedArrayDefinition(IdListPtr &list)
     type = ParseDiscreteSubtypeIndication();
     if (!type) return nullptr;
 
-
     return std::make_unique<ArrayTypeSpec>(astLoc, false, std::move(range), std::move(type));
 }
 
@@ -65,27 +64,28 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
 {
     Production p(*this, "constrained_array_definition (id)");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     std::vector<Symbol *> *vec;
+    SourceLoc_t loc = tokens.SourceLocation();
     bool updateIncomplete = false;
+    Symbol *sym = nullptr;
 
 
 
     //
     // -- Manage the symbol table
     //    -----------------------
-    if (scopes.IsLocalDefined(id.name)) {
-        // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(id.name);
-
-        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+    sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
             updateIncomplete = true;
         } else {
             diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         }
+    } else {
+        symTab.Declare(loc, id.name, SymbolTable::SymbolKind::Type);
     }
-
-    ArrayTypeSymbol *type = scopes.Declare(std::make_unique<ArrayTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
 
 
     IdListPtr list = std::make_unique<IdList>();
@@ -98,9 +98,8 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(Id &id)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
-
-    s.Commit();
+    if (updateIncomplete) sym->kind = SymbolTable::SymbolKind::Type;
+    cp.Commit();
     m.Commit();
 
     return rv;
@@ -116,32 +115,20 @@ ArrayTypeSpecPtr Parser::ParseConstrainedArrayDefinition(IdListPtr &list)
 {
     Production p(*this, "constrained_array_definition (list)");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
-
-
-
-#if 0
-    //
-    // -- Manage the symbol table
-    //    -----------------------
-    std::cout << "Symbol List\n";
-    for (auto &id : *list) {
-        std::cout << "Adding " << id.name << '\n';
-        ObjectSymbol *type = scopes.Declare(std::make_unique<ObjectSymbol>(id.name, id.loc, scopes.CurrentScope()));
-    }
-#endif
-
+    SymbolTable::Checkpoint cp;
 
 
     ArrayTypeSpecPtr rv = _HelpParseConstrainedArrayDefinition(list);
+    p.At("Missing array spec");
     if (!rv) return nullptr;
 
 
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    s.Commit();
+    cp.Commit();
     m.Commit();
+    p.At("Complete array spec");
 
     return rv;
 }

@@ -29,7 +29,7 @@ Listing for tst/declarations/tst00015.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Integer Type: column : Integer
+Type Symbol: column : Type
 -------------------
 
    Errors  : 0

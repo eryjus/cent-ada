@@ -1,4 +1,7 @@
-error: expected ';' after assignment and expression
+tst/declarations/bad00006.ada:5:25: error: expected ';' after assignment and expression
+    SORTED : BOOLEAN := FALSE
+
+                            ^
   in production `object_declaration`
   in production `basic_declaration`
    Errors  : 1

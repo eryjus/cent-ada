@@ -25,11 +25,10 @@ Listing for tst/declarations/tst00031.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: level : Enumeration
-   containing literals (low medium urgent )
-Enumeration Literal: low : EnumLiteral of type level; value (0)
-Enumeration Literal: medium : EnumLiteral of type level; value (1)
-Enumeration Literal: urgent : EnumLiteral of type level; value (2)
+Type Symbol: level : Type
+EnumLiteral Symbol: low : EnumLiteral of type level
+EnumLiteral Symbol: medium : EnumLiteral of type level
+EnumLiteral Symbol: urgent : EnumLiteral of type level
 -------------------
 
    Errors  : 0

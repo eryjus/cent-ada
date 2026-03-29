@@ -28,14 +28,13 @@ Listing for tst/declarations/tst00034.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: hexa : Enumeration
-   containing literals ('A' 'B' 'C' 'D' 'E' 'F' )
-Enumeration Literal: 'A' : EnumLiteral of type hexa; value (0)
-Enumeration Literal: 'B' : EnumLiteral of type hexa; value (1)
-Enumeration Literal: 'C' : EnumLiteral of type hexa; value (2)
-Enumeration Literal: 'D' : EnumLiteral of type hexa; value (3)
-Enumeration Literal: 'E' : EnumLiteral of type hexa; value (4)
-Enumeration Literal: 'F' : EnumLiteral of type hexa; value (5)
+Type Symbol: hexa : Type
+EnumLiteral Symbol: 'A' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'B' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'C' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'D' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'E' : EnumLiteral of type hexa
+EnumLiteral Symbol: 'F' : EnumLiteral of type hexa
 -------------------
 
    Errors  : 0

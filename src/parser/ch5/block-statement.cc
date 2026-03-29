@@ -30,13 +30,13 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
 {
     Production p(*this, "block_statement");
     MarkStream m(tokens, diags);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     SimpleNamePtr blockName = nullptr;
     SimpleNamePtr endName = nullptr;
     DeclListPtr decls = nullptr;
     StmtListPtr stmts = nullptr;
-    Scope *scope = nullptr;
     std::vector<Symbol *> *vec = nullptr;
 
 
@@ -54,18 +54,17 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
 
 
     if (blockName) {
-        if (scopes.IsLocalDefined(blockName->GetName())) {
-            vec = scopes.CurrentScope()->LocalLookup(blockName->GetName());
-
-            if (vec->at(0)->kind != Symbol::SymbolKind::UndefinedLabel && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
-                diags.Error(loc, DiagID::DuplicateName, { "Statement Label" } );
-                diags.Note(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
-            } else if (vec->at(0)->kind == Symbol::SymbolKind::UndefinedLabel) {
-                vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+        Symbol *sym = symTab.LocalLookup(id.name);
+        if (sym) {
+            if (sym->kind != SymbolTable::SymbolKind::UndefinedLabel && sym->kind != SymbolTable::SymbolKind::Deleted) {
+                diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+                diags.Note(sym->loc, DiagID::DuplicateName2, { } );
+            } else {
+                sym->kind = SymbolTable::SymbolKind::BlockName;
             }
+        } else {
+            symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::BlockName);
         }
-
-        scopes.Declare(std::make_unique<LabelSymbol>(std::string(blockName->GetName()), astLoc, scopes.CurrentScope()));
     }
 
 
@@ -83,9 +82,8 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     // -- For this block of statements, we need a pseudo scope
     //    ----------------------------------------------------
     if (blockName) {
-        scope = scopes.PushScope(Scope::ScopeKind::Block, std::string(blockName->GetName()));
-        scopes.Declare(std::make_unique<BlockSymbol>(std::string(blockName->GetName()), astLoc, scope));
-
+        symTab.Push(blockName->GetName());
+        symTab.Declare(astLoc, blockName->GetName(), SymbolTable::SymbolKind::BlockName);
     }
 
     stmts = ParseSequenceOfStatements();
@@ -134,11 +132,11 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     // -- if we created a scope, pop it here
     //    ----------------------------------
     if (blockName) {
-        scopes.PopScope(scope);
+        symTab.Pop();
     }
 
 
-
+    cp.Commit();
     m.Commit();
     return std::make_unique<BlockStmt>(astLoc, std::move(labels), std::move(blockName), std::move(decls), std::move(stmts), nullptr);
 }

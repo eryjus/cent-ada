@@ -29,15 +29,14 @@ Listing for tst/declarations/tst00028.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: day : Enumeration
-   containing literals (mon tue wed thu fri sat sun )
-Enumeration Literal: mon : EnumLiteral of type day; value (0)
-Enumeration Literal: tue : EnumLiteral of type day; value (1)
-Enumeration Literal: wed : EnumLiteral of type day; value (2)
-Enumeration Literal: thu : EnumLiteral of type day; value (3)
-Enumeration Literal: fri : EnumLiteral of type day; value (4)
-Enumeration Literal: sat : EnumLiteral of type day; value (5)
-Enumeration Literal: sun : EnumLiteral of type day; value (6)
+Type Symbol: day : Type
+EnumLiteral Symbol: mon : EnumLiteral of type day
+EnumLiteral Symbol: tue : EnumLiteral of type day
+EnumLiteral Symbol: wed : EnumLiteral of type day
+EnumLiteral Symbol: thu : EnumLiteral of type day
+EnumLiteral Symbol: fri : EnumLiteral of type day
+EnumLiteral Symbol: sat : EnumLiteral of type day
+EnumLiteral Symbol: sun : EnumLiteral of type day
 -------------------
 
    Errors  : 0

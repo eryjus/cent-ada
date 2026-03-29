@@ -169,30 +169,22 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: page_size : Object
-Enumeration Type: device : Enumeration
-   containing literals (printer disk drum )
-Enumeration Literal: printer : EnumLiteral of type device; value (0)
-Enumeration Literal: disk : EnumLiteral of type device; value (1)
-Enumeration Literal: drum : EnumLiteral of type device; value (2)
-Enumeration Type: state : Enumeration
-   containing literals (open closed )
-Enumeration Literal: open : EnumLiteral of type state; value (0)
-Enumeration Literal: closed : EnumLiteral of type state; value (1)
-Subtype: cylinder_index : Subtype
-Subtype: track_number : Subtype
-Discriminant Symbol: unit : Discriminant
-Record Type: peripheral : Record
-   containing components (status line_count cylinder track )
-Subtype: drum_unit : Subtype
--------------------
-
-Scope Name: peripheral
-Scope ID  : 2
--------------------
-Component Symbol: status : Component
-Component Symbol: line_count : Component
-Component Symbol: cylinder : Component
-Component Symbol: track : Component
+Type Symbol: device : Type
+EnumLiteral Symbol: printer : EnumLiteral of type device
+EnumLiteral Symbol: disk : EnumLiteral of type device
+EnumLiteral Symbol: drum : EnumLiteral of type device
+Type Symbol: state : Type
+EnumLiteral Symbol: open : EnumLiteral of type state
+EnumLiteral Symbol: closed : EnumLiteral of type state
+Type Symbol: cylinder_index : Type
+Type Symbol: track_number : Type
+Discriminant Symbol: unit : Discriminant of type device
+Type Symbol: peripheral : Type
+Component Symbol: status : Component of type peripheral
+Component Symbol: line_count : Component of type peripheral
+Component Symbol: cylinder : Component of type peripheral
+Component Symbol: track : Component of type peripheral
+Type Symbol: drum_unit : Type
 -------------------
 
    Errors  : 0

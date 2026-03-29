@@ -49,17 +49,16 @@ Listing for tst/statements/tst00006.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: color : Enumeration
-   containing literals (white red orange yellow green blue purple brown black )
-Enumeration Literal: white : EnumLiteral of type color; value (0)
-Enumeration Literal: red : EnumLiteral of type color; value (1)
-Enumeration Literal: orange : EnumLiteral of type color; value (2)
-Enumeration Literal: yellow : EnumLiteral of type color; value (3)
-Enumeration Literal: green : EnumLiteral of type color; value (4)
-Enumeration Literal: blue : EnumLiteral of type color; value (5)
-Enumeration Literal: purple : EnumLiteral of type color; value (6)
-Enumeration Literal: brown : EnumLiteral of type color; value (7)
-Enumeration Literal: black : EnumLiteral of type color; value (8)
+Type Symbol: color : Type
+EnumLiteral Symbol: white : EnumLiteral of type color
+EnumLiteral Symbol: red : EnumLiteral of type color
+EnumLiteral Symbol: orange : EnumLiteral of type color
+EnumLiteral Symbol: yellow : EnumLiteral of type color
+EnumLiteral Symbol: green : EnumLiteral of type color
+EnumLiteral Symbol: blue : EnumLiteral of type color
+EnumLiteral Symbol: purple : EnumLiteral of type color
+EnumLiteral Symbol: brown : EnumLiteral of type color
+EnumLiteral Symbol: black : EnumLiteral of type color
 Object Symbol: sky : Object
 -------------------
 

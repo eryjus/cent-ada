@@ -26,7 +26,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
 {
     Production p(*this, "incomplete_type_declaration");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc= astLoc;
     std::string where = "incomplete type identifier";
@@ -46,14 +46,12 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     //    -----------------------------------------------
     if (!RequireIdent(id)) return nullptr;
 
-    if (scopes.IsLocalDefined(id.name)) {
-        diags.Error(loc, DiagID::DuplicateName, { id.name } );
-
-        const std::vector<Symbol *> *vec = scopes.Lookup(id.name);
-        SourceLoc_t loc2 = vec->at(0)->loc;
-        diags.Note(loc, DiagID::DuplicateName2, { } );
+    Symbol *sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+        diags.Note(sym->loc, DiagID::DuplicateName2, { } );
     } else {
-        scopes.Declare(std::make_unique<IncompleteTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
+        sym = symTab.Declare(loc, id.name, SymbolTable::SymbolKind::IncompleteType);
     }
 
 
@@ -77,7 +75,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<TypeDecl>(astLoc, id, std::move(discriminant), nullptr);

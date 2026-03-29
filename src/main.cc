@@ -360,14 +360,16 @@ static int Compile(std::string filename, ParseType_t type)
             for (auto &decl : *pgm.get()) {
                 decl->Accept(prt);
             }
-            for (auto &stmt : *stmts.get()) {
-                stmt->Accept(prt);
+            if (stmts) {
+                for (auto &stmt : *stmts.get()) {
+                    stmt->Accept(prt);
+                }
             }
 
             std::cout << "\n\n";
 
             TokenStream::Get().Listing();
-            parser->Scopes()->Print();
+            symTab.Print();
 
             rv = EXIT_SUCCESS;
             goto exit2;
@@ -383,9 +385,9 @@ static int Compile(std::string filename, ParseType_t type)
 exit:
     diags.Flush();
 
-    if (diags.Errors() == 0) {
+    if (!diags.Errors()) {
         if (opts.listing) TokenStream::Get().Listing();
-        if (opts.dumpSymtab) parser->Scopes()->Print();
+        if (opts.dumpSymtab) symTab.Print();
 
         if (opts.prtAst) {
             ASTPrinter prt;

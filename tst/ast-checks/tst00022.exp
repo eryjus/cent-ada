@@ -55,8 +55,8 @@ Listing for tst/declarations/tst00022.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Array Type: matrix : Array
-Subtype: square : Subtype
+Type Symbol: matrix : Type
+Type Symbol: square : Type
 -------------------
 
    Errors  : 0

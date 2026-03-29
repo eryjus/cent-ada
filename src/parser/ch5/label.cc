@@ -26,17 +26,14 @@ NamePtr Parser::ParseLabel(void)
 {
     Production p(*this, "label");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec = nullptr;
-    NamePtr label;
+    NamePtr label = nullptr;
 
 
     if (!Require(TokenType::TOK_LEFT_LABEL_BRACKET)) return nullptr;
-
-// TODO: Return to this production    label = ParseSimpleName();
-// Also TODO:         if (!label) return nullptr;
 
     Id id;
     loc = tokens.SourceLocation();
@@ -47,18 +44,18 @@ NamePtr Parser::ParseLabel(void)
 
     if (!label) return nullptr;
 
-    if (scopes.IsLocalDefined(label->GetName())) {
-        vec = scopes.CurrentScope()->LocalLookup(label->GetName());
 
-        if (vec->at(0)->kind != Symbol::SymbolKind::UndefinedLabel && vec->at(0)->kind != Symbol::SymbolKind::Deleted) {
-            diags.Error(loc, DiagID::DuplicateName, { "Statement Label" } );
-            diags.Note(loc, DiagID::DuplicateName2, { TokenStream::Get().SourceLine() } );
-        } else if (vec->at(0)->kind == Symbol::SymbolKind::UndefinedLabel) {
-            vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+    Symbol *sym = symTab.LocalLookup(id.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::UndefinedLabel) {
+            sym->kind = SymbolTable::SymbolKind::Label;
+        } else {
+            diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         }
+    } else {
+        symTab.Declare(id.loc, id.name, SymbolTable::SymbolKind::Label);
     }
-
-    scopes.Declare(std::make_unique<LabelSymbol>(std::string(label->GetName()), astLoc, scopes.CurrentScope()));
 
 
     loc = TokenStream::Get().SourceLocation();
@@ -69,8 +66,8 @@ NamePtr Parser::ParseLabel(void)
 
     p.At("completed label");
     TOKEN;
+    cp.Commit();
     m.Commit();
-    s.Commit();
 
     return label;
 }

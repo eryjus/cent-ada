@@ -68,9 +68,9 @@ protected:
         ASSERT_TRUE(GlobalTest(table, "integer"));
         EXPECT_EQ(table.current->name, n);
         ASSERT_TRUE(table.current->parent);
-        EXPECT_EQ(table.current->parent->name, "global");
+        EXPECT_EQ(table.current->parent->name, "GLOBAL");
         ASSERT_TRUE(table.current->parent->parent);
-        EXPECT_EQ(table.current->parent->parent->name, "standard");
+        EXPECT_EQ(table.current->parent->parent->name, "STANDARD");
         ASSERT_FALSE(table.current->parent->parent->parent);
         EXPECT_EQ(n, table.CurrentScope());
 
@@ -80,9 +80,9 @@ protected:
         // -- then
         EXPECT_FALSE(LocalTest(table, "integer"));
         ASSERT_TRUE(GlobalTest(table, "integer"));
-        EXPECT_EQ(table.current->name, "global");
+        EXPECT_EQ(table.current->name, "GLOBAL");
         ASSERT_TRUE(table.current->parent);
-        EXPECT_EQ(table.current->parent->name, "standard");
+        EXPECT_EQ(table.current->parent->name, "STANDARD");
         ASSERT_FALSE(table.current->parent->parent);
         EXPECT_EQ(scope, table.CurrentScope());
     }

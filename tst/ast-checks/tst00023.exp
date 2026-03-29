@@ -51,13 +51,12 @@ Listing for tst/declarations/tst00023.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: gender : Enumeration
-   containing literals (m f )
-Enumeration Literal: m : EnumLiteral of type gender; value (0)
-Enumeration Literal: f : EnumLiteral of type gender; value (1)
-Incomplete Type: person : Incomplete
-Discriminant Symbol: sex : Discriminant
-Subtype: male : Subtype
+Type Symbol: gender : Type
+EnumLiteral Symbol: m : EnumLiteral of type gender
+EnumLiteral Symbol: f : EnumLiteral of type gender
+IncompleteType Symbol: person : IncompleteType
+Discriminant Symbol: sex : Discriminant of type gender
+Type Symbol: male : Type
 -------------------
 
    Errors  : 0

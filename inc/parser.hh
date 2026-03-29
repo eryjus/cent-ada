@@ -32,7 +32,6 @@ class Parser {
 private:
     TokenStream &tokens;
     std::vector<std::string> stack;
-    ScopeManager scopes;
 
 
 private:
@@ -95,6 +94,7 @@ private:
 
 
 private:
+#if 0
     class MarkScope {
         MarkScope(const MarkScope &) = delete;
         MarkScope &operator=(const MarkScope &) = delete;
@@ -136,6 +136,7 @@ private:
     };
 
 
+
 private:
     class MarkSymbols {
     private:
@@ -154,6 +155,7 @@ private:
     public:
         void Commit(void) { committed = true; }
     };
+#endif
 
 
 private:
@@ -166,6 +168,7 @@ private:
         Production(Parser &parser, std::string p) : parser(parser)
         {
             if (opts.trace) std::cerr << "Entering " << p << " from " << parser.Last() << '\n';
+            TOKEN;
             parser.stack.push_back(std::move(p));
             std::cerr.flush();
         }
@@ -241,7 +244,7 @@ public:
     std::string Last(void) { if (stack.size() == 0) return "top level"; return stack[stack.size() - 1]; }
     void Push(std::string p) { stack.push_back(p); }
     void Pop(void) { stack.pop_back(); }
-    const ScopeManager *Scopes(void) const { return &scopes; }
+//    const ScopeManager *Scopes(void) const { return &scopes; }
     std::string UnwindStack(void) {
         std::string rv = "";
         for (auto it = stack.rbegin(); it != stack.rend(); ++it) {
@@ -269,8 +272,8 @@ public:
     ArrayTypeSpecPtr ParseConstrainedArrayDefinition(IdListPtr &list);
     ArrayTypeSpecPtr ParseUnconstrainedArrayDefinition(Id &id);
     ChoicePtr ParseChoice(void);
-    ComponentDeclarationPtr ParseComponentDeclaration(RecordTypeSymbol *rec);
-    ComponentListPtr ParseComponentList(RecordTypeSymbol *rec);
+    ComponentDeclarationPtr ParseComponentDeclaration(Symbol *rec);
+    ComponentListPtr ParseComponentList(Symbol *rec);
     ConstraintPtr ParseConstraint(void);
     DeclPtr ParseBasicDeclaration(void);
     DeclPtr ParseBasicDeclarativeItem(void);
@@ -283,8 +286,8 @@ public:
     DiscriminantSpecificationPtr ParseDiscriminantSpecification(void);
     ExprPtr ParseFixedAccuracyDefinition(void);
     ExprPtr ParseFloatingAccuracyDefinition(void);
-    Id ParseEnumerationLiteral(EnumTypeSymbol *type);
-    Id ParseEnumerationLiteralSpecification(EnumTypeSymbol *type) {
+    Id ParseEnumerationLiteral(Symbol *type);
+    Id ParseEnumerationLiteralSpecification(Symbol *type) {
         Production p(*this, "enumeration_literal_specification");
         return ParseEnumerationLiteral(type);
     }
@@ -313,8 +316,8 @@ public:
     TypeSpecPtr ParseIntegerTypeDefinition(Id &id);
     TypeSpecPtr ParseTypeDefinition(Id &id);
     UnboundedRangePtr ParseIndexSubtypeDefinition(void);
-    VariantPartPtr ParseVariantPart(RecordTypeSymbol *rec);
-    VariantPtr ParseVariant(RecordTypeSymbol *rec);
+    VariantPartPtr ParseVariantPart(Symbol *rec);
+    VariantPtr ParseVariant(Symbol *rec);
 
 
 

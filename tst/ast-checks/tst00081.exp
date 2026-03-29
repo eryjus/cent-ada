@@ -60,16 +60,10 @@ Listing for tst/declarations/tst00081.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Subtype: positive : Subtype
-Discriminant Symbol: number : Discriminant
-Record Type: item : Record
-   containing components (content )
--------------------
-
-Scope Name: item
-Scope ID  : 2
--------------------
-Component Symbol: content : Component
+Type Symbol: positive : Type
+Discriminant Symbol: number : Discriminant of type positive
+Type Symbol: item : Type
+Component Symbol: content : Component of type item
 -------------------
 
    Errors  : 0

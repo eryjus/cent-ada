@@ -145,74 +145,70 @@ ExprPtr Parser::ParsePrimary(void)
     //    ----------------------------------------------------------------------------------
     if (TokenStream::Get().Current() == TokenType::TOK_IDENTIFIER) {
         IdentifierLexeme idLex = std::get<IdentifierLexeme>(TokenStream::Get().Payload());
-        const std::vector<Symbol *> *vec = scopes.Lookup(idLex.name);
+        Symbol *sym = symTab.GlobalLookup(idLex.name);
 
-        if (vec != nullptr) {
-            TypeSymbol *type = nullptr;
-
-            for (auto &sym : *vec) {
-                NamePtr name = nullptr;
-                if (sym->kind == Symbol::SymbolKind::Deleted) continue;
-                if (sym->kind == Symbol::SymbolKind::Type || sym->kind == Symbol::SymbolKind::IncompleteType) {
-                    if (TokenStream::Get().Peek() == TokenType::TOK_APOSTROPHE) {
-                        if (TokenStream::Get().Peek(2) == TokenType::TOK_DIGITS || TokenStream::Get().Peek(2) == TokenType::TOK_DELTA) {
-                            name = ParseNameExpr();
-                            if (name) {
-                                p.At("digits/delta next");
-                                m.Commit();
-
-                                return std::make_unique<NameExpr>(astLoc, std::move(name));;
-                            }
-                        }
-                        ExprPtr rv = ParseQualifiedExpression();
-                        if (rv) {
-                            p.At("Qualified Expression");
+        if (sym != nullptr) {
+            NamePtr name = nullptr;
+            if (sym->kind == SymbolTable::SymbolKind::Deleted) return nullptr;;
+            if (sym->kind == SymbolTable::SymbolKind::Type || sym->kind == SymbolTable::SymbolKind::IncompleteType) {
+                if (TokenStream::Get().Peek() == TokenType::TOK_APOSTROPHE) {
+                    if (TokenStream::Get().Peek(2) == TokenType::TOK_DIGITS || TokenStream::Get().Peek(2) == TokenType::TOK_DELTA) {
+                        name = ParseNameExpr();
+                        if (name) {
+                            p.At("digits/delta next");
                             m.Commit();
 
-                            return rv;
-                        } else {
-                            name = ParseNameExpr();
-                            if (name) {
-                                p.At("Name Expression");
-                                m.Commit();
-
-                                return std::make_unique<NameExpr>(astLoc, std::move(name));;
-                            }
+                            return std::make_unique<NameExpr>(astLoc, std::move(name));;
                         }
                     }
-                    if (TokenStream::Get().Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
-                        ExprPtr rv = ParseTypeConversion();
-                        if (rv) {
-                            p.At("Type Conversion");
-                            m.Commit();
-
-                            return rv;
-                        }
-                    }
-                }
-
-
-                if (sym->kind == Symbol::SymbolKind::Subprogram) {
-                    name = ParseFunctionCall();
-                    if (name) {
-                        p.At("Function Call");
+                    ExprPtr rv = ParseQualifiedExpression();
+                    if (rv) {
+                        p.At("Qualified Expression");
                         m.Commit();
 
-                        return std::make_unique<NameExpr>(astLoc, std::move(name));;
+                        return rv;
+                    } else {
+                        name = ParseNameExpr();
+                        if (name) {
+                            p.At("Name Expression");
+                            m.Commit();
+
+                            return std::make_unique<NameExpr>(astLoc, std::move(name));;
+                        }
                     }
                 }
+                if (TokenStream::Get().Peek() == TokenType::TOK_LEFT_PARENTHESIS) {
+                    ExprPtr rv = ParseTypeConversion();
+                    if (rv) {
+                        p.At("Type Conversion");
+                        m.Commit();
+
+                        return rv;
+                    }
+                }
+            }
 
 
-                name = ParseNameExpr();
+            if (sym->kind == SymbolTable::SymbolKind::Subprogram) {
+                name = ParseFunctionCall();
                 if (name) {
-                    p.At("Name Expression 2");
+                    p.At("Function Call");
                     m.Commit();
 
                     return std::make_unique<NameExpr>(astLoc, std::move(name));;
                 }
-
-                diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
             }
+
+
+            name = ParseNameExpr();
+            if (name) {
+                p.At("Name Expression 2");
+                m.Commit();
+
+                return std::make_unique<NameExpr>(astLoc, std::move(name));;
+            }
+
+            diags.Error(loc, DiagID::UnknownError, { __FILE__, __PRETTY_FUNCTION__, std::to_string(__LINE__) } );
         }
     }
 

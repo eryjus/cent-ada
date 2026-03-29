@@ -41,6 +41,7 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     // -- and then a range for the index
     //    ------------------------------
     range = ParseDiscreteRange();
+    p.At("No initial Range");
     if (!range) return nullptr;
     vec->push_back(std::move(range));
 
@@ -79,6 +80,7 @@ IndexConstraintPtr Parser::ParseIndexConstraint(void)
     // -- Consider this parse to be good
     //    ------------------------------
     m.Commit();
+    p.At("Good Range");
 
     return std::make_unique<IndexConstraint>(astLoc, false, std::move(vec));
 }

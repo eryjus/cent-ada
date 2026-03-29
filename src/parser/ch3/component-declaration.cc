@@ -22,16 +22,17 @@
 //
 // -- Parse a Component Declaration
 //    -----------------------------
-ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
+ComponentDeclarationPtr Parser::ParseComponentDeclaration(Symbol *rec)
 {
     Production p(*this, "component_declaration");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     SubtypeIndicationPtr type = nullptr;
     ExprPtr expr = nullptr;
+    Symbol *sym = nullptr;
 
 
     //
@@ -44,9 +45,15 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     }
 
     for (int i = 0; i < idList->size(); i ++) {
-        ComponentSymbolPtr sym = std::make_unique<ComponentSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope());
-        rec->components.push_back(sym.get());
-        scopes.Declare(std::move(sym));
+        sym = symTab.LocalLookup(idList->at(i).name, SymbolTable::SymbolKind::Component, rec->symName);
+        if (sym) {
+            if (sym->kind == SymbolTable::SymbolKind::Component && sym->typeName == rec->symName) {
+                diags.Error(idList->at(i).loc, DiagID::DuplicateName, { idList->at(i).name } );
+                diags.Note(sym->loc, DiagID::DuplicateName2, { } );
+            }
+        } else {
+            symTab.Declare(loc, idList->at(i).name, SymbolTable::SymbolKind::Component, rec->symName);
+        }
     }
 
     if (!Require(TokenType::TOK_COLON)) {
@@ -87,7 +94,7 @@ ComponentDeclarationPtr Parser::ParseComponentDeclaration(RecordTypeSymbol *rec)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<ComponentDeclaration>(astLoc, std::move(idList), std::move(type), std::move(expr));

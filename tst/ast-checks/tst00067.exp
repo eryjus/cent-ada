@@ -48,7 +48,7 @@ Listing for tst/declarations/tst00067.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Array Type: bit_vector : Array
+Type Symbol: bit_vector : Type
 Object Symbol: filter : Object
 -------------------
 

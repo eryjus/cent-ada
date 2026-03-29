@@ -144,20 +144,19 @@ Listing for tst/statements/tst00008.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: month_name : Enumeration
-   containing literals (january february march april may june july august september october november december )
-Enumeration Literal: january : EnumLiteral of type month_name; value (0)
-Enumeration Literal: february : EnumLiteral of type month_name; value (1)
-Enumeration Literal: march : EnumLiteral of type month_name; value (2)
-Enumeration Literal: april : EnumLiteral of type month_name; value (3)
-Enumeration Literal: may : EnumLiteral of type month_name; value (4)
-Enumeration Literal: june : EnumLiteral of type month_name; value (5)
-Enumeration Literal: july : EnumLiteral of type month_name; value (6)
-Enumeration Literal: august : EnumLiteral of type month_name; value (7)
-Enumeration Literal: september : EnumLiteral of type month_name; value (8)
-Enumeration Literal: october : EnumLiteral of type month_name; value (9)
-Enumeration Literal: november : EnumLiteral of type month_name; value (10)
-Enumeration Literal: december : EnumLiteral of type month_name; value (11)
+Type Symbol: month_name : Type
+EnumLiteral Symbol: january : EnumLiteral of type month_name
+EnumLiteral Symbol: february : EnumLiteral of type month_name
+EnumLiteral Symbol: march : EnumLiteral of type month_name
+EnumLiteral Symbol: april : EnumLiteral of type month_name
+EnumLiteral Symbol: may : EnumLiteral of type month_name
+EnumLiteral Symbol: june : EnumLiteral of type month_name
+EnumLiteral Symbol: july : EnumLiteral of type month_name
+EnumLiteral Symbol: august : EnumLiteral of type month_name
+EnumLiteral Symbol: september : EnumLiteral of type month_name
+EnumLiteral Symbol: october : EnumLiteral of type month_name
+EnumLiteral Symbol: november : EnumLiteral of type month_name
+EnumLiteral Symbol: december : EnumLiteral of type month_name
 Object Symbol: month : Object
 Object Symbol: day : Object
 Object Symbol: year : Object

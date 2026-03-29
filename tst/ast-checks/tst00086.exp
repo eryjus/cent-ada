@@ -24,10 +24,9 @@ Listing for tst/declarations/tst00086.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: state : Enumeration
-   containing literals (open closed )
-Enumeration Literal: open : EnumLiteral of type state; value (0)
-Enumeration Literal: closed : EnumLiteral of type state; value (1)
+Type Symbol: state : Type
+EnumLiteral Symbol: open : EnumLiteral of type state
+EnumLiteral Symbol: closed : EnumLiteral of type state
 -------------------
 
    Errors  : 0

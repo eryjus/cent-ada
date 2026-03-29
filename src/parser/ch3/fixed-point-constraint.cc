@@ -25,11 +25,12 @@
 NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
 {
     Production p(*this, "fixed_point_constraint");
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     SourceLoc_t astLoc= TokenStream::Get().SourceLocation();
     ExprPtr size = nullptr;
+    Symbol *sym = nullptr;
 
 
 
@@ -51,17 +52,17 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     // -- Manage the symbol table
     //    -----------------------
     if (!id.name.empty()) {
-        if (scopes.IsLocalDefined(id.name)) {
-            // -- name is used in this scope is it a singleton and incomplete class?
-            vec = scopes.CurrentScope()->LocalLookup(id.name);
-
-            if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+        sym = symTab.LocalLookup(id.name);
+        if (sym) {
+            if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
                 updateIncomplete = true;
             } else {
                 diags.Error(id.loc, DiagID::DuplicateName, { id.name } );
+                diags.Note(sym->loc, DiagID::DuplicateName2, { } );
             }
+        } else {
+            sym = symTab.Declare(astLoc, id.name, SymbolTable::SymbolKind::Type);
         }
-        scopes.Declare(std::make_unique<RealTypeSymbol>(id.name, id.loc, scopes.CurrentScope()));
     }
 
 
@@ -69,8 +70,8 @@ NumericTypeSpecPtr Parser::ParseFixedPointConstraint(Id &id)
     //
     // -- The parse is good here
     //    ----------------------
-    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
-    s.Commit();
+    if (updateIncomplete) sym->kind = SymbolTable::SymbolKind::Type;
+    cp.Commit();
 
     return std::make_unique<NumericTypeSpec>(astLoc, NumericTypeSpec::Kind::FixedPoint, std::move(size), std::move(range));
 }

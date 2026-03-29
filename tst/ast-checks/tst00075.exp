@@ -46,15 +46,9 @@ Listing for tst/declarations/tst00075.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Record Type: complex : Record
-   containing components (re im )
--------------------
-
-Scope Name: complex
-Scope ID  : 2
--------------------
-Component Symbol: re : Component
-Component Symbol: im : Component
+Type Symbol: complex : Type
+Component Symbol: re : Component of type complex
+Component Symbol: im : Component of type complex
 -------------------
 
    Errors  : 0

@@ -65,16 +65,10 @@ Listing for tst/declarations/tst00069.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Discriminant Symbol: length : Discriminant
-Record Type: var_line : Record
-   containing components (image )
+Discriminant Symbol: length : Discriminant of type integer
+Type Symbol: var_line : Type
+Component Symbol: image : Component of type var_line
 Object Symbol: null_line : Object
--------------------
-
-Scope Name: var_line
-Scope ID  : 2
--------------------
-Component Symbol: image : Component
 -------------------
 
    Errors  : 0

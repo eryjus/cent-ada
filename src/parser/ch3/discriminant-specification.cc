@@ -26,7 +26,7 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
 {
     Production p(*this, "discriminant_specification");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     std::unique_ptr<IdList> idList = std::make_unique<IdList>();
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
@@ -41,11 +41,6 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     if (!idList) return nullptr;
 
 
-    for (int i = 0; i < idList->size(); i ++) {
-        scopes.Declare(std::make_unique<DiscriminantSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope()));
-    }
-
-
     //
     // -- Get the TOK_COLON
     //    -----------------
@@ -57,6 +52,17 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     //    ----------------
     type = ParseTypeMark();
     if (!type) return nullptr;
+
+
+
+    //
+    // -- Maintain the symbol table
+    //    -------------------------
+    for (int i = 0; i < idList->size(); i ++) {
+        symTab.Declare(idList->at(i).loc, idList->at(i).name, SymbolTable::SymbolKind::Discriminant, type->GetName());
+    }
+
+
 
 
     //
@@ -74,7 +80,7 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<DiscriminantSpecification>(astLoc, std::move(idList), std::move(type), std::move(expr));

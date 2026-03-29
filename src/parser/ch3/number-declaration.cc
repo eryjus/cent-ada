@@ -26,7 +26,7 @@ ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
 {
     Production p(*this, "number_declaration");
     MarkStream m(tokens, diags);
-    MarkSymbols s(scopes);
+    SymbolTable::Checkpoint cp;
     std::unique_ptr<IdList> idList;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
@@ -44,14 +44,12 @@ ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
     // -- Now, check for any duplicates and add the name if there are none
     //    ----------------------------------------------------------------
     for (int i = 0; i < idList->size(); i ++) {
-        if (scopes.IsLocalDefined(idList->at(i).name)) {
+        Symbol *sym = symTab.LocalLookup(idList->at(i).name);
+        if (sym) {
             diags.Error(idList->at(i).loc, DiagID::DuplicateName, { idList->at(i).name } );
-
-            const std::vector<Symbol *> *vec = scopes.Lookup(std::string_view(idList->at(i).name));
-            SourceLoc_t loc2 = vec->at(0)->loc;
-            diags.Note(loc, DiagID::DuplicateName2, { } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         } else {
-            scopes.Declare(std::make_unique<ObjectSymbol>(idList->at(i).name, idList->at(i).loc, scopes.CurrentScope()));
+            symTab.Declare(astLoc, idList->at(i).name, SymbolTable::SymbolKind::Object);
         }
     }
 
@@ -86,7 +84,7 @@ ObjectDeclarationPtr Parser::ParseNumberDeclaration(void)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<ObjectDeclaration>(astLoc, std::move(idList), true, nullptr, std::move(expr));

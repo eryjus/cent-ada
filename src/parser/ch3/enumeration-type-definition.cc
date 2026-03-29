@@ -26,12 +26,13 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
 {
     Production p(*this, "enumeration_type_definition");
     MarkStream m(tokens, diags);
-    MarkScope s(scopes);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t astLoc = TokenStream::Get().SourceLocation();
     SourceLoc_t loc = astLoc;
     std::vector<Symbol *> *vec;
     bool updateIncomplete = false;
     IdListPtr ids = std::make_unique<IdList>();
+    Symbol *sym = nullptr;
     Id id;
 
 
@@ -39,26 +40,24 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     //
     // -- Start by adding a new Enum Type with the name
     //    ---------------------------------------------
-    if (scopes.IsLocalDefined(std::string_view(name.name))) {
-        // -- name is used in this scope is it a singleton and incomplete class?
-        vec = scopes.CurrentScope()->LocalLookup(std::string_view(name.name));
-
-        if (vec->size() == 1 && vec->at(0)->kind == Symbol::SymbolKind::IncompleteType) {
+    sym = symTab.LocalLookup(name.name);
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) {
             updateIncomplete = true;
         } else {
             diags.Error(name.loc, DiagID::DuplicateName, { name.name } );
+            diags.Note(sym->loc, DiagID::DuplicateName2, { } );
         }
+    } else {
+        sym = symTab.Declare(name.loc, name.name, SymbolTable::SymbolKind::Type);
     }
-
-
-    EnumTypeSymbol *type = scopes.Declare(std::make_unique<EnumTypeSymbol>(name.name, name.loc, scopes.CurrentScope()));
 
 
     //
     // -- The enumeration is enclosed in parens
     //    -------------------------------------
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
-    if ((id = ParseEnumerationLiteralSpecification(type)).name == "") return nullptr;
+    if ((id = ParseEnumerationLiteralSpecification(sym)).name == "") return nullptr;
     ids->push_back(id);
 
 
@@ -67,7 +66,7 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     //    ---------------------------------------
     loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_COMMA)) {
-        if ((id = ParseEnumerationLiteralSpecification(type)).name == "") {
+        if ((id = ParseEnumerationLiteralSpecification(sym)).name == "") {
             diags.Error(loc, DiagID::ExtraComma, { "enumeration type definition" } );
             // -- continue on in hopes that this does not create a cascade of errors
 
@@ -92,9 +91,9 @@ TypeSpecPtr Parser::ParseEnumerationTypeDefinition(Id &name)
     //
     // -- Consider this parse to be good
     //    ------------------------------
-    if (updateIncomplete) vec->at(0)->kind = Symbol::SymbolKind::Deleted;
+    if (updateIncomplete) sym->kind = SymbolTable::SymbolKind::Type;
 
-    s.Commit();
+    cp.Commit();
     m.Commit();
 
     return std::make_unique<EnumerationTypeSpec>(astLoc, std::move(ids));

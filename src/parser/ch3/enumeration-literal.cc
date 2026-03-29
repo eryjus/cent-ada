@@ -22,12 +22,13 @@
 //
 // -- Parse an Enumeration Literal
 //    ----------------------------
-Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
+Id Parser::ParseEnumerationLiteral(Symbol *type)
 {
     Production p(*this, "enumeration_literal");
     MarkStream m(tokens, diags);
+    SymbolTable::Checkpoint cp;
     SourceLoc_t loc = TokenStream::Get().SourceLocation();
-    EnumLiteralSymbol *sym= nullptr;
+    Symbol *sym= nullptr;
     YYSTYPE yy = yylval;      // in case we have a character liteal
     Id id;
 
@@ -36,16 +37,15 @@ Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
     // -- Trivially check if it's a character literal
     //    -------------------------------------------
     if (Optional(TokenType::TOK_CHARACTER_LITERAL)) {
-        std::unique_ptr<EnumLiteralSymbol> sym;
         id.name = std::get<CharLiteral>(TokenStream::Get().Payload()).lexeme;
-        sym = std::make_unique<EnumLiteralSymbol>(id.name, type, type->literals.size(), loc, scopes.CurrentScope());
-        type->literals.push_back(sym.get());
-        scopes.Declare(std::move(sym));
+
+        sym = symTab.Declare(id.loc, id.name, SymbolTable::SymbolKind::EnumLiteral, type->symName);
 
 
         //
         // -- Consider this parse to be good
         //    ------------------------------
+        cp.Commit();
         m.Commit();
         return id;
     }
@@ -55,18 +55,17 @@ Id Parser::ParseEnumerationLiteral(EnumTypeSymbol *type)
     // -- Now check for an id and if we have one check for duplicates
     //    -----------------------------------------------------------
     if (RequireIdent(id)) {
-        std::unique_ptr<EnumLiteralSymbol> sym;
-        sym = std::make_unique<EnumLiteralSymbol>(id.name, type, type->literals.size(), id.loc, scopes.CurrentScope());
-        type->literals.push_back(sym.get());
-        scopes.Declare(std::move(sym));
+        sym = symTab.Declare(id.loc, id.name, SymbolTable::SymbolKind::EnumLiteral, type->symName);
 
 
         //
         // -- Consider this parse to be good
         //    ------------------------------
+        cp.Commit();
         m.Commit();
         return id;
     }
+
 
     return { "", TokenStream::Get().EmptyLocation() };
 }

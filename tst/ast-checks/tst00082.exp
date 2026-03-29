@@ -102,18 +102,12 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Object Symbol: max : Object
-Subtype: buffer_size : Subtype
-Discriminant Symbol: size : Discriminant
-Record Type: buffer : Record
-   containing components (pos value )
+Type Symbol: buffer_size : Type
+Discriminant Symbol: size : Discriminant of type buffer_size
+Type Symbol: buffer : Type
+Component Symbol: pos : Component of type buffer
+Component Symbol: value : Component of type buffer
 Object Symbol: large : Object
--------------------
-
-Scope Name: buffer
-Scope ID  : 2
--------------------
-Component Symbol: pos : Component
-Component Symbol: value : Component
 -------------------
 
    Errors  : 0

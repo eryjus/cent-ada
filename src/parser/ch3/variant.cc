@@ -22,7 +22,7 @@
 //
 // -- Parse a Variant
 //    ---------------
-VariantPtr Parser::ParseVariant(RecordTypeSymbol *rec)
+VariantPtr Parser::ParseVariant(Symbol *rec)
 {
     Production p(*this, "variant");
     MarkStream m(tokens, diags);

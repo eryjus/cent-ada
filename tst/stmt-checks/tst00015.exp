@@ -82,7 +82,7 @@ Listing for tst/statements/tst00015.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Label Symbol: swap : Label
+BlockName Symbol: swap : BlockName
 Object Symbol: x : Object
 Object Symbol: y : Object
 Object Symbol: temp : Object
@@ -91,7 +91,7 @@ Object Symbol: temp : Object
 Scope Name: swap
 Scope ID  : 2
 -------------------
-Block Name: swap : BlockName
+BlockName Symbol: swap : BlockName
 -------------------
 
    Errors  : 0

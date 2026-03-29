@@ -249,13 +249,11 @@ NamePtr Parser::ParseTypeName(void) {
 
     name = ParseNameNonExpr();
     if (!name) return nullptr;
-    const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
+    Symbol *sym = symTab.GlobalLookup(name->GetName());
 
-    if (vec) {
-        for (int i = 0; i < vec->size(); i ++) {
-            if (vec->at(i)->kind == Symbol::SymbolKind::Type) return name;
-            if (vec->at(i)->kind == Symbol::SymbolKind::IncompleteType) return name;
-        }
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::Type) return name;
+        if (sym->kind == SymbolTable::SymbolKind::IncompleteType) return name;
     }
 
     p.At("failed");
@@ -275,14 +273,11 @@ NamePtr Parser::ParseSubtypeName(void) {
     name = ParseNameNonExpr();
     if (!name) return nullptr;
 
-    const std::vector<Symbol *> *vec = scopes.Lookup(name->GetName());
+    Symbol *sym = symTab.GlobalLookup(name->GetName());
 
-    if (!vec || vec->empty()) return nullptr;
-
-    for (int i = 0; i < vec->size(); i ++) {
-        if (vec->at(i)->kind == Symbol::SymbolKind::Type) {
-            TypeSymbol *tp = static_cast<TypeSymbol *>(vec->at(i));
-            if (tp->category == TypeSymbol::TypeCategory::Subtype) return name;
+    if (sym) {
+        if (sym->kind == SymbolTable::SymbolKind::Type) {
+            return name;
         }
     }
 

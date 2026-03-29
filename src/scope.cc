@@ -18,7 +18,7 @@
 #include "ada.hh"
 
 
-
+#if 0
 //
 // -- Construct a scope
 //    -----------------
@@ -80,5 +80,5 @@ void Scope::Print(void) const
     }
 }
 
-
+#endif
 

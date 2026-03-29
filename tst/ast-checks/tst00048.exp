@@ -46,8 +46,8 @@ Listing for tst/declarations/tst00048.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Real Type: coefficient : Real
-Subtype: short_coeff : Subtype
+Type Symbol: coefficient : Type
+Type Symbol: short_coeff : Type
 -------------------
 
    Errors  : 0

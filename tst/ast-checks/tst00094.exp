@@ -69,17 +69,11 @@ Listing for tst/declarations/tst00094.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Access Type: link : Access
-Record Type: cell : Record
-   containing components (value succ pred )
--------------------
-
-Scope Name: cell
-Scope ID  : 2
--------------------
-Component Symbol: value : Component
-Component Symbol: succ : Component
-Component Symbol: pred : Component
+Type Symbol: cell : Type
+Type Symbol: link : Type
+Component Symbol: value : Component of type cell
+Component Symbol: succ : Component of type cell
+Component Symbol: pred : Component of type cell
 -------------------
 
    Errors  : 0

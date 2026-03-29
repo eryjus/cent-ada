@@ -4,6 +4,12 @@ GotoStmt
   labels === (null/empty)
   name: SimpleName
     id --> fwd_loop
+NullStatement
+  labels === (null/empty)
+NullStatement
+  labels ===
+    [0]: SimpleName
+      id --> fwd_loop
 
 
 Listing for tst/statements/tst00021.ada:

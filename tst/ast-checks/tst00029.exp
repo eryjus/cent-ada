@@ -26,12 +26,11 @@ Listing for tst/declarations/tst00029.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Enumeration Type: suit : Enumeration
-   containing literals (clubs diamonds hearts spades )
-Enumeration Literal: clubs : EnumLiteral of type suit; value (0)
-Enumeration Literal: diamonds : EnumLiteral of type suit; value (1)
-Enumeration Literal: hearts : EnumLiteral of type suit; value (2)
-Enumeration Literal: spades : EnumLiteral of type suit; value (3)
+Type Symbol: suit : Type
+EnumLiteral Symbol: clubs : EnumLiteral of type suit
+EnumLiteral Symbol: diamonds : EnumLiteral of type suit
+EnumLiteral Symbol: hearts : EnumLiteral of type suit
+EnumLiteral Symbol: spades : EnumLiteral of type suit
 -------------------
 
    Errors  : 0

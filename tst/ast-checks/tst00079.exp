@@ -73,16 +73,10 @@ Listing for tst/declarations/tst00079.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Array Type: matrix : Array
-Discriminant Symbol: side : Discriminant
-Record Type: square : Record
-   containing components (mat )
--------------------
-
-Scope Name: square
-Scope ID  : 2
--------------------
-Component Symbol: mat : Component
+Type Symbol: matrix : Type
+Discriminant Symbol: side : Discriminant of type integer
+Type Symbol: square : Type
+Component Symbol: mat : Component of type square
 -------------------
 
    Errors  : 0
