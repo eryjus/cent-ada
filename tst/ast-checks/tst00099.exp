@@ -50,7 +50,7 @@ Type Symbol: gender
 EnumLiteral Symbol: m of type gender
 EnumLiteral Symbol: f of type gender
 IncompleteType Symbol: person
-Discriminant Symbol: sex of type gender
+Discriminant Symbol: sex of type person
 Type Symbol: person_name
 -------------------
 

@@ -22,7 +22,7 @@
 //
 // -- Parse a Discriminant Part
 //    -------------------------
-DiscriminantSpecificationListPtr Parser::ParseDiscriminantPart(void)
+DiscriminantSpecificationListPtr Parser::ParseDiscriminantPart(Id &id)
 {
     Production p(*this, "discriminant_part");
     MarkStream m(tokens, diags);
@@ -32,7 +32,7 @@ DiscriminantSpecificationListPtr Parser::ParseDiscriminantPart(void)
 
     if (!Require(TokenType::TOK_LEFT_PARENTHESIS)) return nullptr;
 
-    spec = ParseDiscriminantSpecification();
+    spec = ParseDiscriminantSpecification(id);
 
     if (!spec) return nullptr;
 
@@ -40,7 +40,7 @@ DiscriminantSpecificationListPtr Parser::ParseDiscriminantPart(void)
 
     loc = TokenStream::Get().SourceLocation();
     while (Optional(TokenType::TOK_SEMICOLON)) {
-        spec = ParseDiscriminantSpecification();
+        spec = ParseDiscriminantSpecification(id);
         if (spec) {
             rv->push_back(std::move(spec));
         } else {

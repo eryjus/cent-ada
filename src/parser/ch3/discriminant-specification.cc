@@ -22,7 +22,7 @@
 //
 // -- Parse a Discriminant Specification
 //    ----------------------------------
-DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
+DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(Id &id)
 {
     Production p(*this, "discriminant_specification");
     MarkStream m(tokens, diags);
@@ -59,7 +59,7 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(void)
     // -- Maintain the symbol table
     //    -------------------------
     for (int i = 0; i < idList->size(); i ++) {
-        symTab.Declare(idList->at(i).loc, idList->at(i).name, SymbolTable::SymbolKind::Discriminant, type->GetName());
+        symTab.Declare(idList->at(i).loc, idList->at(i).name, SymbolTable::SymbolKind::Discriminant, id.name);
     }
 
 

@@ -49,7 +49,7 @@ Listing for tst/declarations/tst00068.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Discriminant Symbol: length of type integer
+Discriminant Symbol: length of type var_line
 Type Symbol: var_line
 Component Symbol: image of type var_line
 -------------------

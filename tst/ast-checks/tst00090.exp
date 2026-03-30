@@ -182,7 +182,7 @@ EnumLiteral Symbol: open of type state
 EnumLiteral Symbol: closed of type state
 Type Symbol: cylinder_index
 Type Symbol: track_number
-Discriminant Symbol: unit of type device
+Discriminant Symbol: unit of type peripheral
 Type Symbol: peripheral
 Component Symbol: status of type peripheral
 Component Symbol: line_count of type peripheral

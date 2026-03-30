@@ -84,7 +84,7 @@ Scope ID  : 1
 -------------------
 Object Symbol: max
 Type Symbol: buffer_size
-Discriminant Symbol: size of type buffer_size
+Discriminant Symbol: size of type buffer
 Type Symbol: buffer
 Component Symbol: pos of type buffer
 Component Symbol: value of type buffer

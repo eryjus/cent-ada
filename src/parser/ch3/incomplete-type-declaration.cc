@@ -58,7 +58,7 @@ TypeDeclPtr Parser::ParseIncompleteTypeDeclaration(void)
     //
     // -- this is optional
     //    ----------------
-    discriminant = ParseDiscriminantPart();
+    discriminant = ParseDiscriminantPart(id);
     if (discriminant) where = "discriminant part";
 
 

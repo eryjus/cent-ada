@@ -61,7 +61,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Type Symbol: positive
-Discriminant Symbol: number of type positive
+Discriminant Symbol: number of type item
 Type Symbol: item
 Component Symbol: content of type item
 -------------------

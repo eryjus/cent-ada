@@ -50,7 +50,7 @@ TypeDeclPtr Parser::ParseFullTypeDeclaration(void)
     //
     // -- Here is an optional discriminant part
     //    -------------------------------------
-    discriminant = ParseDiscriminantPart();
+    discriminant = ParseDiscriminantPart(id);
 
 
 

@@ -205,8 +205,8 @@ public:
     DiscreteRangePtr ParseRange(void);
     DiscriminantAssociationPtr ParseDiscriminantAssociation(void);
     DiscriminantConstraintPtr ParseDiscriminantConstraint(void);
-    DiscriminantSpecificationListPtr ParseDiscriminantPart(void);
-    DiscriminantSpecificationPtr ParseDiscriminantSpecification(void);
+    DiscriminantSpecificationListPtr ParseDiscriminantPart(Id &id);
+    DiscriminantSpecificationPtr ParseDiscriminantSpecification(Id &id);
     ExprPtr ParseFixedAccuracyDefinition(void);
     ExprPtr ParseFloatingAccuracyDefinition(void);
     Id ParseEnumerationLiteral(Symbol *type);

@@ -122,10 +122,10 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Type Symbol: matrix
-Discriminant Symbol: side of type integer
+Discriminant Symbol: side of type square
 Type Symbol: square
 Component Symbol: mat of type square
-Discriminant Symbol: number of type integer
+Discriminant Symbol: number of type double_square
 Type Symbol: double_square
 Component Symbol: left of type double_square
 Component Symbol: right of type double_square

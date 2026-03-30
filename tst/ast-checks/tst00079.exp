@@ -74,7 +74,7 @@ Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
 Type Symbol: matrix
-Discriminant Symbol: side of type integer
+Discriminant Symbol: side of type square
 Type Symbol: square
 Component Symbol: mat of type square
 -------------------

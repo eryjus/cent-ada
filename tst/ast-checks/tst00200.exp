@@ -1822,18 +1822,18 @@ Object Symbol: yesterday
 Object Symbol: a
 Object Symbol: b
 Object Symbol: c
-Discriminant Symbol: size of type buffer_size
+Discriminant Symbol: size of type buffer
 Type Symbol: buffer
 Component Symbol: pos of type buffer
 Component Symbol: value of type buffer
-Discriminant Symbol: side of type integer
+Discriminant Symbol: side of type square
 Type Symbol: square
 Component Symbol: mat of type square
-Discriminant Symbol: number of type integer
+Discriminant Symbol: number of type double_square
 Type Symbol: double_square
 Component Symbol: left of type double_square
 Component Symbol: right of type double_square
-Discriminant Symbol: number of type positive
+Discriminant Symbol: number of type item
 Type Symbol: item
 Component Symbol: content of type item
 Type Symbol: device
@@ -1846,7 +1846,7 @@ EnumLiteral Symbol: closed of type state
 Type Symbol: cylinder_index
 Type Symbol: track_number
 Object Symbol: page_size
-Discriminant Symbol: unit of type device
+Discriminant Symbol: unit of type peripheral
 Type Symbol: peripheral
 Component Symbol: status of type peripheral
 Component Symbol: line_count of type peripheral
@@ -1867,12 +1867,12 @@ Object Symbol: head
 Object Symbol: next
 Type Symbol: car
 Type Symbol: person
-Discriminant Symbol: sex of type gender
+Discriminant Symbol: sex of type person
 Type Symbol: person_name
 Type Symbol: car_name
 Component Symbol: number of type car
 Component Symbol: owner of type car
-Discriminant Symbol: sex of type gender
+Discriminant Symbol: sex of type person
 Component Symbol: name of type person
 Component Symbol: birth of type person
 Component Symbol: age of type person
