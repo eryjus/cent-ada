@@ -6,4 +6,5 @@ bin/ada-cc
 gen/*.cc
 gen/*.hh
 gen/*.log
+lib/*.a
 

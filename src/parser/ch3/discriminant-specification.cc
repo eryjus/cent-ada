@@ -59,7 +59,9 @@ DiscriminantSpecificationPtr Parser::ParseDiscriminantSpecification(Id &id)
     // -- Maintain the symbol table
     //    -------------------------
     for (int i = 0; i < idList->size(); i ++) {
-        symTab.Declare(idList->at(i).loc, idList->at(i).name, SymbolTable::SymbolKind::Discriminant, id.name);
+        if (!symTab.LocalLookup(idList->at(i).name, SymbolTable::SymbolKind::Discriminant, id.name)) {
+            symTab.Declare(idList->at(i).loc, idList->at(i).name, SymbolTable::SymbolKind::Discriminant, id.name);
+        }
     }
 
 

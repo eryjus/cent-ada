@@ -314,7 +314,6 @@ Type Symbol: car
 Component Symbol: number of type car
 Component Symbol: owner of type car
 Type Symbol: car_name
-Discriminant Symbol: sex of type person
 Component Symbol: name of type person
 Component Symbol: birth of type person
 Component Symbol: age of type person
