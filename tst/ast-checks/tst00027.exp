@@ -26,7 +26,7 @@ Listing for tst/declarations/tst00027.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: key_manager : Type
+Type Symbol: key_manager
 -------------------
 
    Errors  : 0

@@ -29,7 +29,7 @@ Listing for tst/declarations/tst00040.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: page_num : Type
+Type Symbol: page_num
 -------------------
 
    Errors  : 0

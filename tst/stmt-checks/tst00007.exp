@@ -70,9 +70,9 @@ Listing for tst/statements/tst00007.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: i : Object
-Object Symbol: j : Object
-Object Symbol: k : Object
+Object Symbol: i
+Object Symbol: j
+Object Symbol: k
 -------------------
 
    Errors  : 0

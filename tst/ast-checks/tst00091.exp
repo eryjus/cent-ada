@@ -179,24 +179,24 @@ Listing for tst/declarations/tst00091.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: page_size : Object
-Type Symbol: device : Type
-EnumLiteral Symbol: printer : EnumLiteral of type device
-EnumLiteral Symbol: disk : EnumLiteral of type device
-EnumLiteral Symbol: drum : EnumLiteral of type device
-Type Symbol: state : Type
-EnumLiteral Symbol: open : EnumLiteral of type state
-EnumLiteral Symbol: closed : EnumLiteral of type state
-Type Symbol: cylinder_index : Type
-Type Symbol: track_number : Type
-Discriminant Symbol: unit : Discriminant of type device
-Type Symbol: peripheral : Type
-Component Symbol: status : Component of type peripheral
-Component Symbol: line_count : Component of type peripheral
-Component Symbol: cylinder : Component of type peripheral
-Component Symbol: track : Component of type peripheral
-Type Symbol: disk_unit : Type
-Object Symbol: archive : Object
+Object Symbol: page_size
+Type Symbol: device
+EnumLiteral Symbol: printer of type device
+EnumLiteral Symbol: disk of type device
+EnumLiteral Symbol: drum of type device
+Type Symbol: state
+EnumLiteral Symbol: open of type state
+EnumLiteral Symbol: closed of type state
+Type Symbol: cylinder_index
+Type Symbol: track_number
+Discriminant Symbol: unit of type device
+Type Symbol: peripheral
+Component Symbol: status of type peripheral
+Component Symbol: line_count of type peripheral
+Component Symbol: cylinder of type peripheral
+Component Symbol: track of type peripheral
+Type Symbol: disk_unit
+Object Symbol: archive
 -------------------
 
    Errors  : 0

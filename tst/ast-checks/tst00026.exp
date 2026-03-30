@@ -44,8 +44,8 @@ Listing for tst/declarations/tst00026.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: positive : Type
-Type Symbol: counter : Type
+Type Symbol: positive
+Type Symbol: counter
 -------------------
 
    Errors  : 0

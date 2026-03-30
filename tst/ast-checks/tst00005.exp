@@ -56,8 +56,8 @@ Listing for tst/declarations/tst00005.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: bit_vector : Type
-Object Symbol: option : Object
+Type Symbol: bit_vector
+Object Symbol: option
 -------------------
 
    Errors  : 0

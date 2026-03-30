@@ -31,7 +31,7 @@ Listing for tst/declarations/tst00056.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: bit_vector : Type
+Type Symbol: bit_vector
 -------------------
 
    Errors  : 0

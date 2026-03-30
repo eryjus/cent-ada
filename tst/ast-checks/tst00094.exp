@@ -69,11 +69,11 @@ Listing for tst/declarations/tst00094.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: cell : Type
-Type Symbol: link : Type
-Component Symbol: value : Component of type cell
-Component Symbol: succ : Component of type cell
-Component Symbol: pred : Component of type cell
+Type Symbol: cell
+Type Symbol: link
+Component Symbol: value of type cell
+Component Symbol: succ of type cell
+Component Symbol: pred of type cell
 -------------------
 
    Errors  : 0

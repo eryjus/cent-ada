@@ -54,7 +54,7 @@ Listing for tst/statements/tst00011.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: x : Object
+Object Symbol: x
 -------------------
 
    Errors  : 0

@@ -59,10 +59,10 @@ Listing for tst/declarations/tst00105.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: date : Type
-Component Symbol: year : Component of type date
-Component Symbol: mon : Component of type date
-Component Symbol: day : Component of type date
+Type Symbol: date
+Component Symbol: year of type date
+Component Symbol: mon of type date
+Component Symbol: day of type date
 -------------------
 
    Errors  : 0

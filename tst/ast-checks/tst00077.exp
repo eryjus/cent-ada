@@ -59,12 +59,12 @@ Listing for tst/declarations/tst00077.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: complex : Type
-Component Symbol: re : Component of type complex
-Component Symbol: im : Component of type complex
-Object Symbol: a : Object
-Object Symbol: b : Object
-Object Symbol: c : Object
+Type Symbol: complex
+Component Symbol: re of type complex
+Component Symbol: im of type complex
+Object Symbol: a
+Object Symbol: b
+Object Symbol: c
 -------------------
 
    Errors  : 0

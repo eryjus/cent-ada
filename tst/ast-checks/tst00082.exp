@@ -101,13 +101,13 @@ Listing for tst/declarations/tst00082.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: max : Object
-Type Symbol: buffer_size : Type
-Discriminant Symbol: size : Discriminant of type buffer_size
-Type Symbol: buffer : Type
-Component Symbol: pos : Component of type buffer
-Component Symbol: value : Component of type buffer
-Object Symbol: large : Object
+Object Symbol: max
+Type Symbol: buffer_size
+Discriminant Symbol: size of type buffer_size
+Type Symbol: buffer
+Component Symbol: pos of type buffer
+Component Symbol: value of type buffer
+Object Symbol: large
 -------------------
 
    Errors  : 0

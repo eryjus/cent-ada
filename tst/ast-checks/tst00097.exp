@@ -36,11 +36,11 @@ Listing for tst/declarations/tst00097.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: gender : Type
-EnumLiteral Symbol: m : EnumLiteral of type gender
-EnumLiteral Symbol: f : EnumLiteral of type gender
-IncompleteType Symbol: person : IncompleteType
-Discriminant Symbol: sex : Discriminant of type gender
+Type Symbol: gender
+EnumLiteral Symbol: m of type gender
+EnumLiteral Symbol: f of type gender
+IncompleteType Symbol: person
+Discriminant Symbol: sex of type gender
 -------------------
 
    Errors  : 0

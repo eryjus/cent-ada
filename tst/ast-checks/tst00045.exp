@@ -32,7 +32,7 @@ Listing for tst/declarations/tst00045.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: coefficient : Type
+Type Symbol: coefficient
 -------------------
 
    Errors  : 0

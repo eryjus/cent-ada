@@ -46,8 +46,8 @@ Listing for tst/statements/tst00019.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: a : Object
-Object Symbol: b : Object
+Object Symbol: a
+Object Symbol: b
 -------------------
 
    Errors  : 0

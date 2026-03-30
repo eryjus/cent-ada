@@ -28,8 +28,8 @@ Listing for tst/declarations/tst00001.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: count : Object
-Object Symbol: sum : Object
+Object Symbol: count
+Object Symbol: sum
 -------------------
 
    Errors  : 0

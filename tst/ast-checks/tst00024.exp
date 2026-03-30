@@ -35,8 +35,8 @@ Listing for tst/declarations/tst00024.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: coordinate : Type
-Type Symbol: local_coordinate : Type
+Type Symbol: coordinate
+Type Symbol: local_coordinate
 -------------------
 
    Errors  : 0

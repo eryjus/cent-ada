@@ -61,14 +61,8 @@ Listing for tst/statements/tst00016.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: x : Object
-LoopName Symbol: main : LoopName
--------------------
-
-Scope Name: main
-Scope ID  : 2
--------------------
-LoopName Symbol: main : LoopName
+Object Symbol: x
+LoopName Symbol: main
 -------------------
 
    Errors  : 0

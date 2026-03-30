@@ -23,7 +23,7 @@ Listing for tst/statements/tst00020.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Label Symbol: inf_loop : Label
+Label Symbol: inf_loop
 -------------------
 
    Errors  : 0

@@ -31,7 +31,7 @@ Listing for tst/declarations/tst00054.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: vector : Type
+Type Symbol: vector
 -------------------
 
    Errors  : 0

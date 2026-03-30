@@ -45,8 +45,8 @@ Listing for tst/declarations/tst00052.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: word_length : Object
-Object Symbol: del : Object
+Object Symbol: word_length
+Object Symbol: del
 -------------------
 
    Errors  : 0

@@ -52,9 +52,9 @@ Listing for tst/declarations/tst00021.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: k : Object
-Type Symbol: column : Type
-Type Symbol: up_to_k : Type
+Object Symbol: k
+Type Symbol: column
+Type Symbol: up_to_k
 -------------------
 
    Errors  : 0

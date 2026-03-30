@@ -82,7 +82,6 @@ BlockStmtPtr Parser::ParseBlockStatement(NameListPtr &labels)
     //    ----------------------------------------------------
     if (blockName) {
         symTab.Push(blockName->GetName());
-        symTab.Declare(astLoc, blockName->GetName(), SymbolTable::SymbolKind::BlockName);
     }
 
     stmts = ParseSequenceOfStatements();

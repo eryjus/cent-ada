@@ -30,7 +30,7 @@ Listing for tst/declarations/tst00050.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: volt : Type
+Type Symbol: volt
 -------------------
 
    Errors  : 0

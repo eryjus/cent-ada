@@ -31,7 +31,7 @@ Listing for tst/statements/tst00021.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Label Symbol: fwd_loop : Label
+Label Symbol: fwd_loop
 -------------------
 
    Errors  : 0

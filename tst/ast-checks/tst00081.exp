@@ -60,10 +60,10 @@ Listing for tst/declarations/tst00081.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: positive : Type
-Discriminant Symbol: number : Discriminant of type positive
-Type Symbol: item : Type
-Component Symbol: content : Component of type item
+Type Symbol: positive
+Discriminant Symbol: number of type positive
+Type Symbol: item
+Component Symbol: content of type item
 -------------------
 
    Errors  : 0

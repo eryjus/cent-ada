@@ -196,28 +196,30 @@ std::string SymbolTable::Symbol::to_string(void) const
 //
 // -- Print the symbol Table
 //    ----------------------
-void SymbolTable::Print(void)
+void SymbolTable::Print(std::ostream &os, bool printHeader)
 {
-    std::cout << "=========================================\n";
-    std::cout << "=========================================\n";
-    std::cout << "====   Printing Symbol Scope Stack   ====\n";
-    std::cout << "=========================================\n";
-    std::cout << "=========================================\n";
-    std::cout << '\n';
+    if (printHeader) {
+        os << "=========================================\n";
+        os << "=========================================\n";
+        os << "====   Printing Symbol Scope Stack   ====\n";
+        os << "=========================================\n";
+        os << "=========================================\n";
+        os << '\n';
+    }
 
     for (int i = 1; i < table.size(); i ++) {
-        std::cout << "Scope Name: " << table[i]->name << "\n";
-        std::cout << "Scope ID  : " << i << '\n';
-        std::cout << "-------------------\n";
+        os << "Scope Name: " << table[i]->name << "\n";
+        os << "Scope ID  : " << i << '\n';
+        os << "-------------------\n";
 
         for (auto &sym : table[i]->stack) {
-            std::cout << sym->to_string() << " Symbol: " << sym->symName << " : " << sym->to_string();
-            if (sym->typeName != "") std::cout << " of type " << sym->typeName;
-            std::cout << '\n';
+            os << sym->to_string() << " Symbol: " << sym->symName;
+            if (sym->typeName != "") os << " of type " << sym->typeName;
+            os << '\n';
         }
 
-        std::cout << "-------------------\n";
-        std::cout << '\n';
+        os << "-------------------\n";
+        os << '\n';
     }
 
 }

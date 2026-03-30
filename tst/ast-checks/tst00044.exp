@@ -38,8 +38,8 @@ Listing for tst/declarations/tst00044.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: max : Object
-Type Symbol: buffer_size : Type
+Object Symbol: max
+Type Symbol: buffer_size
 -------------------
 
    Errors  : 0

@@ -56,8 +56,8 @@ Listing for tst/declarations/tst00065.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: matrix : Type
-Object Symbol: rectangle : Object
+Type Symbol: matrix
+Object Symbol: rectangle
 -------------------
 
    Errors  : 0

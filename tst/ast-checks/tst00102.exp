@@ -285,42 +285,42 @@ Listing for tst/declarations/tst00102.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: gender : Type
-EnumLiteral Symbol: m : EnumLiteral of type gender
-EnumLiteral Symbol: f : EnumLiteral of type gender
-Type Symbol: person : Type
-Discriminant Symbol: sex : Discriminant of type gender
-Type Symbol: person_name : Type
-Type Symbol: month_name : Type
-EnumLiteral Symbol: jan : EnumLiteral of type month_name
-EnumLiteral Symbol: feb : EnumLiteral of type month_name
-EnumLiteral Symbol: mar : EnumLiteral of type month_name
-EnumLiteral Symbol: apr : EnumLiteral of type month_name
-EnumLiteral Symbol: may : EnumLiteral of type month_name
-EnumLiteral Symbol: jun : EnumLiteral of type month_name
-EnumLiteral Symbol: jul : EnumLiteral of type month_name
-EnumLiteral Symbol: aug : EnumLiteral of type month_name
-EnumLiteral Symbol: sep : EnumLiteral of type month_name
-EnumLiteral Symbol: oct : EnumLiteral of type month_name
-EnumLiteral Symbol: nov : EnumLiteral of type month_name
-EnumLiteral Symbol: dec : EnumLiteral of type month_name
-Type Symbol: date : Type
-Component Symbol: day : Component of type date
-Component Symbol: month : Component of type date
-Component Symbol: year : Component of type date
-Object Symbol: tomorrow : Object
-Object Symbol: yesterday : Object
-Type Symbol: car : Type
-Component Symbol: number : Component of type car
-Component Symbol: owner : Component of type car
-Type Symbol: car_name : Type
-Discriminant Symbol: sex : Discriminant of type gender
-Component Symbol: name : Component of type person
-Component Symbol: birth : Component of type person
-Component Symbol: age : Component of type person
-Component Symbol: vehicle : Component of type person
-Component Symbol: wife : Component of type person
-Component Symbol: husband : Component of type person
+Type Symbol: gender
+EnumLiteral Symbol: m of type gender
+EnumLiteral Symbol: f of type gender
+Type Symbol: person
+Discriminant Symbol: sex of type gender
+Type Symbol: person_name
+Type Symbol: month_name
+EnumLiteral Symbol: jan of type month_name
+EnumLiteral Symbol: feb of type month_name
+EnumLiteral Symbol: mar of type month_name
+EnumLiteral Symbol: apr of type month_name
+EnumLiteral Symbol: may of type month_name
+EnumLiteral Symbol: jun of type month_name
+EnumLiteral Symbol: jul of type month_name
+EnumLiteral Symbol: aug of type month_name
+EnumLiteral Symbol: sep of type month_name
+EnumLiteral Symbol: oct of type month_name
+EnumLiteral Symbol: nov of type month_name
+EnumLiteral Symbol: dec of type month_name
+Type Symbol: date
+Component Symbol: day of type date
+Component Symbol: month of type date
+Component Symbol: year of type date
+Object Symbol: tomorrow
+Object Symbol: yesterday
+Type Symbol: car
+Component Symbol: number of type car
+Component Symbol: owner of type car
+Type Symbol: car_name
+Discriminant Symbol: sex of type gender
+Component Symbol: name of type person
+Component Symbol: birth of type person
+Component Symbol: age of type person
+Component Symbol: vehicle of type person
+Component Symbol: wife of type person
+Component Symbol: husband of type person
 -------------------
 
    Errors  : 0

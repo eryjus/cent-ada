@@ -40,7 +40,7 @@ Listing for tst/declarations/tst00061.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: grid : Object
+Object Symbol: grid
 -------------------
 
    Errors  : 0

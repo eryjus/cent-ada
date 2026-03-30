@@ -44,15 +44,15 @@ Listing for tst/declarations/tst00036.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: day : Type
-EnumLiteral Symbol: mon : EnumLiteral of type day
-EnumLiteral Symbol: tue : EnumLiteral of type day
-EnumLiteral Symbol: wed : EnumLiteral of type day
-EnumLiteral Symbol: thu : EnumLiteral of type day
-EnumLiteral Symbol: fri : EnumLiteral of type day
-EnumLiteral Symbol: sat : EnumLiteral of type day
-EnumLiteral Symbol: sun : EnumLiteral of type day
-Type Symbol: weekday : Type
+Type Symbol: day
+EnumLiteral Symbol: mon of type day
+EnumLiteral Symbol: tue of type day
+EnumLiteral Symbol: wed of type day
+EnumLiteral Symbol: thu of type day
+EnumLiteral Symbol: fri of type day
+EnumLiteral Symbol: sat of type day
+EnumLiteral Symbol: sun of type day
+Type Symbol: weekday
 -------------------
 
    Errors  : 0

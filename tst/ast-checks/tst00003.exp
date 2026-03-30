@@ -28,7 +28,7 @@ Listing for tst/declarations/tst00003.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: sorted : Object
+Object Symbol: sorted
 -------------------
 
    Errors  : 0

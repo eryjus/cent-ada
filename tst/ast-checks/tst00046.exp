@@ -25,7 +25,7 @@ Listing for tst/declarations/tst00046.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: my_real : Type
+Type Symbol: my_real
 -------------------
 
    Errors  : 0

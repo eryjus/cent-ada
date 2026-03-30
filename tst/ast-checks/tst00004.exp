@@ -57,16 +57,16 @@ Listing for tst/declarations/tst00004.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: n : Object
-Type Symbol: color : Type
-EnumLiteral Symbol: white : EnumLiteral of type color
-EnumLiteral Symbol: red : EnumLiteral of type color
-EnumLiteral Symbol: yellow : EnumLiteral of type color
-EnumLiteral Symbol: green : EnumLiteral of type color
-EnumLiteral Symbol: blue : EnumLiteral of type color
-EnumLiteral Symbol: brown : EnumLiteral of type color
-EnumLiteral Symbol: black : EnumLiteral of type color
-Object Symbol: color_table : Object
+Object Symbol: n
+Type Symbol: color
+EnumLiteral Symbol: white of type color
+EnumLiteral Symbol: red of type color
+EnumLiteral Symbol: yellow of type color
+EnumLiteral Symbol: green of type color
+EnumLiteral Symbol: blue of type color
+EnumLiteral Symbol: brown of type color
+EnumLiteral Symbol: black of type color
+Object Symbol: color_table
 -------------------
 
    Errors  : 0

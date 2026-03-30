@@ -75,13 +75,6 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
     }
 
 
-    //
-    // -- For this block of statements, we need a pseudo scope
-    //    ----------------------------------------------------
-    if (loopName) {
-        symTab.Push(loopName->GetName());
-        symTab.Declare(astLoc, loopName->GetName(), SymbolTable::SymbolKind::LoopName);
-    }
 
     stmts = ParseSequenceOfStatements();
 
@@ -113,13 +106,6 @@ LoopStmtPtr Parser::ParseLoopStatement(NameListPtr &labels)
         }
     }
 
-
-    //
-    // -- if we created a scope, pop it here
-    //    ----------------------------------
-    if (loopName) {
-        symTab.Pop();
-    }
 
 
     p.At("Complete loop");

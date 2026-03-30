@@ -121,14 +121,14 @@ Listing for tst/declarations/tst00080.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: matrix : Type
-Discriminant Symbol: side : Discriminant of type integer
-Type Symbol: square : Type
-Component Symbol: mat : Component of type square
-Discriminant Symbol: number : Discriminant of type integer
-Type Symbol: double_square : Type
-Component Symbol: left : Component of type double_square
-Component Symbol: right : Component of type double_square
+Type Symbol: matrix
+Discriminant Symbol: side of type integer
+Type Symbol: square
+Component Symbol: mat of type square
+Discriminant Symbol: number of type integer
+Type Symbol: double_square
+Component Symbol: left of type double_square
+Component Symbol: right of type double_square
 -------------------
 
    Errors  : 0

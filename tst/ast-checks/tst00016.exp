@@ -33,7 +33,7 @@ Listing for tst/declarations/tst00016.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: table : Type
+Type Symbol: table
 -------------------
 
    Errors  : 0

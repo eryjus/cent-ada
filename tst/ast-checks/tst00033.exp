@@ -25,10 +25,10 @@ Listing for tst/declarations/tst00033.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: light : Type
-EnumLiteral Symbol: red : EnumLiteral of type light
-EnumLiteral Symbol: amber : EnumLiteral of type light
-EnumLiteral Symbol: green : EnumLiteral of type light
+Type Symbol: light
+EnumLiteral Symbol: red of type light
+EnumLiteral Symbol: amber of type light
+EnumLiteral Symbol: green of type light
 -------------------
 
    Errors  : 0

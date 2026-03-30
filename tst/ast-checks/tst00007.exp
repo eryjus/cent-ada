@@ -40,8 +40,8 @@ Listing for tst/declarations/tst00007.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: limit : Object
-Object Symbol: low_limit : Object
+Object Symbol: limit
+Object Symbol: low_limit
 -------------------
 
    Errors  : 0

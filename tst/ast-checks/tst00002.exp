@@ -32,7 +32,7 @@ Listing for tst/declarations/tst00002.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: size : Object
+Object Symbol: size
 -------------------
 
    Errors  : 0

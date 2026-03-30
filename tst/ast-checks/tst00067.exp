@@ -48,8 +48,8 @@ Listing for tst/declarations/tst00067.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: bit_vector : Type
-Object Symbol: filter : Object
+Type Symbol: bit_vector
+Object Symbol: filter
 -------------------
 
    Errors  : 0

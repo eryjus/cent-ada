@@ -85,16 +85,16 @@ Listing for tst/declarations/tst00100.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: gender : Type
-EnumLiteral Symbol: m : EnumLiteral of type gender
-EnumLiteral Symbol: f : EnumLiteral of type gender
-IncompleteType Symbol: person : IncompleteType
-Discriminant Symbol: sex : Discriminant of type gender
-Type Symbol: person_name : Type
-Type Symbol: car : Type
-Component Symbol: number : Component of type car
-Component Symbol: owner : Component of type car
-Type Symbol: car_name : Type
+Type Symbol: gender
+EnumLiteral Symbol: m of type gender
+EnumLiteral Symbol: f of type gender
+IncompleteType Symbol: person
+Discriminant Symbol: sex of type gender
+Type Symbol: person_name
+Type Symbol: car
+Component Symbol: number of type car
+Component Symbol: owner of type car
+Type Symbol: car_name
 -------------------
 
    Errors  : 0

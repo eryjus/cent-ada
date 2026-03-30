@@ -26,9 +26,9 @@ Listing for tst/declarations/tst00013.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: one : Object
-Object Symbol: un : Object
-Object Symbol: eins : Object
+Object Symbol: one
+Object Symbol: un
+Object Symbol: eins
 -------------------
 
    Errors  : 0

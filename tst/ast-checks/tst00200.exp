@@ -1685,204 +1685,204 @@ Listing for tst/declarations/tst00200.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: bit_vector : Type
-Object Symbol: count : Object
-Object Symbol: sum : Object
-Object Symbol: size : Object
-Object Symbol: sorted : Object
-Object Symbol: n : Object
-Object Symbol: k : Object
-Type Symbol: color : Type
-EnumLiteral Symbol: white : EnumLiteral of type color
-EnumLiteral Symbol: red : EnumLiteral of type color
-EnumLiteral Symbol: orange : EnumLiteral of type color
-EnumLiteral Symbol: yellow : EnumLiteral of type color
-EnumLiteral Symbol: green : EnumLiteral of type color
-EnumLiteral Symbol: blue : EnumLiteral of type color
-EnumLiteral Symbol: purple : EnumLiteral of type color
-EnumLiteral Symbol: brown : EnumLiteral of type color
-EnumLiteral Symbol: black : EnumLiteral of type color
-Object Symbol: color_table : Object
-Object Symbol: limit : Object
-Object Symbol: low_limit : Object
-Object Symbol: pi : Object
-Object Symbol: two_pi : Object
-Object Symbol: max : Object
-Object Symbol: power_16 : Object
-Object Symbol: one : Object
-Object Symbol: un : Object
-Object Symbol: eins : Object
-Type Symbol: column : Type
-Type Symbol: table : Type
-Type Symbol: matrix : Type
-Type Symbol: rainbow : Type
-Type Symbol: red_purple : Type
-Type Symbol: int : Type
-Type Symbol: small_int : Type
-Type Symbol: up_to_k : Type
-Type Symbol: square_sub : Type
-Type Symbol: coordinate : Type
-Component Symbol: lat : Component of type coordinate
-Component Symbol: long : Component of type coordinate
-Type Symbol: local_coordinate : Type
-Type Symbol: day : Type
-EnumLiteral Symbol: mon : EnumLiteral of type day
-EnumLiteral Symbol: tue : EnumLiteral of type day
-EnumLiteral Symbol: wed : EnumLiteral of type day
-EnumLiteral Symbol: thu : EnumLiteral of type day
-EnumLiteral Symbol: fri : EnumLiteral of type day
-EnumLiteral Symbol: sat : EnumLiteral of type day
-EnumLiteral Symbol: sun : EnumLiteral of type day
-Type Symbol: midweek : Type
-Type Symbol: positive : Type
-Type Symbol: counter : Type
-Type Symbol: suit : Type
-EnumLiteral Symbol: clubs : EnumLiteral of type suit
-EnumLiteral Symbol: diamonds : EnumLiteral of type suit
-EnumLiteral Symbol: hearts : EnumLiteral of type suit
-EnumLiteral Symbol: spades : EnumLiteral of type suit
-Type Symbol: gender : Type
-EnumLiteral Symbol: m : EnumLiteral of type gender
-EnumLiteral Symbol: f : EnumLiteral of type gender
-Type Symbol: level : Type
-EnumLiteral Symbol: low : EnumLiteral of type level
-EnumLiteral Symbol: medium : EnumLiteral of type level
-EnumLiteral Symbol: urgent : EnumLiteral of type level
-Type Symbol: light : Type
-EnumLiteral Symbol: red : EnumLiteral of type light
-EnumLiteral Symbol: amber : EnumLiteral of type light
-EnumLiteral Symbol: green : EnumLiteral of type light
-Type Symbol: hexa : Type
-EnumLiteral Symbol: 'A' : EnumLiteral of type hexa
-EnumLiteral Symbol: 'B' : EnumLiteral of type hexa
-EnumLiteral Symbol: 'C' : EnumLiteral of type hexa
-EnumLiteral Symbol: 'D' : EnumLiteral of type hexa
-EnumLiteral Symbol: 'E' : EnumLiteral of type hexa
-EnumLiteral Symbol: 'F' : EnumLiteral of type hexa
-Type Symbol: mixed : Type
-EnumLiteral Symbol: 'A' : EnumLiteral of type mixed
-EnumLiteral Symbol: 'B' : EnumLiteral of type mixed
-EnumLiteral Symbol: '*' : EnumLiteral of type mixed
-EnumLiteral Symbol: none : EnumLiteral of type mixed
-EnumLiteral Symbol: '?' : EnumLiteral of type mixed
-EnumLiteral Symbol: '%' : EnumLiteral of type mixed
-Type Symbol: weekday : Type
-Type Symbol: major : Type
-Type Symbol: roman_digit : Type
-EnumLiteral Symbol: 'I' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'V' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'X' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'L' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'C' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'D' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'M' : EnumLiteral of type roman_digit
-Type Symbol: page_num : Type
-Object Symbol: max_line_size : Object
-Type Symbol: line_size : Type
-Type Symbol: column_ptr : Type
-Type Symbol: buffer_size : Type
-Type Symbol: coefficient : Type
-Type Symbol: mass : Type
-Type Symbol: short_coeff : Type
-Type Symbol: probability : Type
-Type Symbol: volt : Type
-Type Symbol: rough_voltage : Type
-Object Symbol: word_length : Object
-Object Symbol: del : Object
-Type Symbol: fraction : Type
-Type Symbol: vector : Type
-Type Symbol: roman : Type
-Type Symbol: schedule : Type
-Type Symbol: line : Type
-Object Symbol: grid : Object
-Object Symbol: mix : Object
-Object Symbol: page : Object
-Type Symbol: month_name : Type
-EnumLiteral Symbol: jan : EnumLiteral of type month_name
-EnumLiteral Symbol: feb : EnumLiteral of type month_name
-EnumLiteral Symbol: mar : EnumLiteral of type month_name
-EnumLiteral Symbol: apr : EnumLiteral of type month_name
-EnumLiteral Symbol: may : EnumLiteral of type month_name
-EnumLiteral Symbol: jun : EnumLiteral of type month_name
-EnumLiteral Symbol: jul : EnumLiteral of type month_name
-EnumLiteral Symbol: aug : EnumLiteral of type month_name
-EnumLiteral Symbol: sep : EnumLiteral of type month_name
-EnumLiteral Symbol: oct : EnumLiteral of type month_name
-EnumLiteral Symbol: nov : EnumLiteral of type month_name
-EnumLiteral Symbol: dec : EnumLiteral of type month_name
-Type Symbol: date : Type
-Component Symbol: day : Component of type date
-Component Symbol: month : Component of type date
-Component Symbol: year : Component of type date
-Type Symbol: complex : Type
-Component Symbol: re : Component of type complex
-Component Symbol: im : Component of type complex
-Object Symbol: tomorrow : Object
-Object Symbol: yesterday : Object
-Object Symbol: a : Object
-Object Symbol: b : Object
-Object Symbol: c : Object
-Discriminant Symbol: size : Discriminant of type buffer_size
-Type Symbol: buffer : Type
-Component Symbol: pos : Component of type buffer
-Component Symbol: value : Component of type buffer
-Discriminant Symbol: side : Discriminant of type integer
-Type Symbol: square : Type
-Component Symbol: mat : Component of type square
-Discriminant Symbol: number : Discriminant of type integer
-Type Symbol: double_square : Type
-Component Symbol: left : Component of type double_square
-Component Symbol: right : Component of type double_square
-Discriminant Symbol: number : Discriminant of type positive
-Type Symbol: item : Type
-Component Symbol: content : Component of type item
-Type Symbol: device : Type
-EnumLiteral Symbol: printer : EnumLiteral of type device
-EnumLiteral Symbol: disk : EnumLiteral of type device
-EnumLiteral Symbol: drum : EnumLiteral of type device
-Type Symbol: state : Type
-EnumLiteral Symbol: open : EnumLiteral of type state
-EnumLiteral Symbol: closed : EnumLiteral of type state
-Type Symbol: cylinder_index : Type
-Type Symbol: track_number : Type
-Object Symbol: page_size : Object
-Discriminant Symbol: unit : Discriminant of type device
-Type Symbol: peripheral : Type
-Component Symbol: status : Component of type peripheral
-Component Symbol: line_count : Component of type peripheral
-Component Symbol: cylinder : Component of type peripheral
-Component Symbol: track : Component of type peripheral
-Type Symbol: drum_unit : Type
-Type Symbol: disk_unit : Type
-Object Symbol: writer : Object
-Object Symbol: archive : Object
-Type Symbol: frame : Type
-Type Symbol: buffer_name : Type
-Type Symbol: cell : Type
-Type Symbol: link : Type
-Component Symbol: value : Component of type cell
-Component Symbol: succ : Component of type cell
-Component Symbol: pred : Component of type cell
-Object Symbol: head : Object
-Object Symbol: next : Object
-Type Symbol: car : Type
-Type Symbol: person : Type
-Discriminant Symbol: sex : Discriminant of type gender
-Type Symbol: person_name : Type
-Type Symbol: car_name : Type
-Component Symbol: number : Component of type car
-Component Symbol: owner : Component of type car
-Discriminant Symbol: sex : Discriminant of type gender
-Component Symbol: name : Component of type person
-Component Symbol: birth : Component of type person
-Component Symbol: age : Component of type person
-Component Symbol: vehicle : Component of type person
-Component Symbol: wife : Component of type person
-Component Symbol: husband : Component of type person
-Object Symbol: my_car : Object
-Object Symbol: your_car : Object
-Object Symbol: next_car : Object
-Type Symbol: male : Type
+Type Symbol: bit_vector
+Object Symbol: count
+Object Symbol: sum
+Object Symbol: size
+Object Symbol: sorted
+Object Symbol: n
+Object Symbol: k
+Type Symbol: color
+EnumLiteral Symbol: white of type color
+EnumLiteral Symbol: red of type color
+EnumLiteral Symbol: orange of type color
+EnumLiteral Symbol: yellow of type color
+EnumLiteral Symbol: green of type color
+EnumLiteral Symbol: blue of type color
+EnumLiteral Symbol: purple of type color
+EnumLiteral Symbol: brown of type color
+EnumLiteral Symbol: black of type color
+Object Symbol: color_table
+Object Symbol: limit
+Object Symbol: low_limit
+Object Symbol: pi
+Object Symbol: two_pi
+Object Symbol: max
+Object Symbol: power_16
+Object Symbol: one
+Object Symbol: un
+Object Symbol: eins
+Type Symbol: column
+Type Symbol: table
+Type Symbol: matrix
+Type Symbol: rainbow
+Type Symbol: red_purple
+Type Symbol: int
+Type Symbol: small_int
+Type Symbol: up_to_k
+Type Symbol: square_sub
+Type Symbol: coordinate
+Component Symbol: lat of type coordinate
+Component Symbol: long of type coordinate
+Type Symbol: local_coordinate
+Type Symbol: day
+EnumLiteral Symbol: mon of type day
+EnumLiteral Symbol: tue of type day
+EnumLiteral Symbol: wed of type day
+EnumLiteral Symbol: thu of type day
+EnumLiteral Symbol: fri of type day
+EnumLiteral Symbol: sat of type day
+EnumLiteral Symbol: sun of type day
+Type Symbol: midweek
+Type Symbol: positive
+Type Symbol: counter
+Type Symbol: suit
+EnumLiteral Symbol: clubs of type suit
+EnumLiteral Symbol: diamonds of type suit
+EnumLiteral Symbol: hearts of type suit
+EnumLiteral Symbol: spades of type suit
+Type Symbol: gender
+EnumLiteral Symbol: m of type gender
+EnumLiteral Symbol: f of type gender
+Type Symbol: level
+EnumLiteral Symbol: low of type level
+EnumLiteral Symbol: medium of type level
+EnumLiteral Symbol: urgent of type level
+Type Symbol: light
+EnumLiteral Symbol: red of type light
+EnumLiteral Symbol: amber of type light
+EnumLiteral Symbol: green of type light
+Type Symbol: hexa
+EnumLiteral Symbol: 'A' of type hexa
+EnumLiteral Symbol: 'B' of type hexa
+EnumLiteral Symbol: 'C' of type hexa
+EnumLiteral Symbol: 'D' of type hexa
+EnumLiteral Symbol: 'E' of type hexa
+EnumLiteral Symbol: 'F' of type hexa
+Type Symbol: mixed
+EnumLiteral Symbol: 'A' of type mixed
+EnumLiteral Symbol: 'B' of type mixed
+EnumLiteral Symbol: '*' of type mixed
+EnumLiteral Symbol: none of type mixed
+EnumLiteral Symbol: '?' of type mixed
+EnumLiteral Symbol: '%' of type mixed
+Type Symbol: weekday
+Type Symbol: major
+Type Symbol: roman_digit
+EnumLiteral Symbol: 'I' of type roman_digit
+EnumLiteral Symbol: 'V' of type roman_digit
+EnumLiteral Symbol: 'X' of type roman_digit
+EnumLiteral Symbol: 'L' of type roman_digit
+EnumLiteral Symbol: 'C' of type roman_digit
+EnumLiteral Symbol: 'D' of type roman_digit
+EnumLiteral Symbol: 'M' of type roman_digit
+Type Symbol: page_num
+Object Symbol: max_line_size
+Type Symbol: line_size
+Type Symbol: column_ptr
+Type Symbol: buffer_size
+Type Symbol: coefficient
+Type Symbol: mass
+Type Symbol: short_coeff
+Type Symbol: probability
+Type Symbol: volt
+Type Symbol: rough_voltage
+Object Symbol: word_length
+Object Symbol: del
+Type Symbol: fraction
+Type Symbol: vector
+Type Symbol: roman
+Type Symbol: schedule
+Type Symbol: line
+Object Symbol: grid
+Object Symbol: mix
+Object Symbol: page
+Type Symbol: month_name
+EnumLiteral Symbol: jan of type month_name
+EnumLiteral Symbol: feb of type month_name
+EnumLiteral Symbol: mar of type month_name
+EnumLiteral Symbol: apr of type month_name
+EnumLiteral Symbol: may of type month_name
+EnumLiteral Symbol: jun of type month_name
+EnumLiteral Symbol: jul of type month_name
+EnumLiteral Symbol: aug of type month_name
+EnumLiteral Symbol: sep of type month_name
+EnumLiteral Symbol: oct of type month_name
+EnumLiteral Symbol: nov of type month_name
+EnumLiteral Symbol: dec of type month_name
+Type Symbol: date
+Component Symbol: day of type date
+Component Symbol: month of type date
+Component Symbol: year of type date
+Type Symbol: complex
+Component Symbol: re of type complex
+Component Symbol: im of type complex
+Object Symbol: tomorrow
+Object Symbol: yesterday
+Object Symbol: a
+Object Symbol: b
+Object Symbol: c
+Discriminant Symbol: size of type buffer_size
+Type Symbol: buffer
+Component Symbol: pos of type buffer
+Component Symbol: value of type buffer
+Discriminant Symbol: side of type integer
+Type Symbol: square
+Component Symbol: mat of type square
+Discriminant Symbol: number of type integer
+Type Symbol: double_square
+Component Symbol: left of type double_square
+Component Symbol: right of type double_square
+Discriminant Symbol: number of type positive
+Type Symbol: item
+Component Symbol: content of type item
+Type Symbol: device
+EnumLiteral Symbol: printer of type device
+EnumLiteral Symbol: disk of type device
+EnumLiteral Symbol: drum of type device
+Type Symbol: state
+EnumLiteral Symbol: open of type state
+EnumLiteral Symbol: closed of type state
+Type Symbol: cylinder_index
+Type Symbol: track_number
+Object Symbol: page_size
+Discriminant Symbol: unit of type device
+Type Symbol: peripheral
+Component Symbol: status of type peripheral
+Component Symbol: line_count of type peripheral
+Component Symbol: cylinder of type peripheral
+Component Symbol: track of type peripheral
+Type Symbol: drum_unit
+Type Symbol: disk_unit
+Object Symbol: writer
+Object Symbol: archive
+Type Symbol: frame
+Type Symbol: buffer_name
+Type Symbol: cell
+Type Symbol: link
+Component Symbol: value of type cell
+Component Symbol: succ of type cell
+Component Symbol: pred of type cell
+Object Symbol: head
+Object Symbol: next
+Type Symbol: car
+Type Symbol: person
+Discriminant Symbol: sex of type gender
+Type Symbol: person_name
+Type Symbol: car_name
+Component Symbol: number of type car
+Component Symbol: owner of type car
+Discriminant Symbol: sex of type gender
+Component Symbol: name of type person
+Component Symbol: birth of type person
+Component Symbol: age of type person
+Component Symbol: vehicle of type person
+Component Symbol: wife of type person
+Component Symbol: husband of type person
+Object Symbol: my_car
+Object Symbol: your_car
+Object Symbol: next_car
+Type Symbol: male
 -------------------
 
    Errors  : 0

@@ -73,17 +73,17 @@ Listing for tst/declarations/tst00073.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: positive : Type
-Type Symbol: roman_digit : Type
-EnumLiteral Symbol: 'I' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'V' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'X' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'L' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'C' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'D' : EnumLiteral of type roman_digit
-EnumLiteral Symbol: 'M' : EnumLiteral of type roman_digit
-Type Symbol: roman : Type
-Object Symbol: ninety_six : Object
+Type Symbol: positive
+Type Symbol: roman_digit
+EnumLiteral Symbol: 'I' of type roman_digit
+EnumLiteral Symbol: 'V' of type roman_digit
+EnumLiteral Symbol: 'X' of type roman_digit
+EnumLiteral Symbol: 'L' of type roman_digit
+EnumLiteral Symbol: 'C' of type roman_digit
+EnumLiteral Symbol: 'D' of type roman_digit
+EnumLiteral Symbol: 'M' of type roman_digit
+Type Symbol: roman
+Object Symbol: ninety_six
 -------------------
 
    Errors  : 0

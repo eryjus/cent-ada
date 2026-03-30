@@ -43,8 +43,8 @@ Listing for tst/declarations/tst00051.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: volt : Type
-Type Symbol: rough_voltage : Type
+Type Symbol: volt
+Type Symbol: rough_voltage
 -------------------
 
    Errors  : 0

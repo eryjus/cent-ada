@@ -25,10 +25,10 @@ Listing for tst/declarations/tst00031.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: level : Type
-EnumLiteral Symbol: low : EnumLiteral of type level
-EnumLiteral Symbol: medium : EnumLiteral of type level
-EnumLiteral Symbol: urgent : EnumLiteral of type level
+Type Symbol: level
+EnumLiteral Symbol: low of type level
+EnumLiteral Symbol: medium of type level
+EnumLiteral Symbol: urgent of type level
 -------------------
 
    Errors  : 0

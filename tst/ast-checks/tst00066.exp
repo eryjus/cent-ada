@@ -66,9 +66,9 @@ Listing for tst/declarations/tst00066.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: n : Object
-Type Symbol: matrix : Type
-Object Symbol: inverse : Object
+Object Symbol: n
+Type Symbol: matrix
+Object Symbol: inverse
 -------------------
 
    Errors  : 0

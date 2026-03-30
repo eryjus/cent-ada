@@ -30,8 +30,8 @@ Listing for tst/declarations/tst00093.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-IncompleteType Symbol: cell : IncompleteType
-Type Symbol: link : Type
+IncompleteType Symbol: cell
+Type Symbol: link
 -------------------
 
    Errors  : 0

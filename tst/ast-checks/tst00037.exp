@@ -42,12 +42,12 @@ Listing for tst/declarations/tst00037.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: suit : Type
-EnumLiteral Symbol: clubs : EnumLiteral of type suit
-EnumLiteral Symbol: diamonds : EnumLiteral of type suit
-EnumLiteral Symbol: hearts : EnumLiteral of type suit
-EnumLiteral Symbol: spades : EnumLiteral of type suit
-Type Symbol: major : Type
+Type Symbol: suit
+EnumLiteral Symbol: clubs of type suit
+EnumLiteral Symbol: diamonds of type suit
+EnumLiteral Symbol: hearts of type suit
+EnumLiteral Symbol: spades of type suit
+Type Symbol: major
 -------------------
 
    Errors  : 0

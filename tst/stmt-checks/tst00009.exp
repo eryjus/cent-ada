@@ -645,22 +645,22 @@ Listing for tst/statements/tst00009.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Type Symbol: month_name : Type
-EnumLiteral Symbol: january : EnumLiteral of type month_name
-EnumLiteral Symbol: february : EnumLiteral of type month_name
-EnumLiteral Symbol: march : EnumLiteral of type month_name
-EnumLiteral Symbol: april : EnumLiteral of type month_name
-EnumLiteral Symbol: may : EnumLiteral of type month_name
-EnumLiteral Symbol: june : EnumLiteral of type month_name
-EnumLiteral Symbol: july : EnumLiteral of type month_name
-EnumLiteral Symbol: august : EnumLiteral of type month_name
-EnumLiteral Symbol: september : EnumLiteral of type month_name
-EnumLiteral Symbol: october : EnumLiteral of type month_name
-EnumLiteral Symbol: november : EnumLiteral of type month_name
-EnumLiteral Symbol: december : EnumLiteral of type month_name
-Object Symbol: month : Object
-Object Symbol: day : Object
-Object Symbol: year : Object
+Type Symbol: month_name
+EnumLiteral Symbol: january of type month_name
+EnumLiteral Symbol: february of type month_name
+EnumLiteral Symbol: march of type month_name
+EnumLiteral Symbol: april of type month_name
+EnumLiteral Symbol: may of type month_name
+EnumLiteral Symbol: june of type month_name
+EnumLiteral Symbol: july of type month_name
+EnumLiteral Symbol: august of type month_name
+EnumLiteral Symbol: september of type month_name
+EnumLiteral Symbol: october of type month_name
+EnumLiteral Symbol: november of type month_name
+EnumLiteral Symbol: december of type month_name
+Object Symbol: month
+Object Symbol: day
+Object Symbol: year
 -------------------
 
    Errors  : 0

@@ -46,8 +46,8 @@ Listing for tst/declarations/tst00053.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: del : Object
-Type Symbol: fraction : Type
+Object Symbol: del
+Type Symbol: fraction
 -------------------
 
    Errors  : 0

@@ -42,8 +42,8 @@ Listing for tst/declarations/tst00060.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: max_line_size : Object
-Type Symbol: line : Type
+Object Symbol: max_line_size
+Type Symbol: line
 -------------------
 
    Errors  : 0

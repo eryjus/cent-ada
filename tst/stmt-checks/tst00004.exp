@@ -36,10 +36,10 @@ Listing for tst/statements/tst00004.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Label Symbol: here : Label
-Label Symbol: aqui : Label
-Label Symbol: there : Label
-Label Symbol: everywhere : Label
+Label Symbol: here
+Label Symbol: aqui
+Label Symbol: there
+Label Symbol: everywhere
 -------------------
 
    Errors  : 0

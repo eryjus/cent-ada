@@ -21,7 +21,7 @@ Listing for tst/declarations/tst00098.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-IncompleteType Symbol: car : IncompleteType
+IncompleteType Symbol: car
 -------------------
 
    Errors  : 0

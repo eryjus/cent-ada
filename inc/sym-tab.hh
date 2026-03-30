@@ -118,7 +118,7 @@ public:
     static Symbol *Declare(SourceLoc_t l, std::string n, SymbolKind k, std::string t = "");
     static Symbol *LocalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
     static Symbol *GlobalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
-    static void Print(void);
+    static void Print(std::ostream &os = std::cout, bool printHeader = true);
 
     // -- for testing
     static std::string CurrentScope(void) { return current->name; }

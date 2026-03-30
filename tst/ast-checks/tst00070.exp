@@ -45,7 +45,7 @@ Listing for tst/declarations/tst00070.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: stars : Object
+Object Symbol: stars
 -------------------
 
    Errors  : 0

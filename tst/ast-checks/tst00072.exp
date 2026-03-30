@@ -41,8 +41,8 @@ Listing for tst/declarations/tst00072.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: question : Object
-Object Symbol: ask_twice : Object
+Object Symbol: question
+Object Symbol: ask_twice
 -------------------
 
    Errors  : 0

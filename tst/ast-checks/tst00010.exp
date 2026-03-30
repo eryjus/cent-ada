@@ -37,8 +37,8 @@ Listing for tst/declarations/tst00010.ada:
 Scope Name: GLOBAL
 Scope ID  : 1
 -------------------
-Object Symbol: pi : Object
-Object Symbol: two_pi : Object
+Object Symbol: pi
+Object Symbol: two_pi
 -------------------
 
    Errors  : 0
