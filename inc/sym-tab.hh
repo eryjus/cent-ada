@@ -23,6 +23,14 @@
 
 
 class SymbolTable {
+    //
+    // -- Some friends for testing
+    //    ------------------------
+    friend class TestOutput;
+    friend class TestSyms;
+    friend class TestSequence;
+
+
 public:
     //
     // -- The list of types of symbols we need to track
@@ -120,8 +128,12 @@ public:
     static Symbol *GlobalLookup(std::string n, SymbolKind k = SymbolKind::Any, std::string t = "");
     static void Print(std::ostream &os = std::cout, bool printHeader = true);
 
+
+protected:
     // -- for testing
     static std::string CurrentScope(void) { return current->name; }
+    static void Reset(void) { table.resize(1); Push("GLOBAL"); }
+    static std::vector<std::tuple<std::string, std::string, SymbolTable::SymbolKind, std::string>>GetAllSymbols(void);
 
 
 private:
@@ -140,6 +152,17 @@ private:
 };
 
 
+
+//                       scope        symbol       kind                     type
+using Tuple = std::tuple<std::string, std::string, SymbolTable::SymbolKind, std::string>;
+using SymSeq = std::vector<Tuple>;
+
+
+
+
 using Symbol = SymbolTable::Symbol;
 extern SymbolTable &symTab;
+
+
+
 

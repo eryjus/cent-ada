@@ -221,7 +221,26 @@ void SymbolTable::Print(std::ostream &os, bool printHeader)
         os << "-------------------\n";
         os << '\n';
     }
+}
 
+
+
+//
+// -- Get all symbols from the symbol table to ensure they are in sequence
+//    --------------------------------------------------------------------
+SymSeq SymbolTable::GetAllSymbols(void)
+{
+    SymSeq rv;
+
+    for (int i = 1; i < table.size(); i ++) {
+        std::string scope = table.at(i)->name;
+        for (auto &sym : table[i]->stack) {
+            Tuple tup = { scope, sym->symName, sym->kind, sym->typeName };
+            rv.push_back(tup);
+        }
+    }
+
+    return rv;
 }
 
 

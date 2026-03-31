@@ -13,7 +13,13 @@
 
 #include "ada.hh"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
+
+
+//
+// == Test the foundation of the Symbol Table functionality
+//    =====================================================
 
 
 //
@@ -256,5 +262,233 @@ TEST_F(TestSyms, rollback_symbol1) { TestRollbackSyms("test"); }
 TEST_F(TestSyms, rollback_symbol2) { TestRollbackSyms("integer"); }
 TEST_F(TestSyms, rollback_scope1) { TestRollbackScope("test"); }
 TEST_F(TestSyms, rollback_scope2) { TestRollbackScope("integer"); }
+
+
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+
+
+
+//
+// == Test the output of printing the symbol table
+//    ============================================
+
+
+
+//
+// -- This class will test the formatted output for each kind of symbol
+//    -----------------------------------------------------------------
+class TestOutput : public testing::Test {
+protected:
+    TestOutput(void) {}
+
+
+    void TestSymbol(std::string expected, SourceLoc_t l, std::string n, SymbolTable::SymbolKind k, std::string t = "", int lvl = 0) {
+        // -- given
+        SymbolTable::Reset();
+        std::ostringstream actual;
+
+        // -- when
+        while (lvl) { SymbolTable::Push("test"); --lvl; }
+        Symbol *sym = SymbolTable::Declare(l, n, k, t);
+        SymbolTable::Print(actual, false);
+
+        // -- then
+        EXPECT_EQ(expected, actual.str());
+    }
+};
+
+
+
+//
+// -- Execute the actual tests
+//    ------------------------
+TEST_F(TestOutput, TestObject) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "Object Symbol: pi\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "pi", SymbolTable::SymbolKind::Object);
+}
+
+
+TEST_F(TestOutput, TestObject1) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "-------------------\n\n";
+    expected << "Scope Name: test\n";
+    expected << "Scope ID  : 2\n";
+    expected << "-------------------\n";
+    expected << "Object Symbol: pi\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "pi", SymbolTable::SymbolKind::Object, "", 1);
+}
+
+
+TEST_F(TestOutput, TestType) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "Type Symbol: color\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "color", SymbolTable::SymbolKind::Type);
+}
+
+
+TEST_F(TestOutput, TestIncompleteType) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "IncompleteType Symbol: person\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "person", SymbolTable::SymbolKind::IncompleteType);
+}
+
+
+
+TEST_F(TestOutput, TestLabel) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "Label Symbol: here\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "here", SymbolTable::SymbolKind::Label);
+}
+
+
+
+TEST_F(TestOutput, TestUndefinedLabel) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "UndefinedLabel Symbol: here\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "here", SymbolTable::SymbolKind::UndefinedLabel);
+}
+
+
+
+TEST_F(TestOutput, TestLoopName) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "LoopName Symbol: here\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "here", SymbolTable::SymbolKind::LoopName);
+}
+
+
+
+TEST_F(TestOutput, TestBlockName) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "BlockName Symbol: here\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "here", SymbolTable::SymbolKind::BlockName);
+}
+
+
+TEST_F(TestOutput, TestEnumLiteral) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "EnumLiteral Symbol: red\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "red", SymbolTable::SymbolKind::EnumLiteral);
+}
+
+
+
+TEST_F(TestOutput, TestComponent) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "Component Symbol: wife\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "wife", SymbolTable::SymbolKind::Component);
+}
+
+
+
+TEST_F(TestOutput, TestDiscriminant) {
+    std::ostringstream expected;
+    expected << "Scope Name: GLOBAL\n";
+    expected << "Scope ID  : 1\n";
+    expected << "-------------------\n";
+    expected << "Discriminant Symbol: device\n";
+    expected << "-------------------\n\n";
+
+    TestSymbol(expected.str(), { }, "device", SymbolTable::SymbolKind::Discriminant);
+}
+
+
+
+
+
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+//===================================================================================================================
+
+
+
+//
+// == Test the sequence the symbol table
+//    ==================================
+
+
+
+//
+// -- This class will test the sequence of the symbol in the symbol table
+//    -------------------------------------------------------------------
+class TestSequence : public testing::Test {
+protected:
+    TestSequence(void) {}
+
+
+    void TestSeq(const std::string code, const SymSeq &expected) {
+        SymSeq actual = SymbolTable::GetAllSymbols();
+        ASSERT_EQ(expected, actual);
+    }
+};
+
+
+
+//
+// -- This starts the actual tests
+//    ----------------------------
+
+
+
+
 
 
