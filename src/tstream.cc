@@ -29,18 +29,17 @@ TokenStream *TokenStream::singleton = nullptr;
 // -- Construct the token stream.  This is done by scanning the entire file and
 //    turning each token into an element in the vector table.
 //    -------------------------------------------------------------------------
-void TokenStream::Factory(const char *fn)
+TokenStream &TokenStream::Factory(const char *fn)
 {
-    if (singleton) return;
+    if (singleton) return *singleton;
 
     singleton = new TokenStream();
     singleton->filename = (fn?fn:"stdin");
     singleton->loc = 0;
 
-    extern TokenType yylex(void);
     extern FILE *yyin;
-    extern YYSTYPE yylval;
     extern int yylineno;
+
 
     yyin = nullptr;
     yylineno = 0;           // set to 0 to make everything happy!
@@ -62,6 +61,48 @@ void TokenStream::Factory(const char *fn)
         fseek(yyin, 0, SEEK_SET);
         singleton->sourceValid = true;
     }
+
+    LoadStream();
+
+    fclose(yyin);
+    singleton->Reset(0);
+
+    return *singleton;
+}
+
+
+
+//
+// -- Construct the token stream specific for testing.  This is done by scanning
+//    the entire code string and turning each token into an element in the vector table.
+//    ----------------------------------------------------------------------------------
+TokenStream &TokenStream::TestFactory(std::string code)
+{
+    extern void ScanString(const std::string &s);
+
+    if (singleton) return *singleton;
+
+    singleton = new TokenStream();
+    singleton->filename = "string";
+    singleton->loc = 0;
+    ScanString(code);
+    singleton->source.push_back(code);
+    singleton->sourceValid = true;
+    LoadStream();
+    singleton->Reset(0);
+
+    return *singleton;
+}
+
+
+
+//
+// -- Load the Token Stream with data from the input
+//    ----------------------------------------------
+void TokenStream::LoadStream(void)
+{
+    extern TokenType yylex(void);
+    extern int yylineno;
 
     TokenType tok = (TokenType)yylex();
     while ((int)tok) {
@@ -101,9 +142,6 @@ void TokenStream::Factory(const char *fn)
     // -- add an EOF marker so that we can query it; yylval is irrelevant
     //    ---------------------------------------------------------------
     singleton->tokStream.push_back(new Token(singleton->filename, singleton->source.size(), 0, TokenType::YYEOF, yylval));
-
-    fclose(yyin);
-    singleton->Reset(0);
 }
 
 

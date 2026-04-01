@@ -38,6 +38,9 @@ using SourceLoc_t = struct SourceLoc_t {
 // -- This is the stream of tokens organized as a vector table so the parser can look ahead
 //    -------------------------------------------------------------------------------------
 class TokenStream {
+    friend class TokTest;
+
+
 private:
     using Token = struct Token {
     public:
@@ -66,17 +69,19 @@ public:
     const char *tokenStr(TokenType tok) const;
 
 public:
-    static void Factory(const char *fn = nullptr);
+    static TokenStream &Factory(const char *fn = nullptr);
     static TokenStream &Get(void) { if (!singleton) { Factory(); } return *singleton; }
+    static void LoadStream(void);
 
+    static TokenStream &TestFactory(const std::string code);
 
 
 
 public:
-    void Advance(int n = 1) { loc += n; }
-    TokenType Current(void) const { return tokStream[loc]->tok; }
+    void Advance(int n = 1) { loc += n; if (loc >= tokStream.size()) loc = tokStream.size() - 1; }
+    TokenType Current(void) const { assert(loc < tokStream.size()); assert(tokStream[loc]); return tokStream[loc]->tok; }
     YYSTYPE &Payload(void) const { return tokStream[loc]->payload; }
-    TokenType Peek(int n = 1) { return tokStream[loc + n]->tok; }
+    TokenType Peek(int n = 1) { if (loc + n >= tokStream.size()) return TokenType::YYEOF; else return tokStream[loc + n]->tok; }
     std::string FileName(void) const { return filename; }
     long LineNo(void) const { return tokStream[loc]->yylineno; }
     int Column(void) const { return tokStream[loc]->column; }
