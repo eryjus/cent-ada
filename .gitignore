@@ -8,3 +8,5 @@ gen/*.hh
 gen/*.log
 lib/*.a
 
+gtest/bin/test
+
