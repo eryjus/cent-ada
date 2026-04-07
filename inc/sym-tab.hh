@@ -29,6 +29,7 @@ class SymbolTable {
     friend class TestOutput;
     friend class TestSyms;
     friend class TestSequence;
+    friend class DeclTest;
 
 
 public:
@@ -132,7 +133,7 @@ public:
 protected:
     // -- for testing
     static std::string CurrentScope(void) { return current->name; }
-    static void Reset(void) { table.resize(1); Push("GLOBAL"); }
+    static void Reset(void) { table.resize(1); current = table[0].get(); Push("GLOBAL"); }
     static std::vector<std::tuple<std::string, std::string, SymbolTable::SymbolKind, std::string>>GetAllSymbols(void);
 
 

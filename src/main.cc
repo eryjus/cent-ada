@@ -31,13 +31,6 @@ using ParseType_t = enum {
 
 
 //
-// -- Global options
-//    --------------
-Options opts;
-
-
-
-//
 // -- Scan the input for testing purposes
 //    -----------------------------------
 static int Scan(std::string filename)

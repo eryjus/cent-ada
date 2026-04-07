@@ -1,2 +1,2 @@
--- TOLLERANCE : constant REAL := DISPERSION(1.15):
+-- TOLLERANCE : constant REAL := DISPERSION(1.15);
 

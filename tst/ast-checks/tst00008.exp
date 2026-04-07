@@ -4,7 +4,7 @@ PRINTING THE AST STRUCTURE
 
 Listing for tst/declarations/tst00008.ada:
 ==========================================
-     1   -- TOLLERANCE : constant REAL := DISPERSION(1.15):
+     1   -- TOLLERANCE : constant REAL := DISPERSION(1.15);
      2
 
 

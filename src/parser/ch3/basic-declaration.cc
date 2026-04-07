@@ -61,7 +61,7 @@ DeclPtr Parser::ParseBasicDeclaration(void)
 
     rv = ParseObjectDeclaration();
     if (rv) {
-        p.At("Object");
+        p.At(std::string("Object") + std::to_string(tokens.Location()));
         return rv;
     }
 

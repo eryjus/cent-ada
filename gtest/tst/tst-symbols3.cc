@@ -1,0 +1,23 @@
+//===================================================================================================================
+// tst-symbols.cc -- This google test executes tests against the symbol sequence
+//
+//      Copyright (c) 2026 - Adam Clark
+//      License: Beerware
+//
+//      Date     Tracker  Version  Description
+//  -----------  -------  -------  ---------------------------------------------------------------------------------
+//  2026-Apr-05  Initial  v0.0.0   Initial Google Tests
+//===================================================================================================================
+
+
+
+#include "symbols3.hh"
+
+
+
+//
+// -- Test the sequence the symbol table
+//    ----------------------------------
+
+
+

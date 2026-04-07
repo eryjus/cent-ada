@@ -14,12 +14,6 @@ test-scanner: all
 	done
 
 
-.PHONY: test-types
-test-types: all
-	echo "== Running Declaration tests =="
-	./scripts/run-type-tests.sh
-
-
 .PHONY: test-exprs
 test-exprs: all
 	echo "== Running Expression tests =="
@@ -49,8 +43,6 @@ test-stmts: all
 test: all
 	gtest/bin/test || true
 	echo "== Running ALL tests =="
-	echo "Types:"
-	./scripts/run-type-tests.sh | grep FAILED --color=always || true
 	echo "Exprs:"
 	./scripts/run-expr-tests.sh | grep FAILED --color=always || true
 	echo "Invar:"

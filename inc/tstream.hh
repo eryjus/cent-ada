@@ -39,6 +39,9 @@ using SourceLoc_t = struct SourceLoc_t {
 //    -------------------------------------------------------------------------------------
 class TokenStream {
     friend class TokTest;
+    friend class TestSequence;
+    friend class TestAst;
+    friend class DeclTest;
 
 
 private:
@@ -91,7 +94,6 @@ public:
     int Location(void) const { return loc; }
     void Listing(void);
     void List(void);
-    void ScanString(const std::string &str) { yy_scan_string(str.c_str()); }
     SourceLoc_t SourceLocation(void);
     static SourceLoc_t EmptyLocation(void);
 };

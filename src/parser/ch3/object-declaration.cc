@@ -116,7 +116,6 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     }
 
 
-
     //
     // -- Finally, the production must end with a TOK_SEMICOLON
     //    -----------------------------------------------------
@@ -127,12 +126,11 @@ ObjectDeclarationPtr Parser::ParseObjectDeclaration(void)
     }
 
 
-
     //
     // -- Consider this parse to be good
     //    ------------------------------
     TOKEN;
-    p.At("proper obj decl");
+    p.At("proper obj decl " + std::to_string(tokens.Location()));
     TOKEN;
 
     cp.Commit();
