@@ -23,6 +23,11 @@ jobs:
           sudo apt update
           sudo apt install -y tup
 
+      - name: Setup GoogleTest
+        uses: Bacondish2023/setup-googletest@v1
+        with:
+          tag: v1.14.0
+
       - name: Initialize tup
         run: tup init
 
