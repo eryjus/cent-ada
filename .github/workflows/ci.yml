@@ -18,10 +18,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install tup
+      - name: Install tup/ansifilter
         run: |
           sudo apt update
-          sudo apt install -y tup
+          sudo apt install -y tup ansifilter
 
       - name: Setup GoogleTest
         uses: Bacondish2023/setup-googletest@v1
