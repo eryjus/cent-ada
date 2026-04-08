@@ -10,6 +10,5 @@ MESSAGE : BUFFER;
 
 ------------------------------
 
-
 MESSAGE'ADDRESS
 

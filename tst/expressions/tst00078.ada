@@ -1,6 +1,5 @@
 type GENDER is (M, F);
 
-
 type MONTH_NAME is (JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC);
 type DATE is
     record
@@ -38,7 +37,6 @@ MY_CAR, YOUR_CAR, NEXT_CAR : CAR_NAME;
 
 
 subtype MALE is PERSON(SEX => M);
-
 
 ----------------------------------------
 

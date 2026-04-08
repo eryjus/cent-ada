@@ -419,20 +419,6 @@ xor         { column += strlen(yytext); return TokenType::TOK_XOR; }
                 return TokenType::TOK_ERROR;
             }
 
-       /* -- Underline to end the real exponent part */
-{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*(e[+-]?{UNDERLINE}({UNDERLINE}|{DIGIT})*)? {
-                column += strlen(yytext);
-                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part cannot begin with an '_'" } };
-                return TokenType::TOK_ERROR;
-            }
-
-       /* -- missing exponent part */
-{DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*e[+-]? {
-                column += strlen(yytext);
-                yylval = ScannerError { DiagID::IllegalReal, { std::string(yytext), "Real exponent part missing" } };
-                return TokenType::TOK_ERROR;
-            }
-
        /* -- missing exponent part */
 {DIGIT}({UNDERLINE}?{DIGIT})*\.{DIGIT}({UNDERLINE}?{DIGIT})*e[+-]? {
                 column += strlen(yytext);

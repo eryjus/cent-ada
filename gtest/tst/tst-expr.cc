@@ -1,5 +1,5 @@
 //===================================================================================================================
-// tst-type.cc -- This google test executes tests against basic type declarations
+// tst-exor.cc -- This google test executes tests against basic declarations/expressions
 //
 //      Copyright (c) 2026 - Adam Clark
 //      License: Beerware
@@ -10,21 +10,21 @@
 //===================================================================================================================
 
 
-#include "decl-tests.hh"
-#include "type.hh"
+#include "expr-tests.hh"
+#include "expr.hh"
 
 
 //
-// -- Test the parsing of the types
+// -- Test the parsing of the exprs
 //    -----------------------------
-TEST_P(DeclTest, TestDeclarations)
+TEST_P(ExprTest, TestExpressions)
 {
     extern void ScanString(const std::string &s);
 
     // -- given
     int iter = GetParam();
-    TokenStream &tokens = TokenStream::TestFactory(DeclTestCode::code[iter]);
-    ScanString(DeclTestCode::code[iter]);
+    TokenStream &tokens = TokenStream::TestFactory(ExprTestCode::code[iter]);
+    ScanString(ExprTestCode::code[iter]);
     tokens.Reset(0);
     Parser parser(tokens);
 
@@ -32,7 +32,15 @@ TEST_P(DeclTest, TestDeclarations)
     int pos = tokens.Location();
     while (tokens.Current() != TokenType::YYEOF) {
         // -- then
-        EXPECT_TRUE(parser.ParseBasicDeclaration());
+        if (!parser.ParseBasicDeclaration()) break;
+        ASSERT_NE(pos, tokens.Location());
+        pos = tokens.Location();
+    }
+
+    pos = tokens.Location();
+    while (tokens.Current() != TokenType::YYEOF) {
+        // -- then
+        ASSERT_TRUE(parser.ParseExpression());
         ASSERT_NE(pos, tokens.Location());
         pos = tokens.Location();
     }
@@ -43,5 +51,5 @@ TEST_P(DeclTest, TestDeclarations)
 
 
 
-INSTANTIATE_TEST_SUITE_P(Decl, DeclTest, testing::Range(DeclTestCode::DeclTest001, DeclTestCode::Last)); //Last
+INSTANTIATE_TEST_SUITE_P(Expr, ExprTest, testing::Range(ExprTestCode::ExprTest001, ExprTestCode::Last)); //Last
 

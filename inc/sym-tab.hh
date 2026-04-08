@@ -30,6 +30,7 @@ class SymbolTable {
     friend class TestSyms;
     friend class TestSequence;
     friend class DeclTest;
+    friend class ExprTest;
 
 
 public:

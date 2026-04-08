@@ -126,7 +126,7 @@ namespace DeclTestCode {
     const int DeclTest106 = 106;
     const int Last = 107;
 
-    extern const std::string code[];
+    extern const std::string code[Last];
 };
 
 

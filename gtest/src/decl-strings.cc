@@ -20,7 +20,7 @@
 //
 // -- These are all the intended Test Strings which are being used for declarations
 //    -----------------------------------------------------------------------------
-const std::string DeclTestCode::code[] = {
+const std::string DeclTestCode::code[DeclTestCode::Last] = {
 // -- Empty undefined test 0 string
 R"(
 )",

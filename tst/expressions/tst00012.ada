@@ -6,9 +6,7 @@ L : constant := 10;
 A : constant := 1;
 B : constant := 5;
 
-
 ------------------------
-
 
 PAGE(L)(A .. B)
 

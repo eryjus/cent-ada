@@ -3,6 +3,5 @@ type SCHEDULE is array(DAY) of BOOLEAN;
 
 ----------------------------------------
 
-
 SCHEDULE'(MON .. FRI => TRUE, others => FALSE)
 

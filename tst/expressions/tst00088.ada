@@ -1,4 +1,3 @@
-
 type DEVICE is (PRINTER, DISK, DRUM);
 type STATE is (OPEN, CLOSED);
 
@@ -19,14 +18,11 @@ type PERIPHERAL(UNIT : DEVICE := DISK) is
         end case;
     end record;
 
-
 subtype DRUM_UNIT is PERIPHERAL(DRUM);
 subtype DISK_UNIT is PERIPHERAL(DISK);
 
 WRITER : PERIPHERAL(UNIT => PRINTER);
 ARCHIVE : DISK_UNIT;
-
-
 
 ----------------------------------------
 

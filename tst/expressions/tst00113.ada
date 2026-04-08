@@ -6,7 +6,6 @@ type BUFFER(SIZE : BUFFER_SIZE := 100) is
         VALUE : STRING(1 .. SIZE);
     end record;
 
-
 ----------------------------------
 
 new BUFFER'(SIZE => 80, POS => 0, VALUE => (1 .. 80 => 'A'))

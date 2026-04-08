@@ -1,12 +1,12 @@
 //===================================================================================================================
-// type.hh -- This file is used to perform the basic declaration tests
+// expr.hh -- This file is used to perform the basic declaration/expressions
 //
 //      Copyright (c) 2026 - Adam Clark
 //      License: Beerware
 //
 //      Date     Tracker  Version  Description
 //  -----------  -------  -------  ---------------------------------------------------------------------------------
-//  2026-Apr-05  Initial  v0.0.0   Initial Google Tests
+//  2026-Apr-06  Initial  v0.0.0   Initial Google Tests
 //===================================================================================================================
 
 
@@ -15,12 +15,12 @@
 
 
 //
-// -- Test case for testing declarations
+// -- Test case for testing expressions
 //    ----------------------------------
-class DeclTest : public testing::TestWithParam<int> {
+class ExprTest : public testing::TestWithParam<int> {
 protected:
-    DeclTest(void) : symTab(SymbolTable::Get()) {}
-    ~DeclTest() { delete TokenStream::singleton; TokenStream::singleton = nullptr; }
+    ExprTest(void) : symTab(SymbolTable::Get()) {}
+    ~ExprTest() { delete TokenStream::singleton; TokenStream::singleton = nullptr; }
 
 
 protected:

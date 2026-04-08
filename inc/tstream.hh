@@ -42,6 +42,7 @@ class TokenStream {
     friend class TestSequence;
     friend class TestAst;
     friend class DeclTest;
+    friend class ExprTest;
 
 
 private:
