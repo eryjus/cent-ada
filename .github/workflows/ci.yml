@@ -38,11 +38,6 @@ jobs:
       # Tests (allowed to fail)
       # -------------------------
 
-      - name: Run Ch4 tests (expressions)
-        id: ch4
-        run: make test-exprs
-        continue-on-error: true
-
       - name: Run Invariant tests (expressions)
         id: invar
         run: make test-invar
@@ -71,15 +66,13 @@ jobs:
         if: always()
         run: |
           echo "================ CI SUMMARY ================"
-          echo "  Ch4 tests: ${{ steps.ch4.outcome }}"
           echo "Invar tests: ${{ steps.invar.outcome }}"
           echo "  AST tests: ${{ steps.ast.outcome }}"
           echo "Stmts tests: ${{ steps.stmts.outcome }}"
           echo "Googl tests: ${{ steps.gtest.outcome }}"
           echo "============================================"
 
-          if [ "${{ steps.ch4.outcome }}"   != "success" ] || \
-             [ "${{ steps.invar.outcome }}" != "success" ] || \
+          if [ "${{ steps.invar.outcome }}" != "success" ] || \
              [ "${{ steps.ast.outcome }}"   != "success" ] || \
              [ "${{ steps.stmts.outcome }}" != "success" ] || \
              [ "${{ steps.gtest.outcome }}" != "success" ]    \

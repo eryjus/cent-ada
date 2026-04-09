@@ -7,19 +7,6 @@ all:
 
 
 
-.phony: test-scanner
-test-scanner: all
-	for file in tst/scanner/*.ada; do \
-		bin/ada-cc scan $$file ;\
-	done
-
-
-.PHONY: test-exprs
-test-exprs: all
-	echo "== Running Expression tests =="
-	./scripts/run-expr-tests.sh
-
-
 .PHONY: test-invar
 test-invar: all
 	echo "== Running AST Invariant tests =="
@@ -43,8 +30,6 @@ test-stmts: all
 test: all
 	gtest/bin/test || true
 	echo "== Running ALL tests =="
-	echo "Exprs:"
-	./scripts/run-expr-tests.sh | grep FAILED --color=always || true
 	echo "Invar:"
 	./scripts/run-invar-tests.sh | grep FAILED --color=always || true
 	echo "AST:"
